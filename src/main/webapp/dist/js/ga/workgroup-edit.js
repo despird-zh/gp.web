@@ -27,7 +27,7 @@ var PageContext = (function ($, window, undefined){
 		$workgroup_netdisk_capacity : $('#workgroup-netdisk-capacity'),
 		
 		$workgroup_topic : $('#workgroup-topic-enable'),
-		$workgroup_share : $('#orkgroup-share-enable'),
+		$workgroup_share : $('#workgroup-share-enable'),
 		$workgroup_link : $('#workgroup-link-enable'),
 		$workgroup_task : $('#workgroup-task-enable'),
 		$workgroup_weight : $('#workgroup-task-weight'),
