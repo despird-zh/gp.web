@@ -332,10 +332,10 @@ public class WorkgroupFacade {
 			
 			boolean ok = workgroupservice.addWorkgroupMember(svcctx, wuinfo);
 			gresult.setReturnValue(ok);
-			gresult.setMessage("success get workgroup member", true);
+			gresult.setMessage("success update workgroup member", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup member",e);
-			gresult.setMessage("fail get workgroup member", true);
+			LOGGER.error("Exception when update workgroup member",e);
+			gresult.setMessage("fail update workgroup member", true);
 			ContextHelper.stampContext(e);
 		}finally{
 			

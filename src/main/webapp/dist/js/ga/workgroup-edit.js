@@ -743,18 +743,22 @@ var PageContext = (function ($, window, undefined){
 		});
 	};
 	
-	WorkgroupGroups.removeGroup = function(groupid){
+	WorkgroupGroups.removeGroup = function(el){
 	
 		var _self = this;
+		var _row = _self.$group_table.dataTable().api().row($(el).closest('tr'));
 		$.ajax({
 			url: "../ga/workgroup-group-remove.do",
 			dataType : "json",
 			data: {
-				'group_id' : groupid
+				'group_id' : $(el).attr('data-group-id')
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				if('success' == response.state){
+					_row.remove().draw();
+				}
+				GPContext.appendResult(response, ('success' != response.state));
 			}
 		});
 	};
