@@ -80,7 +80,7 @@ public class WorkgroupFacade {
 			svcctx.putContextData(WorkgroupService.CTX_KEY_PRICAPACITY, pricapacity);
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
 			
-			boolean done = workgroupservice.newWorkgroup(svcctx, winfo);
+			workgroupservice.newWorkgroup(svcctx, winfo);
 			
 			gresult.setReturnValue(winfo.getInfoId());
 			gresult.setMessage("success create new workgroup", true);
