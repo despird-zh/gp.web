@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>    
 <%@ page import="org.apache.log4j.Logger" %>  
-<%@page import="java.text.SimpleDateFormat"%>   
-<%@taglib prefix="s" uri="/struts-tags"%>     
+<%@page import="java.text.SimpleDateFormat"%>       
 <html>     
     <head>     
         <title>Exception General Handling Page</title>     

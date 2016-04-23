@@ -27,6 +27,8 @@ public class AuthController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 	
+	public static final int RELOG_INDICATOR = 444;
+	
 	@RequestMapping("login")
 	public ModelAndView doLogon(HttpServletRequest request, HttpServletResponse response) throws WebException {
 		Subject currentUser = SecurityUtils.getSubject();
@@ -38,7 +40,7 @@ public class AuthController extends BaseController{
 	        response.setCharacterEncoding("UTF-8");
 	        ((HttpServletResponse)response).setHeader("sessionstatus", "timeout"); 
 	        try {
-				response.sendError(444, "Need relogon!!!" );
+				response.sendError(RELOG_INDICATOR, "Need relogon!!!" );
 			} catch (IOException e) {
 				throw new WebException("Session timeout relogon",e);
 			}

@@ -2,6 +2,7 @@ package com.gp.core;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupExInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.info.WorkgroupUserExInfo;
+import com.gp.info.WorkgroupUserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.IdService;
@@ -123,6 +125,7 @@ public class WorkgroupFacade {
 			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
 				gresult.addMessages( vmsg);
 				gresult.setMessage("fail create new workgroup", false);
+				svcctx.endAudit(ExecState.FAIL, "fail create new workgroup");
 				return gresult;
 			}
 			// append the capacity setting to context and send to service
@@ -307,13 +310,27 @@ public class WorkgroupFacade {
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.REMOVE_WORKGROUP_USER)){
+				Operations.ADD_WORKGROUP_USER)){
 
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			svcctx.addAuditPredicates(new DefaultKeyValue("member",account));
-			boolean ok = workgroupservice.addWorkgroupMember(svcctx, wkey, account, role);
-
+			
+			WorkgroupUserInfo wuinfo = new WorkgroupUserInfo();
+			wuinfo.setAccount(account);
+			wuinfo.setRole(role);
+			wuinfo.setWorkgroupId(wkey.getId());			
+			
+			// check the validation of user information
+			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), wuinfo);
+			if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
+				gresult.addMessages( vmsg);
+				gresult.setMessage("fail add workgroup member", false);
+				svcctx.endAudit(ExecState.FAIL, "fail add workgroup member");				
+				return gresult;
+			}
+			
+			boolean ok = workgroupservice.addWorkgroupMember(svcctx, wuinfo);
 			gresult.setReturnValue(ok);
 			gresult.setMessage("success get workgroup member", true);
 		}catch(ServiceException e){
@@ -394,6 +411,15 @@ public class WorkgroupFacade {
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_GROUP)){
+			
+			// check the validation of user information
+			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), ginfo);
+			if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
+				gresult.addMessages( vmsg);
+				gresult.setMessage("fail create new group", false);
+				svcctx.endAudit(ExecState.FAIL, "fail create new group");
+				return gresult;
+			}
 			
 			if(!InfoId.isValid(ginfo.getInfoId())){
 				

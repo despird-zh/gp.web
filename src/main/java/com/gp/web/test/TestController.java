@@ -56,7 +56,7 @@ public class TestController extends BaseController{
 		}		
 		
 	}
-	
+		
 	@RequestMapping("test-relogon")
 	public ModelAndView testRelogon(HttpServletResponse response) throws WebException {
 		LOGGER.debug("Trying to set timeout on reponse header.");
