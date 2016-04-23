@@ -50,6 +50,7 @@ public class GlobalExceptionAdvice {
 	public ModelAndView noHandlerFound(HttpServletRequest request, NoHandlerFoundException exception) {
 	    Locale locale = LocaleContextHolder.getLocale();
 	    //String errorMessage = messageSource.getMessage("error.bad.url", null, locale);
+
 	    logger.error("Request: " + request.getRequestURI() + " not found handler or resources ");
 	    ModelAndView mav = getModelAndView(request);
 
@@ -105,14 +106,17 @@ public class GlobalExceptionAdvice {
 
 		logger.error("Request: " + request.getRequestURI() + " raised " + exception, exception);
 
-		ModelAndView mav = getModelAndView(request);
-		mav.addObject("exception", exception);
+
+	    ModelAndView mav = getModelAndView(request);
+
+	    mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
 		mav.addObject("state", ActionResult.ERROR);
 
 		return mav;
 	}
+	
 	
 	private ModelAndView getModelAndView(HttpServletRequest request){
 		// as for ajax request

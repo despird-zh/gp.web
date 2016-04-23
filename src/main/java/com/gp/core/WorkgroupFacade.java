@@ -420,7 +420,7 @@ public class WorkgroupFacade {
 				svcctx.endAudit(ExecState.FAIL, "fail create new group");
 				return gresult;
 			}
-			
+
 			if(!InfoId.isValid(ginfo.getInfoId())){
 				
 				InfoId<Long> gid = idservice.generateId(IdKey.GROUP, Long.class);
