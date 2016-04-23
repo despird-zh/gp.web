@@ -444,7 +444,7 @@ var PageContext = (function ($, window, undefined){
 			dataType : "json",
 			data: { 
 				wgroup_id : WorkgroupBasic.$workgroup_id.val(),
-				account : _self.$member_avail_user.val(),
+				account : _self.$member_account.val(),
 				role : _self.$member_role.val()
 			},
 			success: function(response)
