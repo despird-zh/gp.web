@@ -248,15 +248,11 @@
 						  <div class="col-md-12 no-padding">
 							  <form class="form-inline">
 								<label class="p-t-xxs  m-r-sm"> Member Information </label>
-								<a gpid="add-new-member" class="btn btn-default btn-xs"
+								<a gpid="add-new-member" class="btn btn-warning btn-xs"
 									data-placement="top" 
 									data-toggle="tooltip" 
-									title="Switch to new mode"><i class="fa fa-plus"></i> </a>	
-								<a gpid="member-cancel-btn" class="hidden btn btn-default btn-xs"
-									data-placement="top" 
-									data-toggle="tooltip" 
-									title="Switch to edit mode"><i class="fa fa-fw fa-undo"></i></a>
-								<a gpid="member-save-btn" class="btn btn-default btn-xs"
+									title="Switch to new member mode"><i class="fa fa-fw fa-plus"></i> </a>	
+								<a gpid="member-save-btn" class="btn btn-primary btn-xs"
 									data-placement="top" 
 									data-toggle="tooltip" 
 									title="Save workgroup member"><i class="fa fa-fw fa-save"></i></a>									
@@ -266,7 +262,7 @@
 						  <div class="col-md-12 no-padding">
 							<form class="form-horizontal">
 							  
-								<div class="form-group">
+								<div id="account-finder" class="form-group hidden">
 								  <label class="col-sm-3 control-label" for="avail-user-sel">Find </label>
 								  <div class="col-sm-4">
 										<select class="form-control select2" id="avail-user-sel" style="width: 150px;">
@@ -276,7 +272,7 @@
 								<div class="form-group">
 								  <label class="col-sm-3 control-label" for="member-account">Account</label>
 								  <div class="col-sm-4">
-									<input type="text" placeholder="account" value="demo2" id="member-account" class="form-control">
+									<input type="text" placeholder="account" value="" id="member-account" class="form-control">
 								  </div>
 								</div>
 								<div class="form-group">
@@ -288,13 +284,13 @@
 								<div class="form-group">
 								  <label class="col-sm-3 control-label" for="member-email">Email</label>
 								  <div class="col-sm-4">
-									<input type="text" placeholder="member email" value="demo1@sinss.com" disabled="" id="member-email" class="form-control">
+									<input type="text" placeholder="member email" value="" disabled="" id="member-email" class="form-control">
 								  </div>
 								</div>
 								<div class="form-group">
 								  <label class="col-sm-3 control-label" for="member-entity">Entity</label>
 								  <div class="col-sm-8">
-									<input type="text" placeholder="Entity name" value="测试科技" id="member-entity" class="form-control">
+									<input type="text" placeholder="Entity name" value="" id="member-entity" class="form-control">
 								  </div>
 								</div>
 								<div class="form-group">
@@ -342,15 +338,11 @@
 					<div class="col-md-4">
 						<div class="col-md-12 no-padding">
 							<label class="p-t-xxs  m-r-sm"> Group Information </label>
-							<a gpid="wgroup-group-new-btn" role="button"
+							<a gpid="wgroup-group-new-btn" class="btn btn-warning btn-xs"
 								data-placement="top" 
 								data-toggle="tooltip" 
 								title="Create new Group"><i class="fa fa-fw fa-plus"></i> </a>
-							<a gpid="wgroup-group-cancel-btn" role="button" 
-								data-placement="top" 
-								data-toggle="tooltip" 
-								title="Cancel the new mode"><i class="fa fa-fw fa-undo"></i></a>
-							<a gpid="wgroup-group-save-btn" role="button" 
+							<a gpid="wgroup-group-save-btn" class="btn btn-primary btn-xs" 
 								data-placement="top" 
 								data-toggle="tooltip" 
 								title="Save the group information"><i class="fa fa-fw fa-save"></i></a>
@@ -361,8 +353,8 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="wgroup-group-name">Group</label>
 									<div class="col-sm-8">
-									<input type="text" id="wgroup-group-id" value="63" class="hidden">
-									<input type="text" placeholder="Group Name" value="测试科技" id="wgroup-group-name" class="form-control">
+									<input type="text" id="wgroup-group-id" value="" class="hidden">
+									<input type="text" placeholder="Group Name" value="" id="wgroup-group-name" class="form-control">
 									</div>
 								</div>
 								<div class="form-group">
@@ -377,11 +369,11 @@
 					<div class="col-md-4">
 						<div class="col-md-12 no-padding">
 							<label class="p-t-xxs m-r-sm"> Group Member </label> 
-							<a gpid="group-member-refresh-btn" role="button" 
+							<a gpid="group-member-refresh-btn" class="btn btn-default btn-xs"
 								data-placement="top" 
 								data-toggle="tooltip" 
 								title="Refresh members of group"> <i class="fa fa-fw fa-refresh"></i> </a>
-							<a gpid="wgroup-group-member-add-btn" role="button" 
+							<a gpid="wgroup-group-member-add-btn" class="btn btn-primary btn-xs"
 								data-placement="top" 
 								data-toggle="tooltip" 
 								title="Add member to group"><i class="fa fa-fw fa-user-plus"></i></a>

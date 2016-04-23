@@ -180,7 +180,7 @@ var SelectUserContext = (function ($, window, undefined){
 			
             var checked = $(this).is(":checked");
             $(set).each(function () {
-				var rdata = SelectUserModal.$search_table.dataTable().api().row($(this).parents('tr')[0]).data();
+				var rdata = SelectUserModal.$search_table.dataTable().api().row($(this).closest('tr')).data();
                 if (checked) {
                     $(this).prop("checked", true);
                     $(this).parents('tr').addClass("active");
@@ -206,7 +206,7 @@ var SelectUserContext = (function ($, window, undefined){
 			}
             $(this).parents('tr').toggleClass("active");
 			var tobeAdd = $(this).prop('checked');
-			var rdata = SelectUserModal.$search_table.dataTable().api().row($(this).parents('tr')[0]).data();
+			var rdata = SelectUserModal.$search_table.dataTable().api().row($(this).closest('tr')).data();
 			// prepare the row id to locate the row dom element
 			rdata.DT_RowId = rdata.uid;			
 			if(tobeAdd){
@@ -277,9 +277,22 @@ var SelectUserContext = (function ($, window, undefined){
 		var _self = this;
 		var data_ary = _self.$select_table.api().data();
 		if(_self.single){
+			var result = data_ary[0];
+			// clean data
+			if(result.hasOwnProperty('DT_RowId'))
+				delete result.DT_RowId;
+			
 			_self.callback(data_ary[0]);
-		}else{			
-			_self.callback(data_ary);
+		}else{
+			var result = [], k;
+			$.each(data_ary, function(i, curr){
+				//clean data
+				if(curr.hasOwnProperty('DT_RowId')){
+					delete curr.DT_RowId;
+				}
+				result.push(curr);
+			});
+			_self.callback(result);
 		}
 		
 		_self.$select_modal.modal('hide');
@@ -380,15 +393,15 @@ var SelectUserContext = (function ($, window, undefined){
 	SelectUserModal.selectUserShow = function(_callback, single){
 		
 		var _self = this;
-		SelectUserModal.single = single;
-		SelectUserModal.callback = _callback;
+		_self.single = single;
+		_self.callback = _callback;
 		if(single == true){
 			//  as for single select, hide the check all button in table head
 			_self.$search_table.find('th > div.checker').addClass('hidden');
 		}else{
 			_self.$search_table.find('th > div.checker').removeClass('hidden');
 		}
-		SelectUserModal.$select_modal.modal('show');
+		_self.$select_modal.modal('show');
 	};
 	
 	/*

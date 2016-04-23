@@ -291,10 +291,10 @@ public class WorkgroupFacade {
 			boolean ok = workgroupservice.removeWorkgroupMember(svcctx, wkey, account);
 
 			gresult.setReturnValue(ok);
-			gresult.setMessage("success get workgroup member", true);
+			gresult.setMessage("success remove workgroup member", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup member",e);
-			gresult.setMessage("fail get workgroup member", true);
+			LOGGER.error("Exception when remove workgroup member",e);
+			gresult.setMessage("fail remove workgroup member", true);
 			ContextHelper.stampContext(e);
 		}finally{
 			
@@ -405,10 +405,10 @@ public class WorkgroupFacade {
 		return result;
 	}
 	
-	public static GeneralResult<Boolean> newWorkgroupGroup(AccessPoint accesspoint,
+	public static GeneralResult<InfoId<Long>> newWorkgroupGroup(AccessPoint accesspoint,
 			Principal principal, GroupInfo ginfo){
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		GeneralResult<InfoId<Long>> gresult = new GeneralResult<InfoId<Long>>();
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_GROUP)){
 			
@@ -430,9 +430,9 @@ public class WorkgroupFacade {
 			svcctx.setAuditObject(ginfo.getInfoId());
 			svcctx.addAuditPredicates(ginfo);
 			// query accounts information
-			boolean ok = workgroupservice.addWorkgroupGroup(svcctx, ginfo);
+			workgroupservice.addWorkgroupGroup(svcctx, ginfo);
 			
-			gresult.setReturnValue(ok);
+			gresult.setReturnValue(ginfo.getInfoId());
 			gresult.setMessage("success create workgroup group", true);			
 			
 		} catch (ServiceException e) {

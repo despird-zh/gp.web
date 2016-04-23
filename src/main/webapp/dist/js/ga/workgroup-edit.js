@@ -196,7 +196,6 @@ var PageContext = (function ($, window, undefined){
 		$member_search_btn : $('#tab_3 a[gpid="member-search-btn"]'),
 		$member_save_btn : $('#tab_3 a[gpid="member-save-btn"]'),		
 		$member_new_btn : $('#tab_3 a[gpid="add-new-member"]'),
-		$member_cancel_btn : $('#tab_3 a[gpid="member-cancel-btn"]'),
 		$member_close_btn : $('#tab_3 button[gpid="member-close-btn"]'),
 		
 		$member_account : $('#member-account'),
@@ -278,7 +277,7 @@ var PageContext = (function ($, window, undefined){
 			  placeholder: { id: "", text : "Available user..."}			
 			}).on('select2:selecting', function(e){ 
 				
-				WorkgroupMembers.setMemberNewMode(e.params.args.data);
+				WorkgroupMembers.newMember(e.params.args.data);
 			});
 			// disabled find user select
 			_self.$member_avail_user.attr("disabled", true);
@@ -296,12 +295,9 @@ var PageContext = (function ($, window, undefined){
 			});
 			// bind new button event
 			_self.$member_new_btn.bind('click', function(){				
-				WorkgroupMembers.setMemberNewMode();
+				WorkgroupMembers.newMember();
 			});
-			// bind cancel button event
-			_self.$member_cancel_btn.bind('click', function(){
-				WorkgroupMembers.setMemberEditMode();
-			});
+
 			_self.$member_close_btn.bind('click', function(){
 				$('li[gpid="member-list-tab"] > a').tab('show');
 			});
@@ -386,36 +382,23 @@ var PageContext = (function ($, window, undefined){
         });
 	};
 	
-	WorkgroupMembers.setMemberEditMode = function(e){
+	WorkgroupMembers.editMember = function(el){
 		var _self = this;
 		_self.MemberMode = 'edit';
-		if(e != undefined){
-			var user_account = $(e).attr('data-account');
-			// find the row data
-			var mbr_data = _self.$member_table.dataTable().api().row($(e).parents('tr')).data();			
-			
-			_self.$member_account.val(mbr_data.account);
-			_self.$member_name.val(mbr_data.uname);
-			_self.$member_email.val(mbr_data.email);
-			_self.$member_entity.val(mbr_data.instanceName);
-			_self.$member_role.val(mbr_data.role).trigger("change");
-		}else{
-			_self.$member_account.val("");
-			_self.$member_name.val("");
-			_self.$member_email.val("");
-			_self.$member_entity.val("");
-			_self.$member_role.val("").trigger("change");
-		}
-		_self.$member_avail_user.prop("disabled", true);
-		_self.$member_cancel_btn.addClass('hidden');
+		// find the row data
+		var mbr_data = _self.$member_table.dataTable().api().row($(el).parents('tr')).data();
+		_self.$member_account.val(mbr_data.account);
+		_self.$member_name.val(mbr_data.uname);
+		_self.$member_email.val(mbr_data.email);
+		_self.$member_entity.val(mbr_data.instanceName);			
+		_self.$member_role.val(mbr_data.role).trigger("change");
+		$('#account-finder').addClass('hidden');
 		
-	};
+	}
 	
 	// parameter will the data of item in available users
-	WorkgroupMembers.setMemberNewMode = function(avl_user){
+	WorkgroupMembers.newMember = function(avl_user){
 		var _self = this;
-		_self.MemberMode = 'new';
-		console.log(avl_user);
 		if(avl_user == undefined){
 			_self.$member_account.val("");
 			_self.$member_name.val("");
@@ -430,8 +413,8 @@ var PageContext = (function ($, window, undefined){
 		_self.$member_role.val("").trigger("change");
 		
 		_self.$member_avail_user.prop("disabled", false);
-		_self.$member_cancel_btn.removeClass('hidden');
 
+		$('#account-finder').removeClass('hidden');
 	};
 	
 	WorkgroupMembers.search = function(){
@@ -444,9 +427,7 @@ var PageContext = (function ($, window, undefined){
 			data: { 
 					account : _self.$member_search_user.val(),
 					wgroup_id : WorkgroupBasic.$workgroup_id.val(),
-					enode_id : _self.$member_search_enode.val(),
-					pageNumber : 1,
-					pageSize : 10
+					enode_id : _self.$member_search_enode.val()
 				},
 			success: function(response)
 			{	
@@ -468,15 +449,16 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.appendResult(response, (response.state != 'success'));
 			}
 		});
 	};
 	
-	WorkgroupMembers.removeMember = function(e){
+	WorkgroupMembers.removeMember = function(el){
 		
 		var _self = this;
-		var user_account = $(e).attr('data-account');
+		var user_account = $(el).attr('data-account');
+		var _row = _self.$member_table.dataTable().api().row($(el).parents('tr'));
 		$.ajax({
 			url: '../ga/workgroup-member-remove.do',
 			dataType : "json",
@@ -486,7 +468,10 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				if(response.state == 'success'){
+					_row.remove().draw();
+				}
+				GPContext.appendResult(response, (response.state != 'success'));
 			}
 		});
 	};
@@ -503,8 +488,7 @@ var PageContext = (function ($, window, undefined){
 		$group_description : $('#wgroup-group-descr'),
 		$group_save_btn : $('#tab_1 a[gpid="wgroup-group-save-btn"]'),
 		$group_new_btn : $('#tab_1 a[gpid="wgroup-group-new-btn"]'),
-		
-		$group_cancel_btn : $('#tab_1 a[gpid="wgroup-group-cancel-btn"]'),
+	
 		$group_member_add_btn : $('#tab_1 a[gpid="wgroup-group-member-add-btn"]'),
 
 		$group_mbr_regresh_btn : $('#tab_1 a[gpid="group-member-refresh-btn"]'),
@@ -516,7 +500,7 @@ var PageContext = (function ($, window, undefined){
 			var _self = this;
 			_self.$group_save_btn.bind('click', function(){
 				
-				WorkgroupGroups.newGroup();
+				WorkgroupGroups.saveGroup();
 			});
 			
 			_self.$group_search_btn.bind('click', function(){
@@ -535,11 +519,7 @@ var PageContext = (function ($, window, undefined){
 			});
 			// bind new group button event
 			_self.$group_new_btn.bind('click', function(){
-				WorkgroupGroups.setGroupMode('new');
-			});
-			// bind cancel button event
-			_self.$group_cancel_btn.bind('click', function(){
-				WorkgroupGroups.setGroupMode('edit');
+				WorkgroupGroups.newGroup();
 			});
 			
 			_self.$group_close_btn.bind('click', function(){
@@ -598,8 +578,8 @@ var PageContext = (function ($, window, undefined){
 				 'orderable': false,
 				 'render': function (data, type, full, meta){
 					 return '<div class="btn-group">' +
-					 '<button data-account="'+data+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.EditMember(this);"><i class="fa fa-edit"></i></button>'+
-					 '<button data-account="'+data+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveMember(this);"><i class="fa fa-close"></i></button>'+
+					 '<button data-group-id="' + data + '" class="btn btn-primary btn-xs" onclick="javascript:PageContext.EditGroup(this);"><i class="fa fa-edit"></i></button>'+
+					 '<button data-group-id="' + data + '" class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveGroup(this);"><i class="fa fa-close"></i></button>'+
 					 '</div>';
 				 },
 				 'width' : 50
@@ -661,7 +641,7 @@ var PageContext = (function ($, window, undefined){
 				 'searchable': false,
 				 'orderable': false,
 				 'render': function (data, type, full, meta){
-					 return '<button data-account="'+data+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveMember(this);"><i class="fa fa-close"></i></button>';
+					 return '<button data-account="'+data+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveGroupMember(this);"><i class="fa fa-close"></i></button>';
 				 },
 				 'width' : 25
 				}
@@ -675,28 +655,36 @@ var PageContext = (function ($, window, undefined){
 			]			
         });
 	};
+	
+	WorkgroupGroups.editGroup = function(el){
+
+		var _self = this;
+		var group_data = _self.$group_table.dataTable().api().row($(el).closest('tr')).data();
+		_self.$group_id.val(group_data.groupId); // hidden elements
+		_self.$group_name.val(group_data.group);
+		_self.$group_description.val(group_data.description);		
+		// load group member
+		_self.membersSearch();
+		_self.$group_member_add_btn.removeClass('hidden');
+		_self.$group_mbr_regresh_btn.removeClass('hidden');
+	};
+	
 	/*
 	 * set group data to edit
 	 */
-	WorkgroupGroups.setGroupMode = function(mode, _group_data){
-	
-		var group_data = $.extend( {}, {groupid:'',group:'',description:''}, _group_data );
+	WorkgroupGroups.newGroup = function(){
+
 		var _self = this;
-		_self.GroupMode = mode;
-		_self.$group_id.val(group_data.groupid); // hidden elements
-		_self.$group_name.val(group_data.group);
-		_self.$group_description.val(group_data.description);		
-		if(mode == 'new'){
-			_self.$group_cancel_btn.removeClass('hidden');
-			_self.$group_member_add_btn.addClass('hidden');
-		}
-		else if(mode == 'edit'){
-			_self.$group_cancel_btn.addClass('hidden');
-			_self.$group_member_add_btn.removeClass('hidden');
-		}
+		_self.$group_id.val(''); // hidden elements
+		_self.$group_name.val('');
+		_self.$group_description.val('');
+		// hide the member button
+		_self.$group_member_add_btn.addClass('hidden');
+		_self.$group_mbr_regresh_btn.addClass('hidden');
+		_self.$group_mbr_table.dataTable().api().clear().draw();
 	};
 	
-	WorkgroupGroups.membersSearch = function(pageindex){
+	WorkgroupGroups.membersSearch = function(){
 		
 		var _self = this;
 		
@@ -704,9 +692,7 @@ var PageContext = (function ($, window, undefined){
 			url: "../ga/workgroup-group-member-search.do",
 			dataType : "json",
 			data: { 
-					group_id : _self.$group_id.val(),
-					pageNumber : pageindex,
-					pageSize : 10
+					group_id : _self.$group_id.val()
 				},
 			success: function(response)
 			{	
@@ -716,9 +702,11 @@ var PageContext = (function ($, window, undefined){
 		});
 	};
 	
-	WorkgroupGroups.removeGroupMember = function(account){
+	WorkgroupGroups.removeGroupMember = function(el){
 	
 		var _self = this;
+		var account = $(el).attr('data-account');
+		var _row = _self.$group_mbr_table.dataTable().api().row($(el).closest('tr'));
 		$.ajax({
 			url: "../ga/workgroup-group-member-remove.do",
 			dataType : "json",
@@ -728,12 +716,15 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				if('success' == response.state){
+					_row.remove().draw();
+				}
+				GPContext.appendResult(response, ('success' != response.state));
 			}
 		});
 	};
 	
-	WorkgroupGroups.search = function(pageindex){
+	WorkgroupGroups.search = function(){
 		
 		var _self = this;
 		
@@ -742,9 +733,7 @@ var PageContext = (function ($, window, undefined){
 			dataType : "json",
 			data: { 
 					group : _self.$group_search_name.val(),
-					wgroup_id : WorkgroupBasic.$workgroup_id.val(),
-					pageNumber : pageindex,
-					pageSize : 10
+					wgroup_id : WorkgroupBasic.$workgroup_id.val()
 				},
 			success: function(response)
 			{	
@@ -770,7 +759,7 @@ var PageContext = (function ($, window, undefined){
 		});
 	};
 	
-	WorkgroupGroups.newGroup = function(){
+	WorkgroupGroups.saveGroup = function(){
 		var _self = this;
 		$.ajax({
 			url: '../ga/workgroup-group-add.do',
@@ -788,7 +777,7 @@ var PageContext = (function ($, window, undefined){
 	};
 	
 	WorkgroupGroups.addGroupMember = function(users_data){
-	
+		console.log(users_data);
 		var _self = this;
 		$.ajax({
 			url: '../ga/workgroup-group-member-add.do',
@@ -799,7 +788,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				vGPContext.appendResult(response, true);
+				GPContext.appendResult(response, ('success' != response.state));
 			}
 		});
 	};
@@ -812,7 +801,10 @@ var PageContext = (function ($, window, undefined){
 	
 	return {
 		
-		EditMember : function(e){WorkgroupMembers.setMemberEditMode(e);},
-		RemoveMember : function(e){WorkgroupMembers.removeMember(e);}
+		EditMember : $.proxy( WorkgroupMembers.editMember, WorkgroupMembers ),
+		RemoveMember : $.proxy(WorkgroupMembers.removeMember, WorkgroupMembers),
+		EditGroup : $.proxy(WorkgroupGroups.editGroup, WorkgroupGroups),
+		RemoveGroup : $.proxy(WorkgroupGroups.removeGroup, WorkgroupGroups),
+		RemoveGroupMember : $.proxy(WorkgroupGroups.removeGroupMember, WorkgroupGroups)
 	};
 })(jQuery, window);

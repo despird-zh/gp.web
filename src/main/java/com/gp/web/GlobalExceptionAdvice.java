@@ -50,7 +50,7 @@ public class GlobalExceptionAdvice {
 	public ModelAndView noHandlerFound(HttpServletRequest request, NoHandlerFoundException exception) {
 	    Locale locale = LocaleContextHolder.getLocale();
 	    //String errorMessage = messageSource.getMessage("error.bad.url", null, locale);
-
+	    logger.error("Request: " + request.getRequestURI() + " not found handler or resources ");
 	    ModelAndView mav = getModelAndView(request);
 
 	    mav.addObject("exception", exception);
@@ -71,7 +71,7 @@ public class GlobalExceptionAdvice {
 	public ModelAndView databaseError(HttpServletRequest request,Exception exception) {
 		// Nothing to do. Return value 'databaseError' used as logical view name
 		// of an error page, passed to view-resolver(s) in usual way.
-		logger.error("Request raised " + exception.getClass().getSimpleName());
+		logger.error("Request raised " + exception.getClass().getSimpleName(), exception);
 		ModelAndView mav = getModelAndView(request);
 		
 		mav.addObject("exception", exception);
@@ -103,7 +103,7 @@ public class GlobalExceptionAdvice {
 		if (AnnotationUtils.findAnnotation(exception.getClass(), ResponseStatus.class) != null)
 			throw exception;
 
-		logger.error("Request: " + request.getRequestURI() + " raised " + exception);
+		logger.error("Request: " + request.getRequestURI() + " raised " + exception, exception);
 
 		ModelAndView mav = getModelAndView(request);
 		mav.addObject("exception", exception);

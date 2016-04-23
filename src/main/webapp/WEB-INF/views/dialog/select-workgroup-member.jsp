@@ -88,23 +88,14 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 			
 			var _self = this;
 			_self.$select_modal.modal('hide');
-
 			// bind execute button
-			_self.$select_exec_btn.bind("click", function(){
-				SelectWorkgroupMemberModal.execute();
-			});
+			_self.$select_exec_btn.bind("click", $.proxy( _self.execute , _self));
 			// bind search user button
-			_self.$search_user_btn.bind('click', function(){
-				SelectWorkgroupMemberModal.search();
-			});
+			_self.$search_user_btn.bind('click', $.proxy( _self.search, _self));
 			// bind clear up user search result button
-			_self.$clear_user_btn.bind('click', function(){
-				SelectWorkgroupMemberModal.clear();
-			});
+			_self.$clear_user_btn.bind('click', $.proxy( _self.clear, _self));
 			// bind clear up selected users button
-			_self.$select_clear_btn.bind('click', function(){
-				SelectWorkgroupMemberModal.removeAllUsers();
-			});
+			_self.$select_clear_btn.bind('click', $.proxy( _self.removeAllUsers, _self));
 			
 			_self.initSearchDataTables();
 			_self.initSelectDataTables();
@@ -189,7 +180,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 			
             var checked = $(this).is(":checked");
             $(set).each(function () {
-				var rdata = SelectWorkgroupMemberModal.$search_table.dataTable().api().row($(this).parents('tr')[0]).data();
+				var rdata = SelectWorkgroupMemberModal.$search_table.dataTable().api().row($(this).closest('tr')).data();
                 if (checked) {
                     $(this).prop("checked", true);
                     $(this).parents('tr').addClass("active");
@@ -207,7 +198,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
         _self.$search_table.on('change', 'tbody tr .checkboxes', function () {
             $(this).parents('tr').toggleClass("active");
 			var tobeAdd = $(this).prop('checked');
-			var rdata = SelectWorkgroupMemberModal.$search_table.dataTable().api().row($(this).parents('tr')[0]).data();
+			var rdata = SelectWorkgroupMemberModal.$search_table.dataTable().api().row($(this).closest('tr')).data();
 			// prepare the row id to locate the row dom element
 			rdata.DT_RowId = rdata.uid;			
 			if(tobeAdd){
@@ -278,15 +269,23 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 	 */
 	SelectWorkgroupMemberModal.execute = function(){
 		var _self = this;
+		var data_ary = _self.$select_table.api().data();
 		if(_self.single){
-			_self.callback(_self.SelectedMap['single']);
+			var result = data_ary[0];
+			// clean data
+			if(result.hasOwnProperty('DT_RowId'))
+				delete result.DT_RowId;
+			
+			_self.callback(data_ary[0]);
 		}else{
 			var result = [], k;
-			for (k in _self.SelectedMap) {
-				if (_self.SelectedMap.hasOwnProperty(k)) {
-					result.push(_self.SelectedMap[k]);
+			$.each(data_ary, function(i, curr){
+				//clean data
+				if(curr.hasOwnProperty('DT_RowId')){
+					delete curr.DT_RowId;
 				}
-			}
+				result.push(curr);
+			});
 			_self.callback(result);
 		}
 		
@@ -303,16 +302,14 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 	/*
 	 * search the page
 	 */
-	SelectWorkgroupMemberModal.search = function(pageindex){
+	SelectWorkgroupMemberModal.search = function(){
 		var _self = this;
 		$.ajax({
 			url: "../common/workgroup-member-list.do",
 			dataType : "json",
 			data: { 
 					wgroup_id : _self.Workgroup_id,
-					user_name : _self.$search_user.val(),
-					pageNumber : pageindex,
-					pageSize : 10
+					user_name : _self.$search_user.val()
 				},
 			success: function(response)
 			{	
@@ -328,8 +325,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 	/*
 	 * remove selected user
 	 */
-	SelectWorkgroupMemberModal.removeUser = function(user_id){
-				
+	SelectWorkgroupMemberModal.removeUser = function(user_id){				
 		var _self = this;
 		var dt_row = _self.$select_table.api().row('#' + user_id);
 		dt_row.remove().draw();	
@@ -394,6 +390,12 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 		_self.Workgroup_id = wgroup_id,
 		_self.single = single;
 		_self.callback = _callback;
+		if(single == true){
+			//  as for single select, hide the check all button in table head
+			_self.$search_table.find('th > div.checker').addClass('hidden');
+		}else{
+			_self.$search_table.find('th > div.checker').removeClass('hidden');
+		}
 		_self.$select_modal.modal('show');
 	};
 	

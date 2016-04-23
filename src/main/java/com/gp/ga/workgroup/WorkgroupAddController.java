@@ -258,7 +258,7 @@ public class WorkgroupAddController extends BaseController{
 		ginfo.setDescription(description);
 		ginfo.setGroupName(group);
 		
-		GeneralResult<Boolean> gresult = WorkgroupFacade.newWorkgroupGroup(accesspoint, principal, ginfo);
+		GeneralResult<InfoId<Long>> gresult = WorkgroupFacade.newWorkgroupGroup(accesspoint, principal, ginfo);
 		
 		ActionResult aresult = new ActionResult();
 		if(!gresult.isSuccess()){
@@ -266,7 +266,7 @@ public class WorkgroupAddController extends BaseController{
 			aresult.setMessage(gresult.getMessage());
 			aresult.setDetailmsgs(gresult.getMessages());
 		}else{
-			
+			aresult.setData(gresult.getReturnValue().getId());
 			aresult.setState(ActionResult.SUCCESS);
 			aresult.setMessage(gresult.getMessage());
 		}
