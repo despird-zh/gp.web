@@ -126,7 +126,7 @@ metadata-complete="true" version="3.0">
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	<error-page>
+	<!-- error-page>
 		<error-code>404</error-code>
 		<location>/WEB-INF/views/error/404.jsp</location>
 	</error-page>
@@ -137,5 +137,5 @@ metadata-complete="true" version="3.0">
 	<error-page>
 		<error-code>444</error-code>
 		<location>/WEB-INF/views/error/444.jsp</location>
-	</error-page>
+	</error-page-->
 </web-app>
