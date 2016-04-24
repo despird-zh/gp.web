@@ -1,9 +1,9 @@
-;(function ($, window, undefined){
+;
+var PageContext =(function ($, window, undefined){
 	"use strict";
 	
 	var OrgHierarchy = {
-	
-		operationmode : 'edit', // screen operation mode:new/edit
+
 		$orghier_tree : $('#tab_1 div[gpid=org-hier-tree]'),
 		$node_type : $('#node-type'),
 		$node_parent_id : $('#node-parent-id'),
@@ -15,17 +15,19 @@
 		$node_description : $('#node-description'),
 		$curr_node_name : $('#current-node-name'),
 		
-		$node_new_btn : $('a[gpid="new-node-btn"]'),
-		$add_member_btn : $('a[gpid="add-member-btn"]'),
-		$node_save_btn : $('#tab_1 a[gpid="node-save-btn"]'),
-		$node_cancel_btn : $('#tab_1 a[gpid="node-cancel-btn"]'),
+		$node_type_selector : $('#node-type-selector'),
 		
-		$tab_switcher_btn : $('#page-tabs > ul a[data-toggle="tab"]'),
+		$admin_sel_btn : $('#tab_1 a[gpid="admin-sel-btn"]'),
+		$mgmr_sel_btn : $('#tab_1 a[gpid="mgmr-sel-btn"]'),
 		
+		$node_new_btn : $('#tab_1 a[gpid="orghier-new-btn"]'),
+		$node_save_btn : $('#tab_1 a[gpid="orghier-save-btn"]'),
+
 		initial : function(){
 			var _self = this;
 			_self.$node_type.select2({
 				minimumResultsForSearch: -1, //hide the search box
+				width : '150px'
 			});
 			// create scrollbar for folder hierarchy 
 			_self.$orghier_tree.slimscroll({
@@ -60,62 +62,74 @@
 					var nid = OrgHierarchy.$orghier_tree.find("ul li:first-child").attr('id');
 					OrgHierarchy.$orghier_tree.jstree('select_node', nid);
 			  });
-				
+			// bind the tree select event
 			_self.$orghier_tree.on("select_node.jstree", function(e, treenode) {					
-					OrgHierarchy.setOrgNode(treenode.node.original);
-			});		
-			
-			
-			_self.$node_save_btn.bind('click', function(){
+				OrgHierarchy.editOrgNode(treenode.node.original);
+			});			
+			// bind save operation
+			_self.$node_save_btn.on('click', function(){
 				var nodedata = OrgHierarchy.getOrgNode();
 				OrgHierarchy.saveOrgNode(nodedata);
 			});
-			
-			_self.$node_new_btn.bind('click', function(){
-				OrgHierarchy.operationmode = 'new';
-				OrgHierarchy.$node_name.val('');
-				OrgHierarchy.$node_admin.val('');
-				OrgHierarchy.$node_manager.val('');
-				OrgHierarchy.$node_email.val('');
-				OrgHierarchy.$node_description.val('');
-				OrgHierarchy.$node_type.prop('disabled', false);
-				OrgHierarchy.$node_cancel_btn.attr('disabled', false);
-			});
-			
-			_self.$node_cancel_btn.bind('click', function(){
-				OrgHierarchy.operationmode = 'edit';
-				var node = OrgHierarchy.$orghier_tree.jstree().get_top_selected(true);
-				OrgHierarchy.$node_type.prop('disabled', true);
-				OrgHierarchy.setOrgNode(node[0].original);
-				OrgHierarchy.$node_cancel_btn.attr('disabled', true);
-			});
+			// bind new org node event
+			_self.$node_new_btn.on('click', $.proxy(_self.newOrgNode, _self));
+			// bind admin select event
+			_self.$admin_sel_btn.on('click', function(){	
 
-			_self.$node_cancel_btn.attr('disabled', true);
-			// control the button visibility
-			_self.$tab_switcher_btn.on('shown.bs.tab', function (e) {
+				GPContext.showSelectUser(function(user){
+					OrgHierarchy.$node_admin.val(user.account);
+				}, true);
+			});
+			_self.$mgmr_sel_btn.on('click', function(){	
 
-				OrgHierarchy.$add_member_btn.toggleClass('hide');
-				OrgHierarchy.$node_new_btn.toggleClass('hide');
+				GPContext.showSelectUser(function(user){
+					OrgHierarchy.$node_manager.val(user.account);
+				}, true);
 			});
 		}
 	};
-				
-	OrgHierarchy.setOrgNode = function(nodedata){
+	
+	/*
+	 * set the detail part on new mode
+	 */
+	OrgHierarchy.newOrgNode = function(){
 		var _self = this;
-		if(_self.operationmode == 'edit'){
-			_self.$node_name.val(nodedata.text);
-			_self.$node_admin.val(nodedata.admin);
-			_self.$node_manager.val(nodedata.manager);
-			_self.$node_email.val(nodedata.email);
-			_self.$node_description.val(nodedata.description);
-		}
+		_self.operationmode = 'new';
+		_self.$node_name.val('');
+		_self.$node_admin.val('');
+		_self.$node_manager.val('');
+		_self.$node_email.val('');
+		_self.$node_description.val('');
+		
+		_self.$node_type_selector.removeClass('hidden');
+		OrgMembers.showTab(false);
+	};
+	
+	/*
+	 * set the org hier node data to editor
+	 */
+	OrgHierarchy.editOrgNode = function(nodedata){
+		var _self = this;
+		_self.operationmode = 'edit';
+		_self.$node_name.val(nodedata.text);
+		_self.$node_admin.val(nodedata.admin);
+		_self.$node_manager.val(nodedata.manager);
+		_self.$node_email.val(nodedata.email);
+		_self.$node_description.val(nodedata.description);
+
 		_self.$node_parent_id.val(nodedata.parent);
 		_self.$node_id.val(nodedata.id);
 		OrgMembers.$org_node_id.val(nodedata.id);
 		_self.$curr_node_name.html(nodedata.text);
 		OrgMembers.$org_node_name.val(nodedata.text);
+		
+		_self.$node_type_selector.addClass('hidden');
+		OrgMembers.showTab(true);
 	}; 
 	
+	/*
+	 * fetch the org node data
+	 */
 	OrgHierarchy.getOrgNode = function(){
 		var _self = this;
 		var nodedata = {
@@ -128,6 +142,7 @@
 			description : _self.$node_description.val(),
 			nodetype : _self.$node_type.val()
 		};
+		// for new mode, need clarify the parent id
 		if(_self.operationmode == 'new' && nodedata.nodetype == 'SIBLING'){
 			nodedata.id = '';
 		}else if(_self.operationmode == 'new' && nodedata.nodetype == 'CHILDREN'){			
@@ -152,52 +167,109 @@
 			data: nodedata,
 			success: function(response)
 			{	
-				var currDate = new Date();
-				var msgdata = {
-						info : true,
-						timeText : currDate.toLocaleTimeString(),
-						messageText : response.message,
-						detailMessages : response.detailmsgs
-					};
-					
-				if(response.state != 'success'){
-					msgdata.info = false;
-					msgdata.error = true;
-				}
-				// show message
-				$.GPContext.ErrMessage.append(msgdata, true);
-				  
+				GPContext.appendResult(response, ('success' != response.state));	
 			}
 		});
 	};
-	
+	// initialize the hierarchy tab panel
+	OrgHierarchy.initial();
+		
 	var OrgMembers = {
 	
 		$org_node_refresh_btn : $('#tab_2 a[gpid="orgmember-node-refresh-btn"]'),
 		$org_node_id : $('#orgmember-node-id'),
 		$org_node_name : $('#orgmember-node-name'),
-		$table_body : $('#tab_2 table[gpid="orgmember-list"] > tbody'),
-		$pagination : $('#tab_2 ul[gpid="orgmember-list-pagination"]'),
+		$table : $('#tab_2 table[gpid="orgmember-list"]'),
+
+		$member_tab : $('ul.nav-tabs li[gpid="org-member-tab"]'),
 		
-		$member_list_template : $('#member-list-template'),
 		$add_member_btn : $('a[gpid="add-member-btn"]'),
 		
 		initial : function(){
 			var _self = this;
+			
 			_self.$add_member_btn.bind('click', function(){
-				$.GPContext.showSelectUser(
+				GPContext.showSelectUser(
 					OrgMembers.addMembers, 
 					false
 				);
 			});
-			
-			_self.$org_node_refresh_btn.bind('click', function(){
-				
-				OrgMembers.search(1);
-			});
+			_self.initDataTables();
+			_self.$org_node_refresh_btn.bind('click', $.proxy( _self.search, _self));
 		}
 	};
+	 
+	OrgMembers.initDataTables = function(){
+		var _self = this;
+        // begin first table
+        _self.$table.dataTable({			
+            "language": {
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                },
+                "emptyTable": "No data available in table",
+                "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                "infoEmpty": "No records found",
+                "infoFiltered": "(filtered1 from _MAX_ total records)",
+                "lengthMenu": "Show _MENU_",
+                "search": "Filter:",
+                "zeroRecords": "No matching records found",
+                "paginate": {
+                    "previous":"Prev",
+                    "next": "Next",
+                    "last": "Last",
+                    "first": "First"
+                }
+            },
+            "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
+			"autoWidth" : false,
+            "lengthMenu": [
+                [5, 10, 20, -1],
+                [5, 10, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "pageLength": 5,            
+            "pagingType": "bootstrap_full_number",
+            "order": [
+                [0, "asc"]
+            ], // set first column as a default sort by asc
 	
+            "columnDefs": [
+				{"targets":5,
+				 'searchable': false,
+				 'orderable': false,
+				 'render': function (data, type, full, meta){
+					 return '<div class="btn-group">' +
+					 '<button class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveOrgMember(this)" data-account="' + full.account + '" type="button"><i class="fa fa-close"></i></button>' +
+					 '</div>';
+				 }
+				}
+            ],
+			"columns" : [
+				{ data : 'account'},
+				{ data : 'name'},
+				{ data : 'email'},
+				{ data : 'type'},
+				{ data : 'state'},
+				{ data : 'userId'}
+			]
+        });
+	};
+	
+	// control the member tab panel show or hide
+	OrgMembers.showTab = function(show_flag){
+		var _self = this;
+		if(show_flag){
+			_self.$member_tab.removeClass('hidden');
+		}else{
+			_self.$member_tab.addClass('hidden');
+		}
+	}
+	
+	/*
+	 * search members of current node.
+	 */
 	OrgMembers.search = function(pageindex){
 		
 		var _self = this;
@@ -206,39 +278,16 @@
 			url: "../ga/orghier-member-search.do",
 			dataType : "json",
 			data: { 
-					org_id : _self.$org_node_id.val(),
-					pageNumber : pageindex,
-					pageSize : 5
+					org_id : _self.$org_node_id.val()
 				},
 			success: function(response)
 			{	
-				// rendering the pagination info
-				$.GPContext.pagination(OrgMembers.$pagination, response.pagination, function(pageindex){
-					OrgMembers.search(pageindex);
-				});							  
-				// rendering the table info
-				OrgMembers.renderTable(response);				  
+				_self.$table.dataTable().api().clear();
+				_self.$table.dataTable().api().rows.add(response.rows).draw();
 			}
 		});
 	};
 	
-	/*
-	 * Render the table tr row information:{"rows" : [{},{}...]}
-	 */
-	OrgMembers.renderTable = function(rows_data){
-		var _self = this;
-		var template = _self.$member_list_template.html();
-		Mustache.parse(template);
-		var rendered = Mustache.render(template, rows_data);
-		// console.log(rendered);
-		_self.$table_body.html(rendered);
-		// bind remove button
-		_self.$table_body.find("button[gpid=member-remove-btn]").bind("click", function(){
-			var $self = $(this);
-			var account = $self.attr('user-account');
-			OrgMembers.removeMembers(account);
-		});
-	};
 	
 	OrgMembers.addMembers = function(users_data){
 		var _self = OrgMembers;
@@ -251,26 +300,14 @@
 				},
 			success: function(response)
 			{	
-				var currDate = new Date();
-				var msgdata = {
-						info : true,
-						timeText : currDate.toLocaleTimeString(),
-						messageText : response.message,
-						detailMessages : response.detailmsgs
-					};
-					
-				if(response.state != 'success'){
-					msgdata.info = false;
-					msgdata.error = true;
-				}
-				// show message
-				$.GPContext.ErrMessage.append(msgdata, true);
+				GPContext.appendResult(response, false);
 			}
 		});
 	};
 	
-	OrgMembers.removeMembers = function(user_account){
-		var _self = OrgMembers;
+	OrgMembers.removeOrgMember = function(el){
+		var _self = this;
+		var user_account = $(el).attr('data-account');
 		$.ajax({
 			url: '../ga/orghier-member-remove.do',
 			dataType : "json",
@@ -280,23 +317,14 @@
 				},
 			success: function(response)
 			{	
-				var currDate = new Date();
-				var msgdata = {
-						info : true,
-						timeText : currDate.toLocaleTimeString(),
-						messageText : response.message,
-						detailMessages : response.detailmsgs
-					};
-					
-				if(response.state != 'success'){
-					msgdata.info = false;
-					msgdata.error = true;
-				}
-				// show message
-				$.GPContext.ErrMessage.append(msgdata, true);
+				GPContext.appendResult(response, false);
 			}
 		});
 	};
-	OrgHierarchy.initial();
+
 	OrgMembers.initial();
+	
+	return {
+		RemoveOrgMember : $.proxy(OrgMembers.removeMember , OrgMembers)
+	};
 })(jQuery, window);

@@ -119,40 +119,6 @@
         <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
       </footer>
     </div><!-- ./wrapper -->
-	<script id="wgroup-local-list-template" type="x-tmpl-mustache">
-		{{#rows}}
-			<tr>
-			  <td>{{workgroupName}}</td>
-			  <td>{{state}}</td>
-			  <td>{{admin}}</td>
-			  <td>{{description}}</td>
-			  <td>{{createDate}}</td>
-			  <td>
-				<div class="btn-group">
-				  <button class="btn btn-default btn-xs" type="button"><i class="fa fa-edit"></i></button>
-				  <button class="btn btn-default btn-xs" type="button"><i class="fa fa-times"></i></button>
-				</div>
-			  </td>
-			</tr>
-		{{/rows}}
-	</script><!-- /.template:wgroup-local-list-template -->
-	<script id="wgroup-mirror-list-template" type="x-tmpl-mustache">
-		{{#rows}}
-			<tr>
-			  <td>{{entityCode}}/{{nodeCode}}</td>
-			  <td>{{instanceName}}</td>
-			  <td>{{workgroupName}}</td>
-			  <td>{{state}}</td>
-			  <td>{{description}}</td>
-			  <td>
-				<div class="btn-group">
-				  <button class="btn btn-default btn-xs" type="button"><i class="fa fa-edit"></i></button>
-				  <button class="btn btn-default btn-xs" type="button"><i class="fa fa-times"></i></button>
-				</div>
-			  </td>
-			</tr>
-		{{/rows}}
-	</script><!-- /.template:wgroup-mirror-list-template -->
     <!-- jQuery 2.1.4 -->
     <script src="${path_plugins}/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->

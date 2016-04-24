@@ -400,7 +400,7 @@
 				</div><!-- /.box-footer -->
 				</div><!-- /.tab-pane -->
                 </div><!-- /.tab-content -->
-              </div><!-- nav-tabs-custom -->
+            </div><!-- nav-tabs-custom -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
       <footer class="main-footer">

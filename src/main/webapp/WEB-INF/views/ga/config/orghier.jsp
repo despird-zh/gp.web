@@ -49,15 +49,17 @@
               <div id="page-tabs" class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                   <li class="active"><a data-toggle="tab" href="#tab_1">组织架构</a></li>
-                  <li ><a data-toggle="tab" href="#tab_2">组织成员</a></li>
-				  <li class="pull-right"><a gpid="new-node-btn" class="text-primary" role="button" href="javascript:void(0)"><i class="fa fa-fw fa-plus"></i>新建组织</a></li>
-				  <li class="pull-right"><a gpid="add-member-btn" class="text-primary hide" role="button" href="javascript:void(0)"><i class="fa fa-fw fa-plus"></i>添加成员</a></li>				  
+                  <li gpid="org-member-tab"><a data-toggle="tab" href="#tab_2">组织成员</a></li>	  
                 </ul>
                 <div class="tab-content">
 					<div id="tab_1" class="tab-pane active">
 					<div class="row no-margin">
 						<div class="col-md-6">
-							<div class="col-md-12">
+						  <div class="col-md-12 no-padding">
+							<label class="m-b-none  p-t-xxs"> Node Hierarchy </label>
+							<hr class="m-t-sm m-b-sm">
+						  </div>
+							<div class="col-md-12 no-padding">
 								<div class="box-body p-xxs box-border">
 									<div gpid="org-hier-tree" style="">
 									</div>  
@@ -65,16 +67,25 @@
 							</div>
 						</div><!-- /.col-md-6 -->
 						<div class="col-md-6">
-						  <div class="col-md-12">
+						  <div class="col-md-12 no-padding">
 							<label class="m-b-none  p-t-xxs"> Node Setting </label>
+							<a gpid="orghier-new-btn" class="btn btn-warning btn-xs"
+								data-placement="top" 
+								data-toggle="tooltip" 
+								title="Create new Hierarchy node"><i class="fa fa-fw fa-plus"></i> </a>
+							<a gpid="orghier-save-btn" class="btn btn-primary btn-xs"
+								data-placement="top" 
+								data-toggle="tooltip" 
+								title="save Hierarchy node"><i class="fa fa-fw fa-save"></i> </a>
 							<hr class="m-t-sm m-b-sm">
 						  </div>
+						  <div class="col-md-12 no-padding">
 							<form class="form-horizontal">
 							  <div class="box-body p-none">
-								<div class="form-group">
+								<div id="node-type-selector" class="form-group hidden">
 								  <label class="col-sm-3 control-label" for="node-type">Node Binding</label>
 								  <div class="col-sm-3">
-										<select class="form-control select2" id="node-type" disabled>
+										<select class="form-control select2" id="node-type">
 											<option value="SIBLING">Sibling Node</option>
 											<option value="CHILDREN">Child Node</option>
 										</select>		
@@ -100,7 +111,7 @@
 									  <div class="input-group">
 										<input type="text" class="form-control" placeholder="admin" value="admin" id="node-admin" disabled>
 										<span class="input-group-btn">
-										  <a class="btn btn-info btn-sm" gpid="orghier-sel-btn"><i class="fa fa-search"></i></a>
+										  <a class="btn btn-info btn-sm" gpid="admin-sel-btn"><i class="fa fa-search"></i></a>
 										</span>
 									  </div>
 								  </div>
@@ -111,7 +122,7 @@
 									  <div class="input-group">
 										<input type="text" class="form-control" placeholder="manager" value="manager" id="node-manager" disabled>
 										<span class="input-group-btn">
-										  <a class="btn btn-info btn-sm" gpid="orghier-sel-btn"><i class="fa fa-search"></i></a>
+										  <a class="btn btn-info btn-sm" gpid="mgmr-sel-btn"><i class="fa fa-search"></i></a>
 										</span>
 									  </div>
 								  </div>
@@ -129,45 +140,45 @@
 								  </div>
 								</div>
 							  </div><!-- /.box-body -->
-							  <div class="box-footer">
-								<a gpid="node-cancel-btn" class="btn btn-default">Cancel</a>
-								<a gpid="node-save-btn" class="btn btn-info pull-right" >Save</a>
-							  </div><!-- /.box-footer -->
 							</form>
+							</div><!-- /.col-md-12 -->
 						</div><!-- /.col-md-6 -->
 					</div><!-- /.row -->
 					</div><!-- /.tab-pane -->
                   <div id="tab_2" class="tab-pane">
 					<div class="row no-margin">
 						<div class="col-md-8">		
-							<form class="form-inline" style="margin-bottom: 10px;">
-								<label class="m-r-xs">Org Name </label> 
-								<input type="text" class="form-control hidden" id="orgmember-node-id">
-								<input type="text" class="form-control" placeholder="org name" id="orgmember-node-name" disabled>
-								<a gpid="orgmember-node-refresh-btn" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></a>
-							</form>
-							<hr class="m-t-sm m-b-sm">		
-							<div class="box-body no-padding">
-							  <table gpid="orgmember-list" class="table table-bordered table-condensed">
-								<thead>
-								<tr>
-								  <th >Account</th>
-								  <th >Name</th>								  
-								  <th >Email</th>					 								  
-								  <th>Type</th>
-								  <th >State</th>
-								  <th >Act</th>
-								</tr>
-								</thead>
-								<tbody>								
-							  </tbody>
-							  </table>
+							<div class="col-md-12 no-padding">
+								<form class="form-inline" style="margin-bottom: 10px;">
+									<label class="m-r-xs">Org Name </label> 
+									<input type="text" class="form-control hidden" id="orgmember-node-id">
+									<input type="text" class="form-control" placeholder="org name" id="orgmember-node-name" disabled>
+									<a gpid="orgmember-node-refresh-btn" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></a>
+									<a gpid="orgmember-add-btn" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+								</form>
+								<hr class="m-t-sm m-b-sm">	
+							</div>
+							<div class="col-md-12 no-padding">
+								<table gpid="orgmember-list" class="table table-bordered table-condensed">
+									<thead>
+										<tr>
+										  <th >Account</th>
+										  <th >Name</th>								  
+										  <th >Email</th>					 								  
+										  <th>Type</th>
+										  <th >State</th>
+										  <th >Act</th>
+										</tr>
+									</thead>
+									<tbody>								
+									</tbody>
+								</table>
 							</div>
 						</div><!-- /.col-md-8 -->
 					</div><!-- /.row -->
                   </div><!-- /.tab-pane -->
                 </div><!-- /.tab-content -->
-              </div><!-- nav-tabs-custom -->
+            </div><!-- nav-tabs-custom -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
       <footer class="main-footer">

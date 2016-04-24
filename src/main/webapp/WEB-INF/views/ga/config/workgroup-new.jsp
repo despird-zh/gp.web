@@ -221,20 +221,6 @@
         <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
       </footer>
     </div><!-- ./wrapper -->
-	<script id="group-member-list-template" type="x-tmpl-mustache">
-		{{#rows}}
-			<tr>
-			  <td>{{uname}}</td>
-			  <td>{{email}}</td>
-			  <td><span class="badge bg-blue">{{type}}</span></td>
-			  <td>
-				<div class="btn-group">
-				  <button type="button" gp-data-account="{{account}}" gpid="member-remove-btn" class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-				</div>
-			  </td>
-			</tr>
-		{{/rows}}
-	</script><!-- /.template:group-member-list-template -->
     <!-- jQuery 2.1.4 -->
     <script src="${path_plugins}/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
