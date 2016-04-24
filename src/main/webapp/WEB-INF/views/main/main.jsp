@@ -9,27 +9,42 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
-	
+	<style type="text/css">
+	.dashboard-title{
+	  font-size: 18px; 
+	  margin-top: 10px; 
+	  margin-bottom: 0px; 
+	  margin-left: 10px;
+	  line-height:20px;
+	}
+	.dashboard-nav{
+		position: absolute; 
+		right: 15px; 
+		top: 0px; 
+		margin-bottom: 0px; 
+		border-bottom-width: 1px;
+		border-color: #eee ; 
+		margin-top: 6px;
+	}
+	</style>
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
     <div class="wrapper">
-
       <header class="main-header">
 		<%@include file="../common/header.jsp" %>
       </header>
       <!-- Full Width Column -->
       <div class="content-wrapper">
         <div class="container bg-white">
-
           <section class="content-header">
 			<div class="row ">
 				<div class="col-sm-12">	
-					<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;line-height:20px;">
+					<h1 class="dashboard-title">
 					  Groupress
 					  <small>Documents Cooperation Work System.</small>
 					</h1>
-					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
+					<ul class="nav nav-tabs navibar-page pull-right dashboard-nav" style="">
 						<li class=""><a data-toggle="tooltip" title="展现全部工作组并查询" href="../workgroup/all-grid.do" aria-expanded="false" ><i class="fa fa-lg fa-globe"></i></a></li>
 						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do" aria-expanded="false" ><i class="fa fa-lg fa-home"></i></a></li>
 					</ul>
@@ -37,7 +52,6 @@
 				</div>
 			 </div>
           </section>
-
           <!-- Main content -->
           <section class="content">
 				<div class="row  border-bottom bg-white dashboard-header" style="padding-bottom:10px;">

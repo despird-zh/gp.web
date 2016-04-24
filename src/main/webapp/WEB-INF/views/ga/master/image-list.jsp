@@ -108,7 +108,7 @@
 									<div class="col-md-4">
 										<div class="col-md-12 no-padding">											
 											<label class="p-t-xxs  m-r-sm"> Image Detail </label>											
-											<a gpid="image-save-btn" role="button" 
+											<a gpid="image-save-btn" class="btn btn-primary btn-xs" 
 												data-placement="top" 
 												data-toggle="tooltip" 
 												title="Save the group information"><i class="fa fa-fw fa-save"></i></a>
