@@ -270,7 +270,7 @@ var PageContext =(function ($, window, undefined){
 	/*
 	 * search members of current node.
 	 */
-	OrgMembers.search = function(pageindex){
+	OrgMembers.search = function(){
 		
 		var _self = this;
 		

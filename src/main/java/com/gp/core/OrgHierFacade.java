@@ -18,8 +18,6 @@ import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.UserInfo;
-import com.gp.pagination.PageQuery;
-import com.gp.pagination.PageWrapper;
 import com.gp.svc.OrgHierService;
 import com.gp.validation.ValidationMessage;
 import com.gp.validation.ValidationUtils;
@@ -267,20 +265,19 @@ public class OrgHierFacade {
 		
 	}
 	
-	public static GeneralResult<PageWrapper<UserInfo>> findOrgHierMembers(AccessPoint accesspoint,
+	public static GeneralResult<List<UserInfo>> findOrgHierMembers(AccessPoint accesspoint,
 			Principal principal, 
-			InfoId<Long> orgid,
-			PageQuery pagequery){
+			InfoId<Long> orgid){
 		
-		GeneralResult<PageWrapper<UserInfo>> result = new GeneralResult<PageWrapper<UserInfo>>();	
+		GeneralResult<List<UserInfo>> result = new GeneralResult<List<UserInfo>>();	
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
 			svcctx.setAuditObject(orgid);
 			// query accounts information
-			PageWrapper<UserInfo> pwrapper = orghierservice.getOrgHierMembers(svcctx, orgid, pagequery);
+			List<UserInfo> uinfos = orghierservice.getOrgHierMembers(svcctx, orgid);
 			
-			result.setReturnValue(pwrapper);
+			result.setReturnValue(uinfos);
 			result.setMessage("success get org members", true);			
 			
 		} catch (ServiceException e) {

@@ -21,8 +21,6 @@ import com.gp.core.OrgHierFacade;
 import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.UserInfo;
-import com.gp.pagination.PageQuery;
-import com.gp.pagination.PageWrapper;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
@@ -225,18 +223,16 @@ public class OrgHierController extends BaseController{
 			Long nid = Long.valueOf(orgIdStr);
 			nodeId = IdKey.ORG_HIER.getInfoId( nid);
 		}
-		PageQuery pquery = new PageQuery(5,1);
-		this.readRequestData(request, pquery);
-		
+
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = getJsonModelView();
-		GeneralResult<PageWrapper<UserInfo>> gresult = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId, pquery);
+		GeneralResult<List<UserInfo>> gresult = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
 		List<Account> list = new ArrayList<Account>();
 		if(gresult.isSuccess()){
 			
-			List<UserInfo> ulist = gresult.getReturnValue().getRows();
+			List<UserInfo> ulist = gresult.getReturnValue();
 			for(UserInfo info: ulist){
 				
 				Account ui = new Account();
@@ -257,7 +253,6 @@ public class OrgHierController extends BaseController{
 			
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
 			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
-			mav.addObject(MODEL_KEY_PAGINATION, gresult.getReturnValue().getPagination());
 			mav.addObject(MODEL_KEY_ROWS, list);
 		}else{
 			
