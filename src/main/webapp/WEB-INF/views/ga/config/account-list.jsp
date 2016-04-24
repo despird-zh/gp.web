@@ -26,7 +26,7 @@
 				<section class="sidebar">
 				  <jsp:include page="../common/sidebar.jsp" flush="true">     
 						 <jsp:param name="curr_module" value="security"/> 
-						 <jsp:param name="curr_page" value="account"/> 
+						 <jsp:param name="curr_page" value="list"/> 
 				  </jsp:include> 
 				</section>
 				<!-- /.sidebar -->
@@ -51,19 +51,7 @@
 							</li>
 							<li <c:if test="${viewtab == 'edit'}">class="active"</c:if>>
 								<a gpid="edit-tab" data-toggle="tab" href="#tab_2">用户信息</a>
-							</li> 
-							<li class="hidden <c:if test="${viewtab == 'new'}">active</c:if>">
-								<a gpid="new-tab" data-toggle="tab" href="#tab_4">新建用户</a>
-							</li>   							
-							<li class="hidden <c:if test="${viewtab == 'ext'}">active</c:if>">
-								<a gpid="ext-tab" data-toggle="tab" href="#tab_3">外部用户</a>
-							</li>   
-							<li class="pull-right">
-								<a gpid="new-account-btn" class="text-primary" role="button" href="javascript:void(0)"><i class="fa fa-fw fa-plus"></i>新建用户</a>
-							</li>
-							<li class="pull-right">
-								<a gpid="new-extern-btn" class="text-primary" role="button" href="javascript:void(0)"><i class="fa fa-fw fa-plus"></i>添加外部用户</a>
-							</li>						
+							</li> 					
 						</ul>
 						<div class="tab-content">
 							<div id="tab_1" class="tab-pane <c:if test="${viewtab == 'list'}">active</c:if> ">					  
@@ -258,220 +246,7 @@
 								<div class="box-footer">
 									<a gpid="edit-save-btn" class="btn btn-info pull-right">Update</a>
 								</div><!-- /.box-footer -->
-							</div><!-- /.tab-pane -->
-							<div id="tab_3" class="tab-pane <c:if test="${viewtab == 'ext'}">active</c:if> ">
-								<div class="row m-l-none m-r-none">
-									<div class="col-md-6">
-										<div class="col-md-12  no-padding">
-											<form class="form-inline">
-												<label>Find : </label> <input gpid="ext-search-cond" type="text" placeholder="account/mail/mobile" class="form-control input-sm"> &nbsp;
-												<a gpid="ext-search-btn" class="btn btn-default btn-sm"><i class="fa fa-search"></i></a>
-												<a gpid="ext-clear-btn" class="btn btn-default btn-sm"><i class="fa fa-close"></i></a>
-											</form>	
-											<hr class="m-t-sm m-b-sm">
-										</div>	
-										<div class="col-md-12 no-padding">
-											<table gpid="ext-list-table" class="table table-bordered table-condensed table-hover">
-												<thead>
-													<tr>
-														<th>Account</th>
-														<th>Name</th>
-														<th>Mobile</th>
-														<th>Email</th>
-														<th>Act</th>
-													</tr>
-												</thead>
-												<tbody>
-												</tbody>
-											</table>
-										</div><!-- /.box-body -->
-									</div>
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> Entity Information </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">									 
-												<div class="form-group">
-												  <label class="col-sm-3 control-label">Entity / Node</label>
-												  <div class="col-sm-9">
-													<p class="form-control-static"><span gpid="ext-entity-p" class="label label-success">EN0001</span> - <span gpid="ext-node-p" class="label label-warning">ND0022</span></p>
-													<p gpid="ext-entity-name-p" class="form-control-static">Hard disk store setting</p>
-												  </div>
-												</div>
-												<div class="form-group">
-												  <label class="col-sm-3 control-label" >Account</label>
-												  <div class="col-sm-9">
-													<p gpid="ext-account-p" class="form-control-static">user1</p>
-													<input type="hidden" id="ext-global-account" >
-												  </div>
-												</div>
-												<div class="form-group">
-												  <label class="col-sm-3 control-label" for="ext-name">Name</label>
-												  <div class="col-sm-6">
-													<input type="text" placeholder="Account name" id="ext-name" class="form-control">
-												  </div>
-												</div>
-												<div class="form-group">
-												  <label class="col-sm-3 control-label" >Mobile</label>
-												  <div class="col-sm-9">
-													<p gpid="ext-mobile-p" class="form-control-static">1827374646</p>
-												  </div>
-												</div>
-												<div class="form-group">
-												  <label class="col-sm-3 control-label" >Email</label>
-												  <div class="col-sm-9">
-													<p gpid="ext-email-p" class="form-control-static">rtyyy@176.com</p>
-												  </div>
-												</div>									
-											</form>
-										</div>
-									</div>
-								</div><!-- /.row -->
-							  <div class="box-footer">
-								<button gpid="ext-close-btn" class="btn btn-default" type="button">Close</button>
-								<button gpid="ext-save-btn" class="btn btn-warning pull-right" type="button">Create</button>
-							  </div><!-- /.box-footer -->
-							</div>
-							<div id="tab_4" class="tab-pane <c:if test="${viewtab == 'new'}">active</c:if> ">
-								<div class="row m-l-none m-r-none">
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> Basic Information </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-account">account</label>
-													<div class="col-sm-4">
-													<input type="text" placeholder="account" value="dev1" id="new-account" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-name">name</label>
-													<div class="col-sm-4">
-													<input type="text" placeholder="name" value="dev1" id="new-name" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-type">type</label>
-													<div class="col-sm-4">
-														<select class="form-control select2" id="new-type">
-														<option value="LDAP"> LDAP</option>
-														<option value="INLINE">IN-LINE</option>
-														<option value="EXTERN">EXTERN</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-password">password</label>
-													<div class="col-sm-4">
-													<input type="password" placeholder="set password" value="1" id="new-password" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-password-confirm">confirm</label>
-													<div class="col-sm-4">
-													<input type="password" placeholder="confirm password" value="1" id="new-password-confirm" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-email">email</label>
-													<div class="col-sm-4">
-													<input type="text" placeholder="email" id="new-email" value="dd@123.com" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-mobile">mobile</label>
-													<div class="col-sm-4">
-													<input type="text" placeholder="mobile" id="new-mobile" value="13910076754" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-phone">phone</label>
-													<div class="col-sm-4">
-													<input type="text" placeholder="phone" id="new-phone" value="78653542" class="form-control">
-													</div>
-												</div>
-											</form>
-										</div>
-									</div><!-- /.col-md-6 -->
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> User Store Setting </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-storage-sel">Storage</label>
-													<div class="col-sm-4">
-														<select class="form-control select2" id="new-storage-sel" style="width : 150px;">
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-pub-cap">public cabinet</label>
-													<div class="col-sm-4">
-														<div class="input-group">
-															<input type="text" id="new-pub-cap" value="${item.pubcapacity}" class="form-control">
-															<span class="input-group-addon">G</span>
-														</div>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-pri-cap">private cabinet</label>
-													<div class="col-sm-4">
-														<div class="input-group">
-															<input type="text" id="new-pri-cap" value="${item.pricapacity}" class="form-control">
-															<span class="input-group-addon">G</span>
-														</div>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label">International</label>
-													<div class="col-sm-7 ">								
-														<p gpid="new-store-setting" class = "form-control-static">International support Setting</p>
-													</div>
-												</div>
-												<hr class="m-t-sm m-b-sm">
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-language">language</label>
-													<div class="col-sm-4">
-														<select class="form-control select2" id="new-language">
-															<option value="en_US">English</option>
-															<option value="zh_CN">Chinese</option>
-															<option value="fr_FR">France</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-timezone">time zone</label>
-													<div class="col-sm-4">
-														<select class="form-control select2" id="new-timezone">
-															<option value="GMT+08:00">GMT+08:00</option>
-															<option value="GMT+09:00">GMT+09:00</option>
-															<option value="GMT+10:00">GMT+10:00</option>
-														</select>
-													</div>
-												</div>
-											</form><!-- /.form-horizontal -->
-										</div>
-									</div><!-- /.col-md-6 -->
-								</div><!-- /.row -->
-								<div class="box-footer">
-									<button type="button" gpid="new-close-btn" class="btn btn-default">Close</button>
-									<button type="button" gpid="new-save-btn" class="btn btn-warning pull-right">Create</button>
-								</div><!-- /.box-footer -->
-							</div><!-- /.tab-pane -->
+							</div><!-- /.tab-pane -->							
 						</div><!-- /.tab-content -->						
 					</div><!-- nav-tabs-custom -->
 				</section><!-- /.content -->
@@ -503,6 +278,6 @@
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
 	<script src="${path_script}/ga/err-message.js"></script>
-	<script src="${path_script}/ga/account.js"></script>
+	<script src="${path_script}/ga/account-list.js"></script>
   </body>
 </html>

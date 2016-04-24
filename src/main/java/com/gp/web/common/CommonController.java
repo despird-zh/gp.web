@@ -186,8 +186,8 @@ public class CommonController extends BaseController{
 			for(UserExInfo info: ulist){
 				
 				Account ui = new Account();
-				ui.setSid(String.valueOf(info.getSourceId()));
-				ui.setUid(String.valueOf(info.getInfoId().getId()));
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());
 				ui.setMobile(info.getMobile());
@@ -297,8 +297,8 @@ public class CommonController extends BaseController{
 			for(UserExInfo info: ulist){
 				
 				Account ui = new Account();
-				ui.setSid(String.valueOf(info.getSourceId()));
-				ui.setUid(String.valueOf(info.getInfoId().getId()));
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());
 				ui.setMobile(info.getMobile());
@@ -312,7 +312,7 @@ public class CommonController extends BaseController{
 			totalcnt = gresult.getReturnValue().getPagination().getTotalRows();
 			if(allsupport && pq.getPageNumber() == 1){
 				Account ui = new Account();
-				ui.setUid("-1");
+				ui.setUserId(-1l);
 				ui.setName("All");
 				ui.setAccount("_all");
 				list.add(0,ui);
@@ -323,7 +323,7 @@ public class CommonController extends BaseController{
 			totalcnt = 0;
 			if(allsupport && pq.getPageNumber() == 1){
 				Account ui = new Account();
-				ui.setUid("-1");
+				ui.setUserId(-1l);
 				ui.setName("All");
 				ui.setAccount("_all");
 				list.add(0,ui);
@@ -363,8 +363,8 @@ public class CommonController extends BaseController{
 			for(WorkgroupUserExInfo info: ulist){
 				
 				Account ui = new Account();
-				ui.setSid(String.valueOf(info.getInstanceId()));
-				ui.setUid(String.valueOf(info.getUserId().getId()));
+				ui.setSourceId(info.getInstanceId());
+				ui.setUserId(info.getUserId().getId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());
 				ui.setType(info.getUserType());

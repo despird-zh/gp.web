@@ -51,12 +51,6 @@
 							<li <c:if test="${viewtab == 'modify'}">class="active"</c:if>>	
 								<a gpid="edit-tab" data-toggle="tab" href="#tab_2">存储信息</a>
 							</li>
-							<li <c:if test="${viewtab == 'new'}">class="active"</c:if>>	
-								<a gpid="new-tab" data-toggle="tab" href="#tab_3">新建存储</a>
-							</li>
-							<li class="pull-right">
-								<a gpid="new-storage-btn" class="text-primary" role="button" href="javascript:void(0)"><i class="fa fa-fw fa-plus"></i>新建存储</a>
-							</li>
 						</ul>
 						<div class="tab-content no-radius">
 							<div id="tab_1" class="tab-pane <c:if test="${viewtab == 'list'}">active</c:if> ">
@@ -201,101 +195,7 @@
 								</div>
 								<!-- /.box-footer -->
 							</div>
-							<!-- /.tab-pane -->
-							<div id="tab_3" class="tab-pane <c:if test=" ${viewtab=='new' } ">active</c:if> ">
-								<div class="row m-l-none m-r-none">
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> Basic Information </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-storage-name">Storage Name</label>
-													<div class="col-sm-7">
-														<input type="text" placeholder="storage name" id="new-storage-name" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-storage-type">Storage Type</label>
-													<div class="col-sm-5">
-														<select class="form-control select2" id="new-storage-type">
-															<option value="DISK">Disk Store</option>
-															<option value="HDFS">HDFS Store</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-capacity">Capacity</label>
-													<div class="col-sm-4">
-														<div class="input-group">
-															<input type="text" placeholder="Capacity(mega bytes)" id="new-capacity" class="form-control">	<span class="input-group-addon">M</span>
-
-														</div>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-state">State</label>
-													<div class="col-sm-5">
-														<select class="form-control select2" id="new-state">
-															<option value="OPEN">Open Store</option>
-															<option value="CLOSE">Close Store</option>
-															<option value="FULL">Full Store</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-description">Description</label>
-													<div class="col-sm-8">
-														<textarea class="form-control" id="new-description" rows="2" placeholder="Enter ..."></textarea>
-													</div>
-												</div>
-											</form>
-										</div>
-									</div>
-									<!-- /.col-md-6 -->
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> Hard disk store setting </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">																				
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="new-storepath">Store Path</label>
-													<div class="col-sm-7">
-														<input type="text" placeholder="path" id="new-storepath" class="form-control">
-													</div>
-												</div>
-												<div gpid="hdfs-marker" class="form-group hidden">
-													<label class="col-sm-3 control-label" for="new-hdfs-host">HDFS Host</label>
-													<div class="col-sm-4">
-														<input type="text" placeholder="host" id="new-hdfs-host" class="form-control">
-													</div>
-												</div>
-												<div gpid="hdfs-marker" class="form-group hidden">
-													<label class="col-sm-3 control-label" for="new-hdfs-port">HDFS port</label>
-													<div class="col-sm-2">
-														<input type="text" placeholder="port" id="new-hdfs-port" class="form-control">
-													</div>
-												</div>										
-											</form><!-- /.form-horizontal -->
-										</div>
-									</div><!-- /.col-md-6 -->
-								</div>
-								<!-- /.row -->
-								<div class="box-footer">
-									<button type="button" gpid="new-save-btn" class="btn btn-warning pull-right">Create</button>
-									<button type="button" gpid="new-close-btn" class="btn btn-default">Close</button>
-								</div>
-								<!-- /.box-footer -->
-							</div>
-							<!-- /.tab-pane -->
+							<!-- /.tab-pane -->							
 						</div>
 						<!-- /.tab-content -->
 					</div>

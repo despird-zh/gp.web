@@ -167,7 +167,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 				$('#select-wgroup-member-modal table[gpid="search-user-list"] input[type="checkbox"]').uniform();
 			},
 			"columns" : [
-				{ data : 'uid'},
+				{ data : 'userId'},
 				{ data : 'name'},
 				{ data : 'email'},
 				{ data : 'type'}
@@ -200,13 +200,13 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 			var tobeAdd = $(this).prop('checked');
 			var rdata = SelectWorkgroupMemberModal.$search_table.dataTable().api().row($(this).closest('tr')).data();
 			// prepare the row id to locate the row dom element
-			rdata.DT_RowId = rdata.uid;			
+			rdata.DT_RowId = rdata.userId;			
 			if(tobeAdd){
 
 				SelectWorkgroupMemberModal.addUser(rdata);
 			}else{
 				
-				SelectWorkgroupMemberModal.removeUser(rdata.uid);
+				SelectWorkgroupMemberModal.removeUser(rdata.userId);
 			}
         });
 	};
@@ -258,7 +258,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 
 			"columns" : [
 				{ data : 'name'},
-				{ data : 'uid'}
+				{ data : 'userId'}
 			]
 			
         });
@@ -315,7 +315,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 			{	
 				_self.$search_table.dataTable().api().clear();
 				$.each(response.rows, function(i, cur){
-					cur.DT_RowId = cur.uid;	
+					cur.DT_RowId = cur.userId;	
 				});
 				_self.$search_table.dataTable().api().rows.add(response.rows).draw();			  
 			}
@@ -408,7 +408,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 	// expose the modal methods
 	return {
 		
-		RemoveSelected : function(uid){SelectWorkgroupMemberModal.removeUser(uid);}
+		RemoveSelected : $.proxy( SelectWorkgroupMemberModal.removeUser, SelectWorkgroupMemberModal)
 	};
 })(jQuery, window);
 </script>

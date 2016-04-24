@@ -167,7 +167,7 @@ var SelectUserContext = (function ($, window, undefined){
 				$('#select-user-modal table[gpid="search-user-list"] input[type="checkbox"]').uniform();
 			},
 			"columns" : [
-				{ data : 'uid'},
+				{ data : 'userId'},
 				{ data : 'name'},
 				{ data : 'email'},
 				{ data : 'type'}
@@ -208,11 +208,11 @@ var SelectUserContext = (function ($, window, undefined){
 			var tobeAdd = $(this).prop('checked');
 			var rdata = SelectUserModal.$search_table.dataTable().api().row($(this).closest('tr')).data();
 			// prepare the row id to locate the row dom element
-			rdata.DT_RowId = rdata.uid;			
+			rdata.DT_RowId = rdata.userId;			
 			if(tobeAdd){
 				SelectUserModal.addUser(rdata);
 			}else{				
-				SelectUserModal.removeUser(rdata.uid);
+				SelectUserModal.removeUser(rdata.userId);
 			}
         });
 	};
@@ -264,7 +264,7 @@ var SelectUserContext = (function ($, window, undefined){
 
 			"columns" : [
 				{ data : 'name'},
-				{ data : 'uid'}
+				{ data : 'userId'}
 			]
 			
         });
@@ -320,9 +320,8 @@ var SelectUserContext = (function ($, window, undefined){
 			{	
 				_self.$search_table.dataTable().api().clear();
 				$.each(response.rows, function(i, cur){
-					cur.DT_RowId = cur.uid;	
+					cur.DT_RowId = cur.userId;	
 				});
-				console.log('111');
 				_self.$search_table.dataTable().api().rows.add(response.rows).draw();
 				
 			}

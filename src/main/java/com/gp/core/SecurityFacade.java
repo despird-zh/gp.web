@@ -8,6 +8,7 @@ import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.codec.Base64;
+import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralContext.ExecState;
+import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
@@ -69,18 +71,18 @@ public class SecurityFacade {
 	 * @param ap the AccessPoint 
 	 * @param account the account  
 	 **/
-	public static GeneralResult<UserInfo> findAccount(AccessPoint accesspoint, 
+	public static GeneralResult<UserExInfo> findAccount(AccessPoint accesspoint, 
 			Principal principal,
 			InfoId<Long> userId,
 			String account, String type){
 		
-		GeneralResult<UserInfo> gresult = new GeneralResult<UserInfo>();
+		GeneralResult<UserExInfo> gresult = new GeneralResult<UserExInfo>();
 		try (ServiceContext<?> svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
 					new DefaultKeyValue("account",account));
 			
-			UserInfo uinfo = securityservice.getAccount(svcctx, userId, account, type);
+			UserExInfo uinfo = securityservice.getAccountFull(svcctx, userId, account, type);
 			gresult.setReturnValue(uinfo);
 			gresult.setMessage("success find the account", true);
 		
@@ -155,20 +157,21 @@ public class SecurityFacade {
 		GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
 		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
-			
 			svcctx.addAuditPredicates(uinfo);
 			// encrypt the password
 			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
 			uinfo.setPassword(hashpwd);
-
+			// set local entity id
+			uinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
 			// check the validation of user information
 			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), uinfo);
-			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
+			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
 				result.addMessages(vmsg);
 				result.setMessage("fail to validate the message", false);
 				svcctx.endAudit(ExecState.FAIL, "fail to validate the message");
 				return result;
 			}
+			
 			// amend the information key data
 			if(uinfo.getInfoId() == null){
 				

@@ -163,13 +163,9 @@
 	ErrMessage.initial();
 	
 	// link object to global context, so as to for access.
-	GPContext.appendMessage = function(message_data, inheader, showdetail){
-		ErrMessage.appendMessage(message_data, inheader,showdetail);	
-	};
+	GPContext.appendMessage = $.proxy(ErrMessage.appendMessage, ErrMessage);
 	
-	GPContext.appendResult = function(action_result, showdetail){
-		ErrMessage.appendResult(action_result, showdetail);
-	};
+	GPContext.appendResult = $.proxy(ErrMessage.appendResult, ErrMessage);
 })(jQuery, window);
 
 

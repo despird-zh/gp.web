@@ -38,26 +38,24 @@ import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.validation.ValidationMessage;
 
-@Controller("ga-account-ctlr")
+@Controller("ga-account-list-ctlr")
 @RequestMapping("/ga")
-public class AccountController extends BaseController{
+public class AccountListController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(AccountListController.class);
 	
 	static final String ALL_OPTION = "ALL";
 	
 	static final String VIEW_TAB_LIST = "list";
 	static final String VIEW_TAB_EDIT = "edit";
-	static final String VIEW_TAB_NEW = "new";
-	static final String VIEW_TAB_EXT = "ext";
-	
-	@RequestMapping("account")
+
+	@RequestMapping("account-list")
 	public ModelAndView doInitial(){
 		
-		ModelAndView mav = getJspModelView("ga/config/account");
+		ModelAndView mav = getJspModelView("ga/config/account-list");
 		String viewtab = super.readRequestParam("viewtab");
 		
-		int exist = ArrayUtils.indexOf(new String[]{VIEW_TAB_LIST,VIEW_TAB_EDIT,VIEW_TAB_NEW,VIEW_TAB_EXT}, viewtab);
+		int exist = ArrayUtils.indexOf(new String[]{VIEW_TAB_LIST,VIEW_TAB_EDIT}, viewtab);
 		if(-1 == exist){
 			viewtab = VIEW_TAB_LIST;
 		}
@@ -119,8 +117,8 @@ public class AccountController extends BaseController{
 			for(UserExInfo info: ulist){
 				
 				Account ui = new Account();
-				ui.setSid(String.valueOf(info.getSourceId()));
-				ui.setUid(String.valueOf(info.getInfoId().getId()));
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());
 				ui.setMobile(info.getMobile());
@@ -128,6 +126,7 @@ public class AccountController extends BaseController{
 				if(info.getCreateDate() != null)
 					ui.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
 				
+				ui.setStorageName(info.getStorageName());
 				ui.setName(info.getFullName());
 				ui.setSourceName(info.getInstanceName());
 				ui.setState(info.getState());
@@ -150,54 +149,6 @@ public class AccountController extends BaseController{
 		return mav;
 	}
 		
-	@RequestMapping("account-new")
-	public ModelAndView doNewAccount(HttpServletRequest request, HttpServletResponse response) throws WebException {
-		
-		CustomWebUtils.dumpRequestAttributes(request);
-		
-		Account account = new Account();
-		super.readRequestData(request, account);
-		
-		Principal principal = super.getPrincipalFromShiro();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		ActionResult result = new ActionResult();
-		
-		UserInfo uinfo = new UserInfo();
-		uinfo.setAccount(account.getAccount());
-		uinfo.setFullName(account.getName());
-		uinfo.setLanguage(account.getLanguage());
-		uinfo.setEmail(account.getEmail());
-		uinfo.setPassword(account.getPassword());
-		uinfo.setPhone(account.getPhone());
-		uinfo.setMobile(account.getMobile());
-		uinfo.setTimeZone(account.getTimezone());
-		uinfo.setType(account.getType());
-		uinfo.setStorageId(account.getStorage());
-		uinfo.setState(Users.UserState.ACTIVE.name());
-		
-		Long pubcapacity = account.getPubcapacity();
-		Long pricapacity = account.getPricapacity();
-		
-		GeneralResult<InfoId<Long>> gresult = SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
-		
-		if(!gresult.isSuccess() && gresult.hasValidationMessage()){
-			List<ValidationMessage> msg = gresult.getMessages();
-			
-			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
-			result.setDetailmsgs(msg);
-		}else{
-			
-			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
-		}
-		
-		ModelAndView mav = getJsonModelView();		
-		mav.addAllObjects(result.asMap());
-
-		return mav;
-	}
-
 	@RequestMapping("account-update")
 	public ModelAndView doAccountUpdate(HttpServletRequest request, HttpServletResponse response) throws WebException {
 		
@@ -211,7 +162,7 @@ public class AccountController extends BaseController{
 		ActionResult result = new ActionResult();
 		
 		UserInfo uinfo = new UserInfo();
-		InfoId<Long> uid = IdKey.USER.getInfoId(Long.valueOf(account.getUid()));
+		InfoId<Long> uid = IdKey.USER.getInfoId(Long.valueOf(account.getUserId()));
 		uinfo.setInfoId(uid);
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
@@ -222,7 +173,7 @@ public class AccountController extends BaseController{
 		uinfo.setMobile(account.getMobile());
 		uinfo.setTimeZone(account.getTimezone());
 		uinfo.setType(account.getType());
-		uinfo.setStorageId(account.getStorage());
+		uinfo.setStorageId(account.getStorageId());
 		uinfo.setState(account.getState());
 		
 		Long pubcapacity = account.getPubcapacity();
@@ -272,13 +223,14 @@ public class AccountController extends BaseController{
 			userkey = IdKey.USER.getInfoId(userId);
 		}
 
-		GeneralResult<UserInfo> gresult = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
+		GeneralResult<UserExInfo> gresult = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
 		ActionResult result = new ActionResult();
 		
 		if(gresult.isSuccess() && gresult.getReturnValue() != null){
-			UserInfo info = gresult.getReturnValue();
+			UserExInfo info = gresult.getReturnValue();
 			Account ui = new Account();
-			ui.setUid(String.valueOf(info.getInfoId().getId()));
+			ui.setUserId(info.getInfoId().getId());
+			ui.setSourceId(info.getSourceId());
 			ui.setAccount(info.getAccount());
 			ui.setEmail(info.getEmail());
 			ui.setMobile(info.getMobile());
@@ -286,10 +238,11 @@ public class AccountController extends BaseController{
 			ui.setPhone(info.getPhone());
 			ui.setName(info.getFullName());
 			ui.setState(info.getState());
-			ui.setStorage(info.getStorageId());
+			ui.setStorageId(info.getStorageId());
 			ui.setLanguage(info.getLanguage());
 			ui.setTimezone(info.getTimeZone());
-
+			ui.setStorageName(info.getStorageName());
+			
 			GeneralResult<List<CabinetInfo>> cabs = CabinetFacade.findPersonCabinets(accesspoint,Users.PESUOD_USER,info.getAccount());
 			for(CabinetInfo cinfo: cabs.getReturnValue()){
 				if(Cabinets.CabinetType.NETDISK.name().equals(cinfo.getCabinetType()))

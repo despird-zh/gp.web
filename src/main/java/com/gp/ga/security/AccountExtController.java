@@ -43,6 +43,14 @@ public class AccountExtController extends BaseController{
 		DEFAULT.setState(Users.UserState.ACTIVE.name());
 	}
 	
+	@RequestMapping("account-ext")
+	public ModelAndView doInitial(){
+		
+		ModelAndView mav = getJspModelView("ga/config/account-ext");
+		
+		return mav;
+	}
+	
 	@RequestMapping("account-ext-search")
 	public ModelAndView doGetExternalAccounts(HttpServletRequest request){
 		

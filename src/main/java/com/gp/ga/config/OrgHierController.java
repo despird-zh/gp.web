@@ -240,8 +240,8 @@ public class OrgHierController extends BaseController{
 			for(UserInfo info: ulist){
 				
 				Account ui = new Account();
-				ui.setSid(String.valueOf(info.getSourceId()));
-				ui.setUid(String.valueOf(info.getInfoId().getId()));
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());
 				ui.setMobile(info.getMobile());

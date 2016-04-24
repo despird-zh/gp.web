@@ -138,7 +138,7 @@
                      <p>{{messageText}}</p>
 					 <ol class="text-warning hidden detail-msgs" style="">
 					 {{#detailMessages}}
-						  <li>{{property}} : {{message}}</li>	
+						  <li style="word-wrap: break-word;">{{property}} : {{message}}</li>	
 					 {{/detailMessages}}
 					 </ol>
                    </a>
@@ -155,7 +155,7 @@
                      <p>{{messageText}}</p>
 					 <ol class="text-warning hidden detail-msgs" style="">
 					 {{#detailMessages}}
-						  <li>{{property}} : {{message}}</li>	
+						  <li style="word-wrap: break-word;">{{property}} : {{message}}</li>	
 					 {{/detailMessages}}
 					 </ol>
                    </a>
@@ -172,7 +172,7 @@
                      <p>{{messageText}}</p>
 					 <ol class="text-warning hidden detail-msgs" style="">
 					 {{#detailMessages}}
-						  <li>{{property}} : {{message}}</li>	
+						  <li style="word-wrap: break-word;">{{property}} : {{message}}</li>	
 					 {{/detailMessages}}
 					 </ol>
                    </a>

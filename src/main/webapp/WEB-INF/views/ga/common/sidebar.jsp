@@ -41,8 +41,14 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li class="<%= "account".equals(curr_page) ? "active" : "" %>">
-					<a href="account.do"><i class="fa fa-circle-o"></i>用户</a>
+                <li class="<%= "list".equals(curr_page) ? "active" : "" %>">
+					<a href="account-list.do"><i class="fa fa-circle-o"></i>用户查询</a>
+				</li>
+                <li class="<%= "new".equals(curr_page) ? "active" : "" %>">
+					<a href="account-new.do"><i class="fa fa-circle-o"></i>新建用户</a>
+				</li>
+                <li class="<%= "ext".equals(curr_page) ? "active" : "" %>">
+					<a href="account-ext.do"><i class="fa fa-circle-o"></i>外部用户</a>
 				</li>
                 <li class="<%= "account-sync".equals(curr_page) ? "active" : "" %>">
 					<a href="account-sync.do"><i class="fa fa-circle-o"></i>账户同步</a>

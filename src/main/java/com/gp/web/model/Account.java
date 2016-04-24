@@ -4,9 +4,9 @@ public class Account {
 	
 	private String account;
 	
-	private String sid;
+	private Integer sourceId;
 	
-	private String uid;
+	private Long userId;
 	
 	private String name;
 	
@@ -34,7 +34,9 @@ public class Account {
 	
 	private Long pricapacity;
 	
-	private Integer storage;
+	private Integer storageId;
+	
+	private String storageName;
 	
 	public String getAccount() {
 		return account;
@@ -44,12 +46,12 @@ public class Account {
 		this.account = account;
 	}
 
-	public String getUid() {
-		return uid;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
@@ -149,20 +151,20 @@ public class Account {
 		this.pricapacity = pricapacity;
 	}
 
-	public Integer getStorage() {
-		return storage;
+	public Integer getStorageId() {
+		return storageId;
 	}
 
-	public void setStorage(Integer storage) {
-		this.storage = storage;
+	public void setStorageId(Integer storageId) {
+		this.storageId = storageId;
 	}
 
-	public String getSid() {
-		return sid;
+	public Integer getSourceId() {
+		return sourceId;
 	}
 
-	public void setSid(String sid) {
-		this.sid = sid;
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
 	}
 
 	public String getState() {
@@ -171,6 +173,14 @@ public class Account {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getStorageName() {
+		return storageName;
+	}
+
+	public void setStorageName(String storageName) {
+		this.storageName = storageName;
 	}
 	
 }
