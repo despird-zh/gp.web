@@ -185,7 +185,7 @@ public class SecurityFacade {
 			svcctx.putContextData(SecurityService.CTX_KEY_PUBCAPACITY, pubcapacity);
 			svcctx.putContextData(SecurityService.CTX_KEY_PRICAPACITY, pricapacity);
 			
-			boolean done = securityservice.newAccount(svcctx, uinfo);
+			securityservice.newAccount(svcctx, uinfo);
 			result.setReturnValue(uinfo.getInfoId());
 			result.setMessage("success to save account", true);
 					
@@ -263,7 +263,7 @@ public class SecurityFacade {
 			// amend the operation information
 			svcctx.setAuditObject(uinfo.getInfoId());
 
-			boolean done = securityservice.newAccountExt(svcctx, uinfo);
+			securityservice.newAccountExt(svcctx, uinfo);
 			result.setReturnValue(uinfo.getInfoId());
 			result.setMessage("success to create external account", true);
 					

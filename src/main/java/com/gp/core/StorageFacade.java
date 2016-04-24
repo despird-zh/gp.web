@@ -135,7 +135,7 @@ public class StorageFacade {
 				svcctx.setAuditObject(storage.getInfoId());
 			}
 			
-			boolean done = storageService.newStorage(svcctx, storage);
+			storageService.newStorage(svcctx, storage);
 			result.setReturnValue(storage.getInfoId());
 			result.setMessage("success save storage ", true);
 			

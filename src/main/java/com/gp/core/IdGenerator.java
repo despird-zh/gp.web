@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
 import com.gp.exception.ServiceException;
 import com.gp.info.Identifier;
 import com.gp.info.InfoId;

@@ -93,7 +93,7 @@ public class OrgHierFacade {
 				return result;
 			}
 			
-			boolean done =  orghierservice.newOrgHierNode(svcctx, orghier);
+			orghierservice.newOrgHierNode(svcctx, orghier);
 			
 			result.setReturnValue(orghier.getInfoId());		
 			result.setMessage("success save org hierarchy ", true);
