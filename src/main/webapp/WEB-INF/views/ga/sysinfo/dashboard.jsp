@@ -214,9 +214,9 @@
     <script src="${path_plugins}/chartjs/Chart.min.js"></script>
 	<!-- mustache -->
     <script src="${path_plugins}/mustache/mustache.min.js"></script>
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="${path_script}/pages/dashboard2.js"></script>
+    <script src="${path_script}/ga/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="${path_script}/demo.js"></script>
   </body>

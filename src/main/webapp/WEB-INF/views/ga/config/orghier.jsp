@@ -1,4 +1,4 @@
-<%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../../common/taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="zh_CN">
@@ -8,7 +8,12 @@
     <title>AdminLTE 2 | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="${path_plugins}/datatables/datatables.min.css" />
+	<link rel="stylesheet" href="${path_plugins}/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
+	<link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />
 	<%@include file="../common/include.jsp" %>
+	<link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">
     <div class="wrapper">
@@ -146,48 +151,17 @@
 							  <table gpid="orgmember-list" class="table table-bordered table-condensed">
 								<thead>
 								<tr>
-								  <th style="width: 80px">Account</th>
-								  <th style="width: 80px">Name</th>								  
+								  <th >Account</th>
+								  <th >Name</th>								  
 								  <th >Email</th>					 								  
-								  <th style="width: 80px">Type</th>
-								  <th style="width: 80px">State</th>
-								  <th style="width: 35px">Act</th>
+								  <th>Type</th>
+								  <th >State</th>
+								  <th >Act</th>
 								</tr>
 								</thead>
-								<tbody>
-								<tr>
-								  <td>demo1</td>	
-								  <td>测试姓名</td>
-								  <td>demo1@35465.com</td>
-								  <td><span class="badge bg-blue">内部</span></td>
-								  <td><span class="badge bg-blue">冻结</span></td>
-								  <td><div class="btn-group">
-									  <button class="btn btn-default btn-xs" type="button"><i class="fa fa-times"></i></button>
-									</div>
-								  </td>
-								</tr>
-								<tr>
-								  <td>demo2</td>	
-								  <td>测试姓名</td>								  
-								  <td>demo1@35465.com</td>
-								  <td><span class="badge bg-blue">内部</span></td>
-								  <td><span class="badge bg-blue">冻结</span></td>
-								  <td><div class="btn-group">
-									  <button class="btn btn-default btn-xs" type="button"><i class="fa fa-times"></i></button>
-									</div>
-								  </td>
-								</tr>
+								<tbody>								
 							  </tbody>
 							  </table>
-							</div>
-							<div class="box-footer clearfix">
-							  <ul gpid="orgmember-list-pagination" class="pagination pagination-sm no-margin pull-right">
-								<li><a href="#">«</a></li>
-								<li><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">»</a></li>
-							  </ul>
 							</div>
 						</div><!-- /.col-md-8 -->
 					</div><!-- /.row -->
@@ -203,22 +177,7 @@
         <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
       </footer>
     </div><!-- ./wrapper -->
-	<script id="member-list-template" type="x-tmpl-mustache">
-		{{#rows}}
-			<tr>
-			  <td>{{account}}</td>
-			  <td>{{name}}</td>
-			  <td>{{email}}</td>
-			  <td><span class="badge bg-blue">{{type}}</span></td>
-			  <td><span class="badge bg-blue">{{status}}</span></td>
-			  <td>								
-				<div class="btn-group">
-				  <button class="btn btn-default btn-xs" gpid="member-remove-btn" user-account="{{account}}" type="button"><i class="fa fa-times"></i></button>
-				</div>
-			  </td>
-			</tr>
-		{{/rows}}
-	</script><!-- /.template:member-list -->
+
     <!-- jQuery 2.1.4 -->
     <script src="${path_plugins}/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
@@ -229,22 +188,19 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- mustache -->
     <script src="${path_plugins}/mustache/mustache.min.js"></script>
+    <script src="${path_plugins}/datatables/datatables.min.js" type="text/javascript"></script>
+    <script src="${path_plugins}/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+	<script src="${path_plugins}/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <!-- Select2 -->
     <script src="${path_plugins}/select2/select2.full.min.js"></script>
 	<!-- JStree -->
 	<script src="${path_plugins}/jstree/dist/jstree.min.js"></script>
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>	
-	<%@include file="../../dialog/pagination.jsp" %>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
 	<%@include file="../../dialog/select-user.jsp" %>
     <!-- AdminLTE for demo purposes -->
     <script src="${path_script}/ga/orghier.js"></script>
-	<script type="text/javascript">
-		$(function (){
-			
-		});
-	</script>
   </body>
 </html>

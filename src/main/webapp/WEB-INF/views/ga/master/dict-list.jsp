@@ -87,8 +87,8 @@
 									</div><!-- /.col-md-8 -->
 									<div class="col-md-4">
 										<div class="col-md-12 no-padding">											
-											<label class="p-t-xxs  m-r-sm"> Image Detail </label>											
-											<a gpid="entry-save-btn" role="button" 
+											<label class="p-t-xxs  m-r-sm"> 字典详细 </label>											
+											<a gpid="entry-save-btn" class="btn btn-primary btn-xs" 
 												data-placement="top" 
 												data-toggle="tooltip" 
 												title="Save the dict entry"><i class="fa fa-fw fa-save"></i></a>
@@ -161,7 +161,7 @@
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
 	
 	<script src="${path_script}/ga/dict-list.js"></script>
   </body>

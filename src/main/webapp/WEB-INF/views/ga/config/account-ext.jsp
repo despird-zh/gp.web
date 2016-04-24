@@ -158,7 +158,7 @@
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
 	<script src="${path_script}/ga/account-ext.js"></script>
   </body>
 </html>

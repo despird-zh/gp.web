@@ -254,6 +254,7 @@
     <!-- ChartJS 1.0.1 -->
     <script src="${path_plugins}/chartjs/Chart.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+	<script src="${path_script}/message.js"></script>
     <script src="${path_script}/pages/dashboard2.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="${path_script}/demo.js"></script>
