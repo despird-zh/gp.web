@@ -188,7 +188,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
                 } else {
                     $(this).prop("checked", false);
                     $(this).parents('tr').removeClass("active");
-					SelectWorkgroupMemberModal.removeUser(rdata.uid); // remove user
+					SelectWorkgroupMemberModal.removeUser(rdata.serId); // remove user
                 }
             });
 

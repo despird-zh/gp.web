@@ -183,7 +183,7 @@ var PageContext =(function ($, window, undefined){
 
 		$member_tab : $('ul.nav-tabs li[gpid="org-member-tab"]'),
 		
-		$add_member_btn : $('a[gpid="add-member-btn"]'),
+		$add_member_btn : $('#tab_2 a[gpid="orgmember-add-btn"]'),
 		
 		initial : function(){
 			var _self = this;
@@ -325,6 +325,6 @@ var PageContext =(function ($, window, undefined){
 	OrgMembers.initial();
 	
 	return {
-		RemoveOrgMember : $.proxy(OrgMembers.removeMember , OrgMembers)
+		RemoveOrgMember : $.proxy(OrgMembers.removeOrgMember , OrgMembers)
 	};
 })(jQuery, window);

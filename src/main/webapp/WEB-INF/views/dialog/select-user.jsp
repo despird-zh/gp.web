@@ -188,7 +188,7 @@ var SelectUserContext = (function ($, window, undefined){
                 } else {
                     $(this).prop("checked", false);
                     $(this).parents('tr').removeClass("active");
-					SelectUserModal.removeUser(rdata.uid); // remove user
+					SelectUserModal.removeUser(rdata.userId); // remove user
                 }
             });
 

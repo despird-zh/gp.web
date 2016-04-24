@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,17 +57,22 @@ public class TestController extends BaseController{
 		}		
 		
 	}
-		
+	
+	@RequestMapping("test-511")
+	public ModelAndView test511(HttpServletResponse response) throws WebException {
+		LOGGER.debug("Trying to set timeout on reponse header.");
+		ModelAndView mav = super.getJspModelView("error/511");
+		return mav;
+	}
+	
 	@RequestMapping("test-relogon")
 	public ModelAndView testRelogon(HttpServletResponse response) throws WebException {
 		LOGGER.debug("Trying to set timeout on reponse header.");
         response.setCharacterEncoding("UTF-8");
         ((HttpServletResponse)response).setHeader("sessionstatus", "timeout"); 
-        try {
-			response.sendError(444, "Need relogon!!!" );
-		} catch (IOException e) {
-			throw new WebException("Session timeout relogon",e);
-		}
-		return getJspModelView("main/login");
+
+        	response.setStatus(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value());
+        	throw new WebException("Session timeout relogon");
+		
 	}
 }

@@ -1,7 +1,5 @@
 package com.gp.web.main;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +8,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +28,7 @@ public class AuthController extends BaseController{
 	
 	public static final int RELOG_INDICATOR = 444;
 	
+	@SuppressWarnings("deprecation")
 	@RequestMapping("login")
 	public ModelAndView doLogon(HttpServletRequest request, HttpServletResponse response) throws WebException {
 		Subject currentUser = SecurityUtils.getSubject();
@@ -39,11 +39,10 @@ public class AuthController extends BaseController{
 	        LOGGER.debug("Trying to set timeout on reponse header.");
 	        response.setCharacterEncoding("UTF-8");
 	        ((HttpServletResponse)response).setHeader("sessionstatus", "timeout"); 
-	        try {
-				response.sendError(RELOG_INDICATOR, "Need relogon!!!" );
-			} catch (IOException e) {
-				throw new WebException("Session timeout relogon",e);
-			}
+	        // here we set status to 511 force the client to process it, 
+	        // the global exception advice also adapt it to re-logon page.
+			response.setStatus(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value(), "Need relogon!!!" );
+			throw new WebException("Session timeout relogon");
 		}
 
 		return getJspModelView("main/login");

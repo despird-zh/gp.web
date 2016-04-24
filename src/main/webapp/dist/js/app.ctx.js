@@ -712,7 +712,7 @@ GPContext = (function ($) {
 			$.ajaxSetup({  
 				complete:function(XMLHttpRequest,textStatus){    
 					// relogon  
-					if(XMLHttpRequest.status == 444){  
+					if(XMLHttpRequest.status == 511){  
 						var relogon_modal = XMLHttpRequest.responseText;
 						if($('#relogon-modal').length == 0){
 							$('body').append(relogon_modal);

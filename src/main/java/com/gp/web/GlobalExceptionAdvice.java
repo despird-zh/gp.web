@@ -22,6 +22,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.gp.exception.ServiceException;
+import com.gp.exception.WebException;
 
 
 /**
@@ -62,6 +63,16 @@ public class GlobalExceptionAdvice {
 		return mav;
 	}
 	
+	@ExceptionHandler(WebException.class)
+	@ResponseStatus(value=HttpStatus.NETWORK_AUTHENTICATION_REQUIRED)
+	public ModelAndView handleRelogonError(HttpServletRequest request, WebException exception) {
+
+	    logger.error("Request: " + request.getRequestURI() + " relogon to authenticate is required ");
+	    ModelAndView mav = new ModelAndView("error/511");
+
+		return mav;
+	}
+	
 	/**
 	 * Convert a predefined exception to an HTTP Status code and specify the
 	 * name of a specific view that will be used to display the error.
@@ -69,7 +80,7 @@ public class GlobalExceptionAdvice {
 	 * @return Exception view.
 	 */
 	@ExceptionHandler({ SQLException.class, DataAccessException.class, ServiceException.class })
-	public ModelAndView databaseError(HttpServletRequest request,Exception exception) {
+	public ModelAndView handleDatabaseError(HttpServletRequest request,Exception exception) {
 		// Nothing to do. Return value 'databaseError' used as logical view name
 		// of an error page, passed to view-resolver(s) in usual way.
 		logger.error("Request raised " + exception.getClass().getSimpleName(), exception);
