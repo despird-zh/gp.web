@@ -26,8 +26,8 @@
 				<!-- sidebar: style can be found in sidebar.less -->
 				<section class="sidebar">
 					<jsp:include page="../common/sidebar.jsp" flush="true">
-						<jsp:param name="curr_module" value="" />
-						<jsp:param name="curr_page" value="storage" /></jsp:include>
+						<jsp:param name="curr_module" value="storage" />
+						<jsp:param name="curr_page" value="new" /></jsp:include>
 				</section>
 				<!-- /.sidebar -->
 			</aside>
@@ -36,8 +36,8 @@
 				<!-- Content Header (Page header) -->
 				<section class="content-header">
 					 <h1>
-						存储设置
-						<small>查看、维护系统使用的存储信息</small>
+						创建存储
+						<small>创建系统使用的存储信息</small>
 					  </h1>
 				</section>
 				<!-- Main content -->
@@ -45,164 +45,13 @@
 					<!-- Custom Tabs -->
 					<div class="nav-tabs-custom no-radius">
 						<ul class="nav nav-tabs no-radius">
-							<li <c:if test="${viewtab == 'list'}">class="active"</c:if>>
-								<a gpid="list-tab" data-toggle="tab" href="#tab_1">存储列表</a>
-							</li>
-							<li <c:if test="${viewtab == 'modify'}">class="active"</c:if>>	
-								<a gpid="edit-tab" data-toggle="tab" href="#tab_2">存储信息</a>
-							</li>
-							<li <c:if test="${viewtab == 'new'}">class="active"</c:if>>	
+							<li class="active">	
 								<a gpid="new-tab" data-toggle="tab" href="#tab_3">新建存储</a>
-							</li>
-							<li class="pull-right">
-								<a gpid="new-storage-btn" class="text-primary" role="button" href="javascript:void(0)"><i class="fa fa-fw fa-plus"></i>新建存储</a>
 							</li>
 						</ul>
 						<div class="tab-content no-radius">
-							<div id="tab_1" class="tab-pane <c:if test="${viewtab == 'list'}">active</c:if> ">
-								<div class="col-md-12">
-									<form class="form-inline" style="margin-bottom: 10px;">
-										<label>存储 :</label>
-										<input gpid="list-search-sname" type="text" placeholder="storage name" class="form-control input-md">&nbsp;
-										<label>类型 : </label> 
-										<select gpid="list-search-type" class="form-control select2">
-											<option value="ALL" selected>All</option>	
-											<option value="DISK">Disk Store</option>
-											<option value="HDFS">HDFS Store</option>								
-										</select>&nbsp;
-										<label>状态 : </label> 
-										<select gpid="list-search-state" class="form-control select2">		
-											<option value="ALL" selected>All</option>	
-											<option value="OPEN">Open Store</option>
-											<option value="CLOSE">Close Store</option>
-											<option value="FULL">Full Store</option>	
-										</select>&nbsp;
-										<a gpid="list-search-btn" class="btn btn-default btn-sm"><i class="fa fa-search"></i></a>
-										<a gpid="list-clear-btn" class="btn btn-default btn-sm"><i class="fa fa-close"></i></a>
-									</form>
-									<hr class="m-t-sm m-b-sm">
-								</div>
-								<div class="box-body">
-									<table gpid="list-table" class="table table-bordered table-condensed table-hover">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>name</th>
-												<th>Type</th>
-												<th>Cap.</th>
-												<th>Used</th>
-												<th>Progress</th>
-												<th>State</th>
-												<th>Description</th>
-												<th>Act</th>
-											</tr>
-										</thead>
-										<tbody></tbody>
-									</table>
-								</div>
-							</div>
 							<!-- /.tab-pane -->
-							<div id="tab_2" class="tab-pane <c:if test="${viewtab=='modify'}">active</c:if> ">
-								<div class="row m-l-none m-r-none">
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> Basic Information </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">											
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-storage-name">Storage Name</label>
-													<div class="col-sm-7">
-														<input type="hidden" id="edit-storage-id">
-														<input type="text" placeholder="storage name" id="edit-storage-name" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-storage-type">Storage Type</label>
-													<div class="col-sm-5">
-														<select class="form-control select2" id="edit-storage-type">
-															<option value="DISK" selected>Disk Store</option>
-															<option value="HDFS">HDFS Store</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-capacity">Capacity</label>
-													<div class="col-sm-4">
-														<div class="input-group">
-															<input type="text" placeholder="Capacity(mega bytes)" id="edit-capacity" class="form-control">	<span class="input-group-addon">M</span>
-														</div>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-used">Used</label>
-													<div class="col-sm-4">
-														<input type="text" placeholder="Capacity(mega bytes)" disabled="" id="edit-used" class="form-control">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-state">State</label>
-													<div class="col-sm-5">
-														<select class="form-control select2" id="edit-state">
-															<option value="OPEN" selected>Open Store</option>
-															<option value="CLOSE">Close Store</option>
-															<option value="FULL">Full Store</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-description">Description</label>
-													<div class="col-sm-8">
-														<textarea class="form-control" id="edit-description" rows="2" placeholder="Enter ..."></textarea>
-													</div>
-												</div>											
-											</form>
-										</div><!-- /.box-body -->
-									</div>
-									<!-- /.col-md-6 -->
-									<div class="col-md-6">
-										<div class="col-md-12 no-padding">
-										  <form class="form-inline">
-											<label class="p-t-xxs  m-r-sm"> Hard disk store setting </label>						
-										  </form>
-										  <hr class="m-t-sm m-b-sm">
-										</div>
-										<div class="col-md-12 no-padding">
-											<form class="form-horizontal">																														
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit-storepath">Store Path</label>
-													<div class="col-sm-7">
-														<input type="text" placeholder="Path" id="edit-storepath" class="form-control">
-													</div>
-												</div>
-												<div gpid="hdfs-marker" class="form-group hidden">
-													<label class="col-sm-3 control-label" for="edit-hdfs-host">HDFS Host</label>
-													<div class="col-sm-4">
-														<input type="text" placeholder="Host" id="edit-hdfs-host" class="form-control">
-													</div>
-												</div>
-												<div gpid="hdfs-marker" class="form-group hidden">
-													<label class="col-sm-3 control-label" for="edit-hdfs-port">HDFS port</label>
-													<div class="col-sm-2">
-														<input type="text" placeholder="Port" id="edit-hdfs-port" class="form-control">
-													</div>
-												</div>										
-											</form><!-- /.form-horizontal -->
-										</div>
-									</div>
-									<!-- /.col-md-6 -->
-								</div>
-								<!-- /.row -->
-								<div class="box-footer">
-									<button type="button" gpid="edit-save-btn" class="btn btn-info pull-right">Update</button>
-								</div>
-								<!-- /.box-footer -->
-							</div>
-							<!-- /.tab-pane -->
-							<div id="tab_3" class="tab-pane <c:if test=" ${viewtab=='new' } ">active</c:if> ">
+							<div id="tab_3" class="tab-pane active">
 								<div class="row m-l-none m-r-none">
 									<div class="col-md-6">
 										<div class="col-md-12 no-padding">
@@ -291,7 +140,6 @@
 								<!-- /.row -->
 								<div class="box-footer">
 									<button type="button" gpid="new-save-btn" class="btn btn-warning pull-right">Create</button>
-									<button type="button" gpid="new-close-btn" class="btn btn-default">Close</button>
 								</div>
 								<!-- /.box-footer -->
 							</div>
@@ -328,7 +176,7 @@
 		<!-- GPress Err Message -->
 		<script src="${path_script}/ga/err-message.js"></script>
 		<!-- AdminLTE for demo purposes -->
-		<script src="${path_script}/ga/storage.js"></script>
+		<script src="${path_script}/ga/storage-new.js"></script>
 	</body>
 
 </html>

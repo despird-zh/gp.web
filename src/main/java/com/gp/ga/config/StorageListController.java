@@ -32,24 +32,23 @@ import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
 import com.gp.web.model.Storage;
 
-@Controller("ga-storage-ctlr")
+@Controller("ga-storage-list-ctlr")
 @RequestMapping("/ga")
-public class StorageController extends BaseController{
+public class StorageListController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(StorageController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(StorageListController.class);
 	static final String ALL_OPTION = "ALL";
 	
 	static final String VIEW_TAB_LIST = "list";
 	static final String VIEW_TAB_MODIFY = "modify";
-	static final String VIEW_TAB_NEW = "new";
 	
-	@RequestMapping("storage")
+	@RequestMapping("storage-list")
 	public ModelAndView doInitial(HttpServletRequest request){
 		
-		ModelAndView mav = getJspModelView("ga/config/storage");
+		ModelAndView mav = getJspModelView("ga/config/storage-list");
 		String viewtab = super.readRequestParam("viewtab");
 		
-		int exist = ArrayUtils.indexOf(new String[]{VIEW_TAB_LIST,VIEW_TAB_MODIFY,VIEW_TAB_NEW}, viewtab);
+		int exist = ArrayUtils.indexOf(new String[]{VIEW_TAB_LIST,VIEW_TAB_MODIFY}, viewtab);
 		if(-1 == exist){
 			viewtab = VIEW_TAB_LIST;
 		}
@@ -166,52 +165,6 @@ public class StorageController extends BaseController{
 		sinfo.setStorageName(storage.getName());
 		
 		GeneralResult<Boolean> gresult = StorageFacade.saveStorage(accesspoint, principal, sinfo);
-
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
-			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
-		}
-		
-		mav.addAllObjects(aresult.asMap());
-		return mav;
-	}
-	
-	@RequestMapping("storage-new")
-	public ModelAndView doNewStorage(HttpServletRequest request){
-		
-		if(LOGGER.isDebugEnabled())
-			CustomWebUtils.dumpRequestAttributes(request);
-		// read parameter
-		Storage storage = new Storage();
-		super.readRequestData(request, storage);
-		// read trace information
-		Principal principal = super.getPrincipalFromShiro();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		// prepare result
-		ActionResult aresult = new ActionResult();
-		ModelAndView mav = super.getJsonModelView();
-		
-		StorageInfo sinfo = new StorageInfo();
-		Long cap = StringUtils.isNotBlank(storage.getCapacity()) ? Long.valueOf(storage.getCapacity()):0l;
-		sinfo.setCapacity(cap);
-		sinfo.setDescription(storage.getDescription());
-		// convert setting into json string
-		Map<String, Object> setting = new HashMap<String, Object>();
-		setting.put(StoreSetting.StorePath.name(), storage.getStorePath());
-		setting.put(StoreSetting.HdfsHost.name(), storage.getHdfsHost());
-		setting.put(StoreSetting.HdfsPort.name(), storage.getHdfsPort());
-		// try to save setting
-		sinfo.setSettingJson(Storages.wrapSetting(setting));
-		sinfo.setState(storage.getState());
-		sinfo.setStorageType(storage.getType());
-		sinfo.setStorageName(storage.getName());
-		sinfo.setUsed(0l);
-		GeneralResult<InfoId<Integer>> gresult = StorageFacade.newStorage(accesspoint, principal, sinfo);
 
 		if(!gresult.isSuccess()){
 			aresult.setState(ActionResult.ERROR);

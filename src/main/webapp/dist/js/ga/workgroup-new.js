@@ -6,12 +6,6 @@ var PageContext = (function ($, window, undefined){
 	 */
 	var WorkgroupBasic = {
 		
-		$cancel_btn : $('#cancel-btn'),
-		$member_tab : $('li[gpid="member-tab"]'),
-		$member_group_tab : $('li[gpid="member-group-tab"]'),
-		$member_mgmt_btn : $('.nav-tabs button[gpid="member-mgmt-btn"]'),
-		$group_mgmt_btn : $('.nav-tabs button[gpid="group-mgmt-btn"]'),
-		
 		$workgroup_id : $('#wrokgroup-id'),
 		$workgroup_name : $('#workgroup-name'),
 		$workgroup_state : $('#workgroup-state-sel'),
@@ -93,22 +87,7 @@ var PageContext = (function ($, window, undefined){
 			_self.$workgroup_save_btn.on('click', function(){			
 				WorkgroupBasic.saveWorkgroup();
 			});
-			
-			_self.$cancel_btn.on('click', function(){			
-				WorkgroupBasic.$member_tab.toggleClass('hidden');
-				WorkgroupBasic.$member_group_tab.toggleClass('hidden');
-			});
-
-			_self.$member_mgmt_btn.on('click', function(){
-				WorkgroupBasic.$member_tab.removeClass('hidden');
-				WorkgroupBasic.$member_tab.find('a').tab('show');
-			});
-			
-			_self.$group_mgmt_btn.on('click', function(){
-				WorkgroupBasic.$member_group_tab.removeClass('hidden');
-				WorkgroupBasic.$member_group_tab.find('a').tab('show');
-			});
-			
+						
 			_self.$workgroup_image.on('click', function(){
 				// this image dom element as parameter
 				GPContext.showChangeAvatar($(this));

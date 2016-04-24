@@ -19,10 +19,21 @@
 				<a href="sys-option.do"><i class="fa fa-gear"></i> <span>系统参数</span>
 				</a>
 			</li>
-			<li class="<%= "storage".equals(curr_page) ? "active" : "" %>">
-				<a href="storage.do"><i class="fa fa-database"></i> <span>存储配置</span>
-				</a>
-			</li>
+            <li class="treeview <%= "storage".equals(curr_module) ? "active" : "" %>">
+              <a href="#">
+                <i class="fa fa-database"></i>
+                <span>存储管理</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="<%= "list".equals(curr_page) ? "active" : "" %>">
+					<a href="storage-list.do"><i class="fa fa-circle-o"></i>存储查询</a>
+				</li>
+                <li class="<%= "new".equals(curr_page) ? "active" : "" %>">
+					<a href="storage-new.do"><i class="fa fa-circle-o"></i>新建存储</a>
+				</li>
+              </ul>
+            </li>
             <li class="treeview <%= "security".equals(curr_module) ? "active" : "" %>">
               <a href="#">
                 <i class="fa fa-fire"></i>
