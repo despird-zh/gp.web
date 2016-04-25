@@ -86,7 +86,7 @@ public class InstanceFacade {
 			svcctx.setAuditObject(instance);
 			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
 			
-			Boolean success =  instanceservice.changeInstanceState(svcctx, instance.getId(), state);
+			Boolean success =  instanceservice.changeInstanceState(svcctx, instance, state);
 			
 			result.setReturnValue(success);			
 			result.setMessage("success change instance state", true);
