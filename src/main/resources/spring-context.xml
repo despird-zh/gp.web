@@ -18,7 +18,6 @@
         </property>
     </bean>
     
-    <import resource="spring-mvc.xml"/>
 	<import resource="spring-shiro.xml" />	
 	<import resource="spring-datasource.xml"/>
 	
