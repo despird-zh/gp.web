@@ -26,7 +26,6 @@ import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
 import com.gp.common.Images;
 import com.gp.common.SystemOptions;
-import com.gp.common.Users;
 import com.gp.core.IdGenerator;
 import com.gp.info.InfoId;
 import com.gp.util.ImageUtils;
