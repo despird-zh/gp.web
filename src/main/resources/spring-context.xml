@@ -17,7 +17,11 @@
             <value>classpath:/spring-context.properties</value>
         </property>
     </bean>
-    
+    <!-- post spring context loading complete, the core engine start,
+    	while the CoreEngine shutdown triggered in CoreStarter a ServletContextListener
+     -->
+    <bean class="com.gp.core.ContextInitFinishListener">
+    </bean>
 	<import resource="spring-shiro.xml" />	
 	<import resource="spring-datasource.xml"/>
 	
