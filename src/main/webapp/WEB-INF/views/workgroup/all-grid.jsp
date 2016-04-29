@@ -24,16 +24,17 @@
           <section class="content-header clearfix">
 			<div class="row ">
 				<div class="col-sm-12">		
-					<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+					<h1 class="text-muted" style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
 					  全部工作组
 					  <small>查看全部的工作组信息</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" class="text-muted" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
-						<li ><span class="v-separator"></span></li>						
-						<li class="pull-right"><a href="../workgroup/all-grid.do" class="bg-aqua-active"><i class="fa fa-th"></i></a></li>						
-						<li class="pull-right"><a href="../workgroup/all-list.do" class="text-muted"><i class="fa fa-th-list"></i></a></li>
-						<li class="pull-right"><a href="../workgroup/all-hier.do" class="text-muted"><i class="fa fa-sitemap"></i></a></li>
+						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+						<li ><span class="v-separator"></span></li>
+						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-hier.do"><i class="fa fa-map-signs"></i></a></li>
+						<li ><span class="v-separator"></span></li>
+						<li class=""><a data-toggle="tooltip" title="按栅格方式查询全部协作组" href="../workgroup/all-grid.do" class="bg-aqua-active"><i class="fa fa-th"></i></a></li>						
+						<li class=""><a data-toggle="tooltip" title="按列表方式查询全部协作组" href="../workgroup/all-list.do"><i class="fa fa-th-list"></i></a></li>						
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
@@ -53,216 +54,39 @@
 					<div gpid="wgroup-filter" class="border-bottom p-xs hidden">		
 						<div>		
 							<form class="form-inline">
-								<label class="m-r-sm">Workgroup</label><input type="text" class="form-control input-md" placeholder="storage name" gpid="list-search-sname">
+								<label class="m-r-sm">Workgroup</label><input type="text" class="form-control input-md" placeholder="storage name" gpid="list-search-wgroup-name">
 								<a class="btn btn-default btn-sm" gpid="list-search-btn"><i class="fa fa-search"></i></a>
 								<a class="btn btn-default btn-sm" gpid="list-clear-btn"><i class="fa fa-close"></i></a>
 							</form>												
 						</div>
 					</div>
 					<div id="gallery" class="infinite-container gallery row">
+					<c:forEach var="wgroup" items="${wgroups}">
 						<div class="col-md-2 image infinite-item">
 							<div class="image-inner">
-								<a href="../workgroup/workgroup-grid.do" >
-									<img src="${path_image}/gallery/gallery-1.jpg" alt="" />
+								<a href="../workgroup/workgroup-grid.do?wgroup_id=${wgroup.workgroupId}" >
+									<img src="${wgroup.imagePath}" alt="" />
 								</a>
 								<p class="image-caption">
-									测试信息
+									${wgroup.workgroupName}
 								</p>
 							</div>
 							<div class="image-info">
 								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
+									<a class="label label-primary" href="javascript:;"><i class="fa fa-flag"></i></a>
+									<a class="label label-primary" href="javascript:;"><i class="fa fa-database"></i></a>
+									<a class="label label-primary" href="javascript:;"><i class="fa fa-files-o"></i></a>
 								</div>
-								<div class="desc">
-									有时候 UI 上会出现一些仅供视觉识别的元素，比如说“汉堡包菜单按钮”，只有视力正常的人才能清楚辨识这些元素的作用。而残障人士，比如弱势或盲人是不可能知道这些
+								<div class="desc">									
+									${wgroup.description}
 								</div>
 							</div>
 						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-2.jpg" data-lightbox="gallery-group-1">
-									<img src="${path_image}/gallery/gallery-2.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Fusce aliquet ac quam at
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus eget ultricies arcu.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-3.jpg" data-lightbox="gallery-group-1">
-									<img src="${path_image}/gallery/gallery-3.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Etiam lobortis egestas nisl
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus eget ultricies arcu.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-4.jpg" data-lightbox="gallery-group-2">
-									<img src="${path_image}/gallery/gallery-4.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Donec mi quis volutpat ornare
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-
-								<div class="desc">
-									Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut et augue luctus libero dignissim sodales, sapien consequat lacinia fringilla.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-5.jpg" data-lightbox="gallery-group-2">
-									<img src="${path_image}/gallery/gallery-5.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Donec pretium volutpat ornare
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut et augue luctus libero, feugiat sapien consequat lacinia fringilla.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-6.jpg" data-lightbox="gallery-group-3">
-									<img src="${path_image}/gallery/gallery-6.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Mi quis volutpat ornare sodales
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Ut et augue luctus libero dignissim sodales. Fusce feugiat sapien consequat lacinia fringilla. Vivamus eget ultricies arcu.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-7.jpg" data-lightbox="gallery-group-3">
-									<img src="${path_image}/gallery/gallery-7.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Vestibulum ante ipsum primis
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut et augue luctus libero dignissim sodales, sapien consequat lacinia fringilla.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-8.jpg" data-lightbox="gallery-group-4">
-									<img src="${path_image}/gallery/gallery-8.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-								  Nunc eget hendrerit nisi sodales
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Ut et augue nisi sodales luctus libero dignissim sodales. Fusce feugiat nisi sodales sapien consequat lacinia fringilla.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-9.jpg" data-lightbox="gallery-group-4">
-									<img src="${path_image}/gallery/gallery-9.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Nunc eget hendrerit nisi dignissim
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Ut et augue luctus libero dignissim sodales. Fusce feugiat sapien consequat libero dignissim lacinia fringilla.
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 image infinite-item">
-							<div class="image-inner">
-								<a href="gallery/gallery-10.jpg" data-lightbox="gallery-group-4">
-									<img src="${path_image}/gallery/gallery-10.jpg" alt="" />
-								</a>
-								<p class="image-caption">
-									Sed mollis nisi sed auctor
-								</p>
-							</div>
-							<div class="image-info">
-								<div class="m-b-xs">
-									<a class="label label-success" href="javascript:;"><i class="fa fa-flag"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-database"></i></a>
-									<a class="label label-success" href="javascript:;"><i class="fa fa-files-o"></i></a>
-								</div>
-								<div class="desc">
-									Vestibulum dictum pharetra leo sed euismod. Lorem ipsum dolor sit amet, consectetur adipiscing feugiat sapien elit.
-								</div>
-							</div>
-						</div>						
+					</c:forEach>
+					<c:if test="${hasMore}">
+					<a class="infinite-more-link" href="all-grid-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}">More</a>
+					</c:if>					
 					</div>
-					<a class="infinite-more-link" href="all-grid-next.do?pageindex=2">More</a>
 				</div><!-- end box -->
 			</div>
 			<div class="col-md-3">
@@ -271,12 +95,12 @@
 					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
 						<span class="pull-left" title="Create New Workgroup" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-file-o"></i>
+							<i class="fa fa-fw fa-file-o"></i>
 							</button>
 						</span>
 						<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-fire"></i>
+							<i class="fa fa-fw fa-fire"></i>
 							</button>
 						</span>
 					</div><!-- toolbar -->
@@ -397,7 +221,7 @@
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/all-grid.js"></script>
   </body>

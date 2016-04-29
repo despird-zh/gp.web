@@ -24,16 +24,17 @@
           <section class="content-header clearfix">
 			<div class="row ">
 				<div class="col-sm-12">	
-					<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+					<h1 class="text-muted" style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
 					  工作区间
 					  <small>查看下属的工作组信息</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" class="text-muted" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
-						<li ><span class="v-separator"></span></li>			
-						<li class="pull-right"><a href="../workgroup/all-grid.do" class="text-muted"><i class="fa fa-th"></i></a></li>
-						<li class="pull-right"><a href="../workgroup/all-list.do" class="bg-aqua-active"><i class="fa fa-th-list"></i></a></li>
-						<li class="pull-right"><a href="../workgroup/all-hier.do" class="text-muted"><i class="fa fa-sitemap"></i></a></li>
+						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+						<li ><span class="v-separator"></span></li>
+						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-hier.do"><i class="fa fa-map-signs"></i></a></li>
+						<li ><span class="v-separator"></span></li>
+						<li class=""><a data-toggle="tooltip" title="按栅格方式查询全部协作组" href="../workgroup/all-grid.do"><i class="fa fa-th"></i></a></li>						
+						<li class=""><a data-toggle="tooltip" title="按列表方式查询全部协作组" href="../workgroup/all-list.do" class="bg-aqua-active"><i class="fa fa-th-list"></i></a></li>	
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
@@ -54,7 +55,7 @@
 				<div gpid="wgroup-filter" class="border-bottom p-xs hidden">
 					<div>		
 						<form class="form-inline">
-							<label class="m-r-sm">Workgroup</label><input type="text" class="form-control input-md" placeholder="storage name" gpid="list-search-sname">
+							<label class="m-r-sm">Workgroup</label><input type="text" class="form-control input-md" placeholder="storage name" gpid="list-search-wgroup-name">
 							<a class="btn btn-default btn-sm" gpid="list-search-btn"><i class="fa fa-search"></i></a>
 							<a class="btn btn-default btn-sm" gpid="list-clear-btn"><i class="fa fa-close"></i></a>
 						</form>		
@@ -62,8 +63,9 @@
 					</div>
 				</div>
 				<div class="box-body repo-list">
-					<ul class="infinite-container list-group list-group-unbordered">
-						<li class="list-group-item clearfix">
+					<ul id="list-container" class="infinite-container list-group list-group-unbordered">
+					<c:forEach var="wgroup" items="${wgroups}">
+						<li class="list-group-item clearfix infinite-item">
 							<div class="media">
 							  <div class="item-type">
 								<div class="img-32x32-repo-item img-repo-folder">
@@ -86,7 +88,7 @@
 								  <li>
 								<div class="item-name-container">
 								  <a class="item-link " href="#">
-									sub2 folder
+										${wgroup.workgroupName}
 								  </a>
 								  <span class="time"><i class="fa fa-clock-o"></i> 2015-5-12 12:13:23</span>								  
 								</div>
@@ -94,7 +96,7 @@
 								  <li class="">
 									managed by 
 									<a class="hoverlight profile_link">
-									  evilsucker
+									 ${wgroup.adminName}
 									</a>
 								  </li>
 								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
@@ -120,217 +122,19 @@
 								  <li class="">
 									<div class="description-text-container">
 									  <span class="" >
-										this is for demo usage
+										${wgroup.description}
 									  </span>
 									</div>
 								  </li>
 								</ul>
 							  </div>
 							</div>
-						</li>
-						<li class="list-group-item clearfix">
-							<div class="media">
-							  <div class="item-type">
-								<div class="img-32x32-repo-item img-repo-folder">
-								</div>
-							  </div>
-							  <div class="repo-item bd">
-								<ul class="action-list">
-								  <li class="action">
-									<a  href="#"><i class="fa fa-share-alt"></i></a>
-								  </li>
-								  <li class="action">
-									<a  href="#"><i class="fa fa-star"></i></a>
-								  </li>
-								  <li class="action" data-toggle="tooltip" title="detail information">
-									<a  href="#">
-									  <i class="fa fa-info"></i>
-									</a>
-								  </li>									
-								</ul>
-
-								<ul class="inline-list" >
-								  <li>
-								<div class="item-name-container">
-								  <a class="item-link " href="#">
-									sub2 folder
-								  </a>
-								  <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>								  
-								</div>
-								  </li>
-								  <li class="">
-									managed by 
-									<a class="hoverlight profile_link">
-									  evilsucker
-									</a>
-								  </li>
-								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-file"></i></span>
-									  13
-									</span>
-								  </li>
-								  <li title="12 People (13) external " data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-user "></i></span>
-									  25
-									</span>
-								  </li>
-								  <li title="25 done, 10 pending,3 in-prcess " data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-flag text-yellow"></i> </span>
-									  35
-									</span>
-								  </li>
-								</ul>
-								<ul class="inline-list">
-								  <li class="">
-									<div class="description-text-container">
-									  <span class="" >
-										this is for demo usage
-									  </span>
-									</div>
-								  </li>
-								</ul>
-							  </div>
-							</div>
-						</li>
-						<li class="list-group-item clearfix">
-							<div class="media">
-							  <div class="item-type">
-								<div class="img-32x32-repo-item img-repo-folder">
-								</div>
-							  </div>
-							  <div class="repo-item bd">
-								<ul class="action-list">
-								  <li class="action">
-									<a  href="#"><i class="fa fa-share-alt"></i></a>
-								  </li>
-								  <li class="action">
-									<a  href="#"><i class="fa fa-star"></i></a>
-								  </li>
-								  <li class="action" data-toggle="tooltip" title="detail information">
-									<a  href="#">
-									  <i class="fa fa-info"></i>
-									</a>
-								  </li>									
-								</ul>
-
-								<ul class="inline-list" >
-								  <li>
-								<div class="item-name-container">
-								  <a class="item-link " href="#">
-									sub2 folder
-								  </a>
-								  <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>								  
-								</div>
-								  </li>
-								  <li class="">
-									managed by 
-									<a class="hoverlight profile_link">
-									  evilsucker
-									</a>
-								  </li>
-								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-file"></i></span>
-									  13
-									</span>
-								  </li>
-								  <li title="12 People (13) external " data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-user "></i></span>
-									  25
-									</span>
-								  </li>
-								  <li title="25 done, 10 pending,3 in-prcess " data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-flag text-yellow"></i> </span>
-									  35
-									</span>
-								  </li>
-								</ul>
-								<ul class="inline-list">
-								  <li class="">
-									<div class="description-text-container">
-									  <span class="" >
-										this is for demo usage
-									  </span>
-									</div>
-								  </li>
-								</ul>
-							  </div>
-							</div>
-						</li>
-						<li class="list-group-item clearfix">
-							<div class="media">
-							  <div class="item-type">
-								<div class="img-32x32-repo-item img-repo-folder">
-								</div>
-							  </div>
-							  <div class="repo-item bd">
-								<ul class="action-list">
-								  <li class="action">
-									<a  href="#"><i class="fa fa-share-alt"></i></a>
-								  </li>
-								  <li class="action">
-									<a  href="#"><i class="fa fa-star"></i></a>
-								  </li>
-								  <li class="action" data-toggle="tooltip" title="detail information">
-									<a  href="#">
-									  <i class="fa fa-info"></i>
-									</a>
-								  </li>									
-								</ul>
-
-								<ul class="inline-list" >
-								  <li>
-								<div class="item-name-container">
-								  <a class="item-link " href="#">
-									sub2 folder
-								  </a>
-								  <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>								  
-								</div>
-								  </li>
-								  <li class="">
-									managed by 
-									<a class="hoverlight profile_link">
-									  evilsucker
-									</a>
-								  </li>
-								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-file"></i></span>
-									  13
-									</span>
-								  </li>
-								  <li title="12 People (13) external " data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-user "></i></span>
-									  25
-									</span>
-								  </li>
-								  <li title="25 done, 10 pending,3 in-prcess " data-toggle="tooltip" class="item-stat">
-									<span class="">
-									  <span><i class="fa fa-flag text-yellow"></i> </span>
-									  35
-									</span>
-								  </li>
-								</ul>
-								<ul class="inline-list">
-								  <li class="">
-									<div class="description-text-container">
-									  <span class="" >
-										this is for demo usage
-									  </span>
-									</div>
-								  </li>
-								</ul>
-							  </div>
-							</div>
-						</li>
-					</ul>
-					<a class="infinite-more-link" href="all-list-next.do?pageindex=2">More</a>
+						</li>	
+					</c:forEach>						
+					</ul>	
+					<c:if test="${hasMore}">
+						<a class="infinite-more-link" href="all-list-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}">More</a>
+					</c:if>						
 				</div><!-- /.box-body -->
 			</div><!-- end box -->
 			</div><!-- /col-md-9 -->
@@ -461,12 +265,12 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
-		 <script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
-	 <script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
+	<script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/all-list.js"></script>
   </body>

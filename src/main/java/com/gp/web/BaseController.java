@@ -1,5 +1,6 @@
 package com.gp.web;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import org.springframework.web.util.UriUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -21,6 +23,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
+import com.sun.tools.javac.util.ArrayUtils;
 
 /**
  * Define the basic method be used in Controller
@@ -202,5 +205,26 @@ public abstract class BaseController extends MultiActionController{
 				return null;
 			} 
 		}
+	}
+	
+	/**
+	 * weave the parameter with array values 
+	 * @param parameter The parameter name
+	 * @param values The array of values
+	 * 
+	 * @return the parameter string url encoded.
+	 **/
+	protected String weaveParameters(String parameter, String[] values) throws UnsupportedEncodingException{
+		StringBuffer sbuf = new StringBuffer();
+		if(null != values && values.length > 0){
+			for(String value : values){
+				sbuf.append(parameter).append("=")
+					.append(UriUtils.encode(value, "UTF-8"))
+					.append("&");
+			}
+			sbuf.setLength(sbuf.length()-1);
+		}
+		
+		return sbuf.toString();
 	}
 }

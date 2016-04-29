@@ -101,7 +101,14 @@ var PageContext =(function ($, window, undefined){
 				{ data : 'language'},
 				{ data : 'label'},
 				{ data : 'entryId', width : 30}
-			]
+			],
+			"initComplete" : function(){
+				console.log(_self.$table.find('div.dataTables_length'));
+				_self.$table.find('div.dataTables_length select').select2(
+				{
+					minimumResultsForSearch: -1 //hide the search bo		
+				});
+			}
         });
 	};
 	

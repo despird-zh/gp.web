@@ -22,6 +22,7 @@ import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupExInfo;
 import com.gp.info.WorkgroupInfo;
+import com.gp.info.WorkgroupLiteInfo;
 import com.gp.info.WorkgroupUserExInfo;
 import com.gp.info.WorkgroupUserInfo;
 import com.gp.pagination.PageQuery;
@@ -627,6 +628,36 @@ public class WorkgroupFacade {
 
 			gresult.setReturnValue(pwrapper);
 			gresult.setMessage("success find workgroups", true);
+		}catch(ServiceException e){
+			LOGGER.error("Exception when find workgroups",e);
+			gresult.setMessage("fail find workgroups", true);
+			ContextHelper.stampContext(e);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return gresult;
+	}
+	
+	/**
+	 * Find the local workgroup in paging mode
+	 **/
+	public static GeneralResult<PageWrapper<WorkgroupLiteInfo>> findLocalWorkgroups(AccessPoint accesspoint,
+			Principal principal,
+			String wgroupname,List<String> tags, PageQuery pagequery){
+		
+		GeneralResult<PageWrapper<WorkgroupLiteInfo>> gresult = new GeneralResult<PageWrapper<WorkgroupLiteInfo>>();
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_WORKGROUPS)){
+
+			// amend the operation information
+			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
+			PageWrapper<WorkgroupLiteInfo> pwrapper = workgroupservice.getLocalWorkgroups(svcctx, wgroupname, tags, pagequery);
+
+			gresult.setReturnValue(pwrapper);
+			gresult.setMessage("success find workgroups", true);
+			
 		}catch(ServiceException e){
 			LOGGER.error("Exception when find workgroups",e);
 			gresult.setMessage("fail find workgroups", true);

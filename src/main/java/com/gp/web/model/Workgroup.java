@@ -10,6 +10,8 @@ public class Workgroup {
 	
 	private String admin;
 	
+	private String adminName;
+	
 	private Long orgId;
 	
 	private String orgName;
@@ -230,5 +232,13 @@ public class Workgroup {
 
 	public void setStorageName(String storageName) {
 		this.storageName = storageName;
+	}
+
+	public String getAdminName() {
+		return adminName;
+	}
+
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
 	}	
 }
