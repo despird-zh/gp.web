@@ -21,23 +21,17 @@ import com.gp.web.model.Version;
 @Controller("wg-cabinet-ctrl")
 @RequestMapping("/workgroup")
 public class CabinetController extends BaseController{
-
-	@RequestMapping("netdisk")
-	public ModelAndView doInitial(){
-		
-		return getJspModelView("workgroup/netdisk");
-	}
 	
-	@RequestMapping("netdisk-pub")
+	@RequestMapping("publishes")
 	public ModelAndView doPubInitial(){
 		
-		return getJspModelView("workgroup/netdisk-pub");
+		return getJspModelView("workgroup/publishes");
 	}
 	
-	@RequestMapping("netdisk-pri")
+	@RequestMapping("netdisks")
 	public ModelAndView doPriInitial(){
 		
-		return getJspModelView("workgroup/netdisk-pri");
+		return getJspModelView("workgroup/netdisks");
 	}	
 	
 	@RequestMapping("netdisk-pub-content")

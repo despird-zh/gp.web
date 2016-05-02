@@ -31,7 +31,7 @@
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
 						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
 						<li ><span class="v-separator"></span></li>
-						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-hier.do"><i class="fa fa-map-signs"></i></a></li>
+						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-topic.do"><i class="fa fa-map-signs"></i></a></li>
 						<li ><span class="v-separator"></span></li>
 						<li class=""><a data-toggle="tooltip" title="按栅格方式查询全部协作组" href="../workgroup/all-grid.do" class="bg-aqua-active"><i class="fa fa-th"></i></a></li>						
 						<li class=""><a data-toggle="tooltip" title="按列表方式查询全部协作组" href="../workgroup/all-list.do"><i class="fa fa-th-list"></i></a></li>						
@@ -64,7 +64,7 @@
 					<c:forEach var="wgroup" items="${wgroups}">
 						<div class="col-md-2 image infinite-item">
 							<div class="image-inner">
-								<a href="../workgroup/workgroup-grid.do?wgroup_id=${wgroup.workgroupId}" >
+								<a href="../workgroup/topics.do?wgroup_id=${wgroup.workgroupId}" >
 									<img src="${wgroup.imagePath}" alt="" />
 								</a>
 								<p class="image-caption">

@@ -28,13 +28,12 @@
 					  <small>Browse and manage the workgroup documents</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li class="" data-toggle="tooltip" title="workgroup"><a  href="workgroup-grid.do" aria-expanded="false"><i class="fa fa-fw fa-cubes"></i></a></li>
-						<li class="active" data-toggle="tooltip" title="netdisk"><a  href="netdisk-pub.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
-						<li class="" data-toggle="tooltip" title="Share"><a  href="shares.do" aria-expanded="true"><i class="fa fa-fw fa-share-alt"></i></a></li>					
-						<li class="" data-toggle="tooltip" title="Topics"><a  href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
-						<li ><span class="v-separator"></span></li>	
-						<li class="pull-right active" data-toggle="tooltip" title="Public disk"><a class="text-primary" href="../workgroup/netdisk-pub.do"><i class="fa fa-sun-o"></i></a></li>
-						<li class="pull-right" data-toggle="tooltip" title="private disk"><a class="text-muted" href="../workgroup/netdisk-pri.do"><i class="fa fa-moon-o"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+						<li><span class="v-separator"></span></li>	
+						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publishes.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-database"></i></a></li>    
+						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisks.do" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
+						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
@@ -395,7 +394,7 @@
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
 	<%@include file="../dialog/new-file.jsp" %>
 	<%@include file="../dialog/new-folder.jsp" %>
 	<!-- GPress Page scripts -->

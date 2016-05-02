@@ -28,13 +28,12 @@
 					  <small>Browse and manage the workgroup documents</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li class="" data-toggle="tooltip" title="workgroup"><a  href="workgroup-grid.do" aria-expanded="false"><i class="fa fa-fw fa-cubes"></i></a></li>
-						<li class="active" data-toggle="tooltip" title="netdisk"><a  href="netdisk-pub.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
-						<li class="" data-toggle="tooltip" title="Share"><a  href="shares.do" aria-expanded="true"><i class="fa fa-fw fa-share-alt"></i></a></li>					
-						<li class="" data-toggle="tooltip" title="Topics"><a  href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
-						<li ><span class="v-separator"></span></li>	
-						<li class="pull-right active" data-toggle="tooltip" title="Public disk"><a class="text-primary" href="../workgroup/netdisk-pub.do"><i class="fa fa-sun-o"></i></a></li>
-						<li class="pull-right" data-toggle="tooltip" title="private disk"><a class="text-muted" href="../workgroup/netdisk-pri.do"><i class="fa fa-moon-o"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+						<li><span class="v-separator"></span></li>	
+						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publishes.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
+						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisks.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
+						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
@@ -47,17 +46,8 @@
 			  <div class="box box-widget">
 				<div class="box-header repo-header with-border" style="border-top: 1px solid #f4f4f4;">
 					<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
-					<div class="m-l-lg">					
-						<ol class="breadcrumb p-none m-b-none bg-white">					
-						<li class=""><a href="#">Root</a></li>
-						<li class="active">
-							<a data-placement="top" data-toggle="tooltip" title="" class="ellipsis ellipsis-50" data-original-title="测试目录1">测试目录1</a>
-						</li>
-						<li class="active">
-							<a data-placement="top" data-toggle="tooltip" title="" class="ellipsis ellipsis-50" data-original-title="测试目录2级信息信息">测试目录2级信息信息</a>
-						</li>
-						<li class="active">Dashboard</li>
-					</ol>
+					<div class="folder-descr">					
+						<span class="text">电力设计协作组</span>
 					</div>
 				</div><!-- /.box-header-->
 				<div gpid="wgroup-filter" class="border-bottom p-xs hidden">
@@ -211,12 +201,17 @@
 								  </li>
 								</ul>
 								<div>
-                                   <p class="tags xsmall m-b-none">
+                                   <p style="margin-bottom:0px;" class="tags xsmall">
+										<a class="tag-red " href="" title="">Fashion</a>
+										<a class="tag-yellow " href="" title="">测试</a>
+										<a class="tag-blue " href="" title="">学习</a>
+										<a class="tag-green  " href="" title="">Java</a>
 										<a class="tag-default tag-point-red" href="" title="">工具</a>
 										<a class="tag-default tag-point-yellow " href="" title="">专业</a>
 										<a class="tag-default tag-point-green" href="" title="">电气</a>
 										<a class="tag-default tag-point-blue" href="" title="">评分</a>
 										<a class="tag-default  " href="" title="">投票</a>
+										<a class="tag-red  " href="" title="">更新</a>
                                     </p>                                
                                 </div>
                                 <div gpid="comment-list-container" class="hidden">
@@ -682,6 +677,7 @@
 			</div>
 			<div class="clearfix"></div>
 		  </div>
+
           </section><!-- /.content -->
         </div><!-- /.container -->
       </div><!-- /.content-wrapper -->
@@ -702,7 +698,6 @@
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
 	<script src="${path_script}/ga/err-message.js"></script>
-	<%@include file="../dialog/new-file.jsp" %>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/netdisk.js"></script>
   </body>

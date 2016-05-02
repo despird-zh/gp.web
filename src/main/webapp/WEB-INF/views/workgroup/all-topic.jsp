@@ -25,17 +25,17 @@
           <section class="content-header">
 			<div class="row ">
 				<div class="col-sm-12">	
-					<h1 class="text-muted" style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
-					  工作组的全部话题
-					  <small>查看工作组的全部话题</small>
+					<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+					  Topics
+					  <small> Topics issued in workgroup</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
-						<li><span class="v-separator"></span></li>	
-						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publishes.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
-						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisks.do" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
-						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
-						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false" class="bg-aqua-active"><i class="fa fa-fw fa-commenting"></i></a></li>						
+						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+						<li ><span class="v-separator"></span></li>
+						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-topic.do" class="bg-aqua-active"><i class="fa fa-map-signs"></i></a></li>
+						<li ><span class="v-separator"></span></li>
+						<li class=""><a data-toggle="tooltip" title="按栅格方式查询全部协作组" href="../workgroup/all-grid.do"><i class="fa fa-th"></i></a></li>						
+						<li class=""><a data-toggle="tooltip" title="按列表方式查询全部协作组" href="../workgroup/all-list.do"><i class="fa fa-th-list"></i></a></li>
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
@@ -426,86 +426,115 @@
 				</div><!-- end box -->
 			</div>
 			<div class="col-md-3">
-				<!-- Profile Image -->
-              <div class="box box-widget no-radius border-top">
-				<div class="box-header with-border">
+              <div class="box box-widget no-radius">
+				<div class="box-header with-border border-top">
 					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
 						<span class="pull-left" title="Create New Workgroup" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-file-o"></i>
+							<i class="fa fa-fw fa-file-o"></i>
 							</button>
 						</span>
 						<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-fire"></i>
+							<i class="fa fa-fw fa-fire"></i>
 							</button>
 						</span>
 					</div><!-- toolbar -->
 				</div>
                 <div class="box-body box-profile">
-					<div class="clearfix">
-						<div class="pull-left lite-info">
-						  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-						  <h4 class="profile-username text-center" >沙特项目群</h4>
-						  <div >
-							<p class="text-muted text-center" >admin by <a>Gary </a></p>
-						  </div>
-						</div>							
-						<ul class="stats-info list-group list-group-unbordered pull-right" >
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>成员</b> <a class="pull-right">1,322</a>
-							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>工作组</b> <a class="pull-right">543</a>
-							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>文件</b> <a class="pull-right">13,287</a>
-							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>讨论</b> <a class="pull-right">13,287</a>
-							</li>
-						 </ul>
+					<div class="board-num">
+						<p class="num m-b-xs" data-docnum="143,450,822">
+							<span style="background-position: 0px -116px;" class="num0" data-num="4"></span>
+							<span style="background-position: 0px -145px;" class="num0" data-num="5"></span>
+							<span style="background-position: 0px 0px;" class="num0" data-num="0"></span>
+							<b class="spr">,</b>
+							<span style="background-position: 0px -232px;" class="num0" data-num="8"></span>
+							<span style="background-position: 0px -58px;" class="num0" data-num="2"></span>
+							<span style="background-position: 0px -58px;" class="num0" data-num="2"></span>
+						</p>
 					</div>
+					<hr class="m-t-sm m-b-xs">
+					<ul style="padding: 0" class="tag-list">
+						<li><a href="#">Close 30 </a></li>
+						<li><a href="#">R/W 40</a></li>
+						<li><a href="#">Readonly 20</a></li>
+					</ul>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
-
-              <!-- About Me Box -->
-              <div class="box box-widget border-top">
-                <div class="box-header with-border">
-                  <h3 class="box-title">About</h3>
+              <div class="box box-widget m-t-xs">
+                <div class="box-header with-border border-top">
+                  <h3 class="box-title">Hot Tags</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                  <strong><i class="fa fa-book margin-r-5"></i>  Description</strong>
-                  <p class="text-muted">
-                    B.S. in Computer Science from the University of Tennessee at Knoxville
-                  </p>
-
-                  <hr style="margin-bottom: 5px; margin-top: 5px;">
-
-                  <strong><i class="fa fa-map-marker margin-r-5"></i> Organization</strong>
-                  <p class="text-muted">Branch 华东 co.</p>
-
-                  <hr style="margin-bottom: 5px; margin-top: 5px;">
-
-                  <strong><i class="fa fa-tags margin-r-5"></i> Tags</strong>
-                  <p>
-                    <span class="label label-danger">UI Design</span>
-                    <span class="label label-success">Coding</span>
-                    <span class="label label-info">Javascript</span>
-                    <span class="label label-warning">PHP</span>
-                    <span class="label label-primary">Node.js</span>
-                  </p>
-
-                  <hr style="margin-bottom: 5px; margin-top: 5px;">
-
-                  <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+				<div class="box-body p-xxs">
+					<p style="margin-bottom:0px;" class="tags xsmall">
+						<a class="tag-red " href="" title="">Fashion</a>
+						<a class="tag-yellow " href="" title="">测试</a>
+						<a class="tag-blue " href="" title="">学习</a>
+						<a class="tag-green  " href="" title="">Java</a>
+						<a class="tag-default tag-point-red" href="" title="">工具</a>
+						<a class="tag-default tag-point-yellow " href="" title="">专业</a>
+						<a class="tag-default tag-point-green" href="" title="">电气</a>
+						<a class="tag-default tag-point-blue" href="" title="">评分</a>
+						<a class="tag-default  " href="" title="">投票</a>
+						<a class="tag-red  " href="" title="">更新</a>
+					</p>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              <!-- Hot groups Box -->
+              <div class="box box-widget m-t-xs">
+                <div class="box-header with-border border-top">
+                  <h3 class="box-title">Hot Workgroups</h3>
+                </div><!-- /.box-header -->
+				<div class="box-body p-xxs">
+                  <ul class="list-group clear-list m-l-xs m-t-none m-b-none m-r-xs">
+					<li class="list-group-item first-item">
+						<span class="label label-success">1</span> 商务问题讨论组
+						<span class="pull-right m-t-xs" style="font-size: 12px;color:#444;">
+							<span class="">
+							  <span><i class="fa fa-database"></i></span>
+							  13
+							</span>
+							<span class="">
+							  <span><i class="fa fa-user "></i></span>
+							  25
+							</span>
+							<span class="">
+							  <span><i class="fa fa-flag "></i></span>
+							  25
+							</span>
+						</span>
+						
+					</li>
+					<li class="list-group-item">
+						<span class="pull-right">
+							10:16 am
+						</span>
+						<span class="label label-info">2</span> Sign a contract
+					</li>
+					<li class="list-group-item">
+						<span class="pull-right">
+							08:22 pm
+						</span>
+						<span class="label label-primary">3</span> Open new shop
+					</li>
+					<li class="list-group-item">
+						<span class="pull-right">
+							11:06 pm
+						</span>
+						<span class="label label-default">4</span> Call back to Sylvia
+					</li>
+					<li class="list-group-item">
+						<span class="pull-right">
+							12:00 am
+						</span>
+						<span class="label label-primary">5</span> Write a letter to Sandra
+					</li>
+				</ul>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 			  </div>
 			<div class="clearfix"></div>
 		  </div>
-
           </section><!-- /.content -->
         </div><!-- /.container -->
       </div><!-- /.content-wrapper -->
@@ -522,13 +551,13 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
-	 <script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
-	 <script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
+	<script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js"></script>
 	<!-- GPress Page scripts -->
-	<script src="${path_script}/pages/workgroup/all-topics.js"></script>
+	<script src="${path_script}/pages/workgroup/all-topic.js"></script>
   </body>
 </html>

@@ -31,7 +31,7 @@
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
 						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
 						<li ><span class="v-separator"></span></li>
-						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-hier.do"><i class="fa fa-map-signs"></i></a></li>
+						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-topic.do"><i class="fa fa-map-signs"></i></a></li>
 						<li ><span class="v-separator"></span></li>
 						<li class=""><a data-toggle="tooltip" title="按栅格方式查询全部协作组" href="../workgroup/all-grid.do"><i class="fa fa-th"></i></a></li>						
 						<li class=""><a data-toggle="tooltip" title="按列表方式查询全部协作组" href="../workgroup/all-list.do" class="bg-aqua-active"><i class="fa fa-th-list"></i></a></li>	
@@ -65,11 +65,10 @@
 				<div class="box-body repo-list">
 					<ul id="list-container" class="infinite-container list-group list-group-unbordered">
 					<c:forEach var="wgroup" items="${wgroups}">
-						<li class="list-group-item clearfix infinite-item">
+						<li class="list-group-item infinite-item">
 							<div class="media">
-							  <div class="item-type">
-								<div class="img-32x32-repo-item img-repo-folder">
-								</div>
+							  <div class="item-type">								
+									<img style="width:40px;height:40px;" src="${wgroup.imagePath}"></img>								
 							  </div>
 							  <div class="repo-item bd">
 								<ul class="action-list">
@@ -87,7 +86,7 @@
 								<ul class="inline-list" >
 								  <li>
 								<div class="item-name-container">
-								  <a class="item-link " href="#">
+								  <a class="item-link " href="../workgroup/topics.do?wgroup_id=${wgroup.workgroupId}">
 										${wgroup.workgroupName}
 								  </a>
 								  <span class="time"><i class="fa fa-clock-o"></i> 2015-5-12 12:13:23</span>								  
@@ -130,11 +129,11 @@
 							  </div>
 							</div>
 						</li>	
-					</c:forEach>						
+					</c:forEach>							
 					</ul>	
 					<c:if test="${hasMore}">
-						<a class="infinite-more-link" href="all-list-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}">More</a>
-					</c:if>						
+						<a class="infinite-more-link" href="all-list-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}"></a>
+					</c:if>					
 				</div><!-- /.box-body -->
 			</div><!-- end box -->
 			</div><!-- /col-md-9 -->
@@ -144,12 +143,12 @@
 					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
 						<span class="pull-left" title="Create New Workgroup" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-file-o"></i>
+							<i class="fa fa-fw fa-file-o"></i>
 							</button>
 						</span>
 						<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-fire"></i>
+							<i class="fa fa-fw fa-fire"></i>
 							</button>
 						</span>
 					</div><!-- toolbar -->

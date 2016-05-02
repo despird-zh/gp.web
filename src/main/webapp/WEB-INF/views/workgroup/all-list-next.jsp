@@ -3,9 +3,8 @@
 <c:forEach var="wgroup" items="${wgroups}">
 	<li class="list-group-item clearfix infinite-item">
 		<div class="media">
-		  <div class="item-type">
-			<div class="img-32x32-repo-item img-repo-folder">
-			</div>
+		  <div class="item-type">								
+				<img style="width:40px;height:40px;" src="${wgroup.imagePath}"></img>								
 		  </div>
 		  <div class="repo-item bd">
 			<ul class="action-list">

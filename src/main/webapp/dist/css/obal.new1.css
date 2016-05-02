@@ -386,6 +386,9 @@ a.ellipsis, span.ellipsis, em.ellipsis {
     vertical-align: top;
     white-space: nowrap;
 }
+.media{
+	padding : 5px;
+}
 .media::after, .bd::after {
     clear: both;
     content: " x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x ";
@@ -398,12 +401,9 @@ a.ellipsis, span.ellipsis, em.ellipsis {
 }
 .media .item-type {
     float: left;
-    margin-right: 5px;
-	margin-left: 5px;
-	margin-top: 5px;
+    margin: 5px 10px 5px 5px;
 	text-align: center;
 	width: 41px;
-	height: 41px;
 }
 
 .img-32x32-repo-item {
@@ -427,8 +427,9 @@ a.ellipsis, span.ellipsis, em.ellipsis {
 }
 
 .media .bd {
+	color: #777;
     display: table-cell;
-	padding: 4px 5px 4px 0px;
+	padding: 0 5px 0 0px;
 }
 
 .breadcrumb > li + li::before {
@@ -493,10 +494,11 @@ a.ellipsis, span.ellipsis, em.ellipsis {
 }
 
 .repo-item .item-name-container .item-link{
-    color: #333;
     font-size: 16px;
 }
-
+.repo-item .item-name-container .time{
+	font-size: 12px;
+}
 .inline-list{
 	padding-left:0px;
 }
@@ -512,7 +514,7 @@ a.ellipsis, span.ellipsis, em.ellipsis {
 
 .repo-item .inline-list .item-stat {
 	cursor:pointer;
-    font-size: 14px;
+    font-size: 12px;
 	margin-left: 5px;
 }
 
@@ -520,8 +522,7 @@ a.ellipsis, span.ellipsis, em.ellipsis {
 	background-color : #555;
 }
 .repo-item .inline-list .item-stat i{
-	color : #888;
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .repo-item .description-text-container {
@@ -620,6 +621,7 @@ margin-right: 2px;
 margin-left: 46px;
 }
 .ticket .post .direct-chat-messages{
+	padding-top :0;
 	padding-left:0;
 	height:auto;
 }
