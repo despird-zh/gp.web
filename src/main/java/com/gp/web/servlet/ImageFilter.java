@@ -53,6 +53,9 @@ public class ImageFilter implements Filter{
 			if(!imgfile.exists()){
 				
 				LOGGER.debug("image not exist : {}", imgfile.getAbsolutePath());
+				if(!imgfile.getParentFile().exists())
+					imgfile.getParentFile().mkdirs();
+				
 				// load image from database to disk directory.
 				loadImageToCache(_request, imgfile.getParent(), fileName);
 				// write image to browser
