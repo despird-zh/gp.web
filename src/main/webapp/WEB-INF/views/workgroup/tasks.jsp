@@ -35,6 +35,7 @@
 						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisks.do" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
 						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-flag"></i></a></li>							
 						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do" aria-expanded="false" ><i class="fa fa-fw fa-info-circle"></i></a></li>
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
