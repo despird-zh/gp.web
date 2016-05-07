@@ -30,8 +30,8 @@
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
 						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
 						<li><span class="v-separator"></span></li>	
-						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publishes.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
-						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisks.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
+						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
 						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
 						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do" aria-expanded="false" ><i class="fa fa-fw fa-info-circle"></i></a></li>

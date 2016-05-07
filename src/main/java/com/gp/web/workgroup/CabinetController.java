@@ -22,16 +22,16 @@ import com.gp.web.model.Version;
 @RequestMapping("/workgroup")
 public class CabinetController extends BaseController{
 	
-	@RequestMapping("publishes")
+	@RequestMapping("publish")
 	public ModelAndView doPubInitial(){
 		
-		return getJspModelView("workgroup/publishes");
+		return getJspModelView("workgroup/publish");
 	}
 	
-	@RequestMapping("netdisks")
+	@RequestMapping("netdisk")
 	public ModelAndView doPriInitial(){
 		
-		return getJspModelView("workgroup/netdisks");
+		return getJspModelView("workgroup/netdisk");
 	}	
 	
 	@RequestMapping("netdisk-pub-content")
