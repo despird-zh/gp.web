@@ -32,6 +32,7 @@
 						<li><span class="v-separator"></span></li>	
 						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-database"></i></a></li>    
 						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
 						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
 						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do" aria-expanded="false" ><i class="fa fa-fw fa-info-circle"></i></a></li>
@@ -276,7 +277,9 @@
 					</li>
 					{{#childStat}}
 					<li class="item-stat" data-toggle="tooltip" title="" data-original-title="{{childStat.statTooltip}}">
-						<span style="" class="label label-default"><i class="fa fa-file"></i></span>
+						
+						<span style="" class="label label-default v-center"><i class="fa fa-file"></i></span>
+						
 						<div class="countinfo-wrapper">
 							<div class="countinfo">
 								<span>
@@ -289,7 +292,7 @@
 					{{/childStat}}
 					{{#favoriteStat}}
 					<li class="item-stat" data-toggle="tooltip" title="" data-original-title="{{favoriteStat.statTooltip}}">
-						<span style="" class="label label-default"><i class="fa fa-star"></i></span>
+						<span style="" class="label label-default v-center"><i class="fa fa-star"></i></span>
 						<div class="countinfo-wrapper">
 							<div class="countinfo">
 								<span>
@@ -302,7 +305,7 @@
 					{{/favoriteStat}}
 					{{#versionStat}}
 					<li class="item-stat" data-toggle="tooltip" title="" data-original-title="{{versionStat.statTooltip}}">
-						<span style="" class="popup-marker label label-default" gpid="versionlist"><i class="fa fa-signal"></i></span>
+						<span style="" class="popup-marker label label-default v-center" gpid="versionlist"><i class="fa fa-signal"></i></span>
 						<div class="countinfo-wrapper">
 							<div class="countinfo">
 								<span>
@@ -330,7 +333,7 @@
 					{{/versionStat}}
 					{{#propStat}}
 					<li class="item-stat" data-toggle="tooltip" title="" data-original-title="{{propStat.}}">
-						<span class="popup-marker label label-default" gpid="informationlist"><i class="fa fa-info-circle"></i></span>
+						<span class="popup-marker label label-default v-center" gpid="informationlist"><i class="fa fa-info-circle"></i></span>
 						<div class="content hide">
 							<div class="panel-body popover-content">
 								<table class="table table-condensed" style="width: 250px;">

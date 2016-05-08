@@ -38,6 +38,7 @@ public class TransferServlet extends HttpServlet {
         // Remove some files
         while(files.size() > 20)
         {
+        	
             files.remove(0);
         }
  

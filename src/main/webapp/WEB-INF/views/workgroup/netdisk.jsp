@@ -32,6 +32,7 @@
 						<li><span class="v-separator"></span></li>	
 						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
 						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
 						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
 						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do" aria-expanded="false" ><i class="fa fa-fw fa-info-circle"></i></a></li>
@@ -106,7 +107,9 @@
                                         </a>
                                     </li>
                                     <li class="item-stat" data-toggle="tooltip" title="" data-original-title="13 Files, 8.4 MB">
-										<span style="" class="label label-default"><i class="fa fa-file"></i></span>
+										
+										<span style="" class="label label-default v-center"><i class="fa fa-file"></i></span>
+										
 										<div class="countinfo-wrapper">
 											<div class="countinfo">
 												<span>
@@ -536,18 +539,18 @@
 				<div class="box-header with-border">
 					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
 						<span class="pull-left" title="Create New Doc" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-file-o"></i>
+							<button gpid="new-file-btn" class="btn btn-warning btn-xs " >
+							<i class="fa fa-fw fa-file-o"></i>
 							</button>
 						</span>
 						<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-fire"></i>
+							<button gpid="new-folder-btn" class="btn btn-default btn-xs" >
+							<i class="fa fa-fw fa-fire"></i>
 							</button>
 						</span>
 						<span class="pull-left" title="Show clipboard content" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-clipboard"></i>
+							<button class="btn btn-default btn-xs" >
+							<i class="fa fa-fw fa-clipboard"></i>
 							</button>
 						</span>
 					</div><!-- toolbar -->
@@ -695,10 +698,14 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
+	<!-- mustache -->
+    <script src="${path_plugins}/mustache/mustache.min.js"></script>
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
-	<script src="${path_script}/ga/err-message.js"></script>
+	<script src="${path_script}/message.js"></script>
+	<%@include file="../dialog/new-file.jsp" %>
+	<%@include file="../dialog/new-folder.jsp" %>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/netdisk.js"></script>
   </body>

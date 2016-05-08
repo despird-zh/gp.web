@@ -1,30 +1,42 @@
 ;
-(function ($, window, undefined) {
+var PageContext = (function ($, window, undefined) {
 
 	"use strict";
 	
-	var NetdiskPub = {
+	var Netdisk = {
 
 		$filter_switch_btn : $('section.content a[gpid="filter-switch-btn"]'),
 
 		$filter_panel : $('section.content div[gpid="wgroup-filter"]'),
-
+		$new_file : $('div.view-toolbar button[gpid=new-file-btn]'),
+		$new_folder : $('div.view-toolbar button[gpid=new-folder-btn]'),
+		
 		initial : function () {
 			var _self = this;
 			_self.$filter_switch_btn.bind('click', function () {
 				var _$self = $(this);
-				NetdiskPub.$filter_panel.toggleClass('hidden');
-				if (NetdiskPub.$filter_panel.hasClass('hidden')) {
+				Netdisk.$filter_panel.toggleClass('hidden');
+				if (Netdisk.$filter_panel.hasClass('hidden')) {
 
 					_$self.find('i').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
 				} else {
 					_$self.find('i').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
 				}
 			});
+						
+			_self.$new_file.bind('click', function(){
+			
+				GPContext.showNewFile();
+			});
+			
+			_self.$new_folder.bind('click', function(){
+			
+				GPContext.showNewFolder();
+			});
 		}
 	};
 
-	NetdiskPub.initial();
+	Netdisk.initial();
 
 	$('a[gpid="show-comments-btn"]').bind('click', function(){
 		var _$self_p = $(this).parent().parent().parent();
@@ -60,4 +72,8 @@
 			}
 		});
 	});
+	
+	return {
+		
+	};
 })(jQuery, window);

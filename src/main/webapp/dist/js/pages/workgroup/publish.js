@@ -35,12 +35,12 @@
 			
 			_self.$new_file.bind('click', function(){
 			
-				$.GPContext.showNewFile();
+				GPContext.showNewFile();
 			});
 			
 			_self.$new_folder.bind('click', function(){
 			
-				$.GPContext.showNewFolder();
+				GPContext.showNewFolder();
 			});
 			
 			_self.loadCabinetContent(3, 23);

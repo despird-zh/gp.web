@@ -127,7 +127,7 @@ $(function (){
 	
 	NewFolderModal.initial();
 	
-	$.GPContext.showNewFolder = function(callback){
+	GPContext.showNewFolder = function(callback){
 		NewFolderModal.newFolderShow(callback);
 	};
 });

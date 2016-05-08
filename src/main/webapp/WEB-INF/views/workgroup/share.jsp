@@ -25,16 +25,16 @@
 			<div class="row ">
 				<div class="col-sm-12">	
 					<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
-						任务信息
-						<small> 展现工作组中相关的任务信息</small>
+					  Share&Links
+					  <small> Share All the share information of workgroup</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
 						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
 						<li><span class="v-separator"></span></li>	
 						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
 						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
-						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
-						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-flag"></i></a></li>							
+						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-link"></i></a></li>	
+						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
 						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do" aria-expanded="false" ><i class="fa fa-fw fa-info-circle"></i></a></li>
 					</ul>
@@ -77,211 +77,276 @@
 										<a  href="#">
 										  <i class="fa fa-signal"></i>
 										</a>
-									</li>									
+									  </li>
+									<li class="action" data-toggle="tooltip" title="detail information">
+									<a  href="#">
+									  <i class="fa fa-info"></i>
+									</a>
+								  </li>
+									<li class="action" data-toggle="tooltip" title="comments information">
+									<a  href="#">
+									  <i class="fa fa-commenting"></i>
+									</a>
+								  </li>
+								  <li class="action" data-toggle="tooltip" title="Share file">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action" data-toggle="tooltip" title="favorite file">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
 								</ul>
 								<div class="item-name-container">
 								  <a class="item-link " href="#">
-									某某设计开发文件
-								  </a>
+									sub2 folder
+								  </a>     
+
 								  <span class="badge long-badge ellipsis" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
 									Owned externally
-								  </span>								  
+								  </span>
 								</div>
 								<ul class="inline-list" >
 								  <li class="">
-									负责人
+									Updated yesterday by 
 									<a class="hoverlight profile_link">
 									  evilsucker
 									</a>
-									来自于
-									<a class="hoverlight profile_link">
-										康辉设计公司
-									</a>
-								  </li>							
-								  <li >
-									<span class="item-stat">
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
 									  <span>
-										2014年5月6日
+										<i class="fa fa-file"></i>
 									  </span>
-									  <span>
-										<i class="fa  fa-arrows-h"></i>
-									  </span>
-									 <span>
-										2014年5月8日
-									  </span>
+									  13
 									</span>
 								  </li>
-								  <li style="width:80px;" data-toggle="tooltip" title="55% 完成">
-									<div class="progress progress-sm m-b-none progress-striped active">
-									  <div style="width: 55%" class="progress-bar progress-bar-danger"></div>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
 									</div>
 								  </li>
-								</ul>								
+								</ul>
 							  </div>
 							</div>
 						</li>
 						<li class="list-group-item clearfix">
 							<div class="media">
 							  <div class="item-type">
-								<div class="img-32x32-repo-item img-normal-task">
+								<div class="img-32x32-repo-item img-workflow-task">
 								</div>
 							  </div>
 							  <div class="repo-item bd">
 								<ul class="action-list">
-									<li class="action" data-toggle="tooltip" title="version information">
-										<a  href="#">
-										  <i class="fa fa-signal"></i>
-										</a>
-									</li>									
+									<li class="action">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
+								
 								</ul>
 								<div class="item-name-container">
 								  <a class="item-link " href="#">
-									某某设计开发文件
-								  </a>
+									sub2 folder
+								  </a>      
+
 								  <span class="badge long-badge ellipsis" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
 									Owned externally
-								  </span>								  
+								  </span>
 								</div>
 								<ul class="inline-list" >
 								  <li class="">
-									负责人
+									Updated yesterday by 
 									<a class="hoverlight profile_link">
 									  evilsucker
 									</a>
-									来自于
-									<a class="hoverlight profile_link">
-										康辉设计公司
-									</a>
-								  </li>							
-								  <li >
-									<span class="item-stat">
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
 									  <span>
-										2014年5月6日
+										<i class="fa fa-file"></i>
 									  </span>
-									  <span>
-										<i class="fa  fa-arrows-h"></i>
-									  </span>
-									 <span>
-										2014年5月8日
-									  </span>
+									  13
 									</span>
 								  </li>
-								  <li style="width:80px;" data-toggle="tooltip" title="55% 完成">
-									<div class="progress progress-sm m-b-none progress-striped active">
-									  <div style="width: 55%" class="progress-bar progress-bar-danger"></div>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
 									</div>
 								  </li>
-								</ul>								
+								</ul>
 							  </div>
 							</div>
 						</li>
 						<li class="list-group-item clearfix">
 							<div class="media">
 							  <div class="item-type">
-								<div class="img-32x32-repo-item img-normal-task">
+								<div class="img-32x32-repo-item img-repo-folder">
 								</div>
 							  </div>
 							  <div class="repo-item bd">
 								<ul class="action-list">
-									<li class="action" data-toggle="tooltip" title="version information">
-										<a  href="#">
-										  <i class="fa fa-signal"></i>
-										</a>
-									</li>									
+								  <li class="action">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
 								</ul>
 								<div class="item-name-container">
 								  <a class="item-link " href="#">
-									某某设计开发文件
-								  </a>
-								  <span class="badge long-badge ellipsis" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
+									sub2 folder
+								  </a>      
+
+								  <span class="badge long-badge ellipsis ellipsis_180" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
 									Owned externally
-								  </span>								  
+								  </span>
 								</div>
 								<ul class="inline-list" >
 								  <li class="">
-									负责人
+									Updated yesterday by 
 									<a class="hoverlight profile_link">
 									  evilsucker
 									</a>
-									来自于
-									<a class="hoverlight profile_link">
-										康辉设计公司
-									</a>
-								  </li>							
-								  <li >
-									<span class="item-stat">
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
 									  <span>
-										2014年5月6日
+										<i class="fa fa-file"></i>
 									  </span>
-									  <span>
-										<i class="fa  fa-arrows-h"></i>
-									  </span>
-									 <span>
-										2014年5月8日
-									  </span>
+									  13
 									</span>
 								  </li>
-								  <li style="width:80px;" data-toggle="tooltip" title="55% 完成">
-									<div class="progress progress-sm m-b-none progress-striped active">
-									  <div style="width: 55%" class="progress-bar progress-bar-danger"></div>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
 									</div>
 								  </li>
-								</ul>								
+								</ul>
 							  </div>
 							</div>
+
 						</li>
 						<li class="list-group-item clearfix">
 							<div class="media">
 							  <div class="item-type">
-								<div class="img-32x32-repo-item img-normal-task">
+								<div class="img-32x32-repo-item img-repo-file">
 								</div>
 							  </div>
 							  <div class="repo-item bd">
 								<ul class="action-list">
-									<li class="action" data-toggle="tooltip" title="version information">
-										<a  href="#">
-										  <i class="fa fa-signal"></i>
-										</a>
-									</li>									
+								  <li class="action">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
 								</ul>
 								<div class="item-name-container">
 								  <a class="item-link " href="#">
-									某某设计开发文件
-								  </a>
-								  <span class="badge long-badge ellipsis" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
+									sub2 file
+								  </a>      
+
+								  <span class="badge long-badge ellipsis ellipsis_200" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
 									Owned externally
-								  </span>								  
+								  </span>
 								</div>
 								<ul class="inline-list" >
 								  <li class="">
-									负责人
+									Updated yesterday by 
 									<a class="hoverlight profile_link">
 									  evilsucker
 									</a>
-									来自于
-									<a class="hoverlight profile_link">
-										康辉设计公司
-									</a>
-								  </li>							
-								  <li >
-									<span class="item-stat">
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
 									  <span>
-										2014年5月6日
+										<i class="fa fa-file"></i>
 									  </span>
-									  <span>
-										<i class="fa  fa-arrows-h"></i>
-									  </span>
-									 <span>
-										2014年5月8日
-									  </span>
+									  13
 									</span>
 								  </li>
-								  <li style="width:80px;" data-toggle="tooltip" title="55% 完成">
-									<div class="progress progress-sm m-b-none progress-striped active">
-									  <div style="width: 55%" class="progress-bar progress-bar-danger"></div>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
 									</div>
 								  </li>
-								</ul>								
+								</ul>
 							  </div>
 							</div>
 

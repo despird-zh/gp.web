@@ -275,7 +275,7 @@ $(function (){
 	
 	NewFileModal.initial();
 	
-	$.GPContext.showNewFile = function(callback){
+	GPContext.showNewFile = function(callback){
 		NewFileModal.newFileShow(callback);
 	};
 
