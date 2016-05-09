@@ -24,70 +24,68 @@
 		<h4 class="modal-title" id="select-user-modal-label">New File</h4>
 	  </div>
 	  <div class="modal-body clearfix">
-		
-		<div class="col-md-6">		
-			<div class="box-body no-padding m-b-xs">		
-				<table class="table table-bordered table-condensed">
-				<tbody>
-					<tr>
-						<th style="width: 80%">File Name</th>
-						<th style="width: 20%">Act.</th>
-					</tr>
-				</tbody>			
-				</table>	
-			  <div gpid="upload-files-wrapper" class="no-margin no-padding" style="min-height:237px;">
-				  <table  gpid="upload-files" class="table table-condensed table-bordered table-ellipsis" style="table-layout: fixed;margin-bottom:0px;">
+		<div class="row">
+			<div class="col-md-6">		
+				<div class="box-body no-padding m-b-xs">		
+					<table class="table table-bordered table-condensed">
 					<tbody>
-						<tr gpid="blank-row"><td colspan="2">No results ... </td></tr>
-					</tbody>
-				  </table>
-			  </div>			
-			</div>	<!--./box-body-->
-		</div><!--./col-md-5-->
-		<div class="col-md-6">	
-			<form class="form-horizontal">
-				<div class="form-group">
-				  <label for="item-storage-name" class="col-sm-8 m-t-xs m-b-none m-l-lg" style="text-align: left;">File Detail:</label>
-				</div>
-				<div class="form-group">
-				  <label for="item-storage-name" class="col-sm-3 control-label">Name</label>
-				  <div class="col-sm-8">
-					<input type="text" class="form-control" id="file-dtl-name" placeholder="file name">					
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label for="item-capacity" class="col-sm-3 control-label">Size</label>
-				  <div class="col-sm-5">
-					<div class="input-group">
-						<input type="text" class="form-control" id="file-dtl-size" placeholder="file size">
-						<span class="input-group-addon">Bytes</span>
+						<tr>
+							<th style="width: 80%">File Name</th>
+							<th style="width: 20%">Act.</th>
+						</tr>
+					</tbody>			
+					</table>	
+				  <div gpid="upload-files-wrapper" class="no-margin no-padding" style="min-height:237px;">
+					  <table  gpid="upload-files" class="table table-condensed table-bordered table-ellipsis" style="table-layout: fixed;margin-bottom:0px;">
+						<tbody>
+							<tr gpid="blank-row"><td colspan="2">No results ... </td></tr>
+						</tbody>
+					  </table>
+				  </div>			
+				</div>	<!--./box-body-->
+			</div><!--./col-md-5-->
+			<div class="col-md-6">	
+				<form class="form-horizontal">
+					<div class="form-group">
+					  <label for="item-storage-name" class="pull-left m-r-sm m-l-md" >File Detail:</label>
+					  <button type="button" gpid="update-file-item-btn" class="btn btn-xs btn-primary pull-left" ><i class="fa fa-fw fa-save"></i></button>
+					</div>
+					<div class="form-group">
+					  <label for="item-storage-name" class="col-sm-3 control-label">Name</label>
+					  <div class="col-sm-8">
+						<input type="text" class="form-control" id="file-dtl-name" placeholder="file name">					
 					  </div>
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label for="item-used" class="col-sm-3 control-label">Type</label>
-				  <div class="col-sm-5">
-					<input type="text" class="form-control" id="file-dtl-type" placeholder="doc type">
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label for="item-description" class="col-sm-3 control-label">Description</label>
-				  <div class="col-sm-8">
-					<textarea placeholder="Enter ..." rows="2" id="file-dtl-description" class="form-control"></textarea>
-				  </div>
-				</div>
-				<div class="form-group">
-				  <div class="col-sm-11">
-					<a gpid="update-file-item-btn" class="btn btn-primary pull-right"><i></i>update</a>
-				  </div>
-				</div>
-			</form>
+					</div>
+					<div class="form-group">
+					  <label for="item-capacity" class="col-sm-3 control-label">Size</label>
+					  <div class="col-sm-7">
+						<div class="input-group">
+							<input type="text" class="form-control" id="file-dtl-size" placeholder="file size">
+							<span class="input-group-addon">Bytes</span>
+						  </div>
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label for="item-used" class="col-sm-3 control-label">Type</label>
+					  <div class="col-sm-5">
+						<input type="text" class="form-control" id="file-dtl-type" placeholder="doc type">
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label for="item-description" class="col-sm-3 control-label">Description</label>
+					  <div class="col-sm-8">
+						<textarea placeholder="Enter ..." rows="2" id="file-dtl-description" class="form-control"></textarea>
+					  </div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="col-md-12 m-b-n-sm">	
+				<div class="progress sm m-b-xs">
+					<div gpid="probress-bar" style="width: 0%" class="progress-bar progress-bar-blue"></div>
+				</div>	
+			</div>		
 		</div>
-		<div class="col-md-12 m-b-n-sm">	
-			<div class="progress sm m-b-xs">
-				<div gpid="probress-bar" style="width: 0%" class="progress-bar progress-bar-blue"></div>
-			</div>	
-		</div>		
 	  </div>
 	  <div class="modal-footer">
 		<span class="btn btn-success fileinput-button pull-left">
@@ -96,7 +94,7 @@
 			<!-- The file input field used as target for the file upload widget -->
 			<input gpid="fileupload" type="file" name="files[]" multiple>
 		</span>
-		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Clear</button>
+		<button type="button" gpid="upload-clear-btn" class="btn btn-default pull-left" >Clear</button>
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		<button gpid="btn_exec" type="button" class="btn btn-primary">start</button>
 	  </div>
@@ -131,7 +129,12 @@ $(function (){
 		$files_tbody : $('#new-file-modal table[gpid="upload-files"] > tbody'),
 		$file_upload : $('#new-file-modal input[gpid="fileupload"]'),
 		$progress_bar : $('#new-file-modal div[gpid="probress-bar"]'),
+		
+		_blank_row : '<tr gpid="blank-row"><td colspan="2">No results ... </td></tr>',
+		
 		$upload_btn : $('#new-file-modal button[gpid="btn_exec"]'),
+		$clear_btn : $('#new-file-modal button[gpid="upload-clear-btn"]'),
+		
 		$file_tmpl : $('#select-file-template'),
 		$file_upload_wrapper : $('#new-file-modal div[gpid="upload-files-wrapper"]'),
 		$update_file_item : $('#new-file-modal a[gpid="update-file-item-btn"]'),
@@ -150,9 +153,9 @@ $(function (){
 			_self.$newfile_modal.modal('hide');
 			_self.bindFileSelect();
 			// bind upload button
-			_self.$upload_btn.bind('click', function(){
+			_self.$upload_btn.on('click', function(){
 				
-				NewFileModal.startUpload();
+				_self.startUpload();
 			});
 			// set scroll bar
 			_self.$file_upload_wrapper.slimscroll({
@@ -161,23 +164,37 @@ $(function (){
 			  size: "4px"
 			});
 			// bind save file item
-			_self.$update_file_item.bind('click', function(){
+			_self.$update_file_item.on('click', function(){
 				
 				var filename = $(this).attr('gp-data-file-name');
 				NewFileModal.saveFileItem(filename);
 			});
+			
+			_self.$clear_btn.on('click', $.proxy(_self.destroyFileSelect , _self));
 		}
 	};
 
+	NewFileModal.destroyFileSelect = function(e){
+		var _self = this;
+		e.stopPropagation();
+		_self.total_size = 0;
+		for (var k in _self.filedata_map) {
+			
+			delete _self.filedata_map[k];
+		}
+		_self.$files_tbody.empty().append(_self._blank_row);
+	};
+	
 	NewFileModal.bindFileSelect = function(){
 		
 		var _self = this;
+		
 		_self.$file_upload.fileupload({
 			dataType: 'json',
 			url: '../transfer',
 			autoUpload : false,
 			done : function(e, data){
-				console.log(data);
+				//console.log(data);
 				NewFileModal.uploaded_size = NewFileModal.uploaded_size + data.loaded;
 				var progress = parseInt(NewFileModal.uploaded_size / NewFileModal.total_size * 100, 10);
 				NewFileModal.$progress_bar.css(
@@ -217,6 +234,7 @@ $(function (){
 				});
 			}
 		});
+		
 	};
 	
 	/*

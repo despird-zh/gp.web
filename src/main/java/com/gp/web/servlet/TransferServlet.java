@@ -30,14 +30,14 @@ public class TransferServlet extends HttpServlet {
             throws ServletException, IOException{
  
         // 1. Upload File Using Java Servlet API
-        files.addAll(MultipartRequestHandler.uploadByJavaServletAPI(request));            
+        files = MultipartRequestHandler.uploadByJavaServletAPI(request);            
  
         // 1. Upload File Using Apache FileUpload
         //files.addAll(MultipartRequestHandler.uploadByApacheFileUpload(request));
  
         // Remove some files
         while(files.size() > 20)
-        {
+        {   
         	
             files.remove(0);
         }
@@ -47,7 +47,8 @@ public class TransferServlet extends HttpServlet {
  
         // 3. Convert List<FileMeta> into JSON format
         ObjectMapper mapper = new ObjectMapper();
- 
+        String jstr = mapper.writeValueAsString(files);
+        System.out.println(jstr);
         // 4. Send resutl to client
         mapper.writeValue(response.getOutputStream(), files);
  
@@ -59,32 +60,32 @@ public class TransferServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
  
-         // 1. Get f from URL upload?f="?"
-         String value = request.getParameter("f");
+    	// 1. Get f from URL upload?f="?"
+    	String value = request.getParameter("f");
+
+    	// 2. Get the file of index "f" from the list "files"
+    	FileMeta getFile = files.get(Integer.parseInt(value));
  
-         // 2. Get the file of index "f" from the list "files"
-         FileMeta getFile = files.get(Integer.parseInt(value));
- 
-         try {        
-                 // 3. Set the response content type = file content type 
-                 response.setContentType(getFile.getFileType());
- 
-                 // 4. Set header Content-disposition
-                 response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getFileName()+"\"");
- 
-                 // 5. Copy file inputstream to response outputstream
-                InputStream input = getFile.getContent();
-                OutputStream output = response.getOutputStream();
-                byte[] buffer = new byte[1024*10];
- 
-                for (int length = 0; (length = input.read(buffer)) > 0;) {
-                    output.write(buffer, 0, length);
-                }
- 
-                output.close();
-                input.close();
+    	try {        
+			// 3. Set the response content type = file content type 
+			response.setContentType(getFile.getFileType());
+			 
+			// 4. Set header Content-disposition
+			 response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getFileName()+"\"");
+			 
+			// 5. Copy file inputstream to response outputstream
+			InputStream input = getFile.getContent();
+			OutputStream output = response.getOutputStream();
+			byte[] buffer = new byte[1024*10];
+			 
+			for (int length = 0; (length = input.read(buffer)) > 0;) {
+				output.write(buffer, 0, length);
+			}
+			
+			output.close();
+			input.close();
          }catch (IOException e) {
-                e.printStackTrace();
+        	 e.printStackTrace();
          }
  
     }

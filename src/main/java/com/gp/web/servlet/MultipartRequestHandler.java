@@ -11,23 +11,25 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
  
 public class MultipartRequestHandler {
  
+	static Logger LOGGER = LoggerFactory.getLogger(MultipartRequestHandler.class);
+	
     public static List<FileMeta> uploadByJavaServletAPI(HttpServletRequest request) throws IOException, ServletException{
  
         List<FileMeta> files = new LinkedList<FileMeta>();
  
         // 1. Get all parts
         Collection<Part> parts = request.getParts();
- 
-        // 2. Get paramter "twitter"
-        String twitter = request.getParameter("twitter");
- 
+        
         // 3. Go over each part
         FileMeta temp = null;
-        for(Part part:parts){   
- 
+        for(Part part:parts){
+        	
+        	LOGGER.debug("name :{}/ ctyep :{}",part.getName(), part.getContentType());
             // 3.1 if part is multiparts "file"
             if(part.getContentType() != null){
  
@@ -41,54 +43,6 @@ public class MultipartRequestHandler {
                 // 3.3 Add created FileMeta object to List<FileMeta> files
                 files.add(temp);
  
-            }
-        }
-        return files;
-    }
- 
-    public static List<FileMeta> uploadByApacheFileUpload(HttpServletRequest request) throws IOException, ServletException{
- 
-        List<FileMeta> files = new LinkedList<FileMeta>();
- 
-        // 1. Check request has multipart content
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        FileMeta temp = null;
- 
-        // 2. If yes (it has multipart "files")
-        if(isMultipart){
- 
-            // 2.1 instantiate Apache FileUpload classes
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload upload = new ServletFileUpload(factory);
- 
-            // 2.2 Parse the request
-            try {
- 
-                // 2.3 Get all uploaded FileItem
-                List<FileItem> items = upload.parseRequest(request);
-                String twitter = "";
- 
-                // 2.4 Go over each FileItem
-                for(FileItem item:items){
- 
-                    // 2.5 if FileItem is not of type "file"
-                    if (!item.isFormField()){
- 
-                        // 2.7 Create FileMeta object
-                        temp = new FileMeta();
-                        temp.setFileName(item.getName());
-                        temp.setContent(item.getInputStream());
-                        temp.setFileType(item.getContentType());
-                        temp.setFileSize(item.getSize()/1024+ "Kb");
- 
-                        // 2.7 Add created FileMeta object to List<FileMeta> files
-                        files.add(temp);
- 
-                    }
-                }
- 
-            } catch (FileUploadException e) {
-                e.printStackTrace();
             }
         }
         return files;
