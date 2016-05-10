@@ -82,7 +82,7 @@
 			
 			<div class="col-md-12 m-b-n-sm">	
 				<div class="progress sm m-b-xs">
-					<div gpid="probress-bar" style="width: 0%" class="progress-bar progress-bar-blue"></div>
+					<div gpid="probress-bar" style="width: 0%" class="progress-bar progress-bar-blue progress-bar-striped"></div>
 				</div>	
 			</div>		
 		</div>
@@ -183,6 +183,10 @@ $(function (){
 			delete _self.filedata_map[k];
 		}
 		_self.$files_tbody.empty().append(_self._blank_row);
+		_self.$progress_bar.css(
+					'width',
+					0 + '%'
+				);
 	};
 	
 	NewFileModal.bindFileSelect = function(){
@@ -193,22 +197,15 @@ $(function (){
 			dataType: 'json',
 			url: '../transfer',
 			autoUpload : false,
-			done : function(e, data){
-				//console.log(data);
-				NewFileModal.uploaded_size = NewFileModal.uploaded_size + data.loaded;
-				var progress = parseInt(NewFileModal.uploaded_size / NewFileModal.total_size * 100, 10);
-				NewFileModal.$progress_bar.css(
-					'width',
-					progress + '%'
-				);
-			},
+			maxChunkSize: 100000, // 100K			
 			add :function (e, data) {
 				
 				NewFileModal.$files_tbody.find('tr[gpid=blank-row]').remove();
 				data.formData = {
+							'file-id' : GPContext.GenerateUID(),
 							'file-name' : data.files[0].name,
 							'file-size' : data.files[0].size,
-							'file-type' : '',
+							'file-type' : '',							
 							'file-description' : ''
 						};
 				NewFileModal.filedata_map[data.files[0].name] = data;
@@ -232,6 +229,14 @@ $(function (){
 						NewFileModal.removeFileItem(filename); // remove by file name
 					});
 				});
+			},
+			progressall : function (e, data) {
+				console.log(data);
+				var progress = parseInt(data.loaded / data.total * 100, 10);
+				NewFileModal.$progress_bar.css(
+					'width',
+					progress + '%'
+				);
 			}
 		});
 		

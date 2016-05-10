@@ -3,8 +3,6 @@ package com.gp.web.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TransferServlet extends HttpServlet {
  
     private static final long serialVersionUID = 1L;
- 
-    // this will store uploaded files
-    private static List<FileMeta> files = new LinkedList<FileMeta>();
+
     /***************************************************
      * URL: /upload
      * doPost(): upload the files and other parameters
@@ -30,27 +26,15 @@ public class TransferServlet extends HttpServlet {
             throws ServletException, IOException{
  
         // 1. Upload File Using Java Servlet API
-        files = MultipartRequestHandler.uploadByJavaServletAPI(request);            
- 
-        // 1. Upload File Using Apache FileUpload
-        //files.addAll(MultipartRequestHandler.uploadByApacheFileUpload(request));
- 
-        // Remove some files
-        while(files.size() > 20)
-        {   
-        	
-            files.remove(0);
-        }
- 
+    	FilePart fmeta = MultipartRequestHandler.uploadByJavaServletAPI(request);            
+    	
         // 2. Set response type to json
         response.setContentType("application/json");
  
         // 3. Convert List<FileMeta> into JSON format
         ObjectMapper mapper = new ObjectMapper();
-        String jstr = mapper.writeValueAsString(files);
-        System.out.println(jstr);
         // 4. Send resutl to client
-        mapper.writeValue(response.getOutputStream(), files);
+        mapper.writeValue(response.getOutputStream(), fmeta);
  
     }
     /***************************************************
@@ -64,14 +48,14 @@ public class TransferServlet extends HttpServlet {
     	String value = request.getParameter("f");
 
     	// 2. Get the file of index "f" from the list "files"
-    	FileMeta getFile = files.get(Integer.parseInt(value));
+    	FilePart getFile = new FilePart();//files.get(Integer.parseInt(value));
  
     	try {        
 			// 3. Set the response content type = file content type 
-			response.setContentType(getFile.getFileType());
+			response.setContentType(getFile.getContentType());
 			 
 			// 4. Set header Content-disposition
-			 response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getFileName()+"\"");
+			 response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getName()+"\"");
 			 
 			// 5. Copy file inputstream to response outputstream
 			InputStream input = getFile.getContent();
