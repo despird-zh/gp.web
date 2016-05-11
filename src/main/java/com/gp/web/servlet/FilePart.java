@@ -9,9 +9,9 @@ public class FilePart {
 	private String fileId;
     private String name;
     private Long fileSize;
-    private Long chunkStart;
-    private Long chunkEnd;
-    private String format;
+    private Long chunkStart =0l;
+    private Long chunkEnd = 0l;
+    private String extension;
     private String contentType;
     
     private InputStream content;
@@ -31,14 +31,6 @@ public class FilePart {
 
 	public void setFileId(String fileId) {
 		this.fileId = fileId;
-	}
-
-	public String getFormat() {
-		return format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
 	}
 
 	public String getName() {
@@ -83,10 +75,18 @@ public class FilePart {
  
 	public Boolean isChunkPart(){
 		
-		if(fileSize > 0 && (chunkEnd - chunkStart + 1) == fileSize){
+		if(fileSize > 0 && (chunkEnd - chunkStart + 1) != fileSize){
 			return true;
 		}else{
 			return false;
 		}
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
 	}
 }

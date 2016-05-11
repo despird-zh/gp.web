@@ -8,7 +8,16 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gp.common.GeneralConfig;
+import com.gp.common.SystemOptions;
 
 /**
  * Servlet implementation class TransferServlet
@@ -16,31 +25,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @MultipartConfig
 public class TransferServlet extends HttpServlet {
  
+	static Logger LOGGER = LoggerFactory.getLogger(TransferServlet.class);
     private static final long serialVersionUID = 1L;
 
-    /***************************************************
-     * URL: /upload
-     * doPost(): upload the files and other parameters
-     ****************************************************/
+    static String upload_cache = GeneralConfig.getString(SystemOptions.UPLOAD_CACHE_PATH);
+
+	public static final String CONTENT_PART = "files[]";
+	
+    /**
+     * process upload request
+     **/
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
- 
-        // 1. Upload File Using Java Servlet API
-    	FilePart fmeta = MultipartRequestHandler.uploadByJavaServletAPI(request);            
     	
-        // 2. Set response type to json
+        // parse the request
+    	FilePart fmeta = processRequest(request);            
+
+    	if(fmeta.isChunkPart()){
+    		TransferHelper.storeFileChunk(upload_cache, fmeta);
+    	}else{
+    		TransferHelper.storeFile(upload_cache, fmeta);
+    	}
+        // prepare write back json string
         response.setContentType("application/json");
  
-        // 3. Convert List<FileMeta> into JSON format
+        // Convert FilePart into JSON format
         ObjectMapper mapper = new ObjectMapper();
-        // 4. Send resutl to client
+        // Send result to client
         mapper.writeValue(response.getOutputStream(), fmeta);
  
     }
-    /***************************************************
-     * URL: /upload?f=value
-     * doGet(): get file of index "f" from List<FileMeta> as an attachment
-     ****************************************************/
+    
+    /**
+     * Process download process
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
  
@@ -72,5 +90,56 @@ public class TransferServlet extends HttpServlet {
         	 e.printStackTrace();
          }
  
+    }
+
+    public FilePart processRequest(HttpServletRequest request) throws IOException, ServletException{
+
+        Part part = request.getPart(CONTENT_PART);
+        // Iterate each part
+        FilePart fmeta = new FilePart();
+        fmeta.setFileId(request.getParameter("file-id"));
+        String filename = getFilename(part);
+        fmeta.setName(filename);
+        fmeta.setFileSize(part.getSize());
+        fmeta.setExtension(FilenameUtils.getExtension(filename));
+        fmeta.setContent(part.getInputStream());
+        fmeta.setContentType(part.getContentType());
+        
+        String contentRange = request.getHeader("Content-Range");
+        LOGGER.debug("Content-Range : {}", contentRange);
+        if(StringUtils.isNotBlank(contentRange)){
+        	parseRange(contentRange, fmeta);
+        }
+        return fmeta;
+    }
+ 
+    /** 
+     * this method is used to get file name out of request headers
+     */ 
+    private String getFilename(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+                return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * content range : bytes 21010-47021/47022 
+     **/
+    private void parseRange(String contentRange, FilePart fmeta){
+    	
+    	contentRange = contentRange.substring(contentRange.indexOf(' ')+1);
+    	
+    	String lengthStr = contentRange.substring(contentRange.indexOf('/')+1);
+    	String startStr = contentRange.substring(0, contentRange.indexOf('-'));
+    	String endStr = contentRange.substring(contentRange.indexOf('-')+1,contentRange.indexOf('/'));
+    	
+    	fmeta.setChunkStart(Long.valueOf(startStr));
+    	fmeta.setChunkEnd(Long.valueOf(endStr));
+    	fmeta.setFileSize(Long.valueOf(lengthStr));
+    	
     }
 }
