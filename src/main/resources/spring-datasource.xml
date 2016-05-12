@@ -12,7 +12,7 @@
 
     <context:annotation-config/>
 	
-	<!-- delcare a context util tool -->
+	<!-- declare a context utility bean which holds the ApplicationContext -->
 	<bean class="com.gp.common.SpringContextUtil" />
 	
     <!-- package to look for annotated classes -->
