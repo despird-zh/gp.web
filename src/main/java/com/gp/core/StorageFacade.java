@@ -1,5 +1,7 @@
 package com.gp.core;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,8 @@ import com.gp.info.InfoId;
 import com.gp.info.StorageInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
+import com.gp.storage.ContentRange;
+import com.gp.svc.FileService;
 import com.gp.svc.IdService;
 import com.gp.svc.StorageService;
 import com.gp.validation.ValidationMessage;
@@ -35,11 +39,14 @@ public class StorageFacade {
 
 	private static StorageService storageService;
 	
+	private static FileService fileservice;
+	
 	@Autowired
-    private StorageFacade(IdService idService,StorageService storageService, PseudoDAO pseudodao) {
+    private StorageFacade(IdService idService,StorageService storageService, FileService fileservice) {
 
     	StorageFacade.idService = idService;
     	StorageFacade.storageService = storageService;
+    	StorageFacade.fileservice = fileservice;
     }
     
 	/**
@@ -108,6 +115,14 @@ public class StorageFacade {
     	return result;
     }
     
+    /**
+     * For create a new storage information
+     * 
+     * @param accesspoint the access point
+     * @param principal the logon principal
+     * @param storage the information of target storage
+     * @return GeneralResult<InfoId<Integer>> return the storage id
+     **/
     public static GeneralResult<InfoId<Integer>> newStorage(AccessPoint accesspoint,
     		Principal principal, StorageInfo storage){
 		
@@ -252,4 +267,44 @@ public class StorageFacade {
 		}
     	return gresult;
     }
+    
+    /**
+     * Find the chunk of file binary
+     * 
+     * @param binaryId the id of binary
+     * @param contentRange the range of file content
+     * 
+     * @return OutputStream the output stream
+     **/
+    public static GeneralResult<OutputStream> findBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange){
+		return null;
+    	
+    }
+    
+    /**
+     * Find the binary stream of whole file 
+     * @param binaryId the id of binary
+     * 
+     * @return OutputStream the output stream
+     **/
+    public static GeneralResult<OutputStream> findBinary(InfoId<Long> binaryId){
+		return null;
+    	
+    }
+    
+    /**
+     * Store the binary chunk 
+     * @param 
+     **/
+    public static GeneralResult<Boolean> storeBinaryChunk(InfoId<Long> fileid,ContentRange contentRange, InputStream inputStream){
+		
+    	return null;
+	}
+    
+    /**
+     * Store the binary 
+     **/
+    public static GeneralResult<Boolean> storeBinary(InfoId<Long> fileid, InputStream inputStream){
+		return null;
+	}
 }

@@ -1,5 +1,6 @@
 package com.gp.core;
 
+import java.io.File;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import com.gp.info.CabFolderInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.InfoId;
 import com.gp.svc.CabinetService;
+import com.gp.svc.FileService;
 import com.gp.svc.FolderService;
 import com.gp.svc.IdService;
 import com.gp.util.DateTimeUtils;
@@ -35,11 +37,18 @@ public class CabinetFacade {
 	
 	static FolderService folderservice;
 	
+	static FileService fileservice;
+	
 	static IdService idservice;
+	
 	@Autowired
-	private CabinetFacade(CabinetService cabinetservice, FolderService folderservice, IdService idservice){
+	private CabinetFacade(CabinetService cabinetservice, 
+			FolderService folderservice, 
+			FileService fileservice,
+			IdService idservice){
 		
 		CabinetFacade.cabinetservice = cabinetservice;
+		CabinetFacade.fileservice = fileservice;
 		CabinetFacade.folderservice = folderservice;
 		CabinetFacade.idservice = idservice;
 	}
@@ -71,6 +80,7 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	//
 	public static GeneralResult<Boolean> savePubCabinetFolder(AccessPoint accesspoint,
 			Principal principal, CabFolderInfo folderinfo){
 		
@@ -132,6 +142,17 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Find all the folders under cabinet with name fuzzy matching
+	 * 
+	 * @param accesspoint the access point
+	 * @param principal the principal
+	 * @param cabinetId the id of cabinet
+	 * @param parentId the parent folder id, optional
+	 * @param filename the name of file
+	 * 
+	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
+	 **/
 	public GeneralResult<List<CabFileInfo>> findCabinetFiles(AccessPoint accesspoint,
 			Principal principal, Long cabinetId, Long parentId, String filename){
 				
@@ -160,6 +181,17 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Find all the entries under cabinet or folder with name fuzzy matching
+	 * 
+	 * @param accesspoint the access point
+	 * @param principal the principal
+	 * @param cabinetId the id of cabinet
+	 * @param parentId the parent folder id, optional
+	 * @param filename the name of file
+	 * 
+	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
+	 **/
 	public GeneralResult<List<CabFileInfo>> findCabinetEntries(AccessPoint accesspoint,
 			Principal principal, Long cabinetId, Long parentId, String filename){
 				
@@ -187,6 +219,7 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	
 	public static GeneralResult<CabinetInfo> findCabinet(AccessPoint accesspoint,
 			Principal principal, InfoId<Long> cabinetId){
 		
@@ -205,6 +238,37 @@ public class CabinetFacade {
 			LOGGER.error("Exception when find cabinet.",e);
 			ContextHelper.stampContext(e);
 			gresult.setMessage("fail to find cabinets.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}		
+		return gresult;
+	}
+	
+	public static GeneralResult<InfoId<Long>> newCabinetFile(AccessPoint accesspoint,
+			Principal principal, CabFileInfo fileinfo){
+		
+		GeneralResult<InfoId<Long>> gresult  =  new GeneralResult<InfoId<Long>>();
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.NEW_FILE)){
+			
+			InfoId<Long> fileid = fileinfo.getInfoId();
+			if(!InfoId.isValid(fileid)){
+				fileid = idservice.generateId(IdKey.CAB_FILE, Long.class);
+				fileinfo.setInfoId(fileid);
+			}
+			svcctx.setAuditObject(fileid);
+			svcctx.addAuditPredicates(fileinfo);
+			fileservice.newFile(svcctx, fileinfo);
+			gresult.setReturnValue(fileid);
+			gresult.setMessage("success to find cabinet.", true);
+		
+		} catch (ServiceException e)  {
+		
+			LOGGER.error("Exception when create cabinet file.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to create cabinet file.", false);
 		
 		}finally{
 			
