@@ -16,17 +16,20 @@ import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
-import com.gp.dao.PseudoDAO;
 import com.gp.common.GeneralContext.ExecState;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.StorageInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
+import com.gp.storage.BinaryManager;
+import com.gp.storage.BufferManager;
+import com.gp.storage.ChunkBuffer;
 import com.gp.storage.ContentRange;
 import com.gp.svc.FileService;
 import com.gp.svc.IdService;
 import com.gp.svc.StorageService;
+import com.gp.util.BufferInputStream;
 import com.gp.validation.ValidationMessage;
 import com.gp.validation.ValidationUtils;
 
@@ -269,32 +272,73 @@ public class StorageFacade {
     }
     
     /**
-     * Find the chunk of file binary
+     * Fetch the chunk of file binary and write it to stream directly
      * 
      * @param binaryId the id of binary
      * @param contentRange the range of file content
+     * @param outputStream the output stream
      * 
-     * @return OutputStream the output stream
      **/
-    public static GeneralResult<OutputStream> findBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange){
-		return null;
+    public static GeneralResult<Boolean> fetchBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream){
+		
+    	
+    	try(ChunkBuffer cbuffer = BufferManager.instance().acquireChunkBuffer(contentRange.getFileSize(), i)){
+			BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
+			System.out.println("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
+			
+			BufferInputStream bis = new BufferInputStream(cbuffer.getByteBuffer());
+			long count = bis.readToStream(fo);
+			System.out.println("count : " + count);
+		}
+    	return null;
     	
     }
     
     /**
-     * Find the binary stream of whole file 
+     * Find the binary stream of whole file and write it to stream directly
      * @param binaryId the id of binary
+     * @param outputStream the output stream
      * 
-     * @return OutputStream the output stream
      **/
-    public static GeneralResult<OutputStream> findBinary(InfoId<Long> binaryId){
-		return null;
+    public static GeneralResult<Boolean> fetchBinary(InfoId<Long> binaryId, OutputStream outputStream){
+		
+    	return null;
+    	
+    }
+    
+    /**
+     * Find the chunk of file binary and write it to stream directly
+     * 
+     * @param binaryId the id of binary
+     * @param contentRange the range of file content
+     * @param outputStream the output stream
+     * 
+     **/
+    public static GeneralResult<ChunkBuffer> fetchBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange){
+		
+    	return null;
+    	
+    }
+    
+    /**
+     * Find the binary stream of whole file and write it to stream directly
+     * @param binaryId the id of binary
+     * @param outputStream the output stream
+     * 
+     **/
+    public static GeneralResult<ChunkBuffer> fetchBinary(InfoId<Long> binaryId){
+		
+    	return null;
     	
     }
     
     /**
      * Store the binary chunk 
-     * @param 
+     * 
+     * @param fileid the file id
+     * @param contentRange the range of content
+     * @param inputStream the input stream
+     * 
      **/
     public static GeneralResult<Boolean> storeBinaryChunk(InfoId<Long> fileid,ContentRange contentRange, InputStream inputStream){
 		
@@ -303,8 +347,37 @@ public class StorageFacade {
     
     /**
      * Store the binary 
+     * 
+     * @param fileid the file id
+     * @param inputStream the input stream
+     * 
      **/
     public static GeneralResult<Boolean> storeBinary(InfoId<Long> fileid, InputStream inputStream){
+		return null;
+	}
+    
+
+    /**
+     * Store the binary chunk 
+     * 
+     * @param fileid the file id
+     * @param contentRange the range of content
+     * @param chunkbuffer the chunk buffer provide the data
+     * 
+     **/
+    public static GeneralResult<Boolean> storeBinaryChunk(InfoId<Long> fileid,ContentRange contentRange, ChunkBuffer chunkbuffer){
+		
+    	return null;
+	}
+    
+    /**
+     * Store the binary 
+     * 
+     * @param fileid the file id
+     * @param chunkbuffer the chunk buffer provide the data
+     * 
+     **/
+    public static GeneralResult<Boolean> storeBinary(InfoId<Long> fileid, ChunkBuffer chunkbuffer){
 		return null;
 	}
 }

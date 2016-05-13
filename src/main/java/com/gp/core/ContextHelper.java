@@ -160,12 +160,13 @@ public class ContextHelper {
 		// if valid ServiceContext continue work.
 		if(null != svcctx){
 			// fail persist audit data in ServiceContext.close();
-//			if(e.getSuppressed() != null){
-//				svcctx.endOperation(ExecState.EXCEP, "error during persist audit data");
-//			}else{
+			if(e.getSuppressed() != null){
+				// means error occurs in both close() and try-with closure.
+				svcctx.endAudit(ExecState.EXCEP, "error during persist audit data");
+			}else{
 				
 				svcctx.endAudit(ExecState.EXCEP, e.getMessage());
-//			}
+			}
 		}
 	}
 }
