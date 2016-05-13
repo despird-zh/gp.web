@@ -1,5 +1,6 @@
 package com.gp.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.GeneralContext.ExecState;
 import com.gp.exception.ServiceException;
+import com.gp.exception.StorageException;
 import com.gp.info.InfoId;
 import com.gp.info.StorageInfo;
 import com.gp.pagination.PageQuery;
@@ -279,16 +281,30 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static GeneralResult<Boolean> fetchBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream){
+    public static GeneralResult<Boolean> fetchBinaryChunk(AccessPoint accesspoint,
+    		Principal principal,InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream){
 		
+    	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
+    	BufferManager bmgr = BufferManager.instance();
     	
-    	try(ChunkBuffer cbuffer = BufferManager.instance().acquireChunkBuffer(contentRange.getFileSize(), i)){
-			BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
-			System.out.println("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.REMOVE_STORAGE);
+    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
+			
+    		BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
+			LOGGER.debug("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
 			
 			BufferInputStream bis = new BufferInputStream(cbuffer.getByteBuffer());
-			long count = bis.readToStream(fo);
-			System.out.println("count : " + count);
+			long count = bis.readToStream(outputStream);
+			bis.close();
+			LOGGER.debug("count : " + count);
+			
+		}catch (StorageException | IOException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to remove storage.", false);
+		}finally{
+			
+			ContextHelper.handleContext();
 		}
     	return null;
     	
