@@ -10,16 +10,6 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-4.2.xsd" >
 
-    <context:annotation-config/>
-	
-	<!-- declare a context utility bean which holds the ApplicationContext -->
-	<bean class="com.gp.common.SpringContextUtil" />
-	
-    <!-- package to look for annotated classes -->
-    <context:component-scan base-package="com.gp.svc.impl"/>
-	<context:component-scan base-package="com.gp.dao.impl"/>
-	<context:component-scan base-package="com.gp.core"/>
-	
     <!-- we will manage transactions with annotations -->
     <tx:annotation-driven/>
 
