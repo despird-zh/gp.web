@@ -18,8 +18,10 @@ import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.GeneralContext.ExecState;
+import com.gp.dao.BinaryDAO;
 import com.gp.exception.ServiceException;
 import com.gp.exception.StorageException;
+import com.gp.info.BinaryInfo;
 import com.gp.info.InfoId;
 import com.gp.info.StorageInfo;
 import com.gp.pagination.PageQuery;
@@ -32,6 +34,7 @@ import com.gp.svc.FileService;
 import com.gp.svc.IdService;
 import com.gp.svc.StorageService;
 import com.gp.util.BufferInputStream;
+import com.gp.util.BufferOutputStream;
 import com.gp.validation.ValidationMessage;
 import com.gp.validation.ValidationUtils;
 
@@ -47,7 +50,7 @@ public class StorageFacade {
 	private static FileService fileservice;
 	
 	@Autowired
-    private StorageFacade(IdService idService,StorageService storageService, FileService fileservice) {
+    private StorageFacade(IdService idService, StorageService storageService, FileService fileservice) {
 
     	StorageFacade.idService = idService;
     	StorageFacade.storageService = storageService;
@@ -281,13 +284,13 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static GeneralResult<Boolean> fetchBinaryChunk(AccessPoint accesspoint,
-    		Principal principal,InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream){
+    public static GeneralResult<Boolean> fetchBinaryChunk(AccessPoint accesspoint, Principal principal,
+    		InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream){
 		
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
     	BufferManager bmgr = BufferManager.instance();
     	
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.REMOVE_STORAGE);
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN_CHUNK);
     		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
 			
     		BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
@@ -297,16 +300,17 @@ public class StorageFacade {
 			long count = bis.readToStream(outputStream);
 			bis.close();
 			LOGGER.debug("count : " + count);
-			
+			gresult.setReturnValue(true);
+			gresult.setMessage("Success dump the binary chunk to target output stream", true);
 		}catch (StorageException | IOException e)  {
 			
 			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to remove storage.", false);
+			gresult.setMessage("fail dump the binary chunk to target output stream", false);
 		}finally{
 			
 			ContextHelper.handleContext();
 		}
-    	return null;
+    	return gresult;
     	
     }
     
@@ -316,10 +320,27 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static GeneralResult<Boolean> fetchBinary(InfoId<Long> binaryId, OutputStream outputStream){
+    public static GeneralResult<Boolean> fetchBinary(AccessPoint accesspoint, Principal principal,
+    		InfoId<Long> binaryId, OutputStream outputStream){
 		
-    	return null;
-    	
+    	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
+
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
+			
+    		svcctx.setAuditObject(binaryId);
+			BinaryManager.instance().dumpBinary(binaryId, outputStream);
+			
+			gresult.setMessage("Success dump the whole binary to target output stream", true);
+			gresult.setReturnValue(true);
+		}catch (StorageException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail dump the whole binary to target output stream.", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;    	
     }
     
     /**
@@ -330,9 +351,31 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static GeneralResult<ChunkBuffer> fetchBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange){
+    public static GeneralResult<ChunkBuffer> fetchBinaryChunk(AccessPoint accesspoint, Principal principal,
+    		InfoId<Long> binaryId, ContentRange contentRange){
 		
-    	return null;
+    	GeneralResult<ChunkBuffer> gresult = new GeneralResult<ChunkBuffer>();    	
+    	BufferManager bmgr = BufferManager.instance();
+    	
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, 
+    			accesspoint,
+    			Operations.FETCH_BIN_CHUNK)){
+    		svcctx.setAuditObject(binaryId);
+			ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength());
+    		BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
+			LOGGER.debug("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
+
+			gresult.setReturnValue(cbuffer);
+			gresult.setMessage("success dump the binary chunk to target chunk buffer", true);
+		}catch (StorageException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail dump the binary chunk to target chunk buffer", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;
     	
     }
     
@@ -342,58 +385,173 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static GeneralResult<ChunkBuffer> fetchBinary(InfoId<Long> binaryId){
+    public static GeneralResult<ChunkBuffer> fetchBinary(AccessPoint accesspoint, Principal principal, 
+    		InfoId<Long> binaryId){
 		
-    	return null;
+    	GeneralResult<ChunkBuffer> gresult = new GeneralResult<ChunkBuffer>();    	
+    	BufferManager bmgr = BufferManager.instance();
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
+			
+    		svcctx.setAuditObject(binaryId);
+    		BinaryInfo binfo = storageService.getBinary(svcctx, binaryId);
+    		if(null == binfo){
+    			gresult.setMessage("binary not exist", false);
+    			svcctx.endAudit(ExecState.FAIL, "binary not exist");
+    			return gresult;
+    		}
+    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(binfo.getSize(), 0);
+    		if(cbuffer.getChunkLength() < binfo.getSize()){
+    			gresult.setMessage("Buffer cannot hold whole file binary", false);
+    			svcctx.endAudit(ExecState.FAIL, "Buffer cannot hold whole file binary");
+    			return gresult;
+    		}
+			BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
+			svcctx.endAudit(ExecState.SUCCESS, "Success dump the whole binary to target buffer");
+			gresult.setMessage("Success dump the whole binary to target buffer", true);
+			gresult.setReturnValue(cbuffer);
+			
+		}catch (StorageException | ServiceException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail dump the whole binary to target output stream.", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;    	
     	
     }
     
     /**
-     * Store the binary chunk 
+     * Store the whole content of InputStream into binary content
      * 
-     * @param fileid the file id
-     * @param contentRange the range of content
+     * @param binaryId the binary id
+     * @param contentRange the range of target file content
      * @param inputStream the input stream
      * 
      **/
-    public static GeneralResult<Boolean> storeBinaryChunk(InfoId<Long> fileid,ContentRange contentRange, InputStream inputStream){
-		
-    	return null;
+    public static GeneralResult<Boolean> storeBinaryChunk(AccessPoint accesspoint, Principal principal, 
+    		InfoId<Long> binaryId, ContentRange contentRange, InputStream inputStream){
+    	
+    	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
+    	BufferManager bmgr = BufferManager.instance();
+    	
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK);
+    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
+    		svcctx.setAuditObject(binaryId);
+			LOGGER.debug("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
+			// read the content of InputStream into buffer
+			BufferOutputStream bos = new BufferOutputStream(cbuffer.getByteBuffer());
+			long count = bos.writeFromStream(inputStream);
+			bos.close();
+			LOGGER.debug("count : " + count);
+    		BinaryManager.instance().fillBinaryChunk(binaryId, cbuffer);	
+    		
+			gresult.setReturnValue(true);
+			gresult.setMessage("Success fill the binary chunk with source input stream", true);
+			
+		}catch (StorageException | IOException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail fill the binary chunk with source input stream", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;
 	}
     
     /**
      * Store the binary 
      * 
-     * @param fileid the file id
+     * @param binaryId the file binary id
      * @param inputStream the input stream
      * 
      **/
-    public static GeneralResult<Boolean> storeBinary(InfoId<Long> fileid, InputStream inputStream){
-		return null;
+    public static GeneralResult<Boolean> storeBinary(AccessPoint accesspoint, Principal principal, 
+    		InfoId<Long> binaryId, InputStream inputStream){
+    	
+    	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
+
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN)){
+    		
+    		BinaryManager.instance().fillBinary(binaryId, inputStream);			
+			gresult.setReturnValue(true);
+			
+			gresult.setMessage("Success fill the binary with source input stream", true);
+			
+		}catch (StorageException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail fill the binary chunk with source input stream", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;
 	}
     
 
     /**
      * Store the binary chunk 
      * 
-     * @param fileid the file id
+     * @param binaryId the file binary id
      * @param contentRange the range of content
      * @param chunkbuffer the chunk buffer provide the data
      * 
      **/
-    public static GeneralResult<Boolean> storeBinaryChunk(InfoId<Long> fileid,ContentRange contentRange, ChunkBuffer chunkbuffer){
+    public static GeneralResult<Boolean> storeBinaryChunk(AccessPoint accesspoint, Principal principal, 
+    		InfoId<Long> binaryId,ContentRange contentRange, ChunkBuffer chunkbuffer){
 		
-    	return null;
+    	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
+
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
+    		svcctx.setAuditObject(binaryId);
+
+    		BinaryManager.instance().fillBinaryChunk(binaryId, chunkbuffer);	
+    		
+			gresult.setReturnValue(true);
+			gresult.setMessage("Success fill the binary chunk with source input stream", true);
+			
+		}catch (StorageException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail fill the binary chunk with source input stream", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;
 	}
     
     /**
      * Store the binary 
      * 
-     * @param fileid the file id
+     * @param binaryId the file id
      * @param chunkbuffer the chunk buffer provide the data
      * 
      **/
-    public static GeneralResult<Boolean> storeBinary(InfoId<Long> fileid, ChunkBuffer chunkbuffer){
-		return null;
+    public static GeneralResult<Boolean> storeBinary(AccessPoint accesspoint, Principal principal, 
+    		InfoId<Long> binaryId, ChunkBuffer chunkbuffer){
+    	
+    	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
+
+    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
+    		svcctx.setAuditObject(binaryId);
+
+    		BinaryManager.instance().fillBinaryChunk(binaryId, chunkbuffer);	
+    		
+			gresult.setReturnValue(true);
+			gresult.setMessage("Success fill the binary chunk with source input stream", true);
+			
+		}catch (StorageException e)  {
+			
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail fill the binary chunk with source input stream", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	return gresult;
 	}
 }
