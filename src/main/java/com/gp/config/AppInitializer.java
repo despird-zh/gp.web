@@ -8,14 +8,13 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.util.Log4jConfigListener;
-
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;
 import com.gp.web.servlet.TransferServlet;
 
 import javax.servlet.FilterRegistration;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -29,7 +28,11 @@ public class AppInitializer implements WebApplicationInitializer {
         System.out.println("Initializing Application for " + servletContext.getServerInfo());
          
         String prefix =  servletContext.getRealPath("/");     
-        String file = "WEB-INF"+System.getProperty("file.separator")+"classes"+System.getProperty("file.separator")+"log4j.properties";       
+        String file = "WEB-INF"
+        		+ System.getProperty("file.separator")
+        		+ "classes"+System.getProperty("file.separator")
+        		+ "log4j.properties";
+        
         PropertyConfigurator.configure(prefix+file);
         
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
@@ -73,9 +76,11 @@ public class AppInitializer implements WebApplicationInitializer {
         // Add the servlet mapping manually and make it initialize automatically
         TransferServlet transferServlet = new TransferServlet();
         ServletRegistration.Dynamic servlet1 = servletContext.addServlet("TransferServlet", transferServlet);
+        
         servlet1.setInitParameter("upload_path", "d:\\");
         servlet1.addMapping("/transfer");
         servlet1.setAsyncSupported(true);
+        servlet1.setMultipartConfig( getMultiPartConfig() );
         servlet1.setLoadOnStartup(2);
         
         AvatarServlet avatarServlet = new AvatarServlet();
@@ -84,5 +89,18 @@ public class AppInitializer implements WebApplicationInitializer {
         servlet2.setAsyncSupported(true);
         servlet2.setLoadOnStartup(3);
         
+    }
+    
+    private MultipartConfigElement getMultiPartConfig() {
+        String location = "";
+        long maxFileSize = -1;
+        long maxRequestSize = -1;
+        int fileSizeThreshold = 0;
+        return new MultipartConfigElement(
+            location,
+            maxFileSize,
+            maxRequestSize,
+            fileSizeThreshold
+        );
     }
 }
