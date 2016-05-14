@@ -29,7 +29,9 @@ public class TransferServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     static String upload_cache = GeneralConfig.getString(SystemOptions.UPLOAD_CACHE_PATH);
-
+    // unknown file extension
+    public static final String UNKNOWN_EXT = "ukw";
+    // the form element dom name
 	public static final String CONTENT_PART = "files[]";
 	
     /**
@@ -123,7 +125,7 @@ public class TransferServlet extends HttpServlet {
                 return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
             }
         }
-        return null;
+        return UNKNOWN_EXT;
     }
     
     /**
