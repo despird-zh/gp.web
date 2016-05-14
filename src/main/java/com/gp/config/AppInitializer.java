@@ -8,6 +8,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.util.Log4jConfigListener;
 
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
@@ -26,6 +27,7 @@ public class AppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
 
         System.out.println("Initializing Application for " + servletContext.getServerInfo());
+         
         String prefix =  servletContext.getRealPath("/");     
         String file = "WEB-INF"+System.getProperty("file.separator")+"classes"+System.getProperty("file.separator")+"log4j.properties";       
         PropertyConfigurator.configure(prefix+file);
