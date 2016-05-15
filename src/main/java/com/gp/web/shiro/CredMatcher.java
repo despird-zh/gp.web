@@ -1,17 +1,18 @@
 
 package com.gp.web.shiro;
 
-import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gp.common.Principal;
 import com.gp.core.SecurityFacade;
 
 public class CredMatcher implements CredentialsMatcher {
 	
-	public static Logger LOGGER = Logger.getLogger(CredMatcher.class);
+	public static Logger LOGGER = LoggerFactory.getLogger(CredMatcher.class);
 	
 	public boolean doCredentialsMatch(AuthenticationToken token,
 			AuthenticationInfo info) {

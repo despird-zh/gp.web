@@ -16,8 +16,9 @@ import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
- 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.util.WebUtils;
 
@@ -31,7 +32,7 @@ import com.gp.util.ConfigSettingUtils;
  * */
 public abstract class CustomWebUtils extends WebUtils{
 	
-	static Logger logger = Logger.getLogger(CustomWebUtils.class);
+	static Logger logger = LoggerFactory.getLogger(CustomWebUtils.class);
 	
 	/**
 	 * Dump the attributes in session to facilitate the development

@@ -1,6 +1,7 @@
 package com.gp.config;
 
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -12,6 +13,8 @@ import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;
 import com.gp.web.servlet.TransferServlet;
+
+import java.io.File;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.MultipartConfigElement;
@@ -28,16 +31,18 @@ public class AppInitializer implements WebApplicationInitializer {
         System.out.println("Initializing Application for " + servletContext.getServerInfo());
          
         String prefix =  servletContext.getRealPath("/");     
-        String file = "WEB-INF"
+        String filepath = "WEB-INF"
         		+ System.getProperty("file.separator")
         		+ "classes"+System.getProperty("file.separator")
-        		+ "log4j.properties";
+        		+ "log4j2.xml";
         
-        PropertyConfigurator.configure(prefix+file);
+        final LoggerContext loggerCtx = (LoggerContext) LogManager.getContext(false);
+        File file = new File(prefix + filepath);
+        loggerCtx.setConfigLocation(file.toURI());
         
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(RootConfigurer.class);
-        rootContext.register(ServiceConfigurer.class);
+        rootContext.register(RootConfigurator.class);
+        rootContext.register(ServiceConfigurator.class);
         // since we registered RootConfig instead of passing it to the constructor
         rootContext.refresh(); 
         // Manage the lifecycle of the root appcontext
@@ -63,7 +68,7 @@ public class AppInitializer implements WebApplicationInitializer {
               	   
         // Create ApplicationContext
         AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
-        webMvcContext.register(WebMvcConfigurer.class);
+        webMvcContext.register(WebMvcConfigurator.class);
                
         // Add the servlet mapping manually and make it initialize automatically
         DispatcherServlet dispatcherServlet = new DispatcherServlet(webMvcContext);

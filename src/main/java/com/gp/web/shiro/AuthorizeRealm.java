@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -26,6 +25,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.joda.time.DateTimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
@@ -41,7 +42,7 @@ import com.gp.info.UserInfo;
  * */
 public class AuthorizeRealm extends AuthorizingRealm {
 
-	public static Logger logger = Logger.getLogger(AuthorizeRealm.class);
+	public static Logger logger = LoggerFactory.getLogger(AuthorizeRealm.class);
 	@Override
 	public boolean supports(AuthenticationToken token) {
 		if (token instanceof AuthenToken) {

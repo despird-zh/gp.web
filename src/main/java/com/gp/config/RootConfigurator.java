@@ -19,7 +19,7 @@ import com.gp.core.ContextInitFinishListener;
 @ComponentScan(basePackages = { 
 		"com.gp.core"
  })
-public class RootConfigurer {
+public class RootConfigurator {
 	
 	@Autowired(required=true)
 	private Environment env;
