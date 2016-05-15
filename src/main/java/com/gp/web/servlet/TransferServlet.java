@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gp.common.GeneralConfig;
 import com.gp.common.SystemOptions;
+import com.gp.storage.ContentRange;
 
 /**
  * Servlet implementation class TransferServlet
@@ -41,7 +42,7 @@ public class TransferServlet extends HttpServlet {
             throws ServletException, IOException{
     	
         // parse the request
-    	FilePart fmeta = processRequest(request);            
+    	PartMeta fmeta = processRequest(request);            
 
     	if(fmeta.isChunkPart()){
     		TransferHelper.storeFileChunk(upload_cache, fmeta);
@@ -68,7 +69,7 @@ public class TransferServlet extends HttpServlet {
     	String value = request.getParameter("f");
 
     	// 2. Get the file of index "f" from the list "files"
-    	FilePart getFile = new FilePart();//files.get(Integer.parseInt(value));
+    	PartMeta getFile = new PartMeta();//files.get(Integer.parseInt(value));
  
     	try {        
 			// 3. Set the response content type = file content type 
@@ -94,24 +95,30 @@ public class TransferServlet extends HttpServlet {
  
     }
 
-    public FilePart processRequest(HttpServletRequest request) throws IOException, ServletException{
+    public PartMeta processRequest(HttpServletRequest request) throws IOException, ServletException{
 
-    	
         Part part = request.getPart(CONTENT_PART);
         // Iterate each part
-        FilePart fmeta = new FilePart();
+        PartMeta fmeta = new PartMeta();
         fmeta.setFileId(request.getParameter("file-id"));
         String filename = getFilename(part);
         fmeta.setName(filename);
-        fmeta.setFileSize(part.getSize());
-        fmeta.setExtension(FilenameUtils.getExtension(filename));
+        String ext = FilenameUtils.getExtension(filename);
+        fmeta.setExtension(StringUtils.isBlank(ext)? UNKNOWN_EXT : ext);
         fmeta.setContent(part.getInputStream());
         fmeta.setContentType(part.getContentType());
         
         String contentRange = request.getHeader("Content-Range");
-        LOGGER.debug("Content-Range : {}", contentRange);
+        
         if(StringUtils.isNotBlank(contentRange)){
-        	parseRange(contentRange, fmeta);
+        	LOGGER.debug("Content-Range : {}", contentRange);
+        	ContentRange range = ContentRange.parse(contentRange);
+        	fmeta.setContentRange(range);
+        }else{
+        	ContentRange range = new ContentRange();
+        	range.setFileSize(part.getSize());
+        	range.setEndPos(part.getSize() - 1); // startPos is 0
+        	fmeta.setContentRange(range);
         }
         return fmeta;
     }
@@ -126,23 +133,6 @@ public class TransferServlet extends HttpServlet {
                 return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
             }
         }
-        return UNKNOWN_EXT;
-    }
-    
-    /**
-     * content range : bytes 21010-47021/47022 
-     **/
-    private void parseRange(String contentRange, FilePart fmeta){
-    	
-    	contentRange = contentRange.substring(contentRange.indexOf(' ')+1);
-    	
-    	String lengthStr = contentRange.substring(contentRange.indexOf('/')+1);
-    	String startStr = contentRange.substring(0, contentRange.indexOf('-'));
-    	String endStr = contentRange.substring(contentRange.indexOf('-')+1,contentRange.indexOf('/'));
-    	
-    	fmeta.setChunkStart(Long.valueOf(startStr));
-    	fmeta.setChunkEnd(Long.valueOf(endStr));
-    	fmeta.setFileSize(Long.valueOf(lengthStr));
-    	
+        return "unknown." + UNKNOWN_EXT;
     }
 }

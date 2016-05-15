@@ -2,15 +2,16 @@ package com.gp.web.servlet;
 
 import java.io.InputStream;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gp.storage.ContentRange;
  
 @JsonIgnoreProperties({"content"})
-public class FilePart {
+public class PartMeta {
  
 	private String fileId;
     private String name;
-    private Long fileSize;
-    private Long chunkStart =0l;
-    private Long chunkEnd = 0l;
+
+    private ContentRange contentRange = null;
+    
     private String extension;
     private String contentType;
     
@@ -41,30 +42,6 @@ public class FilePart {
 		this.name = name;
 	}
 
-	public Long getFileSize() {
-		return fileSize;
-	}
-
-	public void setFileSize(Long fileSize) {
-		this.fileSize = fileSize;
-	}
-
-	public Long getChunkStart() {
-		return chunkStart;
-	}
-
-	public void setChunkStart(Long chunkStart) {
-		this.chunkStart = chunkStart;
-	}
-
-	public Long getChunkEnd() {
-		return chunkEnd;
-	}
-
-	public void setChunkEnd(Long chunkEnd) {
-		this.chunkEnd = chunkEnd;
-	}
-
 	public String getContentType() {
 		return contentType;
 	}
@@ -75,7 +52,8 @@ public class FilePart {
  
 	public Boolean isChunkPart(){
 		
-		if(fileSize > 0 && (chunkEnd - chunkStart + 1) != fileSize){
+		if(contentRange.getFileSize() > 0 
+			&& contentRange.getRangeLength() != contentRange.getFileSize()){
 			return true;
 		}else{
 			return false;
@@ -89,4 +67,13 @@ public class FilePart {
 	public void setExtension(String extension) {
 		this.extension = extension;
 	}
+
+	public ContentRange getContentRange() {
+		return contentRange;
+	}
+
+	public void setContentRange(ContentRange contentRange) {
+		this.contentRange = contentRange;
+	}
+
 }
