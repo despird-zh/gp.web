@@ -257,6 +257,10 @@ public class CabinetFacade {
 				fileid = idservice.generateId(IdKey.CAB_FILE, Long.class);
 				fileinfo.setInfoId(fileid);
 			}
+			if(fileinfo.getSourceId() == 0){
+				CabinetInfo cinfo = cabinetservice.getCabinet(svcctx, IdKey.CABINET.getInfoId(fileinfo.getCabinetId()));
+				fileinfo.setSourceId(cinfo.getSourceId());
+			}
 			svcctx.setAuditObject(fileid);
 			svcctx.addAuditPredicates(fileinfo);
 			fileservice.newFile(svcctx, fileinfo);

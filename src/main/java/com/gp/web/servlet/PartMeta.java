@@ -7,6 +7,8 @@ import com.gp.storage.ContentRange;
 @JsonIgnoreProperties({"content"})
 public class PartMeta {
  
+	private String cabinetId;
+	
 	private String fileId;
     private String name;
 
@@ -74,6 +76,14 @@ public class PartMeta {
 
 	public void setContentRange(ContentRange contentRange) {
 		this.contentRange = contentRange;
+	}
+
+	public String getCabinetId() {
+		return cabinetId;
+	}
+
+	public void setCabinetId(String cabinetId) {
+		this.cabinetId = cabinetId;
 	}
 
 }

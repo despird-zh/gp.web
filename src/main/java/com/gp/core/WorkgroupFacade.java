@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.GeneralConstants;
 import com.gp.common.GeneralContext.ExecState;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
@@ -80,7 +81,7 @@ public class WorkgroupFacade {
 			svcctx.putContextData(WorkgroupService.CTX_KEY_PUBCAPACITY, pubcapacity);
 			svcctx.putContextData(WorkgroupService.CTX_KEY_PRICAPACITY, pricapacity);
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
-			
+			winfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
 			workgroupservice.newWorkgroup(svcctx, winfo);
 			
 			gresult.setReturnValue(winfo.getInfoId());

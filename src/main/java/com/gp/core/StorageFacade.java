@@ -554,4 +554,47 @@ public class StorageFacade {
 		}
     	return gresult;
 	}
+    
+    public static GeneralResult<InfoId<Long>> newBinary(AccessPoint accesspoint, Principal principal, 
+    		BinaryInfo binfo){
+    	
+    	GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
+    	
+		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.NEW_BIN)){
+
+			svcctx.addAuditPredicates(binfo);
+			// check the validation of user information
+			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), binfo);
+			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
+				result.addMessages(vmsg);				
+				svcctx.endAudit(ExecState.FAIL, "row info validation fail");
+				result.setMessage("fail save binary ", false);
+				return result;
+			}
+			
+			if(!InfoId.isValid(binfo.getInfoId())){
+				InfoId<Long> id = idService.generateId(IdKey.BINARY, Long.class);
+				binfo.setInfoId(id);				
+				svcctx.setAuditObject(id);
+			}else{
+								
+				svcctx.setAuditObject(binfo.getInfoId());
+			}
+			
+			storageService.newBinary(svcctx, binfo);
+			result.setReturnValue(binfo.getInfoId());
+			result.setMessage("success save binary ", true);
+			
+		} catch (ServiceException e)  {
+			LOGGER.error("Fail query accounts",e);
+			ContextHelper.stampContext(e);
+			result.setMessage("fail save binary ", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+    	
+    	return result;
+	}
 }

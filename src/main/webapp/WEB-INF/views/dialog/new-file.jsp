@@ -197,11 +197,12 @@ $(function (){
 			dataType: 'json',
 			url: '../transfer',
 			autoUpload : false,
-			//maxChunkSize: 100000, // 100K			
+			maxChunkSize: 100000, // 100K			
 			add :function (e, data) {
 				
 				NewFileModal.$files_tbody.find('tr[gpid=blank-row]').remove();
 				data.formData = {
+							'cabinet-id' : NewFileModal.cabinetId,
 							'file-id' : GPContext.GenerateUID(),
 							'file-name' : data.files[0].name,
 							'file-size' : data.files[0].size,
@@ -289,17 +290,18 @@ $(function (){
 	/*
 	 * show select user dialog
 	 */
-	NewFileModal.newFileShow = function(_callback){
+	NewFileModal.newFileShow = function(_callback, _cabinetId){
 		
 		var _self = this;
 		_self.callback = _callback;
+		_self.cabinetId = _cabinetId;
 		_self.$newfile_modal.modal('show');
 	};
 	
 	NewFileModal.initial();
 	
-	GPContext.showNewFile = function(callback){
-		NewFileModal.newFileShow(callback);
+	GPContext.showNewFile = function(callback, cabinetId){
+		NewFileModal.newFileShow(callback, cabinetId);
 	};
 
 });

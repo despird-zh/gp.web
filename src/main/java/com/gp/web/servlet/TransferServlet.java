@@ -45,9 +45,9 @@ public class TransferServlet extends HttpServlet {
     	PartMeta fmeta = processRequest(request);            
 
     	if(fmeta.isChunkPart()){
-    		TransferHelper.storeFileChunk(upload_cache, fmeta);
+    		TransferHelper.storeFileChunk(upload_cache, fmeta, request);
     	}else{
-    		TransferHelper.storeFile(upload_cache, fmeta);
+    		TransferHelper.storeFile(upload_cache, fmeta, request);
     	}
         // prepare write back json string
         response.setContentType("application/json");
@@ -108,6 +108,7 @@ public class TransferServlet extends HttpServlet {
         // Iterate each part
         PartMeta fmeta = new PartMeta();
         fmeta.setFileId(request.getParameter("file-id"));
+        fmeta.setCabinetId(request.getParameter("cabinet-id"));
         String filename = getFilename(part);
         fmeta.setName(filename);
         String ext = FilenameUtils.getExtension(filename);

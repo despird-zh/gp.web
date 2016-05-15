@@ -26,7 +26,7 @@ var PageContext = (function ($, window, undefined) {
 						
 			_self.$new_file.bind('click', function(){
 			
-				GPContext.showNewFile();
+				GPContext.showNewFile(function(){},329);
 			});
 			
 			_self.$new_folder.bind('click', function(){
