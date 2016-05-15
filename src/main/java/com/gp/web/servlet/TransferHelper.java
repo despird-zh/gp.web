@@ -10,6 +10,9 @@ import java.io.RandomAccessFile;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+
+import com.gp.common.SpringContextUtil;
 
 /**
  * Helper class to facilitate the transfer servlet upload&download processing
@@ -20,6 +23,16 @@ import org.slf4j.LoggerFactory;
 class TransferHelper {
 
 	static Logger LOGGER = LoggerFactory.getLogger(TransferHelper.class);
+	
+	static Cache transferCache = null;
+	
+	static Cache getTransferCache(){
+		
+		if(transferCache == null)
+			transferCache = SpringContextUtil.getSpringBean("fileTransferCache", Cache.class);
+			
+		return transferCache;
+	}
 	
 	static void storeFile(String storepath, FilePart filepart){
 		
