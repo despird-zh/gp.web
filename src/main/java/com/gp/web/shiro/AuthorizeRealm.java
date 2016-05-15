@@ -64,7 +64,7 @@ public class AuthorizeRealm extends AuthorizingRealm {
 			throw new AuthorizationException("Empty principals list!");
 		}
 		//LOADING STUFF FOR PRINCIPAL 
-		for (Principal userPrincipal : principalsList) {
+		for (Principal principal : principalsList) {
 			// Only when dctm standard mode we try to fetch the group and role information
 			//if(ServiceConstants.REALM_TYPE_DCTM.equals(userPrincipal.getRealm())){
 				// ignore group query processing
