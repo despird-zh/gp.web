@@ -95,6 +95,13 @@ public class TransferServlet extends HttpServlet {
  
     }
 
+    /**
+     * Process the request
+     *  
+     * @param request the upload request
+     * @return PartMeta the meta information extracted from request.
+     * 
+     **/
     public PartMeta processRequest(HttpServletRequest request) throws IOException, ServletException{
 
         Part part = request.getPart(CONTENT_PART);
@@ -125,6 +132,7 @@ public class TransferServlet extends HttpServlet {
  
     /** 
      * this method is used to get file name out of request headers
+     * @param part the file part of submitted form
      */ 
     private String getFilename(Part part) {
         for (String cd : part.getHeader("content-disposition").split(";")) {
