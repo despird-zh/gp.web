@@ -61,25 +61,32 @@ class TransferHelper {
 	static void storeFile(String storepath, PartMeta filepart,HttpServletRequest request){
 		
 		InputStream inputStream = null;
-		OutputStream outputStream = null;
+
 		try {
 			inputStream = filepart.getContent();
-			String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
-			// write the inputStream to a FileOutputStream
-			outputStream = new FileOutputStream(new File(tempfilepath));
+//			String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
+//			// write the inputStream to a FileOutputStream
+//			outputStream = new FileOutputStream(new File(tempfilepath));
+//
+//			int read = 0;
+//			byte[] bytes = new byte[1024];
+//
+//			while ((read = inputStream.read(bytes)) != -1) {
+//				outputStream.write(bytes, 0, read);
+//			}
+			TransferCacheInfo tsfinfo = getCachedInfo(filepart.getFileId());
+			tsfinfo.setCabinetId(filepart.getCabinetId());
+			InfoId<Long> binaryid = createBinary(filepart, request);
+			tsfinfo.setBinaryId(binaryid);
+			InfoId<Long> id = createCabFile(filepart, request);
+			tsfinfo.setFileId(id);
+			tsfinfo.getRanges().add(filepart.getContentRange());
+			
+			saveBinary(tsfinfo.getFileId(), binaryid, inputStream, request);
+			LOGGER.debug("single file upload complete");
 
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-
-		} catch (IOException e) {
-			LOGGER.error("Fail store the file part to temporary path",e);
 		} finally {
 			IOUtils.closeQuietly(inputStream);
-			IOUtils.closeQuietly(outputStream);
 		}
 	}
 	
@@ -106,6 +113,7 @@ class TransferHelper {
 				
 				InfoId<Long> id = createCabFile(filepart, request);
 				tsfinfo.setFileId(id);
+				
 			}
 			tsfinfo.getRanges().add(filepart.getContentRange());
 			
@@ -114,7 +122,7 @@ class TransferHelper {
 				InfoId<Long> binaryid = createBinary(filepart, request);
 				tsfinfo.setBinaryId(binaryid);
 				
-				saveBinary(tsfinfo.getFileId(), binaryid, new FileInputStream(new File(tempfilepath)), request);
+				//saveBinary(tsfinfo.getFileId(), binaryid, new FileInputStream(new File(tempfilepath)), request);
 				LOGGER.debug("File upload is complete");
 			}
 		} catch (IOException e) {
@@ -176,10 +184,11 @@ class TransferHelper {
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
 		InfoId<Long> cabid = IdKey.CABINET.getInfoId(cabinetId);
 		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid).getReturnValue();
-	
+
 		BinaryInfo binfo = new BinaryInfo();
 		binfo.setSourceId(cabinfo.getSourceId());
 		binfo.setCreateDate(new Date());
+		binfo.setStorageId(cabinfo.getStorageId());
 		binfo.setCreator(principal.getAccount());
 		binfo.setFormat(filepart.getExtension());
 		binfo.setSize(filepart.getContentRange().getFileSize());
@@ -192,8 +201,12 @@ class TransferHelper {
 	
 	public static void saveBinary(InfoId<Long> cabfileId, 
 			InfoId<Long> binaryId, 
-			InputStream inputstream,
+			InputStream inputStream,
 			HttpServletRequest request){
+		
+		Principal principal = BaseController.getPrincipalFromShiro();
+		AccessPoint accesspoint = BaseController.getAccessPoint(request);
+		StorageFacade.storeBinary(accesspoint, principal, binaryId, inputStream);
 		
 	}
 	
