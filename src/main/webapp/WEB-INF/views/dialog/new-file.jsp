@@ -197,7 +197,7 @@ $(function (){
 			dataType: 'json',
 			url: '../transfer',
 			autoUpload : false,
-			maxChunkSize: 100000, // 100K			
+			maxChunkSize: 10000, // 10K			
 			add :function (e, data) {
 				
 				NewFileModal.$files_tbody.find('tr[gpid=blank-row]').remove();

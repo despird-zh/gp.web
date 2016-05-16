@@ -18,7 +18,6 @@ import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.GeneralContext.ExecState;
-import com.gp.dao.BinaryDAO;
 import com.gp.exception.ServiceException;
 import com.gp.exception.StorageException;
 import com.gp.info.BinaryInfo;
@@ -438,13 +437,13 @@ public class StorageFacade {
     	
     	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK);
     		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
-    		svcctx.setAuditObject(binaryId);
-			LOGGER.debug("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
+    		svcctx.setAuditObject(binaryId);			
 			// read the content of InputStream into buffer
 			BufferOutputStream bos = new BufferOutputStream(cbuffer.getByteBuffer());
 			long count = bos.writeFromStream(inputStream);
 			bos.close();
-			LOGGER.debug("count : " + count);
+			
+			LOGGER.debug("range : {}-{} / count : {}",new Object[]{contentRange.getStartPos(), contentRange.getRangeLength(), count});
     		BinaryManager.instance().fillBinaryChunk(binaryId, cbuffer);	
     		
 			gresult.setReturnValue(true);

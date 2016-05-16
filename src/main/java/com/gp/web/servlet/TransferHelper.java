@@ -1,11 +1,6 @@
 package com.gp.web.servlet;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.util.Date;
 import java.util.HashSet;
@@ -27,7 +22,6 @@ import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.common.SpringContextUtil;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.StorageFacade;
 import com.gp.info.BinaryInfo;
 import com.gp.info.CabFileInfo;
@@ -58,31 +52,22 @@ class TransferHelper {
 		return transferCache;
 	}
 	
+	/**
+	 * Save the upload file 
+	 **/
 	static void storeFile(String storepath, PartMeta filepart,HttpServletRequest request){
 		
 		InputStream inputStream = null;
 
 		try {
 			inputStream = filepart.getContent();
-//			String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
-//			// write the inputStream to a FileOutputStream
-//			outputStream = new FileOutputStream(new File(tempfilepath));
-//
-//			int read = 0;
-//			byte[] bytes = new byte[1024];
-//
-//			while ((read = inputStream.read(bytes)) != -1) {
-//				outputStream.write(bytes, 0, read);
-//			}
 			TransferCacheInfo tsfinfo = getCachedInfo(filepart.getFileId());
 			tsfinfo.setCabinetId(filepart.getCabinetId());
-			InfoId<Long> binaryid = createBinary(filepart, request);
-			tsfinfo.setBinaryId(binaryid);
-			InfoId<Long> id = createCabFile(filepart, request);
-			tsfinfo.setFileId(id);
+			// create file and binary 
+			createCabFile(tsfinfo, filepart, request);
 			tsfinfo.getRanges().add(filepart.getContentRange());
-			
-			saveBinary(tsfinfo.getFileId(), binaryid, inputStream, request);
+			// save binary
+			saveBinary(tsfinfo.getBinaryId(), inputStream, request);
 			LOGGER.debug("single file upload complete");
 
 		} finally {
@@ -90,6 +75,9 @@ class TransferHelper {
 		}
 	}
 	
+	/**
+	 * Save upload file chunk 
+	 **/
 	static void storeFileChunk(String storepath, PartMeta filepart, HttpServletRequest request){
 		
 		InputStream inputStream = null;
@@ -97,42 +85,36 @@ class TransferHelper {
 		try {
 			TransferCacheInfo tsfinfo = getCachedInfo(filepart.getFileId());
 			tsfinfo.setCabinetId(filepart.getCabinetId());
-			inputStream = filepart.getContent();
-			String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
-			// write the inputStream to a FileOutputStream
-			file = new RandomAccessFile(tempfilepath, "rw");
-			file.seek(filepart.getContentRange().getStartPos());
-			int read = 0;
-			byte[] bytes = new byte[4096];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				file.write(bytes, 0, read);
-			}
+			inputStream = filepart.getContent();			
+//			/** -- Save file to a temporary file -- */
+//			String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
+//			file = new RandomAccessFile(tempfilepath, "rw");
+//			file.seek(filepart.getContentRange().getStartPos());
+//			int read = 0;
+//			byte[] bytes = new byte[4096];
+//			while ((read = inputStream.read(bytes)) != -1) {
+//				file.write(bytes, 0, read);
+//			}
 			// when receive first chunk then create file in cabinet
 			if(filepart.getContentRange().getStartPos() == 0){
 				
-				InfoId<Long> id = createCabFile(filepart, request);
-				tsfinfo.setFileId(id);
-				
+				createCabFile(tsfinfo, filepart, request);				
 			}
+			
 			tsfinfo.getRanges().add(filepart.getContentRange());
 			
-			if(tsfinfo.isComplete()){
-				
-				InfoId<Long> binaryid = createBinary(filepart, request);
-				tsfinfo.setBinaryId(binaryid);
-				
-				//saveBinary(tsfinfo.getFileId(), binaryid, new FileInputStream(new File(tempfilepath)), request);
-				LOGGER.debug("File upload is complete");
-			}
-		} catch (IOException e) {
-			LOGGER.error("Fail store the file part to temporary path",e);
+			saveBinaryChunk(tsfinfo.getBinaryId(), filepart.getContentRange(), inputStream, request);
+			
 		} finally {
 			IOUtils.closeQuietly(inputStream);
 			IOUtils.closeQuietly(file);
 		}
 	}
 	
+	/**
+	 * The transfer information is cached, in order to support multiple chunk upload, 
+	 * add an ReentrantLock to make chunks cache per file is thread safe.
+	 **/
 	private static TransferCacheInfo getCachedInfo(String transferUid){
 		lock.lock();  
 		try {   
@@ -150,64 +132,81 @@ class TransferHelper {
 		}
 	}
 
-	private static InfoId<Long> createCabFile(PartMeta filepart,
+	/**
+	 * Create file and binary records, the cabinet file id and binary id is saved in TransferCacheInfo
+	 * 
+	 * @return InfoId<Long> the id of cabinet file
+	 **/
+	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart,
 			HttpServletRequest request){
 		
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
-		
-		CabFileInfo fileinfo = new CabFileInfo();
-		long cabinetId = Long.valueOf(filepart.getCabinetId());
-		fileinfo.setCabinetId(cabinetId);
-		fileinfo.setParentId(GeneralConstants.FOLDER_ROOT);
-		fileinfo.setClassification("secret");
-		fileinfo.setCommentOn(false);
-		fileinfo.setCreateDate(new Date());
-		fileinfo.setCreator(principal.getAccount());
-		fileinfo.setFormat(filepart.getExtension());
-		fileinfo.setOwner(principal.getAccount());
-		fileinfo.setState(Cabinets.FileState.BLANK.name());
-		fileinfo.setEntryName(filepart.getName());
-		fileinfo.setVersion("1.0");
-		
-		GeneralResult<InfoId<Long>> result = CabinetFacade.newCabinetFile(accesspoint, principal, fileinfo);
-		
-		return result.getReturnValue();
-	}
-	
-	private static InfoId<Long> createBinary(PartMeta filepart, 
-			HttpServletRequest request){
-		
-		Principal principal = BaseController.getPrincipalFromShiro();
-		AccessPoint accesspoint = BaseController.getAccessPoint(request);
-		
+
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
 		InfoId<Long> cabid = IdKey.CABINET.getInfoId(cabinetId);
 		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid).getReturnValue();
 
 		BinaryInfo binfo = new BinaryInfo();
-		binfo.setSourceId(cabinfo.getSourceId());
-		binfo.setCreateDate(new Date());
-		binfo.setStorageId(cabinfo.getStorageId());
-		binfo.setCreator(principal.getAccount());
+		binfo.setSourceId(cabinfo.getSourceId());		
+		binfo.setStorageId(cabinfo.getStorageId());		
 		binfo.setFormat(filepart.getExtension());
 		binfo.setSize(filepart.getContentRange().getFileSize());
 		binfo.setState(Cabinets.FileState.BLANK.name());
+		binfo.setCreator(principal.getAccount());
+		binfo.setCreateDate(new Date());
 		
-		GeneralResult<InfoId<Long>> result = StorageFacade.newBinary(accesspoint, principal, binfo);
-	
-		return result.getReturnValue();
+		InfoId<Long> binaryId = StorageFacade.newBinary(accesspoint, principal, binfo).getReturnValue();
+		tsfinfo.setBinaryId(binaryId);// save the binary id
+		
+		CabFileInfo fileinfo = new CabFileInfo();
+
+		fileinfo.setCabinetId(cabinetId);
+		fileinfo.setParentId(GeneralConstants.FOLDER_ROOT);
+		fileinfo.setClassification("secret");
+		fileinfo.setCommentOn(false);
+		fileinfo.setBinaryId(binaryId.getId()); // Set the binary id
+		fileinfo.setFormat(filepart.getExtension());
+		fileinfo.setOwner(principal.getAccount());
+		fileinfo.setState(Cabinets.FileState.BLANK.name());
+		fileinfo.setEntryName(filepart.getName());
+		fileinfo.setVersion("1.0");
+		fileinfo.setCreator(principal.getAccount());
+		fileinfo.setCreateDate(new Date());
+		
+		InfoId<Long> fileId = CabinetFacade.newCabinetFile(accesspoint, principal, fileinfo).getReturnValue();
+		tsfinfo.setFileId(fileId); // save the file id
+		
+		return fileId;
 	}
 	
-	public static void saveBinary(InfoId<Long> cabfileId, 
-			InfoId<Long> binaryId, 
-			InputStream inputStream,
-			HttpServletRequest request){
+	/**
+	 * Save file binary into storage
+	 * 
+	 * @param binaryId the id of file binary
+	 * @param inputStream the input stream of upload file
+	 * @param request the http request to extract access point and principal. 
+	 **/
+	public static void saveBinary(InfoId<Long> binaryId, InputStream inputStream, HttpServletRequest request){
 		
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
-		StorageFacade.storeBinary(accesspoint, principal, binaryId, inputStream);
+		StorageFacade.storeBinary(accesspoint, principal, binaryId, inputStream);		
+	}
+	
+	/**
+	 * Save file binary into storage
+	 * 
+	 * @param binaryId the id of file binary
+	 * @param contentRange the content range of upload file
+	 * @param inputStream the input stream of upload file
+	 * @param request the http request to extract access point and principal. 
+	 **/
+	public static void saveBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange,  InputStream inputStream,	HttpServletRequest request){
 		
+		Principal principal = BaseController.getPrincipalFromShiro();
+		AccessPoint accesspoint = BaseController.getAccessPoint(request);
+		StorageFacade.storeBinaryChunk(accesspoint, principal, binaryId, contentRange, inputStream);
 	}
 	
 	/**
@@ -258,6 +257,9 @@ class TransferHelper {
 			this.ranges = ranges;
 		}
 
+		/**
+		 * Check if the all chunks are complete 
+		 **/
 		boolean isComplete(){
 				
 				long length = 0l;
