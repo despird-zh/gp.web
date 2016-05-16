@@ -1,6 +1,8 @@
 package com.gp.core;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
 import com.gp.audit.AuditServiceContext;
@@ -20,6 +22,8 @@ import com.gp.util.ConfigSettingUtils;
  * 
  **/
 public class ContextHelper {
+	
+	public static Logger LOGGER = LoggerFactory.getLogger(ContextHelper.class);
 	
 	/**
 	 * Use thread local to hold current thread service context
@@ -168,5 +172,8 @@ public class ContextHelper {
 				svcctx.endAudit(ExecState.EXCEP, e.getMessage());
 			}
 		}
+		
+		if(LOGGER.isDebugEnabled())
+			LOGGER.debug("Audit collector stamp on the exception", e);
 	}
 }
