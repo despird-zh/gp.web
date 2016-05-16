@@ -23,7 +23,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
-import com.sun.tools.javac.util.ArrayUtils;
+
 
 /**
  * Define the basic method be used in Controller

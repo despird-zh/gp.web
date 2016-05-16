@@ -99,13 +99,6 @@
 			<version>${org.spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<version>${jdk.version}</version>
-			<scope>system</scope>
-			<systemPath>${jdk.home}/lib/tools.jar</systemPath>
-		</dependency>
 		<!-- Start Shiro -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
