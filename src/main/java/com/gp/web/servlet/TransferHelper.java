@@ -87,13 +87,17 @@ class TransferHelper {
 			tsfinfo.setCabinetId(filepart.getCabinetId());
 			inputStream = filepart.getContent();			
 //			/** -- Save file to a temporary file -- */
-//			String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
-//			file = new RandomAccessFile(tempfilepath, "rw");
-//			file.seek(filepart.getContentRange().getStartPos());
-//			int read = 0;
-//			byte[] bytes = new byte[4096];
-//			while ((read = inputStream.read(bytes)) != -1) {
-//				file.write(bytes, 0, read);
+//			try{
+//				String tempfilepath = storepath + filepart.getFileId() +'.'+ filepart.getExtension();
+//				file = new RandomAccessFile(tempfilepath, "rw");
+//				file.seek(filepart.getContentRange().getStartPos());
+//				int read = 0;
+//				byte[] bytes = new byte[4096];
+//				while ((read = inputStream.read(bytes)) != -1) {
+//					file.write(bytes, 0, read);
+//				}
+//			}catch(Exception e){
+//				e.printStackTrace();
 //			}
 			// when receive first chunk then create file in cabinet
 			if(filepart.getContentRange().getStartPos() == 0){
@@ -206,6 +210,7 @@ class TransferHelper {
 		
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
+
 		StorageFacade.storeBinaryChunk(accesspoint, principal, binaryId, contentRange, inputStream);
 	}
 	

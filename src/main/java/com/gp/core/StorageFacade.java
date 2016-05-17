@@ -1,8 +1,14 @@
 package com.gp.core;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
@@ -398,7 +404,7 @@ public class StorageFacade {
     			svcctx.endAudit(ExecState.FAIL, "binary not exist");
     			return gresult;
     		}
-    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(binfo.getSize(), 0);
+    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(binfo.getSize(), 0, BufferManager.BUFFER_SIZE);
     		if(cbuffer.getChunkLength() < binfo.getSize()){
     			gresult.setMessage("Buffer cannot hold whole file binary", false);
     			svcctx.endAudit(ExecState.FAIL, "Buffer cannot hold whole file binary");
@@ -441,11 +447,9 @@ public class StorageFacade {
 			// read the content of InputStream into buffer
 			BufferOutputStream bos = new BufferOutputStream(cbuffer.getByteBuffer());
 			long count = bos.writeFromStream(inputStream);
-			bos.close();
-			
-			LOGGER.debug("range : {}-{} / count : {}",new Object[]{contentRange.getStartPos(), contentRange.getRangeLength(), count});
+			bos.close();			
+			LOGGER.debug("range : {}-{} / read count : {}",new Object[]{contentRange.getStartPos(), contentRange.getRangeLength(), count});
     		BinaryManager.instance().fillBinaryChunk(binaryId, cbuffer);	
-    		
 			gresult.setReturnValue(true);
 			gresult.setMessage("Success fill the binary chunk with source input stream", true);
 			
