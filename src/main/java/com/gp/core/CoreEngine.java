@@ -124,7 +124,7 @@ public class CoreEngine{
 		 * Trigger the CoreInitializers to setup LifecycleHooker
 		 * !!! IMPORTANT !!!
 		 * If CoreFacade is not deployed in webapp, the recommended ClassLoader is ClassLoader.getSystemClassLoader();
-		 * Here we have to change it to ClassLoader.getSystemClassLoader(), otherwise it cannot loaded spi file in META-INF/services.
+		 * Here we have to change it to CoreEngine.class.getClassLoader, otherwise it cannot loaded spi file in META-INF/services.
 		 * 
 		 * ServiceLoader<CoreInitializer> svcloader = ServiceLoader
 	     *           .load(CoreInitializer.class, ClassLoader.getSystemClassLoader());
