@@ -10,7 +10,7 @@ import com.gp.core.CoreEngine;
 import com.gp.exception.BaseException;
 
 /**
- * the core starter of application 
+ * the core starter of application event engine.
  *
  * @author gary diao 
  * @version 0.1 2015-12-12
@@ -18,30 +18,30 @@ import com.gp.exception.BaseException;
  **/
 public class CoreStarter implements ServletContextListener{
 	
-	static Logger LOGGER ;
+	static Logger LOGGER = LoggerFactory.getLogger(CoreStarter.class);
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		//LOGGER.debug("ServletContextListener:CoreStarter destroying");
+		LOGGER.debug("ServletContextListener:CoreStarter destroying");
 		try {
 			CoreEngine.shutdown();
-			//LOGGER.debug("CoreEngine shutdown");
+			LOGGER.debug("CoreEngine shutdown");
 		} catch (BaseException e) {
-			//LOGGER.debug("fail to shutdown CoreFacade.",e);
+			LOGGER.debug("fail to shutdown CoreFacade.",e);
 		}
 	}
 	
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		// ignore
+		LOGGER.debug("ContextInitFinishListener:CoreStarter starting");
+		try {
+			CoreEngine.initial();
+			LOGGER.debug("CoreEngine initialized");
+			CoreEngine.startup();
+			LOGGER.debug("CoreEngine startup");
+		} catch (BaseException e) {
+			LOGGER.debug("fail to startup CoreFacade.",e);
+		}
 	}
 	
-	/**
-	 * If Logger is initialized via default new, It makes Log4j throws
-	 * WEB-INF/logs/log.log not found exception, so try to initial it 
-	 * In ContextInitFinishListener bean.
-	 **/
-	public static void initialLogger(){
-		LOGGER = LoggerFactory.getLogger(CoreStarter.class);
-	}
 }

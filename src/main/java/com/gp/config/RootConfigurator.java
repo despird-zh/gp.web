@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import com.gp.core.ContextInitFinishListener;
+import com.gp.core.AppContextListener;
 
 @Configuration
 @PropertySource("classpath:/spring-context.properties")
@@ -25,8 +25,8 @@ public class RootConfigurator {
 	private Environment env;
 	
 	@Bean
-	ContextInitFinishListener initListener(){
+	AppContextListener initListener(){
 		
-		return new ContextInitFinishListener();
+		return new AppContextListener();
 	}	
 }
