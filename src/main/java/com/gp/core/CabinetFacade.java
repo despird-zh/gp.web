@@ -245,6 +245,15 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Create a file entry in cabinet
+	 * 
+	 * @param accesspoint the access point of client request
+	 * @param principal the principal of current user
+	 * @param fileinfo the file to be created
+	 * 
+	 * @return The General Result that wrap the cabinet file id 
+	 **/
 	public static GeneralResult<InfoId<Long>> newCabinetFile(AccessPoint accesspoint,
 			Principal principal, CabFileInfo fileinfo){
 		
@@ -263,7 +272,7 @@ public class CabinetFacade {
 			}
 			svcctx.setAuditObject(fileid);
 			svcctx.addAuditPredicates(fileinfo);
-			fileservice.newFile(svcctx, fileinfo);
+			fileservice.newFile(svcctx, fileinfo, Cabinets.getDefaultAcl());
 			gresult.setReturnValue(fileid);
 			gresult.setMessage("success to find cabinet.", true);
 		
