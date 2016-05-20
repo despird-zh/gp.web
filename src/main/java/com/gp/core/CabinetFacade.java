@@ -1,5 +1,6 @@
 package com.gp.core;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -7,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.gp.acl.Ace;
+import com.gp.acl.Acl;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
@@ -272,7 +275,15 @@ public class CabinetFacade {
 			}
 			svcctx.setAuditObject(fileid);
 			svcctx.addAuditPredicates(fileinfo);
-			fileservice.newFile(svcctx, fileinfo, Cabinets.getDefaultAcl());
+			Acl acl =  Cabinets.getDefaultAcl();
+			InfoId<Long> tempid = idservice.generateId(IdKey.CAB_ACL, Long.class);
+			acl.setAclId(tempid);
+			Collection<Ace> aces = acl.getAllAces();
+			for(Ace ace : aces){
+				tempid = idservice.generateId(IdKey.CAB_ACE, Long.class);
+				ace.setAceId(tempid);
+			}
+			fileservice.newFile(svcctx, fileinfo, acl);
 			gresult.setReturnValue(fileid);
 			gresult.setMessage("success to find cabinet.", true);
 		
