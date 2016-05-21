@@ -8,8 +8,10 @@
     <title>AdminLTE 2 | Top Navigation</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />
+	<link rel="stylesheet" href="${path_plugins}/cropper/2.3.0/cropper.min.css">
 	<%@include file="../common/include.jsp" %>
-	
+	<link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
@@ -72,16 +74,18 @@
 							</div>
 							<div class="col-md-12">
 								<form class="form-horizontal">
+								<div class="row">
+								<div class="col-md-6">
 									<div class="form-group">
-									  <label class="col-md-2 control-label" for="workgroup-name">工作组名称</label>
-									  <div class="col-md-4">
+									  <label class="col-md-4 control-label" for="workgroup-name">工作组名称</label>
+									  <div class="col-md-8">
 										<input type="text" id="wrokgroup-id" value="${wgroup_id}" class="hidden">
 										<input type="text" placeholder="Workgroup Name" value="Local" id="workgroup-name" class="form-control">
 									  </div>
 									</div>
 									<div class="form-group">
-									  <label class="col-md-2 control-label" for="workgroup-state-sel">状态</label>
-									  <div class="col-md-2">
+									  <label class="col-md-4 control-label" for="workgroup-state-sel">状态</label>
+									  <div class="col-md-4">
 											<select class="form-control select2" id="workgroup-state-sel">
 												<option value="READ_WRITE">Read/Write</option>
 												<option value="READ_ONLY">Read Only</option>
@@ -90,36 +94,40 @@
 									  </div>
 									</div>
 									<div class="form-group">
-									  <label class="col-md-2 control-label" for="workgroup-admin">管理联系人</label>
-									  <div class="col-md-3">
+									  <label class="col-md-4 control-label" for="workgroup-admin">管理联系人</label>
+									  <div class="col-md-6">
 										<div class="input-group">
 											<input type="text" class="form-control" id="workgroup-admin">
 											<span class="input-group-btn">
-											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
+											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-fw fa-user"></i></a>
 											</span>
 										  </div>
 									  </div>
 									</div>
 									<div class="form-group">
-									  <label class="col-md-2 control-label" for="workgroup-org-id">组织设置</label>
-									  <div class="col-md-3">
+									  <label class="col-md-4 control-label" for="workgroup-org-id">组织设置</label>
+									  <div class="col-md-6">
 										<input type="hidden" id="workgroup-org-id">
 										<div class="input-group">											
 											<input type="text" id="workgroup-org-name" class="form-control">
 											<span class="input-group-btn">
-											  <a gpid="orghier-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-search"></i></a>
+											  <a gpid="orghier-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-fw fa-search"></i></a>
 											</span>											
 										  </div>
 									  </div>
 									</div>
+								</div>
+								<div class="col-md-6">
 									<div class="form-group">
-									  <label class="col-md-2 control-label" for="workgroup-description">头像</label>
-									  <div class="col-md-2">
+									  <label class="col-md-4 control-label" for="workgroup-description">头像</label>
+									  <div class="col-md-4">
 										<div class="avatar-view" title="Change the avatar">
 										  <img gpid="workgroup-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
 										</div>
 									  </div>									  
 									</div>
+								</div>
+								</div>
 									<div class="form-group">
 									  <label class="col-md-2 control-label" for="workgroup-description">描述</label>
 									  <div class="col-md-7">
@@ -679,8 +687,12 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
-	 <script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
-	 <script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
+	<script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<script src="${path_plugins}/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <!-- Select2 -->
+    <script src="${path_plugins}/select2/select2.full.min.js"></script>
+	<script src="${path_plugins}/cropper/2.3.0/cropper.min.js"></script>	
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
