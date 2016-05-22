@@ -276,62 +276,8 @@
 						<div class="row">
 							<div class="col-md-12">
 							  <!-- The time line -->
-							  <ul class="timeline">
-								<!-- timeline time label -->
-								<li class="time-label">
-								  <span class="bg-red label label-sm">
-									2014年七月八日
-								  </span>
-								</li>
-								<!-- /.timeline-label -->
-								<!-- timeline item -->
-								<li>
-								  <i class="fa fa-envelope bg-blue"></i>
-								  <div class="timeline-item">
-									<span class="time"><i class="fa fa-clock-o"></i> 27 分钟之前</span>
-									<div class="timeline-header"><a href="#">刘元发</a> 评论了你的帖子</div>
-									<div class="timeline-body">
-									  恭喜发财，评论内容
-									</div>
-								  </div>
-								</li>
-								<!-- END timeline item -->
-								<!-- timeline item -->
-								<li>
-								  <i class="fa fa-user bg-aqua"></i>
-								  <div class="timeline-item">
-									<span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-									<div class="timeline-header"><a href="#">Sarah Young</a> accepted your friend request</div>
-								  </div>
-								</li>
-								<!-- END timeline item -->
-								<!-- timeline item -->
-								<li>
-								  <i class="fa fa-comments bg-yellow"></i>
-								  <div class="timeline-item">
-									<span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-									<h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-									<div class="timeline-body">
-									  Take me to your leader!
-									  Switzerland is small and neutral!
-									  We are more like Germany, ambitious and misunderstood!
-									</div>
-									<div class="timeline-footer">
-									  <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-									</div>
-								  </div>
-								</li>
-								<!-- END timeline item -->
-								<!-- timeline time label -->
-								<li class="time-label">
-								  <span class="bg-green">
-									3 Jan. 2014
-								  </span>
-								</li>
-								<!-- /.timeline-label -->
-								<li>
-								  <i class="fa fa-clock-o bg-gray"></i>
-								</li>
+							  <ul id="actlogs-container" class="timeline">
+								
 							  </ul>
 							</div>
 						</div>

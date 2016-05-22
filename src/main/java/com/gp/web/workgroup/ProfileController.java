@@ -21,6 +21,7 @@ import com.gp.core.ImageFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
+import com.gp.info.ActLogInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
@@ -36,6 +37,7 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
+import com.gp.web.model.ActivityLog;
 import com.gp.web.model.WGroupMember;
 import com.gp.web.model.Workgroup;
 
@@ -209,6 +211,54 @@ public class ProfileController extends BaseController{
 			nextPage = pginfo.getNextPage();
 		}
 		mav.addObject("members", list);
+		mav.addObject("hasMore", hasMore);
+		mav.addObject("nextPage", nextPage);
+		return mav;		
+	}
+	
+	@RequestMapping("actlogs-next")
+	public ModelAndView doActivityLogsNext(HttpServletRequest request){
+		
+		ModelAndView mav = getJspModelView("workgroup/profile-actlogs-next");
+		// initial the work group id
+		String wgroupid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgroupid);
+		// initial group members, prepare the inifinite setting		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		PageQuery pquery = new PageQuery(12,1);
+		this.readRequestData(request, pquery);
+		InfoId<Long> wkey = null;
+		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
+			
+			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+		}
+		List<ActivityLog> list = new ArrayList<ActivityLog>();
+		GeneralResult<PageWrapper<ActLogInfo>> gresult = WorkgroupFacade.findWorkgroupActivityLogs(accesspoint, principal, wkey, pquery);
+		Boolean hasMore = false;
+		Integer nextPage = -1;
+		if(gresult.isSuccess()){
+			List<ActLogInfo> ulist = gresult.getReturnValue().getRows();
+			for(ActLogInfo info: ulist){
+				
+				ActivityLog log = new ActivityLog();
+				log.setAccount(info.getAccount());
+				log.setActivity(info.getActivity());
+				log.setActivityDate(info.getActivityDate());
+				log.setAuditId(info.getAuditId());
+				log.setObjectId(info.getObjectId());
+				log.setObjectExcerpt(info.getObjectExcerpt());
+				log.setPredicateId(info.getPredicateId());
+				log.setPredicateExcerpt(info.getPredicateExcerpt());
+				log.setUserName(info.getUserName());
+				log.setWorkgroupId(info.getWorkgroupId());
+				list.add(log);
+			}
+			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			hasMore = pginfo.getNext();
+			nextPage = pginfo.getNextPage();
+		}
+		mav.addObject("actlogs", list);
 		mav.addObject("hasMore", hasMore);
 		mav.addObject("nextPage", nextPage);
 		return mav;		

@@ -155,6 +155,37 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 	
 	MembersTab.initial();
 	
+	var ActLogTab = {
+		$workgroup_id : $('#wrokgroup-id'), // the id of workgroup
+		$infinite_list : $('#actlogs-container'),
+		initial : function(){
+			var _self = this;
+			_self.search();
+		}
+	};
+	
+	ActLogTab.search = function(){
+		
+		var _self = this;
+		$.ajax({
+			url: "../workgroup/actlogs-next.do",
+			dataType : "html",
+			data: { 
+					wgroup_id : _self.$workgroup_id.val(),
+					pageNumber : 1
+				},
+			method : 'GET',
+			success: function(response)
+			{	
+				_self.$infinite_list.html(response);
+				_self._waypoint = new Waypoint.Infinite({
+					element: _self.$infinite_list
+				});
+			}
+		});
+	};
+	ActLogTab.initial();
+	
 	return {
 		
 	}

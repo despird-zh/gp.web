@@ -51,6 +51,6 @@
 </li>
 </c:forEach>	
 <c:if test="${hasMore}">
-	<a class="infinite-more-link hidden" href="all-list-next.do?pageNumber=${nextPage}&wgroup_id=${wgroup_id}">More</a>
+	<a class="infinite-more-link hidden" href="members-next.do?pageNumber=${nextPage}&wgroup_id=${wgroup_id}">More</a>
 </c:if>	
 

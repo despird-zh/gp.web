@@ -29,6 +29,7 @@ import com.gp.info.WorkgroupUserExInfo;
 import com.gp.info.WorkgroupUserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
+import com.gp.svc.ActLogService;
 import com.gp.svc.IdService;
 import com.gp.svc.WorkgroupService;
 import com.gp.validation.ValidationMessage;
@@ -43,10 +44,15 @@ public class WorkgroupFacade {
 	
 	private static IdService idservice;
 	
+	private static ActLogService actlogservice;
+	
 	@Autowired
-	private WorkgroupFacade(WorkgroupService workgroupservice,IdService idservice){
+	private WorkgroupFacade(WorkgroupService workgroupservice,
+			IdService idservice,
+			ActLogService actlogservice){
 		WorkgroupFacade.workgroupservice = workgroupservice;
 		WorkgroupFacade.idservice = idservice;
+		WorkgroupFacade.actlogservice = actlogservice;
 	}
 	
 	public static GeneralResult<InfoId<Long>> newWorkgroup(AccessPoint accesspoint,
@@ -698,17 +704,17 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<List<ActLogInfo>> findWorkgroupActivityLog(AccessPoint accesspoint,
+	public static GeneralResult<PageWrapper<ActLogInfo>> findWorkgroupActivityLogs(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wid){
+			InfoId<Long> wid, PageQuery pquery){
 		
-		GeneralResult<List<ActLogInfo>> gresult = new GeneralResult<List<ActLogInfo>>();
+		GeneralResult<PageWrapper<ActLogInfo>> gresult = new GeneralResult<PageWrapper<ActLogInfo>>();
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACT_LOGS)){
 
 			// amend the operation information
 			svcctx.setAuditObject(wid);
-			List<ActLogInfo> logs = workgroupservice.getWorkgroupActivityLogs(svcctx, wid);
+			PageWrapper<ActLogInfo> logs = actlogservice.getWorkgroupActivityLogs(svcctx, wid, pquery);
 
 			gresult.setReturnValue(logs);
 			gresult.setMessage("success find workgroup activity logs", true);
