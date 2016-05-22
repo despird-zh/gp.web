@@ -13,7 +13,10 @@ public class ShareController extends BaseController{
 
 	@RequestMapping("share")
 	public ModelAndView doInitial(){
-		
-		return getJspModelView("workgroup/share");
+
+		ModelAndView mav = getJspModelView("workgroup/share");
+		String wgid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
 	}
 }

@@ -6,6 +6,7 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 	var BasicTab = {
 		
 		$tab : $('#tab_1'),
+		$workgroup_id : $('#wrokgroup-id'), // the id of workgroup
 		$workgroup_name : $('#workgroup-name'),
 		$workgroup_state : $('#workgroup-state-sel'),
 		$workgroup_admin : $('#workgroup-admin'),
@@ -30,7 +31,7 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 		initial : function(){
 			var _self = this;
 			_self.$tab.find('input[type="checkbox"]').uniform();
-_self.$workgroup_state.select2({
+			_self.$workgroup_state.select2({
 				minimumResultsForSearch: -1, //hide the search box
 				width : '150px'
 			});
@@ -66,11 +67,64 @@ _self.$workgroup_state.select2({
 			  minimumInputLength: 0,
 			  placeholder: { id: "", text : "Select a storage"}
 			});
+			// load the workgroup information into page
+			_self.loadWorkgroup();
 		}
+	};
+	
+	BasicTab.loadWorkgroup = function(){
+		var _self = this;
+		$.ajax({
+			url: '../workgroup/workgroup-info.do',
+			dataType : "json",
+			data: { "wgroup_id" : _self.$workgroup_id.val()} ,
+			method : "POST",
+			success: function(response)
+			{	
+				if('success' != response.state)
+					GPContext.appendResult(response, true);
+				else{
+					GPContext.appendResult(response, false);
+					var wg_data = response.data;
+					_self.$workgroup_id.val(wg_data.workgroupId);
+					_self.$workgroup_name.val(wg_data.workgroupName);				
+					_self.$workgroup_state.val(wg_data.state).trigger('change');
+					_self.$workgroup_admin.val(wg_data.admin);
+					_self.$workgroup_org_id.val(wg_data.orgId);
+					_self.$workgroup_org_name.val(wg_data.orgName);
+					_self.$workgroup_descr.val(wg_data.description);				
+					var dft_opt = '<option value="' + wg_data.storageId + '" selected>' + wg_data.storageName + '</option>';
+					_self.$workgroup_storage.append(dft_opt).trigger('change');
+					_self.$workgroup_publish.prop("checked",wg_data.publishOn).uniform.update();
+					_self.$workgroup_netdisk.prop("checked",wg_data.netdiskOn).uniform.update();
+					_self.$workgroup_publish_capacity.val(wg_data.publishCapacity);
+					_self.$workgroup_netdisk_capacity.val(wg_data.netdiskCapacity);
+					_self.$workgroup_topic.prop("checked",wg_data.topicOn).uniform.update();
+					_self.$workgroup_share.prop("checked",wg_data.shareOn).uniform.update();
+					_self.$workgroup_link.prop("checked",wg_data.linkOn).uniform.update();
+					_self.$workgroup_task.prop("checked",wg_data.taskOn).uniform.update();
+					_self.$workgroup_weight.val(wg_data.taskWeight);
+					_self.$workgroup_image[0].src=wg_data.imagePath;
+				}
+			}
+		});
 	};
 	
 	BasicTab.initial();
 	
+	var HierTab = {
+		$topic_in_parent : $('input[gpid="topic-in-parent"]'),
+		initial : function(){
+			var _self = this;
+			_self.$topic_in_parent.uniform();
+		}
+	};
+	
+	HierTab.initial();
+	
+	var MembersTab = {
+		
+	};
 	return {
 		
 	}

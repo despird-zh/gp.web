@@ -25,13 +25,18 @@ public class CabinetController extends BaseController{
 	@RequestMapping("publish")
 	public ModelAndView doPubInitial(){
 		
-		return getJspModelView("workgroup/publish");
+		ModelAndView mav = getJspModelView("workgroup/publish");
+		String wgid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
 	}
 	
 	@RequestMapping("netdisk")
 	public ModelAndView doPriInitial(){
-		
-		return getJspModelView("workgroup/netdisk");
+		ModelAndView mav = getJspModelView("workgroup/netdisk");
+		String wgid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
 	}	
 	
 	@RequestMapping("netdisk-pub-content")

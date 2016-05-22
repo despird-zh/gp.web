@@ -12,64 +12,76 @@
             <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
               <ul class="nav navbar-nav">
 				<li class=""><a href="../ga/dashboard.do"><i class="fa fa-fw fa-gear fa-lg"></i></a></li>
-                <!--li class=""><a class="dropdown-toggle" data-toggle="dropdown" href="#">Workgroup<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-				    <li><a href="../workgroup/workgroup-grid.do">grid</a></li>
-					<li><a href="../workgroup/workgroup-list.do">list</a></li>
-                    <li><a href="../workgroup/netdisk.do">netdisk</a></li>
-                    <li><a href="../workgroup/shares.do">shares</a></li>
-                    <li><a href="../workgroup/topics.do">topics</a></li>
-                  </ul>
-				</li>
-                <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Workspace<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-				    <li><a href="../workspace/workgroup.do">workgroup</a></li>
-                    <li><a href="../workspace/netdisk.do">netdisk</a></li>
-                    <li><a href="../workspace/shares.do">shares</a></li>
-                    <li><a href="../workspace/topics.do">topics</a></li>
-					<li><a href="../workspace/tasks.do">tasks</a></li>
-                  </ul>
-				</li-->
 				<li>
-		  <div class="message-toggle" data-toggle="dropdown" >
-			<div gpid="message-in-header" role="button" class="text-danger message-abstract">
-				<i class="fa fa-exclamation-triangle fa-fw m-r-sm"></i>提供处理过程 
-			</div>
-		  </div>
-		  <ul class="dropdown-menu warn-err-message">
-              <li class="header">You have <strong gpid="err-message-count">4</strong> messages <span gpid="err-message-clear-btn" class="pull-right btn p-none text-muted"><i class="fa fa-trash fa-fw"></i></span></li>
-              <li>
-               <!-- inner menu: contains the actual data -->
-               <ul gpid="err-message-list" class="menu">
-                 <li><!-- start message -->
-                   <a role="button">
-					 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
-					 <span gpid="err-message-more-btn" class="pull-right"><i class="fa fa-angle-double-down fa-fw"></i></span>
-                     <small class="text-warning"><i class="fa fa-exclamation-triangle fa-fw"></i> 18:23:43</small>
-                     <p> Why not buy a new awesome theme sadf asdf dfs sdfsadf ?</p>
-					 <ol class="text-warning hidden detail-msgs" >
-						  <li>name : can be null.</li>
-						  <li>name : can be null.</li>
-					 </ol>
-                   </a>
-                 </li><!-- end message -->
-                 <li>
-                   <a href="#">
-                     <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
-                     <small class="text-info"><i class="fa fa-flag fa-fw"></i> 5 mins</small>
-                     <p>Why not buy a new awesome theme?</p>
-                   </a>
-                 </li>
-                 <li>
-                   <a href="#">
-                     <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
-                     <small class="text-danger"><i class="fa fa-star fa-fw"></i> 5 mins</small>
-                     <p>Why not buy a new awesome theme?</p>
-                   </a>
-                 </li>
-               </ul>
-              </li>
-          </ul>
+					<div gpid="message-toggle-container" class="clearfix pull-left">
+					  <div class="message-toggle" data-toggle="dropdown" >
+						<div gpid="message-in-header" role="button" class="text-danger message-abstract">
+							<i class="fa fa-hand-peace-o fa-fw m-r-sm"></i>Welcome to Groupress ECM !!!
+						</div>
+					  </div>
+					  <ul class="dropdown-menu warn-err-message">
+						  <li class="header">You have <strong gpid="err-message-count">4</strong> messages <span gpid="err-message-clear-btn" class="pull-right btn p-none text-muted"><i class="fa fa-trash fa-fw"></i></span></li>
+						  <li>
+						   <!-- inner menu: contains the actual data -->
+						   <ul gpid="err-message-list" class="menu">
+							 <li><!-- start message -->
+							   <a href="javascript:;" role="button" >
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <span gpid="err-message-more-btn" class="pull-right"><i class="fa fa-angle-double-down fa-fw"></i></span>
+								 <small class="text-warning"><i class="fa fa-exclamation-triangle fa-fw"></i> 18:23:43</small>
+								 <p> Why not buy a new awesome theme sadf asdf dfs sdfsadf ?</p>
+								 <ol class="text-warning hidden detail-msgs" >
+									  <li>name : can be null.</li>
+									  <li>name : can be null.</li>
+								 </ol>
+							   </a>
+							 </li><!-- end message -->
+							 <li>
+							   <a href="javascript:;">
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <small class="text-info"><i class="fa fa-flag fa-fw"></i> 5 mins</small>
+								 <p>Why not buy a new awesome theme?</p>
+							   </a>
+							 </li>
+							 <li>
+							   <a href="#">
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <small class="text-danger"><i class="fa fa-star fa-fw"></i> 5 mins</small>
+								 <p>Why not buy a new awesome theme?</p>
+							   </a>
+							 </li>
+							 <li>
+							   <a href="javascript:;">
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <small class="text-info"><i class="fa fa-flag fa-fw"></i> 5 mins</small>
+								 <p>Why not buy a new awesome theme?</p>
+							   </a>
+							 </li>
+							 <li>
+							   <a href="#">
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <small class="text-danger"><i class="fa fa-star fa-fw"></i> 5 mins</small>
+								 <p>Why not buy a new awesome theme?</p>
+							   </a>
+							 </li>
+							 <li>
+							   <a href="javascript:;">
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <small class="text-info"><i class="fa fa-flag fa-fw"></i> 5 mins</small>
+								 <p>Why not buy a new awesome theme?</p>
+							   </a>
+							 </li>
+							 <li>
+							   <a href="#">
+								 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+								 <small class="text-danger"><i class="fa fa-star fa-fw"></i> 5 mins</small>
+								 <p>Why not buy a new awesome theme?</p>
+							   </a>
+							 </li>
+						   </ul>
+						  </li>
+					  </ul>
+				  </div>
 				</li>
               </ul>
             </div><!-- /.navbar-collapse -->
@@ -227,3 +239,68 @@
             </div><!-- /.navbar-custom-menu -->
           </div><!-- /.container-fluid -->
         </nav>
+		
+	<script id="message-text-template" type="x-tmpl-mustache">
+		{{#warning}}
+			 <li>
+                   <a href="javascript:;">
+					 <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+					 {{#hasDetail}}
+                     <span gpid="err-message-more-btn" class="pull-right"><i class="fa fa-angle-double-down fa-fw"></i></span>
+					 {{/hasDetail}}
+                     <small class="text-warning"><i class="fa fa-warning fa-fw"></i> {{timeText}}</small>
+                     <p>{{messageText}}</p>
+					 <ol class="text-warning hidden detail-msgs" style="">
+					 {{#detailMessages}}
+						  <li style="word-wrap: break-word;">{{property}} : {{message}}</li>	
+					 {{/detailMessages}}
+					 </ol>
+                   </a>
+             </li>
+		{{/warning}}
+		{{#error}}
+			 <li>
+                   <a href="javascript:;">
+				     <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+					  {{#hasDetail}}
+                     <span gpid="err-message-more-btn" class="pull-right"><i class="fa fa-angle-double-down fa-fw"></i></span>
+					 {{/hasDetail}}
+                     <small class="text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i> {{timeText}}</small>
+                     <p>{{messageText}}</p>
+					 <ol class="text-warning hidden detail-msgs" style="">
+					 {{#detailMessages}}
+						  <li style="word-wrap: break-word;">{{property}} : {{message}}</li>	
+					 {{/detailMessages}}
+					 </ol>
+                   </a>
+             </li>
+		{{/error}}
+		{{#info}}
+			 <li>
+                   <a href="javascript:;">
+				     <span gpid="err-message-remove-btn" class="pull-right"><i class="fa fa-close fa-fw"></i></span>
+					 {{#hasDetail}}
+                     <span gpid="err-message-more-btn" class="pull-right"><i class="fa fa-angle-double-down fa-fw"></i></span>
+					 {{/hasDetail}}
+                     <small class="text-info"><i class="fa fa-flag fa-fw"></i> {{timeText}}</small>
+                     <p>{{messageText}}</p>
+					 <ol class="text-warning hidden detail-msgs" style="">
+					 {{#detailMessages}}
+						  <li style="word-wrap: break-word;">{{property}} : {{message}}</li>	
+					 {{/detailMessages}}
+					 </ol>
+                   </a>
+             </li>
+		{{/info}}
+	</script><!-- /.template:message-text -->
+	<script id="message-header-template" type="x-tmpl-mustache">
+		{{#warning}}
+			<i class="fa fa-warning fa-fw m-r-sm"></i>{{messageText}}
+		{{/warning}}
+		{{#error}}
+			<i class="fa fa-exclamation-triangle fa-fw m-r-sm"></i>{{messageText}}
+		{{/error}}
+		{{#info}}
+			 <i class="fa fa-flag fa-fw m-r-sm"></i>{{messageText}}
+		{{/info}}
+	</script><!-- /.template:message-text -->

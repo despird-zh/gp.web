@@ -13,6 +13,9 @@ public class TopicsController extends BaseController{
 	@RequestMapping("topics")
 	public ModelAndView doInitial(){
 		
-		return getJspModelView("workgroup/topics");
+		ModelAndView mav = getJspModelView("workgroup/topics");
+		String wgid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
 	}
 }

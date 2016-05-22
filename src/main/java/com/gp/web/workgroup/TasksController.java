@@ -14,6 +14,9 @@ public class TasksController extends BaseController{
 	@RequestMapping("tasks")
 	public ModelAndView doInitial(){
 		
-		return getJspModelView("workgroup/tasks");
+		ModelAndView mav = getJspModelView("workgroup/tasks");
+		String wgid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
 	}
 }

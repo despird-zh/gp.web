@@ -34,12 +34,12 @@
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
 						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
 						<li><span class="v-separator"></span></li>	
-						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
-						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
-						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
-						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>
-						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do" aria-expanded="false" ><i class="fa fa-fw fa-commenting"></i></a></li>	
-						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do" aria-expanded="false" class="bg-aqua-active"><i class="fa fa-fw fa-info-circle"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
+						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
+						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>
+						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do?wgroup_id=${wgroup_id}" aria-expanded="false" ><i class="fa fa-fw fa-commenting"></i></a></li>	
+						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do?wgroup_id=${wgroup_id}" aria-expanded="false" class="bg-aqua-active"><i class="fa fa-fw fa-info-circle"></i></a></li>
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
@@ -230,10 +230,10 @@
 								<div class="col-md-12">
 									<form class="form-horizontal">		
 									<div class="form-group">
-									  <label class="col-sm-3 control-label" for="workgroup-storage-id">程序项目工作组</label>
+									  <label class="col-sm-3 control-label">程序项目工作组</label>
 									  <div class="col-sm-4">
 										<label class="checkbox-inline">
-											<input type="checkbox" id="workgroup-share-enable">  在父级显示讨论
+											<input type="checkbox" id="workgroup-p-121" gpid="topic-in-parent">  在父级显示讨论
 										</label> 					
 									  </div>
 									</div>
@@ -246,18 +246,18 @@
 								<div class="col-md-12">
 									<form class="form-horizontal">		
 									<div class="form-group">
-									  <label class="col-sm-3 control-label" for="workgroup-storage-id">子项目工作组1</label>
+									  <label class="col-sm-3 control-label" >子项目工作组1</label>
 									  <div class="col-sm-4">
 											<label class="checkbox-inline">
-												<input type="checkbox" id="workgroup-share-enable">  在父级显示讨论
+												<input type="checkbox" id="workgroup-c-122" gpid="topic-in-parent">  在父级显示讨论
 											</label> 						
 									  </div>
 									</div>
 									<div class="form-group">
-									  <label class="col-sm-3 control-label" for="workgroup-storage-id">子项目工作组2</label>
+									  <label class="col-sm-3 control-label" >子项目工作组2</label>
 									  <div class="col-sm-4">
 											<label class="checkbox-inline">
-												<input type="checkbox" id="workgroup-share-enable">  在父级显示讨论
+												<input type="checkbox" id="wrokgroup-c-123" gpid="topic-in-parent">  在父级显示讨论
 											</label> 						
 									  </div>
 									</div>
@@ -687,8 +687,12 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
+	<!-- mustache -->
+    <script src="${path_plugins}/mustache/mustache.min.js"></script>
+	<!-- inifite -->
 	<script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
 	<script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<!-- uniform -->
 	<script src="${path_plugins}/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <!-- Select2 -->
     <script src="${path_plugins}/select2/select2.full.min.js"></script>
