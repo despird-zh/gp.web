@@ -1,11 +1,17 @@
 package com.gp.web.workgroup;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,6 +51,8 @@ import com.gp.web.model.Workgroup;
 @Controller("wg-profile-ctrl")
 @RequestMapping("/workgroup")
 public class ProfileController extends BaseController{
+	
+	static Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 	
 	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	
@@ -216,6 +224,9 @@ public class ProfileController extends BaseController{
 		return mav;		
 	}
 	
+	static SimpleDateFormat SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+	static SimpleDateFormat SDF_TIME = new SimpleDateFormat("HH:mm:ss");
+	
 	@RequestMapping("actlogs-next")
 	public ModelAndView doActivityLogsNext(HttpServletRequest request){
 		
@@ -223,7 +234,9 @@ public class ProfileController extends BaseController{
 		// initial the work group id
 		String wgroupid = super.readRequestParam("wgroup_id");
 		mav.addObject("wgroup_id",  wgroupid);
-		// initial group members, prepare the inifinite setting		
+		String tailDateStr = request.getParameter("tailDate");
+		Date taildt = null;
+		// initial activity logs, prepare the infinite setting		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		PageQuery pquery = new PageQuery(12,1);
@@ -238,13 +251,30 @@ public class ProfileController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		if(gresult.isSuccess()){
+						
+			try {
+				taildt = StringUtils.isBlank(tailDateStr) ? SDF_DATE.parse("9999-12-31"):
+					SDF_DATE.parse(tailDateStr);
+			} catch (ParseException e) {
+				LOGGER.error("Fail parse the date",e);
+			}
+			
 			List<ActLogInfo> ulist = gresult.getReturnValue().getRows();
 			for(ActLogInfo info: ulist){
 				
 				ActivityLog log = new ActivityLog();
+				if(!DateUtils.isSameDay(taildt, info.getActivityDate())){
+				// current row log at different day.
+					if(DateUtils.isSameDay(info.getActivityDate(), new Date())){
+						log.setTimeLabel("Today");
+					}
+					else{
+						log.setTimeLabel(SDF_DATE.format(info.getActivityDate()));
+					}
+				}
 				log.setAccount(info.getAccount());
 				log.setActivity(info.getActivity());
-				log.setActivityDate(info.getActivityDate());
+				log.setActivityTime(SDF_TIME.format(info.getActivityDate()));
 				log.setAuditId(info.getAuditId());
 				log.setObjectId(info.getObjectId());
 				log.setObjectExcerpt(info.getObjectExcerpt());
@@ -252,6 +282,7 @@ public class ProfileController extends BaseController{
 				log.setPredicateExcerpt(info.getPredicateExcerpt());
 				log.setUserName(info.getUserName());
 				log.setWorkgroupId(info.getWorkgroupId());
+				taildt = info.getActivityDate();
 				list.add(log);
 			}
 			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
@@ -261,6 +292,7 @@ public class ProfileController extends BaseController{
 		mav.addObject("actlogs", list);
 		mav.addObject("hasMore", hasMore);
 		mav.addObject("nextPage", nextPage);
+		mav.addObject("tailDate", SDF_DATE.format(taildt));
 		return mav;		
 	}
 }

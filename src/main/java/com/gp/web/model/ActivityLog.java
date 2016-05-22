@@ -1,9 +1,9 @@
 package com.gp.web.model;
 
-import java.util.Date;
-
 public class ActivityLog {
 
+	private String timeLabel = "";
+	
 	private Long workgroupId;
 	
 	private String account;
@@ -12,7 +12,7 @@ public class ActivityLog {
 	
 	private Long auditId;
 	
-	private Date activityDate;
+	private String activityTime;
 	
 	private String activity;
 	
@@ -56,14 +56,6 @@ public class ActivityLog {
 		this.auditId = auditId;
 	}
 
-	public Date getActivityDate() {
-		return activityDate;
-	}
-
-	public void setActivityDate(Date activityDate) {
-		this.activityDate = activityDate;
-	}
-
 	public String getActivity() {
 		return activity;
 	}
@@ -102,6 +94,23 @@ public class ActivityLog {
 
 	public void setPredicateExcerpt(String predicateExcerpt) {
 		this.predicateExcerpt = predicateExcerpt;
+	}
+
+
+	public String getTimeLabel() {
+		return timeLabel;
+	}
+
+	public void setTimeLabel(String timeLabel) {
+		this.timeLabel = timeLabel;
+	}
+
+	public String getActivityTime() {
+		return activityTime;
+	}
+
+	public void setActivityTime(String activityTime) {
+		this.activityTime = activityTime;
 	}
 
 }
