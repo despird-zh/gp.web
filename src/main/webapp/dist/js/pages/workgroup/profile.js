@@ -123,8 +123,38 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 	HierTab.initial();
 	
 	var MembersTab = {
+		$workgroup_id : $('#wrokgroup-id'), // the id of workgroup
+		$infinite_list : $('#members-container'),
 		
+		initial : function(){
+			var _self = this;
+			_self.search();
+		}
 	};
+	
+	MembersTab.search = function(){
+		
+		var _self = this;
+		$.ajax({
+			url: "../workgroup/members-next.do",
+			dataType : "html",
+			data: { 
+					wgroup_id : _self.$workgroup_id.val(),
+					pageNumber : 1
+				},
+			method : 'GET',
+			success: function(response)
+			{	
+				_self.$infinite_list.html(response);
+				_self._waypoint = new Waypoint.Infinite({
+					element: _self.$infinite_list
+				});
+			}
+		});
+	};
+	
+	MembersTab.initial();
+	
 	return {
 		
 	}

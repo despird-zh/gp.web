@@ -1,5 +1,8 @@
 package com.gp.web.workgroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,9 +27,16 @@ import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.WorkgroupExInfo;
+import com.gp.info.WorkgroupUserExInfo;
+import com.gp.pagination.PageQuery;
+import com.gp.pagination.PageWrapper;
+import com.gp.pagination.PaginationInfo;
+import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
+import com.gp.web.model.Account;
+import com.gp.web.model.WGroupMember;
 import com.gp.web.model.Workgroup;
 
 
@@ -37,14 +47,51 @@ public class ProfileController extends BaseController{
 	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	
 	@RequestMapping("profile")
-	public ModelAndView doInitial(){
+	public ModelAndView doInitial(HttpServletRequest request){
 		
 		ModelAndView mav = getJspModelView("workgroup/profile");
-		String wgid = super.readRequestParam("wgroup_id");
-		mav.addObject("wgroup_id",  wgid);
-		return mav;
-	}
+		// initial the work group id
+		String wgroupid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgroupid);
+		// initial group members, prepare the inifinite setting		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		PageQuery pquery = new PageQuery(12,1);
+		this.readRequestData(request, pquery);
+		InfoId<Long> wkey = null;
+		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
+			
+			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+		}
+		List<Account> list = new ArrayList<Account>();
+		GeneralResult<PageWrapper<WorkgroupUserExInfo>> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
+		Boolean hasMore = false;
+		Integer nextPage = -1;
+		if(gresult.isSuccess()){
+			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue().getRows();
+			for(WorkgroupUserExInfo info: ulist){
+				
+				Account ui = new Account();
+				ui.setSourceId(info.getInstanceId());
+				ui.setUserId(info.getUserId().getId());
+				ui.setAccount(info.getAccount());
+				ui.setEmail(info.getEmail());
+				ui.setType(info.getUserType());
+				ui.setName(info.getUserName());
 	
+				list.add(ui);
+			}
+			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			hasMore = pginfo.getNext();
+			nextPage = pginfo.getNextPage();
+		}
+		mav.addObject("members", list);
+		mav.addObject("hasMore", hasMore);
+		mav.addObject("nextPage", nextPage);
+		return mav;
+		
+	}
+
 	@RequestMapping("workgroup-info")
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
@@ -120,5 +167,50 @@ public class ProfileController extends BaseController{
 		mav.addAllObjects(result.asMap());
 		
 		return mav;
+	}
+	
+	@RequestMapping("members-next")
+	public ModelAndView doMembersNext(HttpServletRequest request){
+		
+		ModelAndView mav = getJspModelView("workgroup/profile-members-next");
+		// initial the work group id
+		String wgroupid = super.readRequestParam("wgroup_id");
+		mav.addObject("wgroup_id",  wgroupid);
+		// initial group members, prepare the inifinite setting		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		PageQuery pquery = new PageQuery(12,1);
+		this.readRequestData(request, pquery);
+		InfoId<Long> wkey = null;
+		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
+			
+			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+		}
+		List<WGroupMember> list = new ArrayList<WGroupMember>();
+		GeneralResult<PageWrapper<WorkgroupUserExInfo>> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
+		Boolean hasMore = false;
+		Integer nextPage = -1;
+		if(gresult.isSuccess()){
+			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue().getRows();
+			for(WorkgroupUserExInfo info: ulist){
+				
+				WGroupMember wmember = new WGroupMember();
+				wmember.setAccount(info.getAccount());
+				wmember.setEmail(info.getEmail());
+				wmember.setInstanceName(info.getInstanceName());
+				wmember.setRole(info.getRole());
+				wmember.setType(info.getUserType());
+				wmember.setUname(info.getUserName());
+				
+				list.add(wmember);
+			}
+			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			hasMore = pginfo.getNext();
+			nextPage = pginfo.getNextPage();
+		}
+		mav.addObject("members", list);
+		mav.addObject("hasMore", hasMore);
+		mav.addObject("nextPage", nextPage);
+		return mav;		
 	}
 }

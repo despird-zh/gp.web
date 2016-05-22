@@ -34,7 +34,7 @@ import com.gp.web.model.Account;
 import com.gp.web.model.GroupMember;
 import com.gp.web.model.UserGroup;
 import com.gp.web.model.Workgroup;
-import com.gp.web.model.WorkgroupMember;
+import com.gp.web.model.WGroupMember;
 
 @Controller("ga-wg-add-ctlr")
 @RequestMapping("/ga")
@@ -136,12 +136,12 @@ public class WorkgroupAddController extends BaseController{
 				wkey, account, entityId);
 		
 		ModelAndView mav = getJsonModelView();
-		List<WorkgroupMember> list = new ArrayList<WorkgroupMember>();
+		List<WGroupMember> list = new ArrayList<WGroupMember>();
 		if(gresult.isSuccess()){
 			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue();
 			for(WorkgroupUserExInfo info: ulist){
 				
-				WorkgroupMember wmember = new WorkgroupMember();
+				WGroupMember wmember = new WGroupMember();
 				wmember.setAccount(info.getAccount());
 				wmember.setEmail(info.getEmail());
 				wmember.setInstanceName(info.getInstanceName());

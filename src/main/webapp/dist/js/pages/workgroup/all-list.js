@@ -30,7 +30,6 @@ var PageContext = (function ($, window, undefined){
 			_self.$filter_search_btn.on('click', $.proxy(_self.search, _self));
 			// bind clear button
 			_self.$filter_clear_btn.on('click', $.proxy(_self.clear, _self));
-			console.log(_self.$infinite_list);
 			// initial the waypoint
 			_self._waypoint = new Waypoint.Infinite({
 				element: _self.$infinite_list

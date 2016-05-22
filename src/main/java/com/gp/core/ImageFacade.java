@@ -106,6 +106,7 @@ public class ImageFacade {
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGE)){
 
+			svcctx.setAuditObject(imageId);
 			ImageInfo imginfo = imageservice.getImage(svcctx, imageId, "");
 			
 			gresult.setReturnValue(imginfo);

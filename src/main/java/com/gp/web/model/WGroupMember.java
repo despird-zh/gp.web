@@ -1,6 +1,6 @@
 package com.gp.web.model;
 
-public class WorkgroupMember {
+public class WGroupMember {
 	
 	private String account;
 	

@@ -17,6 +17,7 @@ import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.ServiceException;
+import com.gp.info.ActLogInfo;
 import com.gp.info.GroupInfo;
 import com.gp.info.InfoId;
 import com.gp.info.UserExInfo;
@@ -688,6 +689,32 @@ public class WorkgroupFacade {
 		}catch(ServiceException e){
 			LOGGER.error("Exception when find workgroups",e);
 			gresult.setMessage("fail find workgroups", true);
+			ContextHelper.stampContext(e);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return gresult;
+	}
+	
+	public static GeneralResult<List<ActLogInfo>> findWorkgroupActivityLog(AccessPoint accesspoint,
+			Principal principal,
+			InfoId<Long> wid){
+		
+		GeneralResult<List<ActLogInfo>> gresult = new GeneralResult<List<ActLogInfo>>();
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_ACT_LOGS)){
+
+			// amend the operation information
+			svcctx.setAuditObject(wid);
+			List<ActLogInfo> logs = workgroupservice.getWorkgroupActivityLogs(svcctx, wid);
+
+			gresult.setReturnValue(logs);
+			gresult.setMessage("success find workgroup activity logs", true);
+		}catch(ServiceException e){
+			LOGGER.error("Exception when find workgroup activity logs",e);
+			gresult.setMessage("fail find workgroup activity logs", true);
 			ContextHelper.stampContext(e);
 		}finally{
 			
