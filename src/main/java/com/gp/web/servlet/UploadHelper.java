@@ -36,16 +36,16 @@ import com.gp.web.BaseController;
  * @author gary diao
  * @version 0.1 2015-12-23
  **/
-class TransferHelper {
+class UploadHelper {
 
-	static Logger LOGGER = LoggerFactory.getLogger(TransferHelper.class);
+	static Logger LOGGER = LoggerFactory.getLogger(UploadHelper.class);
 	
 	static Cache transferCache = null;
 	
 	static Lock lock = new ReentrantLock(); 
 	
 	static Cache getTransferCache(){
-		
+		// initialize the transfer cache
 		if(transferCache == null)
 			transferCache = SpringContextUtil.getSpringBean("fileTransferCache", Cache.class);
 			

@@ -299,4 +299,12 @@ public class CabinetFacade {
 		}		
 		return gresult;
 	}
+	
+	public static GeneralResult<CabFileInfo> findCabFile(AccessPoint accesspoint,
+			Principal principal,String sourceId, InfoId<Long> fileid){
+		
+		return null;
+		
+		
+	}
 }

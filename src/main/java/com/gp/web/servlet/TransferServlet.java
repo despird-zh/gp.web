@@ -45,9 +45,9 @@ public class TransferServlet extends HttpServlet {
     	PartMeta fmeta = processRequest(request);            
 
     	if(fmeta.isChunkPart()){
-    		TransferHelper.storeFileChunk(upload_cache, fmeta, request);
+    		UploadHelper.storeFileChunk(upload_cache, fmeta, request);
     	}else{
-    		TransferHelper.storeFile(upload_cache, fmeta, request);
+    		UploadHelper.storeFile(upload_cache, fmeta, request);
     	}
         // prepare write back json string
         response.setContentType("application/json");
@@ -60,39 +60,29 @@ public class TransferServlet extends HttpServlet {
     }
     
     /**
-     * Process download process
+     * Process HEAD request. This returns the same headers as GET request, but without content.
+     * @see HttpServlet#doHead(HttpServletRequest, HttpServletResponse).
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
- 
-    	// 1. Get f from URL upload?f="?"
-    	String value = request.getParameter("f");
+    protected void doHead(
+      HttpServletRequest request,
+      HttpServletResponse response)
+      throws ServletException, IOException
+    {
+    	// Process request without content.
+    	DownloadHelper.processRequest(request, response, false);
+    }
 
-    	// 2. Get the file of index "f" from the list "files"
-    	PartMeta getFile = new PartMeta();//files.get(Integer.parseInt(value));
- 
-    	try {        
-			// 3. Set the response content type = file content type 
-			response.setContentType(getFile.getContentType());
-			 
-			// 4. Set header Content-disposition
-			 response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getName()+"\"");
-			 
-			// 5. Copy file inputstream to response outputstream
-			InputStream input = getFile.getContent();
-			OutputStream output = response.getOutputStream();
-			byte[] buffer = new byte[1024*10];
-			 
-			for (int length = 0; (length = input.read(buffer)) > 0;) {
-				output.write(buffer, 0, length);
-			}
-			
-			output.close();
-			input.close();
-         }catch (IOException e) {
-        	 e.printStackTrace();
-         }
- 
+    /**
+     * Process GET request.
+     * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse).
+     */
+    protected void doGet(
+      HttpServletRequest request,
+      HttpServletResponse response)
+      throws ServletException, IOException
+    {
+    	// Process request with content.
+    	DownloadHelper.processRequest(request, response, true);
     }
 
     /**
