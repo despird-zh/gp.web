@@ -16,10 +16,12 @@ import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
+import com.gp.common.Tags;
 import com.gp.exception.ServiceException;
 import com.gp.info.ActLogInfo;
 import com.gp.info.GroupInfo;
 import com.gp.info.InfoId;
+import com.gp.info.TagInfo;
 import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupExInfo;
@@ -31,6 +33,7 @@ import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.ActLogService;
 import com.gp.svc.IdService;
+import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
 import com.gp.validation.ValidationMessage;
 import com.gp.validation.ValidationUtils;
@@ -46,14 +49,17 @@ public class WorkgroupFacade {
 	
 	private static ActLogService actlogservice;
 	
+	private static TagService tagservice;
 	
 	@Autowired
 	private WorkgroupFacade(WorkgroupService workgroupservice,
 			IdService idservice,
-			ActLogService actlogservice){
+			ActLogService actlogservice,
+			TagService tagservice){
 		WorkgroupFacade.workgroupservice = workgroupservice;
 		WorkgroupFacade.idservice = idservice;
 		WorkgroupFacade.actlogservice = actlogservice;
+		WorkgroupFacade.tagservice = tagservice;
 	}
 	
 	public static GeneralResult<InfoId<Long>> newWorkgroup(AccessPoint accesspoint,
@@ -705,11 +711,19 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Find the activity logs of work group
+	 * 
+	 * @param wid the work group id
+	 * @param pquery the page query
+	 *  
+	 **/
 	public static GeneralResult<PageWrapper<ActLogInfo>> findWorkgroupActivityLogs(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wid, PageQuery pquery){
 		
 		GeneralResult<PageWrapper<ActLogInfo>> gresult = new GeneralResult<PageWrapper<ActLogInfo>>();
+		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACT_LOGS)){
 
@@ -729,5 +743,37 @@ public class WorkgroupFacade {
 		}
 		
 		return gresult;
+	}
+	
+	/**
+	 * Find the tags attached on the work group
+	 * @param wid the work group id 
+	 **/
+	public static GeneralResult<List<TagInfo>> findWorkgroupTags(AccessPoint accesspoint,
+			Principal principal,
+			InfoId<Long> wid ){
+		
+		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
+		if(!InfoId.isValid(wid)){
+			gresult.setMessage("workgroup id is required", false);
+			return gresult;
+		}
+		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_TAGS)){
+			
+			List<TagInfo> list = tagservice.getTags(svcctx, Tags.TagType.WORKGROUP.name(), null, wid);
+			gresult.setReturnValue(list);
+			gresult.setMessage("success find work group tags", true);
+			
+		}catch(ServiceException e){
+			LOGGER.error("Exception when find work group tags",e);
+			gresult.setMessage("fail find work group tags", false);
+			ContextHelper.stampContext(e);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return null;
 	}
 }

@@ -24,6 +24,10 @@ public class MeasureFacade {
 		MeasureFacade.measuresvc = measuresvc;
 	}
 	
+	/**
+	 * Find the work group latest summary information: docs amount etc.
+	 * @param wid the work group id  
+	 **/
 	public static GeneralResult<MeasureInfo> findWorkgroupSummary(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wid){

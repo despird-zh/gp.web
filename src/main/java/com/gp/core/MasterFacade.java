@@ -127,6 +127,11 @@ public class MasterFacade {
 		return result;
 	}
 
+	/**
+	 * Find the dictionary entries from database.
+	 * @param groupkey the entry group key
+	 * @param language the language expected 
+	 **/
 	public static GeneralResult<List<DictionaryInfo>> findDictEntries(AccessPoint accesspoint,
 			Principal principal, String groupkey, String language){
 		
