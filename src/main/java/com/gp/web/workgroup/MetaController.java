@@ -22,6 +22,10 @@ import com.gp.web.model.WorkgroupSummary;
 @RequestMapping("/workgroup")
 public class MetaController extends BaseController{
 
+	/**
+	 * Retrieve the work group summary information. these information will be the latest measure record
+	 * @param wgroup_id the id of work group
+	 **/
 	@RequestMapping("meta-summary")
 	public ModelAndView doMetaSummary(HttpServletRequest request){
 		

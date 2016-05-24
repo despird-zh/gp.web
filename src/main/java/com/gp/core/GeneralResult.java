@@ -5,7 +5,7 @@ import java.util.List;
 import com.gp.validation.ValidationMessage;
 
 /**
- * wrap the result value and necessary message, it's mostly used in core facade classed.
+ * Wrap the result value and necessary message, it's mostly used in core facade classed.
  * 
  *  @author gary diao
  *  @version 0.1 2015-12-12
