@@ -24,7 +24,7 @@ public class MeasureFacade {
 		MeasureFacade.measuresvc = measuresvc;
 	}
 	
-	public GeneralResult<MeasureInfo> findWorkgroupSummary(AccessPoint accesspoint,
+	public static GeneralResult<MeasureInfo> findWorkgroupSummary(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wid){
 		
