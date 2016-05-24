@@ -16,7 +16,7 @@ import com.gp.core.MeasureFacade;
 import com.gp.info.MeasureInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.model.WorkgroupSummary;
+import com.gp.web.model.WGroupSummary;
 
 @Controller("wg-meta-ctrl")
 @RequestMapping("/workgroup")
@@ -38,7 +38,7 @@ public class MetaController extends BaseController{
 		
 		GeneralResult<MeasureInfo> gresult = MeasureFacade.findWorkgroupSummary(accesspoint, principal, 
 				IdKey.WORKGROUP.getInfoId(wid));
-		WorkgroupSummary wsum = new WorkgroupSummary();
+		WGroupSummary wsum = new WGroupSummary();
 		if(gresult.isSuccess()){
 			
 			MeasureInfo minfo = gresult.getReturnValue();

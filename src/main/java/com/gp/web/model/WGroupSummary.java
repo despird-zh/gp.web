@@ -1,6 +1,6 @@
 package com.gp.web.model;
 
-public class WorkgroupSummary {
+public class WGroupSummary {
 	
 	private int sumDocs ;
 	
