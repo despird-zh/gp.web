@@ -1,5 +1,7 @@
 package com.gp.web.model;
 
+import java.util.List;
+
 public class Workgroup {
 	
 	private Long workgroupId;
@@ -49,6 +51,8 @@ public class Workgroup {
 	private String nodeCode;
 	
 	private String imagePath;
+	
+	private List<Tag> tags ;
 	
 	public Long getWorkgroupId() {
 		return workgroupId;
@@ -240,5 +244,13 @@ public class Workgroup {
 
 	public void setAdminName(String adminName) {
 		this.adminName = adminName;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
 	}	
 }
