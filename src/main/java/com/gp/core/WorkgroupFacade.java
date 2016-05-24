@@ -46,6 +46,7 @@ public class WorkgroupFacade {
 	
 	private static ActLogService actlogservice;
 	
+	
 	@Autowired
 	private WorkgroupFacade(WorkgroupService workgroupservice,
 			IdService idservice,
