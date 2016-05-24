@@ -30,6 +30,12 @@ public class MeasureFacade {
 		
 		GeneralResult<MeasureInfo> gresult = new GeneralResult<MeasureInfo>();
 		
+		if(!InfoId.isValid(wid)){
+			
+			gresult.setMessage("workgroup id is required", false);
+			return gresult;
+		}
+		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_MEASURE)){
 			
