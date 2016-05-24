@@ -63,41 +63,7 @@ public class ProfileController extends BaseController{
 		// initial the work group id
 		String wgroupid = super.readRequestParam("wgroup_id");
 		mav.addObject("wgroup_id",  wgroupid);
-		// initial group members, prepare the inifinite setting		
-		Principal principal = super.getPrincipalFromShiro();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		PageQuery pquery = new PageQuery(12,1);
-		this.readRequestData(request, pquery);
-		InfoId<Long> wkey = null;
-		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
-			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
-		}
-		List<Account> list = new ArrayList<Account>();
-		GeneralResult<PageWrapper<WorkgroupUserExInfo>> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
-		Boolean hasMore = false;
-		Integer nextPage = -1;
-		if(gresult.isSuccess()){
-			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue().getRows();
-			for(WorkgroupUserExInfo info: ulist){
-				
-				Account ui = new Account();
-				ui.setSourceId(info.getInstanceId());
-				ui.setUserId(info.getUserId().getId());
-				ui.setAccount(info.getAccount());
-				ui.setEmail(info.getEmail());
-				ui.setType(info.getUserType());
-				ui.setName(info.getUserName());
-	
-				list.add(ui);
-			}
-			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
-		}
-		mav.addObject("members", list);
-		mav.addObject("hasMore", hasMore);
-		mav.addObject("nextPage", nextPage);
+		
 		return mav;
 		
 	}

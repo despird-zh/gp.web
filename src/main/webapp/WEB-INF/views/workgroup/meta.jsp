@@ -21,7 +21,7 @@
 						<div class="clearfix">
 							<div class="pull-left lite-info">
 							  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-							  <h4 class="profile-username text-center" >沙特项目群</h4>
+							  <h4 class="profile-username text-center" >${hasMore}</h4>
 							  <div >
 								<p class="text-muted text-center" >admin by <a>Gary </a></p>
 							  </div>
