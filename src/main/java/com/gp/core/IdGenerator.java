@@ -10,7 +10,7 @@ import com.gp.common.IdKey;
 import com.gp.exception.ServiceException;
 import com.gp.info.Identifier;
 import com.gp.info.InfoId;
-import com.gp.svc.IdService;
+import com.gp.svc.CommonService;
 
 @Component
 public class IdGenerator {
@@ -19,10 +19,10 @@ public class IdGenerator {
 	
 	public static final InfoId<Integer> LOCAL_INSTANCE = IdKey.INSTANCE.getInfoId(GeneralConstants.LOCAL_INSTANCE);
 	
-	private static IdService idService;
+	private static CommonService idService;
 
     @Autowired
-    private IdGenerator(IdService idService) {
+    private IdGenerator(CommonService idService) {
     	LOGGER.debug("set idService with {} instance.", 
     			((idService == null) ? "null" : "real") );
     	IdGenerator.idService = idService;

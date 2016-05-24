@@ -27,6 +27,7 @@ public class CabinetController extends BaseController{
 		
 		ModelAndView mav = getJspModelView("workgroup/publish");
 		String wgid = super.readRequestParam("wgroup_id");
+		String cabid = super.readRequestParam("cabinet_id");
 		mav.addObject("wgroup_id",  wgid);
 		return mav;
 	}
@@ -35,6 +36,7 @@ public class CabinetController extends BaseController{
 	public ModelAndView doPriInitial(){
 		ModelAndView mav = getJspModelView("workgroup/netdisk");
 		String wgid = super.readRequestParam("wgroup_id");
+		String cabid = super.readRequestParam("cabinet_id");
 		mav.addObject("wgroup_id",  wgid);
 		return mav;
 	}	

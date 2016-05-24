@@ -25,7 +25,7 @@ import com.gp.info.InfoId;
 import com.gp.svc.CabinetService;
 import com.gp.svc.FileService;
 import com.gp.svc.FolderService;
-import com.gp.svc.IdService;
+import com.gp.svc.CommonService;
 import com.gp.util.DateTimeUtils;
 import com.gp.validation.ValidationMessage;
 import com.gp.validation.ValidationUtils;
@@ -41,13 +41,13 @@ public class CabinetFacade {
 	
 	static FileService fileservice;
 	
-	static IdService idservice;
+	static CommonService idservice;
 	
 	@Autowired
 	private CabinetFacade(CabinetService cabinetservice, 
 			FolderService folderservice, 
 			FileService fileservice,
-			IdService idservice){
+			CommonService idservice){
 		
 		CabinetFacade.cabinetservice = cabinetservice;
 		CabinetFacade.fileservice = fileservice;

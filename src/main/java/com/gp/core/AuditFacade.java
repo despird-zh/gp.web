@@ -12,7 +12,7 @@ import com.gp.exception.ServiceException;
 import com.gp.info.AuditInfo;
 import com.gp.info.InfoId;
 import com.gp.svc.AuditService;
-import com.gp.svc.IdService;
+import com.gp.svc.CommonService;
 
 @Component
 public class AuditFacade {
@@ -21,10 +21,10 @@ public class AuditFacade {
 	
 	private static AuditService auditservice;
 
-	private static IdService idService;
+	private static CommonService idService;
 	
 	@Autowired
-	private AuditFacade(AuditService auditservice, IdService idService){
+	private AuditFacade(AuditService auditservice, CommonService idService){
 		
 		AuditFacade.auditservice = auditservice;
 		AuditFacade.idService = idService;

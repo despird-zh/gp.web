@@ -30,7 +30,7 @@ import com.gp.storage.BufferManager;
 import com.gp.storage.ChunkBuffer;
 import com.gp.storage.ContentRange;
 import com.gp.svc.FileService;
-import com.gp.svc.IdService;
+import com.gp.svc.CommonService;
 import com.gp.svc.StorageService;
 import com.gp.util.BufferInputStream;
 import com.gp.util.BufferOutputStream;
@@ -42,14 +42,14 @@ public class StorageFacade {
 
 	static Logger LOGGER = LoggerFactory.getLogger(StorageFacade.class);
 
-	private static IdService idService;
+	private static CommonService idService;
 
 	private static StorageService storageService;
 	
 	private static FileService fileservice;
 	
 	@Autowired
-    private StorageFacade(IdService idService, StorageService storageService, FileService fileservice) {
+    private StorageFacade(CommonService idService, StorageService storageService, FileService fileservice) {
 
     	StorageFacade.idService = idService;
     	StorageFacade.storageService = storageService;

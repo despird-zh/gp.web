@@ -32,7 +32,7 @@ import com.gp.info.WorkgroupUserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.ActLogService;
-import com.gp.svc.IdService;
+import com.gp.svc.CommonService;
 import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
 import com.gp.validation.ValidationMessage;
@@ -45,7 +45,7 @@ public class WorkgroupFacade {
 	
 	private static WorkgroupService workgroupservice;
 	
-	private static IdService idservice;
+	private static CommonService idservice;
 	
 	private static ActLogService actlogservice;
 	
@@ -53,7 +53,7 @@ public class WorkgroupFacade {
 	
 	@Autowired
 	private WorkgroupFacade(WorkgroupService workgroupservice,
-			IdService idservice,
+			CommonService idservice,
 			ActLogService actlogservice,
 			TagService tagservice){
 		WorkgroupFacade.workgroupservice = workgroupservice;

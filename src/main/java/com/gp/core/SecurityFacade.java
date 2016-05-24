@@ -32,7 +32,7 @@ import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.IdService;
+import com.gp.svc.CommonService;
 import com.gp.svc.InstanceService;
 import com.gp.svc.SecurityService;
 import com.gp.util.ConfigSettingUtils;
@@ -55,10 +55,10 @@ public class SecurityFacade {
 
 	private static InstanceService masterservice;
 	
-	private static IdService idservice;
+	private static CommonService idservice;
 	
 	@Autowired
-	private SecurityFacade(SecurityService securityservice, IdService idservice,InstanceService masterservice){
+	private SecurityFacade(SecurityService securityservice, CommonService idservice,InstanceService masterservice){
 		
 		SecurityFacade.securityservice = securityservice;
 		SecurityFacade.idservice = idservice;
