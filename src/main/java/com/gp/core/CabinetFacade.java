@@ -90,7 +90,8 @@ public class CabinetFacade {
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FOLDER)){
 			
-			CabinetInfo cabinfo = folderservice.getCabinetInfo(folderinfo.getParentId());
+			InfoId<Long> fldrid = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
+			CabinetInfo cabinfo = folderservice.getCabinetInfo(svcctx, fldrid);
 			InfoId<Long> fkey = idservice.generateId(IdKey.CAB_FOLDER, Long.class);
 			folderinfo.setInfoId(fkey);
 			folderinfo.setCabinetId(cabinfo.getInfoId().getId());
@@ -261,6 +262,7 @@ public class CabinetFacade {
 			Principal principal, CabFileInfo fileinfo){
 		
 		GeneralResult<InfoId<Long>> gresult  =  new GeneralResult<InfoId<Long>>();
+		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FILE)){
 			
@@ -300,11 +302,33 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<CabFileInfo> findCabFile(AccessPoint accesspoint,
+	public static GeneralResult<CabFileInfo> findCabinetFile(AccessPoint accesspoint,
 			Principal principal,String sourceId, InfoId<Long> fileid){
 		
-		return null;
+		GeneralResult<CabFileInfo> gresult  =  new GeneralResult<CabFileInfo>();
 		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_FILE)){
+			
+			svcctx.setAuditObject(fileid);
+			
+			CabFileInfo fileinfo = fileservice.getFile(svcctx, fileid);
+			
+			gresult.setReturnValue(fileinfo);
+			gresult.setMessage("success find the file", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when create cabinet file.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to create cabinet file.", false);
 		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		
+		return gresult;
+
 	}
 }

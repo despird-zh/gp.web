@@ -56,7 +56,7 @@ public class DownloadHelper {
 		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(Long.valueOf(fid));
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
-		GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabFile(accesspoint, principal, sourceId,fileid);
+		GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
 		
 		CabFileInfo cabfile = null;
 		// Check if file is actually supplied to the request URL.

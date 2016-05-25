@@ -1,48 +1,48 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../common/taglibs.jsp" %>
 
-				<!-- Profile Image -->
-        <div class="box box-widget no-radius border-top">
-					<div class="box-header with-border">
-						<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
-							<span class="pull-left" title="Create New Workgroup" data-toggle="tooltip" data-placement="top">
-								<button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#new-file-modal">
-								<i class="fa fa-fw fa-file-o"></i>
-								</button>
-							</span>
-							<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
-								<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-								<i class="fa fa-fw fa-fire"></i>
-								</button>
-							</span>
-						</div><!-- toolbar -->
+			<!-- Profile Image -->
+    		<div class="box box-widget no-radius border-top">
+				<div class="box-header with-border">
+					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
+						<span class="pull-left" title="Create New Workgroup" data-toggle="tooltip" data-placement="top">
+							<button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#new-file-modal">
+							<i class="fa fa-fw fa-file-o"></i>
+							</button>
+						</span>
+						<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
+							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
+							<i class="fa fa-fw fa-fire"></i>
+							</button>
+						</span>
+					</div><!-- toolbar -->
+				</div>
+          		<div class="box-body box-profile">
+					<div class="clearfix">
+						<div class="pull-left lite-info">
+						  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
+						  <h4 class="profile-username text-center" >${hasMore}</h4>
+						  <div >
+							<p class="text-muted text-center" >admin by <a>Gary </a></p>
+						  </div>
+						</div>							
+						<ul class="stats-info list-group list-group-unbordered pull-right" >
+							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							  <b>成员</b> <a class="pull-right">1,322</a>
+							</li>
+							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							  <b>工作组</b> <a class="pull-right">543</a>
+							</li>
+							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							  <b>文件</b> <a class="pull-right">13,287</a>
+							</li>
+							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							  <b>讨论</b> <a class="pull-right">13,287</a>
+							</li>
+						 </ul>
 					</div>
-          <div class="box-body box-profile">
-						<div class="clearfix">
-							<div class="pull-left lite-info">
-							  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-							  <h4 class="profile-username text-center" >${hasMore}</h4>
-							  <div >
-								<p class="text-muted text-center" >admin by <a>Gary </a></p>
-							  </div>
-							</div>							
-							<ul class="stats-info list-group list-group-unbordered pull-right" >
-								<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-								  <b>成员</b> <a class="pull-right">1,322</a>
-								</li>
-								<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-								  <b>工作组</b> <a class="pull-right">543</a>
-								</li>
-								<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-								  <b>文件</b> <a class="pull-right">13,287</a>
-								</li>
-								<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-								  <b>讨论</b> <a class="pull-right">13,287</a>
-								</li>
-							 </ul>
-						</div>
-          </div><!-- /.box-body -->
-        </div><!-- /.box -->
+          		</div><!-- /.box-body -->
+        	</div><!-- /.box -->
 
         <!-- About Me Box -->
         <div class="box box-widget border-top">
