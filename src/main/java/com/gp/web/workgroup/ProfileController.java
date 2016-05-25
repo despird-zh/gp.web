@@ -205,7 +205,7 @@ public class ProfileController extends BaseController{
 		// initial activity logs, prepare the infinite setting		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		PageQuery pquery = new PageQuery(12,1);
+		PageQuery pquery = new PageQuery(5,1);
 		this.readRequestData(request, pquery);
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){

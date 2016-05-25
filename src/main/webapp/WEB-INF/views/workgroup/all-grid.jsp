@@ -84,7 +84,7 @@
 						</div>
 					</c:forEach>
 					<c:if test="${hasMore}">
-					<a class="infinite-more-link" href="all-grid-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}">More</a>
+					<a class="infinite-more-link hidden" href="all-grid-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}">More</a>
 					</c:if>					
 					</div>
 				</div><!-- end box -->

@@ -179,7 +179,9 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 			{	
 				_self.$infinite_list.html(response);
 				_self._waypoint = new Waypoint.Infinite({
-					element: _self.$infinite_list
+					element: _self.$infinite_list,
+					items : '.infinite-actlog-item',
+					more : '.infinite-more-actlog-link'
 				});
 			}
 		});

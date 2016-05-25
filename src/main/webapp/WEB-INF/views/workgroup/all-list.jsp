@@ -132,7 +132,7 @@
 					</c:forEach>							
 					</ul>	
 					<c:if test="${hasMore}">
-						<a class="infinite-more-link" href="all-list-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}"></a>
+						<a class="infinite-more-link hidden" href="all-list-next.do?pageNumber=${nextPage}&wgroup_name=${wgroup_name}&${tags}"></a>
 					</c:if>					
 				</div><!-- /.box-body -->
 			</div><!-- end box -->

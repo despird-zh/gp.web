@@ -3,7 +3,7 @@
 <c:forEach var="actlog" items="${actlogs}">
 <c:if test="${actlog.timeLabel != ''}">
 <!-- timeline time label -->
-<li class="time-label">
+<li class="time-label infinite-actlog-item">
   <span class="bg-red label label-sm">
 	${actlog.timeLabel}
   </span>
@@ -11,7 +11,7 @@
 <!-- /.timeline-label -->
 </c:if>
 <!-- timeline item -->
-<li>
+<li class="infinite-actlog-item">
   <i class="fa fa-envelope bg-blue"></i>
   <div class="timeline-item">
 	<span class="time"><i class="fa fa-clock-o"></i>${actlog.activityTime}</span>
@@ -24,6 +24,6 @@
 <!-- END timeline item -->
 </c:forEach>	
 <c:if test="${hasMore}">
-	<a class="infinite-more-link hidden" href="actlogs-next.do?pageNumber=${nextPage}&wgroup_id=${wgroup_id}&tailDate=${tailDate}">More</a>
+<a class="infinite-more-actlog-link" href="actlogs-next.do?pageNumber=${nextPage}&wgroup_id=${wgroup_id}&tailDate=${tailDate}">More</a>
 </c:if>	
 
