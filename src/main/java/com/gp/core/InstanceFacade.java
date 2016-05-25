@@ -152,7 +152,7 @@ public class InstanceFacade {
 		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_EXT_INSTANCE)){
 			
-			InfoId<Integer> instanceId = IdGenerator.generateId(IdKey.INSTANCE, Integer.class);
+			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.INSTANCE, Integer.class);
 			
 			svcctx.setAuditObject(instanceId);
 			svcctx.addAuditPredicates(instance);

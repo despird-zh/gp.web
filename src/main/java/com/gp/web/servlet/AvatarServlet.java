@@ -26,7 +26,7 @@ import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
 import com.gp.common.Images;
 import com.gp.common.SystemOptions;
-import com.gp.core.IdGenerator;
+import com.gp.core.CommonFacade;
 import com.gp.info.InfoId;
 import com.gp.util.ImageUtils;
 import com.gp.web.ActionResult;
@@ -101,7 +101,7 @@ public class AvatarServlet extends HttpServlet {
         	if(cropsetting.getRotate() != 0)
         		srcimg = ImageUtils.rotate(srcimg, cropsetting.getRotate());
         	// generate a id for image.        	
-        	InfoId<Long> imgid = IdGenerator.generateId(IdKey.IMAGE, Long.class);
+        	InfoId<Long> imgid = CommonFacade.generateId(IdKey.IMAGE, Long.class);
         	cacheFileName = Images.getImgFileName(new Date(), imgid.getId(), extension);
         	// the file name will be {yyyyMMdd-HHmmss}-{img_id}.{ext}
         	srcimg = ImageUtils.crop(srcimg, (int)cropsetting.getX(), (int)cropsetting.getY(), (int)cropsetting.getWidth(), (int)cropsetting.getHeight());

@@ -66,7 +66,7 @@ public class OrgHierFacade {
 		GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
 		
 		if(!InfoId.isValid(orghier.getInfoId())){
-			InfoId<Long> id = IdGenerator.generateId(IdKey.ORG_HIER, Long.class);
+			InfoId<Long> id = CommonFacade.generateId(IdKey.ORG_HIER, Long.class);
 			if(null == id){
 				ValidationMessage noidmsg = new ValidationMessage("org_id", "miss required org node id");
 				result.addMessage(noidmsg);

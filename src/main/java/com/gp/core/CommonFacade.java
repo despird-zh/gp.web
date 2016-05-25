@@ -13,19 +13,19 @@ import com.gp.info.InfoId;
 import com.gp.svc.CommonService;
 
 @Component
-public class IdGenerator {
+public class CommonFacade {
 	
-	public static Logger LOGGER = LoggerFactory.getLogger(IdGenerator.class);
+	public static Logger LOGGER = LoggerFactory.getLogger(CommonFacade.class);
 	
 	public static final InfoId<Integer> LOCAL_INSTANCE = IdKey.INSTANCE.getInfoId(GeneralConstants.LOCAL_INSTANCE);
 	
 	private static CommonService idService;
 
     @Autowired
-    private IdGenerator(CommonService idService) {
+    private CommonFacade(CommonService idService) {
     	LOGGER.debug("set idService with {} instance.", 
     			((idService == null) ? "null" : "real") );
-    	IdGenerator.idService = idService;
+    	CommonFacade.idService = idService;
     }
 
     /**
