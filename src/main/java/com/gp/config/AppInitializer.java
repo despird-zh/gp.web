@@ -41,8 +41,8 @@ public class AppInitializer implements WebApplicationInitializer {
         loggerCtx.setConfigLocation(file.toURI());
         
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(RootConfigurator.class);
-        rootContext.register(ServiceConfigurator.class);
+        rootContext.register(RootConfigurer.class);
+        rootContext.register(ServiceConfigurer.class);
         // since we registered RootConfig instead of passing it to the constructor
         rootContext.refresh(); 
         // Manage the life cycle of the root application context
@@ -70,7 +70,7 @@ public class AppInitializer implements WebApplicationInitializer {
               	   
         // Create ApplicationContext
         AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
-        webMvcContext.register(WebMvcConfigurator.class);
+        webMvcContext.register(WebMVCConfigurer.class);
                
         // Add the servlet mapping manually and make it initialize automatically
         DispatcherServlet dispatcherServlet = new DispatcherServlet(webMvcContext);

@@ -19,7 +19,7 @@ import com.gp.core.AppContextListener;
 @ComponentScan(basePackages = { 
 		"com.gp.core"
  })
-public class RootConfigurator {
+public class RootConfigurer {
 	
 	@Autowired(required=true)
 	private Environment env;

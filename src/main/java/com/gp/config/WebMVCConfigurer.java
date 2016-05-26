@@ -20,7 +20,7 @@ import com.gp.web.view.MultipleViewResolver;
 		"com.gp.web",
 		"com.gp.ga" 
 })
-public class WebMvcConfigurator extends WebMvcConfigurerAdapter {
+public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 	
 	@Bean MultipleViewResolver custViewResolver() {
 		   MultipleViewResolver rtv = new MultipleViewResolver();
@@ -79,4 +79,6 @@ public class WebMvcConfigurator extends WebMvcConfigurerAdapter {
 		
 		return resolver;
 	}
+	
+	
 }
