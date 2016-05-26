@@ -71,8 +71,10 @@ public class AppInitializer implements WebApplicationInitializer {
         // Create ApplicationContext
         AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
         webMvcContext.register(WebMVCConfigurer.class);
-               
-        // Add the servlet mapping manually and make it initialize automatically
+        
+        /***********************************************************************
+         * Add the SpringMVC DispatcherServlet
+         ***********************************************************************/
         DispatcherServlet dispatcherServlet = new DispatcherServlet(webMvcContext);
         ServletRegistration.Dynamic servlet = servletContext.addServlet("Groupress", dispatcherServlet);
         servlet.setInitParameter("throwExceptionIfNoHandlerFound", "true");
@@ -80,7 +82,9 @@ public class AppInitializer implements WebApplicationInitializer {
         servlet.setAsyncSupported(true);
         servlet.setLoadOnStartup(1);
         
-        // Add the servlet mapping manually and make it initialize automatically
+        /***********************************************************************
+         * Add the servlet mapping manually and make it initialize automatically
+         ************************************************************************/
         TransferServlet transferServlet = new TransferServlet();
         ServletRegistration.Dynamic servlet1 = servletContext.addServlet("TransferServlet", transferServlet);
         servlet1.setInitParameter("upload_path", "d:\\");
@@ -89,7 +93,10 @@ public class AppInitializer implements WebApplicationInitializer {
         servlet1.setMultipartConfig( getMultiPartConfig() );
         servlet1.setLoadOnStartup(2);
         
-        // Add avatar image crop servlet handle resize and rotate process
+        /**********************************************************************
+         * Add avatar image crop servlet handle resize and rotate process
+         *
+         ***********************************************************************/
         AvatarServlet avatarServlet = new AvatarServlet();
         ServletRegistration.Dynamic servlet2 = servletContext.addServlet("AvatarServlet", avatarServlet);
         servlet2.addMapping("/avatar");
