@@ -178,6 +178,12 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				_self.$infinite_list.html(response);
+				
+				var $morelink = _self.$infinite_list.find('a.infinite-more-actlog-link').remove();
+				console.log($morelink);
+				
+				console.log(_self.$infinite_list.html());
+				$morelink.appendTo(_self.$infinite_list);
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list,
 					items : '.infinite-actlog-item',
