@@ -3,6 +3,7 @@
 var WorkgroupProfileContext = (function ($, window, undefined){
 
 	"use strict";
+
 	var BasicTab = {
 		
 		$tab : $('#tab_1'),
@@ -128,13 +129,17 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 		
 		initial : function(){
 			var _self = this;
-			_self.search();
+			//_self.search();
 		}
 	};
 	
-	MembersTab.search = function(){
+	MembersTab.search = function(force){
 		
 		var _self = this;
+		if( !force && _self._waypoint != undefined){
+			// the inifinite scroll initialized. 
+			return;
+		}
 		$.ajax({
 			url: "../workgroup/members-next.do",
 			dataType : "html",
@@ -145,7 +150,10 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 			method : 'GET',
 			success: function(response)
 			{	
-				_self.$infinite_list.html(response);
+				$('#member-row').html(response);
+				
+				_self.$infinite_list = $('#members-container');
+				
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list
 				});
@@ -160,13 +168,17 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 		$infinite_list : $('#actlogs-container'),
 		initial : function(){
 			var _self = this;
-			_self.search();
+			//_self.search(false);
 		}
 	};
 	
-	ActLogTab.search = function(){
-		
+	ActLogTab.search = function(force){
+
 		var _self = this;
+		if( !force && _self._waypoint != undefined){
+			// the inifinite scroll initialized. 
+			return;
+		}
 		$.ajax({
 			url: "../workgroup/actlogs-next.do",
 			dataType : "html",
@@ -177,13 +189,10 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 			method : 'GET',
 			success: function(response)
 			{	
-				_self.$infinite_list.html(response);
 				
-				var $morelink = _self.$infinite_list.find('a.infinite-more-actlog-link').remove();
-				console.log($morelink);
+				$('#actlog-row').html(response);
 				
-				console.log(_self.$infinite_list.html());
-				$morelink.appendTo(_self.$infinite_list);
+				_self.$infinite_list = $('#actlogs-container');
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list,
 					items : '.infinite-actlog-item',
@@ -192,7 +201,21 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 			}
 		});
 	};
+	
 	ActLogTab.initial();
+	
+	
+	$('a.tab-marker').on('shown.bs.tab', function (e) {
+		
+		if($(e.target).attr('href') == '#tab_4'){
+			// let the act log tab waypoint.infinite initialized only once.
+			ActLogTab.search(false);
+		}
+		if($(e.target).attr('href') == '#tab_3'){
+			// let the act log tab waypoint.infinite initialized only once.
+			MembersTab.search(false);
+		}
+	});
 	
 	return {
 		

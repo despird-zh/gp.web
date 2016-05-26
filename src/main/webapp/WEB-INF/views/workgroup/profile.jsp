@@ -53,16 +53,16 @@
 				<div class="nav-tabs-custom" style="border-top: 1px solid #f4f4f4; margin-top:-1px;">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a gpid="list-tab" data-toggle="tab" href="#tab_1">基本信息</a>
+							<a class="tab-marker" data-toggle="tab" href="#tab_1">基本信息</a>
 						</li>
 						<li >
-							<a gpid="edit-tab" data-toggle="tab" href="#tab_2">组织信息</a>
+							<a class="tab-marker" data-toggle="tab" href="#tab_2">组织信息</a>
 						</li>
 						<li >
-							<a gpid="edit-tab" data-toggle="tab" href="#tab_3">成员信息</a>
+							<a class="tab-marker" data-toggle="tab" href="#tab_3">成员信息</a>
 						</li>
 						<li >
-							<a gpid="edit-tab" data-toggle="tab" href="#tab_4">活动信息</a>
+							<a class="tab-marker" data-toggle="tab" href="#tab_4">活动信息</a>
 						</li> 						
 					</ul>
 					<div class="tab-content">
@@ -266,21 +266,14 @@
 							</div>
 						</div>
 						<div id="tab_3" class="tab-pane">	
-							<div class="repo-list">
-								<ul id="members-container" class="infinite-container list-group list-group-unbordered">
-
-								</ul>
+							<div id="member-row" class="row">
+								
 							</div>
 						</div>
 						<div id="tab_4" class="tab-pane">	
-						<div class="row">
-							<div class="col-md-12">
-							  <!-- The time line -->
-							  <ul id="actlogs-container" class="timeline">
+							<div id="actlog-row" class="row">
 								
-							  </ul>
 							</div>
-						</div>
 						</div>
 					</div>
 				</div><!-- end box -->
