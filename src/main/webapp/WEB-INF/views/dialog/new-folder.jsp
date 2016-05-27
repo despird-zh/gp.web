@@ -86,10 +86,8 @@ $(function (){
 			var _self = this;
 			_self.$newfolder_modal.modal('hide');
 			
-			_self.$save_btn.bind('click', function(){
-				
-				NewFolderModal.saveFolder();
-			});
+			_self.$save_btn.on('click', $.proxy(_self.saveFolder, _self));
+		
 		}
 	};
 	
@@ -101,16 +99,15 @@ $(function (){
 			dataType : "json",
 			type: 'POST',
 			data: { 
-					cabinet_type : 'public',
-					folder_parent_id : 51,
+					cabinet_id : _self.cabid,
+					folder_parent_id : _self.parentid,
 					folder_name : _self.$folder_name.val(),
 					folder_owner : _self.$folder_owner.val(),
 					folder_descr : _self.$folder_description.val()
 				},
 			success: function(response)
 			{	
-
-				console.log()	  
+				GPContext.appendResult(response, true);  
 			}
 		});
 	};
@@ -118,17 +115,24 @@ $(function (){
 	/*
 	 * show select user dialog
 	 */
-	NewFolderModal.newFolderShow = function(_callback){
+	NewFolderModal.newFolderShow = function(_callback, _cabid, _parentid){
 		
 		var _self = this;
+		_self.cabid = _cabid;
+		_self.parentid = _parentid;
 		_self.callback = _callback;
 		_self.$newfolder_modal.modal('show');
 	};
 	
 	NewFolderModal.initial();
 	
-	GPContext.showNewFolder = function(callback){
-		NewFolderModal.newFolderShow(callback);
+	/*
+	 * callback - callback method
+	 * cabid    - the id of cabinet
+	 * parentid - the id of parent folder
+	 */
+	GPContext.showNewFolder = function(callback,cabid,parentid){
+		NewFolderModal.newFolderShow(callback,cabid,parentid);
 	};
 });
 </script>

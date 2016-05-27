@@ -11,6 +11,9 @@ var PageContext = (function ($, window, undefined) {
 		$new_file : $('div.view-toolbar button[gpid=new-file-btn]'),
 		$new_folder : $('div.view-toolbar button[gpid=new-folder-btn]'),
 		
+		$wgroup_id : $('#workgroup-id'),
+		$cabinet_id : $('#cabinet-id'),
+		
 		initial : function () {
 			var _self = this;
 			_self.$filter_switch_btn.bind('click', function () {
@@ -26,12 +29,12 @@ var PageContext = (function ($, window, undefined) {
 						
 			_self.$new_file.bind('click', function(){
 			
-				GPContext.showNewFile(function(){},329);
+				GPContext.showNewFile(function(){},Netdisk.$cabinet_id.val());
 			});
 			
 			_self.$new_folder.bind('click', function(){
 			
-				GPContext.showNewFolder();
+				GPContext.showNewFolder(function(){},Netdisk.$cabinet_id.val(),-98);
 			});
 		}
 	};

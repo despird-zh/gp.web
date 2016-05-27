@@ -178,7 +178,7 @@ class UploadHelper {
 		fileinfo.setCreator(principal.getAccount());
 		fileinfo.setCreateDate(new Date());
 		
-		InfoId<Long> fileId = CabinetFacade.newCabinetFile(accesspoint, principal, fileinfo).getReturnValue();
+		InfoId<Long> fileId = CabinetFacade.addCabinetFile(accesspoint, principal, fileinfo).getReturnValue();
 		tsfinfo.setFileId(fileId); // save the file id
 		
 		return fileId;

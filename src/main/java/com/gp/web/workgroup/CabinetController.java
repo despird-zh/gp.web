@@ -3,11 +3,21 @@ package com.gp.web.workgroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gp.audit.AccessPoint;
+import com.gp.common.IdKey;
+import com.gp.common.Principal;
+import com.gp.core.GeneralResult;
+import com.gp.core.WorkgroupFacade;
+import com.gp.info.InfoId;
+import com.gp.info.WorkgroupInfo;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -23,7 +33,7 @@ import com.gp.web.model.Version;
 public class CabinetController extends BaseController{
 	
 	@RequestMapping("publish")
-	public ModelAndView doPubInitial(){
+	public ModelAndView doPublishInitial(){
 		
 		ModelAndView mav = getJspModelView("workgroup/publish");
 		String wgid = super.readRequestParam("wgroup_id");
@@ -32,12 +42,20 @@ public class CabinetController extends BaseController{
 		return mav;
 	}
 	
+	/**
+	 * Initial the netdisk page 
+	 **/
 	@RequestMapping("netdisk")
-	public ModelAndView doPriInitial(){
+	public ModelAndView doNetdiskInitial(HttpServletRequest request){
 		ModelAndView mav = getJspModelView("workgroup/netdisk");
 		String wgid = super.readRequestParam("wgroup_id");
-		String cabid = super.readRequestParam("cabinet_id");
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
+		GeneralResult<WorkgroupInfo> gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
+		
 		mav.addObject("wgroup_id",  wgid);
+		mav.addObject("cabinet_id",  gresult.getReturnValue().getNetdiskCabinet());
 		return mav;
 	}	
 	

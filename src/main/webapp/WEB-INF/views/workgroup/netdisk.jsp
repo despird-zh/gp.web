@@ -543,9 +543,9 @@
 							<i class="fa fa-fw fa-file-o"></i>
 							</button>
 						</span>
-						<span class="pull-left" title="Create new ticket" data-toggle="tooltip" data-placement="top">
+						<span class="pull-left" title="Create new folder" data-toggle="tooltip" data-placement="top">
 							<button gpid="new-folder-btn" class="btn btn-default btn-xs" >
-							<i class="fa fa-fw fa-fire"></i>
+							<i class="fa fa-fw fa-folder-o"></i>
 							</button>
 						</span>
 						<span class="pull-left" title="Show clipboard content" data-toggle="tooltip" data-placement="top">
@@ -679,7 +679,10 @@
 				</div><!-- /.box-body -->
 			  </div><!-- /.box -->
 			</div>
-			<div class="clearfix"></div>
+			<div class="hidden">
+				<input id="cabinet-id" type="hidden" value="${cabinet_id}" />
+				<input id="workgroup-id" type="hidden" value="${wgroup_id}" />
+			</div>
 		  </div>
 
           </section><!-- /.content -->

@@ -83,18 +83,16 @@ public class CabinetFacade {
 	}
 	
 	//
-	public static GeneralResult<Boolean> savePubCabinetFolder(AccessPoint accesspoint,
+	public static GeneralResult<Boolean> addCabinetFolder(AccessPoint accesspoint,
 			Principal principal, CabFolderInfo folderinfo){
-		
+
 		GeneralResult<Boolean> gresult  =  new GeneralResult<Boolean>();
+
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FOLDER)){
 			
-			InfoId<Long> fldrid = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
-			CabinetInfo cabinfo = folderservice.getCabinetInfo(svcctx, fldrid);
 			InfoId<Long> fkey = idservice.generateId(IdKey.CAB_FOLDER, Long.class);
 			folderinfo.setInfoId(fkey);
-			folderinfo.setCabinetId(cabinfo.getInfoId().getId());
 			folderinfo.setCreateDate(DateTimeUtils.now());
 			folderinfo.setCreator(principal.getAccount());
 			InfoId<Long> parentkey  = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
@@ -258,7 +256,7 @@ public class CabinetFacade {
 	 * 
 	 * @return The General Result that wrap the cabinet file id 
 	 **/
-	public static GeneralResult<InfoId<Long>> newCabinetFile(AccessPoint accesspoint,
+	public static GeneralResult<InfoId<Long>> addCabinetFile(AccessPoint accesspoint,
 			Principal principal, CabFileInfo fileinfo){
 		
 		GeneralResult<InfoId<Long>> gresult  =  new GeneralResult<InfoId<Long>>();
