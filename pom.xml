@@ -9,7 +9,7 @@
 	<properties>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<org.spring.version>4.2.3.RELEASE</org.spring.version>
+		<org.spring.version>4.2.6.RELEASE</org.spring.version>
 		<jdk.version>1.7.0</jdk.version>
 		<shiro.version>1.2.4</shiro.version>
 		<jdk.home>C:\Program Files\Java\jdk1.8.0_65</jdk.home>
