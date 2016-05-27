@@ -107,7 +107,8 @@ $(function (){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);  
+				GPContext.appendResult(response, true);
+				NewFolderModal.$newfolder_modal.modal('hide');
 			}
 		});
 	};

@@ -12,6 +12,7 @@ import com.gp.acl.Ace;
 import com.gp.acl.Acl;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
+import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
@@ -93,6 +94,7 @@ public class CabinetFacade {
 			
 			InfoId<Long> fkey = idservice.generateId(IdKey.CAB_FOLDER, Long.class);
 			folderinfo.setInfoId(fkey);
+			folderinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
 			folderinfo.setCreateDate(DateTimeUtils.now());
 			folderinfo.setCreator(principal.getAccount());
 			InfoId<Long> parentkey  = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
