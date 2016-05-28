@@ -43,9 +43,9 @@ import com.gp.web.model.Workgroup;
 
 @Controller("wg-meta-ctrl")
 @RequestMapping("/workgroup")
-public class MetaController extends BaseController{
+public class WorkgroupMetaController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(MetaController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(WorkgroupMetaController.class);
 	
 	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	
@@ -66,7 +66,7 @@ public class MetaController extends BaseController{
 		GeneralResult<MeasureInfo> gresult = MeasureFacade.findWorkgroupSummary(accesspoint, principal, 
 				IdKey.WORKGROUP.getInfoId(wid));
 		WGroupSummary wsum = new WGroupSummary();
-		if(gresult.isSuccess()){
+		if(gresult.isSuccess() && null != gresult.getReturnValue()){
 			
 			MeasureInfo minfo = gresult.getReturnValue();
 			
@@ -105,7 +105,7 @@ public class MetaController extends BaseController{
 			mav.addAllObjects(result.asMap());
 			return mav;
 		}
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
+		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		Workgroup wgroup = new Workgroup();
 		GeneralResult<WorkgroupExInfo> gresult = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
 		if(gresult.isSuccess() && null != gresult.getReturnValue()){

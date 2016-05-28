@@ -83,9 +83,9 @@ var WorkgroupProfileContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				if('success' != response.state)
-					GPContext.appendResult(response, true);
+					GPContext.AppendResult(response, true);
 				else{
-					GPContext.appendResult(response, false);
+					GPContext.AppendResult(response, false);
 					var wg_data = response.data;
 					_self.$workgroup_id.val(wg_data.workgroupId);
 					_self.$workgroup_name.val(wg_data.workgroupName);				

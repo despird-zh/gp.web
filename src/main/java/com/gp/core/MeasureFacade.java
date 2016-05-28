@@ -3,6 +3,7 @@ package com.gp.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Operations;
@@ -13,6 +14,7 @@ import com.gp.info.InfoId;
 import com.gp.info.MeasureInfo;
 import com.gp.svc.MeasureService;
 
+@Component
 public class MeasureFacade {
 
 	static Logger LOGGER = LoggerFactory.getLogger(MeasureFacade.class);

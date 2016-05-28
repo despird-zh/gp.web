@@ -774,6 +774,6 @@ public class WorkgroupFacade {
 			
 			ContextHelper.handleContext();
 		}
-		return null;
+		return gresult;
 	}
 }

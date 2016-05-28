@@ -107,7 +107,7 @@ $(function (){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 				NewFolderModal.$newfolder_modal.modal('hide');
 			}
 		});

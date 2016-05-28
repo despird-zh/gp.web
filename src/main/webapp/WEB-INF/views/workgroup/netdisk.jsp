@@ -47,6 +47,7 @@
 			<div class="col-md-9">
 			  <div class="box box-widget">
 				<div class="box-header repo-header with-border" style="border-top: 1px solid #f4f4f4;">
+					<a gpid="back-parent-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-level-up"></i> </a>
 					<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 					<div class="folder-descr">					
 						<span class="text">电力设计协作组</span>
