@@ -305,3 +305,14 @@
          <i class="fa fa-flag fa-fw m-r-sm"></i>{{messageText}}
     {{/info}}
 </script><!-- /.template:message-text -->
+
+<div id="loading-dialog" class="modal hide" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header">
+        <h1 gpid="tip-message">Processing...</h1>
+    </div>
+    <div class="modal-body">
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    </div>
+</div><!-- /#loading-dialog -->

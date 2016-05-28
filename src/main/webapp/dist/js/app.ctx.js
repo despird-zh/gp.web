@@ -691,106 +691,133 @@ function _init() {
 
 })(jQuery);
 
-/*
- * Application Variable 
+/*!
+ * Groupress Glocal Context Variable
  * -----------------------
- * This plugin depends on iCheck plugin for checkbox and radio inputs
- *
+ * @author gary diao
  * @type plugin
- * @usage $("#todo-widget").todolist( options );
+ * @usage publish some methods in public access way
  */
 GPContext = (function ($) {
 
-	'use strict';	
-	var _context = {
-	
-		initial : function(){
-			/*
-			 * Set Global ajax setting to trap all the relogon cases.
-			 * Here take statuscode 444 as relogon signal.
-			 */
-			$.ajaxSetup({  
-				complete:function(XMLHttpRequest,textStatus){    
-					// relogon  
-					if(XMLHttpRequest.status == 511){  
-						var relogon_modal = XMLHttpRequest.responseText;
-						if($('#relogon-modal').length == 0){
-							$('body').append(relogon_modal);
-							// bind the relogon event.
-							_context.relogon.initial();
-						}
-						/* show the modal dialog */ 
-						$("#relogon-modal").modal();						
-					}
-				}  
-			}); 
-		}
-	};
-	
-	/*
-	 * declare the relogon modal 
-	 */
-	_context.relogon = {
-		$relogon_btn : {},
-		$relogon_account : {},
-		$relogon_password : {},
-		$relogon_msg : {},
-		$relogon_modal : {},
-		/*
-		 * initial and bind the relogon module panel.
+    'use strict';   
+
+    var _context = {
+    
+        initial : function(){
+            /*
+             * Set Global ajax setting to trap all the relogon cases.
+             * Here take statuscode 444 as relogon signal.
+             */
+            $.ajaxSetup({  
+                complete:function(XMLHttpRequest,textStatus){    
+                    // relogon  
+                    if(XMLHttpRequest.status == 511){  
+                        var relogon_modal = XMLHttpRequest.responseText;
+                        if($('#relogon-modal').length == 0){
+                            $('body').append(relogon_modal);
+                            // bind the relogon event.
+                            _context.relogon.initial();
+                        }
+                        /* show the modal dialog */ 
+                        $("#relogon-modal").modal();                        
+                    }
+                }  
+            }); 
+        }
+    };
+    
+    /*
+     * declare the relogon modal 
+     */
+    _context.relogon = {
+        $relogon_btn : {},
+        $relogon_account : {},
+        $relogon_password : {},
+        $relogon_msg : {},
+        $relogon_modal : {},
+        /*
+         * initial and bind the relogon module panel.
          */
-		initial : function(){
-			var _self = this;
-			_self.$relogon_btn = $('#relogon-modal button[gpid="relogon-submit"]');
-			_self.$relogon_account = $('#relogon-modal input[gpid="relogon-account"]');
-			_self.$relogon_password = $('#relogon-modal input[gpid="relogon-password"]');
-			_self.$relogon_msg = $('#relogon-modal label[gpid="relogon-msg"]');
-			_self.$relogon_modal = $('#relogon-modal');
-			
-			_self.$relogon_btn.bind('click', function(){
-				_context.relogon.logon();
-			});
-		}
-	};
-	
-	/*
-	 * relgon the system with password and account.
-	 */
-	_context.relogon.logon = function(){
-		var _self = this;
-		var username = _self.$relogon_account.val();
-		var password = _self.$relogon_password.val();
-		var $relogon_msg = _self.$relogon_msg;
+        initial : function(){
+            var _self = this;
+            _self.$relogon_btn = $('#relogon-modal button[gpid="relogon-submit"]');
+            _self.$relogon_account = $('#relogon-modal input[gpid="relogon-account"]');
+            _self.$relogon_password = $('#relogon-modal input[gpid="relogon-password"]');
+            _self.$relogon_msg = $('#relogon-modal label[gpid="relogon-msg"]');
+            _self.$relogon_modal = $('#relogon-modal');
+            
+            _self.$relogon_btn.bind('click', function(){
+                _context.relogon.logon();
+            });
+        }
+    };
+    
+    /*
+     * relgon the system with password and account.
+     */
+    _context.relogon.logon = function(){
+        var _self = this;
+        var username = _self.$relogon_account.val();
+        var password = _self.$relogon_password.val();
+        var $relogon_msg = _self.$relogon_msg;
 
-		$.ajax({
-			contentType: "application/json", 
-			url: "../main/authenticate.do", 
-			data: {"account" : username, "password": password},      
-			dataType: 'json', 				
-			success: function(result) { 
+        $.ajax({
+            contentType: "application/json", 
+            url: "../main/authenticate.do", 
+            data: {"account" : username, "password": password},      
+            dataType: 'json',               
+            success: function(result) { 
 
-				GPContext.Relogon.$relogon_msg.html(result.message);
-				if(result.state == 'success'){
-					GPContext.Relogon.$relogon_modal.modal('hide');
-				}
-			}
-		});
-	};
-	
-	_context.initial();
-	
-	var _generateUid = function (separator) {
-		var delim = separator || "-";
+                GPContext.Relogon.$relogon_msg.html(result.message);
+                if(result.state == 'success'){
+                    GPContext.Relogon.$relogon_modal.modal('hide');
+                }
+            }
+        });
+    };
+    
+    _context.initial();
+    
+    var _loading = {
 
-		function S4() {
-			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-		}
+        $loading_modal : $('#loading-dialog'),
+        $tip_message : $('#loading-dialog h1[gpid="tip-message"]'),
 
-		return (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
-	};
-	
-	return {
-		Relogon : _context.relogon,
-		GenerateUID : _generateUid
-	};
+        showLoading : function(shown, tipmsg){
+
+            var _self = this;
+
+            if(tipmsg){
+                _self.$tip_message.html(tipmsg);
+            }else{
+                _self.$tip_message.html("Processing ...");
+            }
+
+            if(shown){
+                _self.loading_modal.modal('show');
+            }else{
+                _self.loading_modal.modal('hide');
+            }
+        }
+    }
+
+    /*
+     * Generate a pseudo guid at browser side
+     */
+    var _generateUid = function (separator) {
+        var delim = separator || "-";
+
+        function S4() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        }
+
+        return (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
+    };
+    
+    return {
+        Relogon : _context.relogon,
+        GenerateUID : _generateUid,
+        ShowLoading : $.proxy(_loading.showLoading, _loading)
+    };
 })(jQuery);

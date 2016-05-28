@@ -114,9 +114,9 @@ var PageContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				if('success' != response.state)
-					GPContext.appendResult(response, true);
+					GPContext.AppendResult(response, true);
 				else{
-					GPContext.appendResult(response, false);
+					GPContext.AppendResult(response, false);
 					var wg_data = response.data;
 					_self.$workgroup_id.val(wg_data.workgroupId);
 					_self.$workgroup_name.val(wg_data.workgroupName);				
@@ -153,9 +153,9 @@ var PageContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				if('success' == response.state)
-					GPContext.appendResult(response, false);
+					GPContext.AppendResult(response, false);
 				else
-					GPContext.appendResult(response, true);
+					GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -449,7 +449,7 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, (response.state != 'success'));
+				GPContext.AppendResult(response, (response.state != 'success'));
 			}
 		});
 	};
@@ -471,7 +471,7 @@ var PageContext = (function ($, window, undefined){
 				if(response.state == 'success'){
 					_row.remove().draw();
 				}
-				GPContext.appendResult(response, (response.state != 'success'));
+				GPContext.AppendResult(response, (response.state != 'success'));
 			}
 		});
 	};
@@ -719,7 +719,7 @@ var PageContext = (function ($, window, undefined){
 				if('success' == response.state){
 					_row.remove().draw();
 				}
-				GPContext.appendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.state));
 			}
 		});
 	};
@@ -758,7 +758,7 @@ var PageContext = (function ($, window, undefined){
 				if('success' == response.state){
 					_row.remove().draw();
 				}
-				GPContext.appendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.state));
 			}
 		});
 	};
@@ -775,7 +775,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -792,7 +792,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.state));
 			}
 		});
 	};

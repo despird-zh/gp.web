@@ -75,7 +75,7 @@ var PageContext = (function ($, AdminLTE) {
 				if('success' == response.state){
 					_self.clear();
 				}
-				GPContext.appendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.state));
 			}
 		});
 	}

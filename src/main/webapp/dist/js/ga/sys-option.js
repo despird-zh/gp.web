@@ -175,7 +175,7 @@ var PageContext =(function ($, window, undefined){
 			success: function(response)
 			{	
 				// show message in header
-				GPContext.appendResult(response, false);
+				GPContext.AppendResult(response, false);
 			}
 		});
 	};

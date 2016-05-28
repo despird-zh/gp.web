@@ -218,7 +218,7 @@ var PageContext = (function ($, AdminLTE) {
 			data: storagedata, // 
 			success: function(response)
 			{	
-				GPContext.appendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.state));
 			}
 		});
 	}
@@ -257,7 +257,7 @@ var PageContext = (function ($, AdminLTE) {
 					_self.$hdfs_port.val(response.data.hdfsPort);
 				}else{
 					// show message.
-					GPContext.appendResult(response, true);
+					GPContext.AppendResult(response, true);
 				}
 			}
 		});
@@ -274,7 +274,7 @@ var PageContext = (function ($, AdminLTE) {
 			}, // 
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};

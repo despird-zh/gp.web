@@ -220,7 +220,7 @@
 			},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);  
+				GPContext.AppendResult(response, true);  
 			}
 		});
 	};
@@ -359,7 +359,7 @@
 			data: account_data,
 			success: function(response)
 			{	
-				GPContext.appendResult(response, false);    
+				GPContext.AppendResult(response, false);    
 			}
 		});
 	};
@@ -381,7 +381,7 @@
 			{	
 				_self.setAccount(response.data);
 				// show message in header
-				GPContext.appendResult(response, false);  
+				GPContext.AppendResult(response, false);  
 			}
 		});
 	};

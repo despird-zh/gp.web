@@ -126,7 +126,7 @@
 				if('success' == response.state){
 					_self.clearAccount();
 				}
-				GPContext.appendResult(response, ('success' != response.state));    
+				GPContext.AppendResult(response, ('success' != response.state));    
 			}
 		});
 	};

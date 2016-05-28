@@ -105,7 +105,7 @@ var PageContext = (function ($, window, undefined){
 			method : "POST",
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 				  
 			}
 		});
@@ -419,7 +419,7 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -437,7 +437,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -680,7 +680,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -717,7 +717,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -734,7 +734,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -751,7 +751,7 @@ var PageContext = (function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				vGPContext.appendResult(response, true);
+				vGPContext.AppendResult(response, true);
 			}
 		});
 	};

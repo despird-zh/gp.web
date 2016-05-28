@@ -167,7 +167,7 @@ var PageContext =(function ($, window, undefined){
 			data: nodedata,
 			success: function(response)
 			{	
-				GPContext.appendResult(response, ('success' != response.state));	
+				GPContext.AppendResult(response, ('success' != response.state));	
 			}
 		});
 	};
@@ -300,7 +300,7 @@ var PageContext =(function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, false);
+				GPContext.AppendResult(response, false);
 			}
 		});
 	};
@@ -317,7 +317,7 @@ var PageContext =(function ($, window, undefined){
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, false);
+				GPContext.AppendResult(response, false);
 			}
 		});
 	};

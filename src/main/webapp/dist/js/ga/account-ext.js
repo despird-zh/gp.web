@@ -141,7 +141,7 @@
 				},
 			success: function(response)
 			{	
-				GPContext.appendResult(response, true);  
+				GPContext.AppendResult(response, true);  
 			}
 		});
 	};

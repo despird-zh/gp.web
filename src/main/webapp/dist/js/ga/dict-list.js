@@ -165,7 +165,7 @@ var PageContext =(function ($, window, undefined){
 			success: function(response)
 			{	
 				// show detail message
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 				
 			}
 		});

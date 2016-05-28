@@ -46,7 +46,7 @@ var PageContext = (function ($, AdminLTE) {
 						LocalInstance.$email.val(response.data.email);
 					}
 
-					GPContext.appendResult(response, false);
+					GPContext.AppendResult(response, false);
 					
 				},
 				error: function (jqXHR, textStatus, errorThrown){}
@@ -88,7 +88,7 @@ var PageContext = (function ($, AdminLTE) {
 			success: function(response)
 			{	
 				// process message show it in header
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -263,7 +263,7 @@ var PageContext = (function ($, AdminLTE) {
 			success: function(response)
 			{	
 				// process message
-				GPContext.appendResult(response, true);
+				GPContext.AppendResult(response, true);
 			}
 		});
 	};
@@ -448,7 +448,7 @@ var PageContext = (function ($, AdminLTE) {
 			method : "POST",
 			success: function(response)
 			{	
-				GPContext.appendResult(response, (response.state != "success"));
+				GPContext.AppendResult(response, (response.state != "success"));
 			}
 		});
 		
