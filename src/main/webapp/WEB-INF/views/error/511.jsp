@@ -3,7 +3,7 @@
 
 <!-- Relogon in case on session timeout -->	
 <div class="modal fade" id="relogon-modal" tabindex="-1" role="dialog" aria-labelledby="select-user-modal-label"><!-- clipboard modal -->
-  <div class="modal-dialog" role="document" style="width:300px;">
+  <div class="modal-dialog" role="document" style="width:400px;">
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
