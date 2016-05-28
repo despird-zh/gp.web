@@ -554,6 +554,11 @@
 							<i class="fa fa-fw fa-clipboard"></i>
 							</button>
 						</span>
+						<span class="pull-left" title="Test" data-toggle="tooltip" data-placement="top">
+							<button gpid="test-btn" class="btn btn-default btn-xs" >
+							<i class="fa fa-fw fa-gear"></i>
+							</button>
+						</span>
 					</div><!-- toolbar -->
 				</div>
                 <div class="box-body box-profile">

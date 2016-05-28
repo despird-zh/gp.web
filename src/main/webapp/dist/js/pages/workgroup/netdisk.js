@@ -76,6 +76,25 @@ var PageContext = (function ($, window, undefined) {
 	
 	Netdisk.initial();
 
+	$('div.view-toolbar button[gpid=test-btn]').on('click', function(){
+		
+		$.ajax({
+			url: "../workgroup/netdisk-content.do",
+			dataType : "json",
+			type: 'POST',
+			data: { 
+					"cabinet_id" : Netdisk.$cabinet_id.val(),
+					"folder_id" : -98
+				},
+			success: function(response)
+			{	
+				console.log(response);
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				
+			}
+		});
+	});
+	
 	$('a[gpid="show-comments-btn"]').bind('click', function(){
 		var _$self_p = $(this).parent().parent().parent();
 		_$self_p.find('div[gpid="comment-list-container"]').toggleClass('hidden');

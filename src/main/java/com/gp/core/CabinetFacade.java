@@ -121,16 +121,15 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
-	public GeneralResult<List<CabFolderInfo>> findCabinetFolders(AccessPoint accesspoint,
-			Principal principal, Long cabinetId, Long parentId, String namecond){
+	public static GeneralResult<List<CabFolderInfo>> findCabinetFolders(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> cabinetId, InfoId<Long> parentId, String namecond){
 		
 		GeneralResult<List<CabFolderInfo>> gresult  =  new GeneralResult<List<CabFolderInfo>>();
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FOLDERS)){
-			InfoId<Long> ckey = IdKey.CABINET.getInfoId(cabinetId);
-			InfoId<Long> folderkey = IdKey.CAB_FOLDER.getInfoId(parentId);
-			List<CabFolderInfo> cabs = cabinetservice.getCabFolders(svcctx, ckey, folderkey, namecond);
+
+			List<CabFolderInfo> cabs = cabinetservice.getCabFolders(svcctx, cabinetId, parentId, namecond);
 			gresult.setReturnValue(cabs);
 			gresult.setMessage("success to find person cabinets.", true);
 		} catch (ServiceException e)  {
@@ -156,17 +155,15 @@ public class CabinetFacade {
 	 * 
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
-	public GeneralResult<List<CabFileInfo>> findCabinetFiles(AccessPoint accesspoint,
-			Principal principal, Long cabinetId, Long parentId, String filename){
+	public static GeneralResult<List<CabFileInfo>> findCabinetFiles(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> cabinetId, InfoId<Long> parentId, String filename){
 				
 		GeneralResult<List<CabFileInfo>> gresult  =  new GeneralResult<List<CabFileInfo>>();
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
 			
-			InfoId<Long> ckey = IdKey.CABINET.getInfoId(cabinetId);
-			InfoId<Long> folderkey = IdKey.CAB_FOLDER.getInfoId(parentId);
-			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, ckey, folderkey, filename);
+			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, cabinetId, parentId, filename);
 			gresult.setReturnValue(cabs);
 			gresult.setMessage("success to find person cabinets.", true);
 		
@@ -195,17 +192,15 @@ public class CabinetFacade {
 	 * 
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
-	public GeneralResult<List<CabFileInfo>> findCabinetEntries(AccessPoint accesspoint,
-			Principal principal, Long cabinetId, Long parentId, String filename){
+	public static GeneralResult<List<CabFileInfo>> findCabinetEntries(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> cabinetId, InfoId<Long> parentId, String filename){
 				
 		GeneralResult<List<CabFileInfo>> gresult  =  new GeneralResult<List<CabFileInfo>>();
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
-			
-			InfoId<Long> ckey = IdKey.CABINET.getInfoId(cabinetId);
-			InfoId<Long> folderkey = IdKey.CAB_FOLDER.getInfoId(parentId);
-			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, ckey, folderkey, filename);
+
+			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, cabinetId, parentId, filename);
 			gresult.setReturnValue(cabs);
 			gresult.setMessage("success to find person cabinets.", true);
 		

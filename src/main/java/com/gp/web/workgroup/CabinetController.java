@@ -14,8 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
+import com.gp.core.CabinetFacade;
 import com.gp.core.GeneralResult;
 import com.gp.core.WorkgroupFacade;
+import com.gp.info.CabFileInfo;
 import com.gp.info.InfoId;
 import com.gp.info.WorkgroupInfo;
 import com.gp.util.DateTimeUtils;
@@ -33,12 +35,17 @@ import com.gp.web.model.Version;
 public class CabinetController extends BaseController{
 	
 	@RequestMapping("publish")
-	public ModelAndView doPublishInitial(){
+	public ModelAndView doPublishInitial(HttpServletRequest request){
 		
 		ModelAndView mav = getJspModelView("workgroup/publish");
 		String wgid = super.readRequestParam("wgroup_id");
-		String cabid = super.readRequestParam("cabinet_id");
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
+		GeneralResult<WorkgroupInfo> gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
+		
 		mav.addObject("wgroup_id",  wgid);
+		mav.addObject("cabinet_id",  gresult.getReturnValue().getNetdiskCabinet());
 		return mav;
 	}
 	
@@ -49,8 +56,10 @@ public class CabinetController extends BaseController{
 	public ModelAndView doNetdiskInitial(HttpServletRequest request){
 		ModelAndView mav = getJspModelView("workgroup/netdisk");
 		String wgid = super.readRequestParam("wgroup_id");
+		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
+		
 		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		GeneralResult<WorkgroupInfo> gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
 		
@@ -58,6 +67,33 @@ public class CabinetController extends BaseController{
 		mav.addObject("cabinet_id",  gresult.getReturnValue().getNetdiskCabinet());
 		return mav;
 	}	
+	
+	@RequestMapping("netdisk-content")
+	public ModelAndView doNetdiskContent(HttpServletRequest request){
+		
+		ModelAndView mav = super.getJsonModelView();
+		List<CabinetItem> clist = new ArrayList<CabinetItem>();
+		ActionResult actrst = new ActionResult();
+		
+		String cabinetId = super.readRequestParam("cabinet_id");
+		String folderId = super.readRequestParam("folder_id");
+		
+		InfoId<Long> cabid = IdKey.CABINET.getInfoId(NumberUtils.toLong(cabinetId));
+		InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(NumberUtils.toLong(folderId));
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		GeneralResult<List<CabFileInfo>> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, cabid, folderid, "" );
+		
+		actrst.setState(ActionResult.SUCCESS);
+		actrst.setMessage(fresult.getMessage());
+		actrst.setData(fresult.getReturnValue());
+		
+		mav.addAllObjects(actrst.asMap());
+		
+		return mav;
+	}
 	
 	@RequestMapping("netdisk-pub-content")
 	public ModelAndView doPubContent(){
