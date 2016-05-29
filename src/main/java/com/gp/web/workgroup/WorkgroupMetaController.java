@@ -66,16 +66,16 @@ public class WorkgroupMetaController extends BaseController{
 		GeneralResult<MeasureInfo> gresult = MeasureFacade.findWorkgroupSummary(accesspoint, principal, 
 				IdKey.WORKGROUP.getInfoId(wid));
 		WGroupSummary wsum = new WGroupSummary();
-		if(gresult.isSuccess() && null != gresult.getReturnValue()){
+		if(gresult.isSuccess()){
 			
 			MeasureInfo minfo = gresult.getReturnValue();
-			
-			wsum.setSumDocs(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_DOC), 0));
-			wsum.setSumExtMbrs(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_EXT_MBR), 0));
-			wsum.setSumMembers(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_MEMBER), 0));
-			wsum.setSumSubGroups(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_SUB_GRP), 0));
-			wsum.setSumTopics(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_TOPIC), 0));
-			
+			if(null != gresult.getReturnValue()){
+				wsum.setSumDocs(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_DOC), 0));
+				wsum.setSumExtMbrs(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_EXT_MBR), 0));
+				wsum.setSumMembers(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_MEMBER), 0));
+				wsum.setSumSubGroups(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_SUB_GRP), 0));
+				wsum.setSumTopics(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_TOPIC), 0));
+			}
 			actrst.setState(ActionResult.SUCCESS);
 			actrst.setMessage(gresult.getMessage());
 		}else{

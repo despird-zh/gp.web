@@ -17,9 +17,13 @@ import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.GeneralResult;
 import com.gp.core.WorkgroupFacade;
+import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
+import com.gp.info.CabFolderInfo;
 import com.gp.info.InfoId;
 import com.gp.info.WorkgroupInfo;
+import com.gp.pagination.PageQuery;
+import com.gp.pagination.PageWrapper;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -84,7 +88,9 @@ public class CabinetController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
-		GeneralResult<List<CabFileInfo>> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, cabid, folderid, "" );
+		//GeneralResult<List<CabFolderInfo>> fresult = CabinetFacade.findCabinetFolders(accesspoint, principal, cabid, folderid, "" );
+		GeneralResult<PageWrapper<CabEntryInfo>> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 
+				cabid, folderid, "", new PageQuery(20,1) );
 		
 		actrst.setState(ActionResult.SUCCESS);
 		actrst.setMessage(fresult.getMessage());

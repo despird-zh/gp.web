@@ -19,10 +19,13 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.GeneralContext.ExecState;
 import com.gp.exception.ServiceException;
+import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.InfoId;
+import com.gp.pagination.PageQuery;
+import com.gp.pagination.PageWrapper;
 import com.gp.svc.CabinetService;
 import com.gp.svc.FileService;
 import com.gp.svc.FolderService;
@@ -107,8 +110,15 @@ public class CabinetFacade {
 				svcctx.endAudit(ExecState.EXCEP, "row info validation fail");
 				return gresult;
 			}
-			
-			folderservice.newFolder(svcctx, parentkey, folderinfo);
+			Acl acl =  Cabinets.getDefaultAcl();
+			InfoId<Long> tempid = idservice.generateId(IdKey.CAB_ACL, Long.class);
+			acl.setAclId(tempid);
+			Collection<Ace> aces = acl.getAllAces();
+			for(Ace ace : aces){
+				tempid = idservice.generateId(IdKey.CAB_ACE, Long.class);
+				ace.setAceId(tempid);
+			}
+			folderservice.newFolder(svcctx, parentkey, folderinfo, acl);
 			gresult.setMessage("success create folder.", true);
 		} catch (ServiceException e)  {
 			LOGGER.error("Exception when create folder",e);
@@ -192,23 +202,27 @@ public class CabinetFacade {
 	 * 
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
-	public static GeneralResult<List<CabFileInfo>> findCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> cabinetId, InfoId<Long> parentId, String filename){
+	public static GeneralResult<PageWrapper<CabEntryInfo>> findCabinetEntries(AccessPoint accesspoint,
+			Principal principal, 
+			InfoId<Long> cabinetId, 
+			InfoId<Long> parentId, 
+			String filename,
+			PageQuery pquery){
 				
-		GeneralResult<List<CabFileInfo>> gresult  =  new GeneralResult<List<CabFileInfo>>();
+		GeneralResult<PageWrapper<CabEntryInfo>> gresult  =  new GeneralResult<PageWrapper<CabEntryInfo>>();
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
 
-			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, cabinetId, parentId, filename);
+			PageWrapper<CabEntryInfo> cabs = cabinetservice.getCabEntries(svcctx, cabinetId, parentId, filename, pquery);
 			gresult.setReturnValue(cabs);
-			gresult.setMessage("success to find person cabinets.", true);
+			gresult.setMessage("success find cabinet entries.", true);
 		
 		} catch (ServiceException e)  {
 		
-			LOGGER.error("Exception when find instance",e);
+			LOGGER.error("Exception when find cabinet entries.",e);
 			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find person cabinets.", false);
+			gresult.setMessage("fail to find cabinet entries.", false);
 		
 		}finally{
 			
@@ -264,6 +278,7 @@ public class CabinetFacade {
 			InfoId<Long> fileid = fileinfo.getInfoId();
 			if(!InfoId.isValid(fileid)){
 				fileid = idservice.generateId(IdKey.CAB_FILE, Long.class);
+				LOGGER.debug("the file id : {}", fileid);
 				fileinfo.setInfoId(fileid);
 			}
 			if(fileinfo.getSourceId() == 0){
