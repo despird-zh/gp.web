@@ -18,6 +18,8 @@ public class JsonPropertyTester {
 		
 		String jstr = OMAPPER.writeValueAsString(b1);
 		
+		System.out.println(jstr);
+		
 		bean1 b2 = OMAPPER.readValue(jstr, bean1.class);
 		
 		System.out.println("p1 : " + b2.p1);
