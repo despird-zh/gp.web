@@ -762,7 +762,7 @@ public class WorkgroupFacade {
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
-			List<TagInfo> list = tagservice.getTags(svcctx, Tags.TagType.WORKGROUP.name(), null, wid);
+			List<TagInfo> list = tagservice.getTags(svcctx, null, wid);
 			gresult.setReturnValue(list);
 			gresult.setMessage("success find work group tags", true);
 			
