@@ -1,8 +1,12 @@
 package com.gp.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +28,13 @@ import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.InfoId;
+import com.gp.info.TagInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CabinetService;
 import com.gp.svc.FileService;
 import com.gp.svc.FolderService;
+import com.gp.svc.TagService;
 import com.gp.svc.CommonService;
 import com.gp.util.DateTimeUtils;
 import com.gp.validation.ValidationMessage;
@@ -47,16 +53,20 @@ public class CabinetFacade {
 	
 	static CommonService idservice;
 	
+	static TagService tagservice;
+	
 	@Autowired
 	private CabinetFacade(CabinetService cabinetservice, 
 			FolderService folderservice, 
 			FileService fileservice,
-			CommonService idservice){
+			CommonService idservice,
+			TagService tagservice){
 		
 		CabinetFacade.cabinetservice = cabinetservice;
 		CabinetFacade.fileservice = fileservice;
 		CabinetFacade.folderservice = folderservice;
 		CabinetFacade.idservice = idservice;
+		CabinetFacade.tagservice = tagservice;
 	}
 	
 	/**
@@ -190,68 +200,7 @@ public class CabinetFacade {
 		
 		return gresult;
 	}
-	
-	/**
-SELECT
-   a.file_id AS entry_id,
-   a.cabinet_id AS cabinet_id,
-   a.source_id AS source_id,
-   a.folder_id AS folder_pid,
-   a.hash_code AS hash_code,
-   'FILE' AS entry_type,
-   a.owner AS owner,
-   a.descr AS descr,
-   a.file_name AS entry_name,
-   a.acl_id AS acl_id,
-   a.owm AS owm,
-   a.creator AS creator,
-   a.create_time AS create_time,
-   a.modifier AS modifier,
-   a.last_modified AS last_modified,
-   a.classification as classification,
-   a.profile as profile,
-   a.properties as properties,
-   a.size as size,
-   a.comment_on as comment_on,
-   a.version as version,
-   a.version_label as version_label,
-   a.state as state,
-   a.format as format,
-   a.binary_id as binary_id,
-   0 as file_count,
-   0 as folder_count
-FROM gp_cab_files a 
-union 
-select 
-	b.folder_id AS entry_id,
-	b.cabinet_id AS cabinet_id,
-	b.source_id AS source_id,
-	b.folder_pid AS folder_pid,
-	b.hash_code AS hash_code,
-	'FOLDER' AS entry_type,
-	b.owner AS owner,
-	b.descr AS descr,
-	b.folder_name AS entry_name,
-	b.acl_id AS acl_id,
-	b.owm AS owm,
-	b.creator AS creator,
-	b.create_time AS create_time,
-	b.modifier AS modifier,
-	b.last_modified AS last_modified ,
-	b.classification as classification,
-   b.profile as profile,
-   b.properties as properties,
-   b.total_size as size,
-   0 as comment_on,
-   '' as version,
-   '' as version_label,
-   '' as state,
-   '' as format,
-   0 as binary_id,
-   b.file_count as file_count,
-   b.folder_count as folder_count
-from gp_cab_folders b;
-	 */
+
 	/**
 	 * Find all the entries under cabinet or folder with name fuzzy matching
 	 * 
@@ -399,6 +348,47 @@ from gp_cab_folders b;
 			ContextHelper.handleContext();
 		}	
 		
+		return gresult;
+	}
+	
+	public static GeneralResult<Map<InfoId<?>, Set<TagInfo>>> findCabEntriesTags(AccessPoint accesspoint,
+			Principal principal, InfoId<?> ...entryids){
+		
+		GeneralResult<Map<InfoId<?>, Set<TagInfo>>> gresult = new GeneralResult<Map<InfoId<?>, Set<TagInfo>>>();
+		if(ArrayUtils.isEmpty(entryids)){
+			gresult.setMessage("success query", true);
+			return gresult;
+		}
+		List<InfoId<?>> files = new ArrayList<InfoId<?>>();
+		List<InfoId<?>> folders = new ArrayList<InfoId<?>>();
+		for(InfoId<?> id: entryids){
+			
+			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
+				files.add(id);
+			}else if(IdKey.CAB_FOLDER.getTable().equals(id.getIdKey())){
+				folders.add(id);
+			}
+		}
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_TAGS)){
+			
+			Map<InfoId<?>, Set<TagInfo>> filetags = tagservice.getTags(svcctx, files.toArray(new InfoId[0]));
+			Map<InfoId<?>, Set<TagInfo>> foldertags = tagservice.getTags(svcctx, folders.toArray(new InfoId[0]));
+			// merge two maps together
+			filetags.putAll(foldertags);
+			gresult.setReturnValue(filetags);
+			gresult.setMessage("success find the entry tags", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when find entry tags.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to find entry tags.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
 		return gresult;
 
 	}

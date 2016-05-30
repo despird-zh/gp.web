@@ -2,6 +2,8 @@ package com.gp.web.workgroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +23,7 @@ import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
 import com.gp.info.InfoId;
+import com.gp.info.TagInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
@@ -92,6 +95,17 @@ public class CabinetController extends BaseController{
 		GeneralResult<PageWrapper<CabEntryInfo>> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 
 				cabid, folderid, "", new PageQuery(20,1) );
 		
+		List<CabEntryInfo> entries = fresult.getReturnValue().getRows();
+		
+		InfoId<?>[] ids = new InfoId<?>[entries.size()];
+		for(int i = 0; i< ids.length ; i++){
+			ids[i] = entries.get(i).getInfoId();
+		}
+		
+		GeneralResult<Map<InfoId<?>, Set<TagInfo>>> tresult = CabinetFacade.findCabEntriesTags(accesspoint,
+				principal, ids);
+		
+		mav.addObject("tags" , tresult.getReturnValue());
 		actrst.setState(ActionResult.SUCCESS);
 		actrst.setMessage(fresult.getMessage());
 		actrst.setData(fresult.getReturnValue());
