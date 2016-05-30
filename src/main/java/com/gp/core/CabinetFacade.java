@@ -192,6 +192,67 @@ public class CabinetFacade {
 	}
 	
 	/**
+SELECT
+   a.file_id AS entry_id,
+   a.cabinet_id AS cabinet_id,
+   a.source_id AS source_id,
+   a.folder_id AS folder_pid,
+   a.hash_code AS hash_code,
+   'FILE' AS entry_type,
+   a.owner AS owner,
+   a.descr AS descr,
+   a.file_name AS entry_name,
+   a.acl_id AS acl_id,
+   a.owm AS owm,
+   a.creator AS creator,
+   a.create_time AS create_time,
+   a.modifier AS modifier,
+   a.last_modified AS last_modified,
+   a.classification as classification,
+   a.profile as profile,
+   a.properties as properties,
+   a.size as size,
+   a.comment_on as comment_on,
+   a.version as version,
+   a.version_label as version_label,
+   a.state as state,
+   a.format as format,
+   a.binary_id as binary_id,
+   0 as file_count,
+   0 as folder_count
+FROM gp_cab_files a 
+union 
+select 
+	b.folder_id AS entry_id,
+	b.cabinet_id AS cabinet_id,
+	b.source_id AS source_id,
+	b.folder_pid AS folder_pid,
+	b.hash_code AS hash_code,
+	'FOLDER' AS entry_type,
+	b.owner AS owner,
+	b.descr AS descr,
+	b.folder_name AS entry_name,
+	b.acl_id AS acl_id,
+	b.owm AS owm,
+	b.creator AS creator,
+	b.create_time AS create_time,
+	b.modifier AS modifier,
+	b.last_modified AS last_modified ,
+	b.classification as classification,
+   b.profile as profile,
+   b.properties as properties,
+   b.total_size as size,
+   0 as comment_on,
+   '' as version,
+   '' as version_label,
+   '' as state,
+   '' as format,
+   0 as binary_id,
+   b.file_count as file_count,
+   b.folder_count as folder_count
+from gp_cab_folders b;
+	 */
+	/**
 	 * Find all the entries under cabinet or folder with name fuzzy matching
 	 * 
 	 * @param accesspoint the access point
