@@ -132,7 +132,7 @@
 										</div>
                                     </li>
                                     <li class="item-stat" data-toggle="tooltip" title="" data-original-title="Current version is 1.3">
-										<span style="" class="label label-default"><i class="fa fa-paperclip"></i></span>
+										<span style="" class="popup-marker label label-default"><i class="fa fa-paperclip"></i></span>
 										<div class="countinfo-wrapper">
 											<div class="countinfo">
 												<span>
