@@ -129,7 +129,7 @@ public class WGroupMetaController extends BaseController{
 			wgroup.setShareOn(info.getShareEnable());
 			wgroup.setLinkOn(info.getLinkEnable());
 		
-			// sotrage and organiztion
+			// storage and organization
 			wgroup.setStorageId(info.getStorageId());
 			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId())).getReturnValue();
 			if(null != storage)
