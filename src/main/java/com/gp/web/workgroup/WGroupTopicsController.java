@@ -8,7 +8,7 @@ import com.gp.web.BaseController;
 
 @Controller("wg-topic-ctrl")
 @RequestMapping("/workgroup")
-public class TopicsController extends BaseController{
+public class WGroupTopicsController extends BaseController{
 
 	@RequestMapping("topics")
 	public ModelAndView doInitial(){

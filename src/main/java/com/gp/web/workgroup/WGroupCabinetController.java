@@ -39,7 +39,7 @@ import com.gp.web.model.Version;
  **/
 @Controller("wg-cabinet-ctrl")
 @RequestMapping("/workgroup")
-public class CabinetController extends BaseController{
+public class WGroupCabinetController extends BaseController{
 	
 	@RequestMapping("publish")
 	public ModelAndView doPublishInitial(HttpServletRequest request){

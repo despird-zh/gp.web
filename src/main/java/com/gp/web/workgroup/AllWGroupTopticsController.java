@@ -37,9 +37,9 @@ import com.gp.web.model.Workgroup;
 
 @Controller("wg-all-topic-ctrl")
 @RequestMapping("/workgroup")
-public class AllTopticsController extends BaseController{
+public class AllWGroupTopticsController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(AllTopticsController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(AllWGroupTopticsController.class);
 	
 	static String ImagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	

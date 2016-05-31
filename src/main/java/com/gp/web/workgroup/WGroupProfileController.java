@@ -50,9 +50,9 @@ import com.gp.web.model.Workgroup;
 
 @Controller("wg-profile-ctrl")
 @RequestMapping("/workgroup")
-public class ProfileController extends BaseController{
+public class WGroupProfileController extends BaseController{
 	
-	static Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(WGroupProfileController.class);
 	
 	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	

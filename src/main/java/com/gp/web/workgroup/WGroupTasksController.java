@@ -7,14 +7,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.web.BaseController;
 
 
-@Controller("wg-share-ctrl")
+@Controller("wg-task-ctrl")
 @RequestMapping("/workgroup")
-public class ShareController extends BaseController{
+public class WGroupTasksController extends BaseController{
 
-	@RequestMapping("share")
+	@RequestMapping("tasks")
 	public ModelAndView doInitial(){
-
-		ModelAndView mav = getJspModelView("workgroup/share");
+		
+		ModelAndView mav = getJspModelView("workgroup/tasks");
 		String wgid = super.readRequestParam("wgroup_id");
 		mav.addObject("wgroup_id",  wgid);
 		return mav;

@@ -43,9 +43,9 @@ import com.gp.web.model.Workgroup;
 
 @Controller("wg-meta-ctrl")
 @RequestMapping("/workgroup")
-public class WorkgroupMetaController extends BaseController{
+public class WGroupMetaController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(WorkgroupMetaController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(WGroupMetaController.class);
 	
 	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	

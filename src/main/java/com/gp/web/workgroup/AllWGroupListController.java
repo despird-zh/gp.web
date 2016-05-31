@@ -35,18 +35,18 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.BaseController;
 import com.gp.web.model.Workgroup;
 
-@Controller("wg-all-grid-ctrl")
+@Controller("wg-all-list-ctrl")
 @RequestMapping("/workgroup")
-public class AllWorkGroupGridController extends BaseController{
+public class AllWGroupListController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(AllWorkGroupGridController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(AllWGroupListController.class);
 	
 	static String ImagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	
-	@RequestMapping("all-grid")
+	@RequestMapping("all-list")
 	public ModelAndView doGridInitial(HttpServletRequest request) throws UnsupportedEncodingException{
 
-		ModelAndView mav = getJspModelView("workgroup/all-grid");		
+		ModelAndView mav = getJspModelView("workgroup/all-list");		
 		
 		PageQuery pquery = new PageQuery(12,1);
 		this.readRequestData(request, pquery);
@@ -94,14 +94,14 @@ public class AllWorkGroupGridController extends BaseController{
 	}
 	
 	
-	@RequestMapping("all-grid-next")
+	@RequestMapping("all-list-next")
 	public ModelAndView doGridNextLoad(HttpServletRequest request) throws UnsupportedEncodingException{
 		
 		String pidxstr = this.readRequestParam("pageNumber");
 		int pidx = Integer.valueOf(pidxstr);
 		PageQuery pquery = new PageQuery(12,1);
 		pquery.setPageNumber(pidx);
-		ModelAndView mav = getJspModelView("workgroup/all-grid-next");
+		ModelAndView mav = getJspModelView("workgroup/all-list-next");
 		String wgroup_name = super.readRequestParam("wgroup_name");
 		wgroup_name = StringUtils.isBlank(wgroup_name)?"":UriUtils.decode(wgroup_name, "UTF-8");
 		
@@ -148,12 +148,6 @@ public class AllWorkGroupGridController extends BaseController{
 		mav.addObject("tags", weaveParameters("tags", tags));
 
 		return mav;
-	}
-	
-	@RequestMapping("all-hier")
-	public ModelAndView doHierInitial(){
-		
-		return getJspModelView("workgroup/all-hier");
 	}
 
 }
