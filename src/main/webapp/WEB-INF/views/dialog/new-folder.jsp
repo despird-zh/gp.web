@@ -95,7 +95,7 @@ $(function (){
 		
 		var _self = this;
 		$.ajax({
-			url: "../workgroup/new-folder.do",
+			url: "../cabinet/new-folder.do",
 			dataType : "json",
 			type: 'POST',
 			data: { 

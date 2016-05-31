@@ -1,4 +1,4 @@
-package com.gp.web.workgroup;
+package com.gp.web.cabinet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,8 +19,8 @@ import com.gp.web.CustomWebUtils;
 /**
  * This controller wrap the operation on folder 
  **/
-@Controller("wg-folder-ctrl")
-@RequestMapping("/workgroup")
+@Controller("cab-foler-ctrl")
+@RequestMapping("/cabinet")
 public class CabFolderController extends BaseController{
 
 	@RequestMapping("new-folder")
@@ -59,5 +59,29 @@ public class CabFolderController extends BaseController{
 		}
 		
 		return jmav.addAllObjects(aresult.asMap());
+	}
+	
+	@RequestMapping("copy-folder")
+	public ModelAndView doCopyFolder(HttpServletRequest request){
+		return null;
+		
+	}
+	
+	@RequestMapping("move-folder")
+	public ModelAndView doMoveFolder(HttpServletRequest request){
+		return null;
+		
+	}
+	
+	@RequestMapping("delete-folder")
+	public ModelAndView doDeleteFolder(HttpServletRequest request){
+		return null;
+		
+	}
+	
+	@RequestMapping("purge-folder")
+	public ModelAndView doPurgeFolder(HttpServletRequest request){
+		return null;
+		
 	}
 }
