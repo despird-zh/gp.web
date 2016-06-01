@@ -61,19 +61,19 @@ public class CabFolderController extends BaseController{
 		return jmav.addAllObjects(aresult.asMap());
 	}
 	
-	@RequestMapping("copy-folder")
+	@RequestMapping("folder-copy")
 	public ModelAndView doCopyFolder(HttpServletRequest request){
 		return null;
 		
 	}
 	
-	@RequestMapping("move-folder")
+	@RequestMapping("folder-move")
 	public ModelAndView doMoveFolder(HttpServletRequest request){
 		return null;
 		
 	}
 	
-	@RequestMapping("delete-folder")
+	@RequestMapping("folder-delete")
 	public ModelAndView doDeleteFolder(HttpServletRequest request){
 		return null;
 		

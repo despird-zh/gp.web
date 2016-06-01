@@ -15,25 +15,25 @@ import com.gp.web.BaseController;
 @RequestMapping("/cabinet")
 public class CabFileController extends BaseController{
 	
-	@RequestMapping("copy-file")
+	@RequestMapping("file-copy")
 	public ModelAndView doCopyFile(HttpServletRequest request){
 		return null;
 		
 	}
 	
-	@RequestMapping("move-file")
+	@RequestMapping("file-move")
 	public ModelAndView doMoveFile(HttpServletRequest request){
 		return null;
 		
 	}
 	
-	@RequestMapping("delete-file")
+	@RequestMapping("file-delete")
 	public ModelAndView doDeleteFile(HttpServletRequest request){
 		return null;
 		
 	}
 	
-	@RequestMapping("purge-file")
+	@RequestMapping("file-purge")
 	public ModelAndView doPurgeFile(HttpServletRequest request){
 		return null;
 		
