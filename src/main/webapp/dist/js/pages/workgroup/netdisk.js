@@ -13,6 +13,7 @@ var PageContext = (function ($, window, undefined) {
 		
 		$wgroup_id : $('#workgroup-id'),
 		$cabinet_id : $('#cabinet-id'),
+		$version_list : $('span[gpid="versionlist"]'),
 		
 		initial : function () {
 			var _self = this;
@@ -38,6 +39,8 @@ var PageContext = (function ($, window, undefined) {
 			});
 			
 			_self.loadWorkgroupMeta();
+			_self.$version_list.popover();
+			_self.$version_list.on('click',_self.setVersionPopover);
 		}
 	};
 
@@ -73,8 +76,6 @@ var PageContext = (function ($, window, undefined) {
 			}
 		});
 	};
-	
-	Netdisk.initial();
 
 	$('div.view-toolbar button[gpid=test-btn]').on('click', function(){
 		
@@ -100,21 +101,12 @@ var PageContext = (function ($, window, undefined) {
 		_$self_p.find('div[gpid="comment-list-container"]').toggleClass('hidden');
 	});
 	
-	var pvar = $('#versionlist').popover({
-			html : true,
-			placement : 'bottom',
-			content : function () {
-
-				return $(this).parent().find('.content').html();
-			},
-			template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content" style="padding:0px;"><p></p></div></div></div>'
-		});
 
 	$('#informationlist').popover({
 		html : true,
 		placement : 'bottom',
 		content : function () {
-
+			
 			return $(this).parent().find('.content').html();
 		},
 		template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content" style="padding:0px;"><p></p></div></div></div>'
@@ -129,6 +121,24 @@ var PageContext = (function ($, window, undefined) {
 			}
 		});
 	});
+	// 尝试使用全部的button作为参数
+	Netdisk.setVersionPopover = function(evt){
+		
+		var $el = $(this), _file_id = $(this).attr('data-file-id');
+		
+        $.get("../cabinet/file-version.do?file_id="+_file_id,function(remote_content) {
+            $el.popover({
+				html : true,
+				placement : 'bottom',
+				content: remote_content,
+				template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content" style="padding:0px;"><p></p></div></div></div>'
+			});//.popover('show') 报异常
+        });
+	};
+	
+		
+	Netdisk.initial();
+
 	
 	return {
 		

@@ -132,7 +132,7 @@
 										</div>
                                     </li>
                                     <li class="item-stat" data-toggle="tooltip" title="" data-original-title="Current version is 1.3">
-										<span style="" class="popup-marker label label-default"><i class="fa fa-paperclip"></i></span>
+										<span class="popup-marker label label-default" gpid="versionlist" data-file-id="158"><i class="fa fa-paperclip"></i></span>
 										<div class="countinfo-wrapper">
 											<div class="countinfo">
 												<span>
@@ -142,31 +142,7 @@
 											<div class="countinfonub"><s></s><i></i></div>
 										</div>
                                     </li>
-                                    <li class="item-stat" data-toggle="tooltip" title="" data-original-title="Version List">
-                                        <span class="popup-marker label label-default " id="versionlist"><i class="fa fa-signal"></i></span>
-                                        <div class="content hide">
-                                            <div class="panel-body popover-content">
-                                            <ul class="list-group">
-                                                <li class="list-group-item ">
-                                                    <div class="version-item">
-                                                        <span class="label label-default ">V1.0</span> <span>Gary - </span> <span style="font-style:italic;">this is demo description</span>
-                                                    </div>
-                                                </li>        
-                                                <li class="list-group-item">
-                                                        <div class="version-item">
-                                                        <span class="label label-default ">V1.1</span> <span>Gary - </span> <span style="font-style:italic;">this is demo description</span>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item">
-                                                        <div class="version-item">
-                                                        <span class="label label-default ">V2.0</span> <span>Gary - </span> <span style="font-style:italic;">this is demo description</span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-stat" data-toggle="tooltip" title="" data-original-title="Detail Information">
+                                    <li class="item-stat">
                                         <span class="popup-marker label label-default" id="informationlist"><i class="fa fa-info-circle"></i></span>
                                         <div class="content hide">
                                             <div class="panel-body popover-content">

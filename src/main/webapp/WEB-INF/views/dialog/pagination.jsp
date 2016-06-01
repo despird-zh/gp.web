@@ -31,7 +31,7 @@
 		 * pagingdata - {}
 		 * jumppage - jump page buttong click callback function
 		 */
-		$.GPContext.pagination = function($pagination, pagingdata, jumppage){
+		GPContext.pagination = function($pagination, pagingdata, jumppage){
 
 			var $pagination_tmpl = $('#pagination-template');
 			var template = $pagination_tmpl.html();

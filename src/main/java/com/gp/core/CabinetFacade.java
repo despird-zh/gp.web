@@ -26,6 +26,7 @@ import com.gp.exception.ServiceException;
 import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
+import com.gp.info.CabVersionInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.InfoId;
 import com.gp.info.TagInfo;
@@ -391,5 +392,32 @@ public class CabinetFacade {
 		}	
 		return gresult;
 
+	}
+	
+	public static GeneralResult<List<CabVersionInfo>> findCabinetVersions(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> fileid){
+		
+		GeneralResult<List<CabVersionInfo>> gresult = new GeneralResult<List<CabVersionInfo>>();
+		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_TAGS)){
+			
+			List<CabVersionInfo> verions = fileservice.getVersions(svcctx, fileid);
+			
+			gresult.setReturnValue(verions);
+			gresult.setMessage("success find the entry tags", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when find entry tags.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to find entry tags.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		return gresult;
+		
 	}
 }

@@ -4,6 +4,8 @@ public class Version {
 	
 	private String version;
 	
+	private String versionLabel;
+	
 	private String author;
 	
 	private String description;
@@ -30,5 +32,13 @@ public class Version {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getVersionLabel() {
+		return versionLabel;
+	}
+
+	public void setVersionLabel(String versionLabel) {
+		this.versionLabel = versionLabel;
 	}
 }
