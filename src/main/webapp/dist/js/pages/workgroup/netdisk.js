@@ -39,8 +39,9 @@ var PageContext = (function ($, window, undefined) {
 			});
 			
 			_self.loadWorkgroupMeta();
-			_self.$version_list.popover();
-			_self.$version_list.on('click',_self.setVersionPopover);
+			
+			_self.setVersionPopover(_self.$version_list);
+			//_self.$version_list.on('click',_self.setVersionPopover1);
 		}
 	};
 
@@ -121,8 +122,32 @@ var PageContext = (function ($, window, undefined) {
 			}
 		});
 	});
+	
+	Netdisk.setVersionPopover = function($els){
+		var _self = this;
+		$els.popover({
+			"html": true,
+			"content": function(){
+				var div_id =  "tmp-id-" + $.now(),
+					_file_id = $(this).attr('data-file-id');
+				return _self.popoverContent("../cabinet/file-version.do?file_id="+_file_id, div_id);
+			},
+			placement : 'bottom',
+			template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content p-xs" ><p></p></div></div></div>'
+		});
+
+	};
+	Netdisk.popoverContent = function(content_link, div_id){
+		$.ajax({
+			url: content_link,
+			success: function(response){
+				$('#'+div_id).html(response);
+			}
+		});
+		return '<div style="width: 250px;" id="'+ div_id +'">Loading...</div>';
+	}
 	// 尝试使用全部的button作为参数
-	Netdisk.setVersionPopover = function(evt){
+	Netdisk.setVersionPopover1 = function(evt){
 		
 		var $el = $(this), _file_id = $(this).attr('data-file-id');
 		

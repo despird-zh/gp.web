@@ -62,7 +62,7 @@ public class CabFileExtController extends BaseController{
 		if(gresult.isSuccess()){
 			List<Version> nlist = new ArrayList<Version>();
 			List<CabVersionInfo> olist = gresult.getReturnValue();
-			if(CollectionUtils.isEmpty(olist)){
+			if(CollectionUtils.isNotEmpty(olist)){
 				for(CabVersionInfo vinfo : olist){
 					
 					Version v = new Version();
