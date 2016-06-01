@@ -36,7 +36,7 @@
 			<AppenderRef ref="File-Appender"  />
 			<AppenderRef ref="Console-Appender" />
 		</Logger>
-		<Logger name="com.gp.svc.impl.IdServiceImpl" level="error">
+		<Logger name="com.gp.svc.impl.CommonServiceImpl" level="error">
 			<AppenderRef ref="File-Appender" />
 			<AppenderRef ref="Console-Appender" />
 		</Logger>

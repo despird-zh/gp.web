@@ -11,10 +11,11 @@ import org.springframework.core.env.Environment;
 import com.gp.core.AppContextListener;
 
 @Configuration
-@PropertySource("classpath:/spring-context.properties")
+@PropertySource("classpath:/gpress-context.properties")
 @ImportResource({
-		"classpath:/spring-datasource.xml",
-		"classpath:/spring-shiro.xml",
+		"classpath:/gpress-datasource.xml",
+		"classpath:/gpress-shiro.xml",
+		"classpath:/gpress-context.xml"
 	})
 @ComponentScan(basePackages = { 
 		"com.gp.core"
