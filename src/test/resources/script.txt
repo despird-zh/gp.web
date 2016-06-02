@@ -1,0 +1,48 @@
+CREATE DEFINER=`skip-grants user`@`skip-grants host` FUNCTION `func_split_str`(x VARCHAR(255),
+  delim VARCHAR(12),
+  pos INT) RETURNS varchar(255) CHARSET utf8
+BEGIN
+RETURN REPLACE(
+	SUBSTRING(
+		SUBSTRING_INDEX(x, delim, pos + 1),
+       LENGTH(SUBSTRING_INDEX(x, delim, pos)) + 1),
+       delim, '');
+END
+
+CREATE DEFINER=`skip-grants user`@`skip-grants host` PROCEDURE `proc_fid2path`(in `p_folder_id` integer, out p_folder_path varchar(2048))
+BEGIN
+	declare v_fpath varchar(256);
+	declare v_ppath varchar(256);
+	declare v_pid varchar(256);
+	set max_sp_recursion_depth=256;
+	select folder_name,folder_pid into v_fpath, v_pid from gp_cab_folders where folder_id = p_folder_id;
+	
+	if v_pid = -98 then
+		select concat('/', v_fpath) into p_folder_path;
+	else
+		call proc_fid2path(v_pid, v_ppath);
+		select concat(v_ppath, '/', v_fpath) into p_folder_path;
+	end if;
+END
+
+CREATE DEFINER=`skip-grants user`@`skip-grants host` PROCEDURE `proc_path2fid`(IN `p_cabinet_id` integer,IN `p_folder_path` varchar(2048),OUT `p_folder_id` integer)
+BEGIN
+	DECLARE v_folder_name varchar(256);
+	declare v_idx integer default 1;
+	declare v_folder_pid integer default -98;
+
+	repeat
+		select func_split_str(p_folder_path,'/',v_idx) into v_folder_name;
+		if v_folder_name = '' THEN
+			set p_folder_id = v_folder_pid;
+		ELSE
+			select folder_id into v_folder_pid from gp_cab_folders 
+				where folder_name = v_folder_name 
+					and cabinet_id = p_cabinet_id 
+					and folder_pid = v_folder_pid;
+		end if;
+		set v_idx = v_idx + 1;
+		until v_folder_name = ''
+	end repeat; 
+	
+END
