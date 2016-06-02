@@ -323,6 +323,10 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	/**
+	 * find cabinet file information by file id
+	 * @param fileid the id of cabinet file 
+	 **/
 	public static GeneralResult<CabFileInfo> findCabinetFile(AccessPoint accesspoint,
 			Principal principal,String sourceId, InfoId<Long> fileid){
 		
@@ -394,6 +398,10 @@ public class CabinetFacade {
 
 	}
 	
+	/**
+	 * Find the cabinet version by file id
+	 * @param fileid the id of file
+	 **/
 	public static GeneralResult<List<CabVersionInfo>> findCabinetVersions(AccessPoint accesspoint,
 			Principal principal, InfoId<Long> fileid){
 		
@@ -420,4 +428,73 @@ public class CabinetFacade {
 		return gresult;
 		
 	}
+	
+	public static GeneralResult<Boolean> moveCabinetEntries(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> destid, InfoId<?> ... fileids){
+		
+		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		
+		if(ArrayUtils.isEmpty(fileids)){
+			
+			gresult.setReturnValue(false);
+			gresult.setMessage("fileids is required", false);
+		}
+		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.MOVE_FILE)){
+			
+			for(InfoId<?> fid : fileids){
+				fileservice.moveFile(svcctx, (InfoId<Long>)fid, destid);
+			}
+			gresult.setReturnValue(true);
+			gresult.setMessage("success move file", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when move file.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to move file.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		return gresult;
+		
+	}
+	
+	public static GeneralResult<Boolean> copyCabinetFile(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> destid, InfoId<?> ... fileids){
+		
+		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		
+		if(ArrayUtils.isEmpty(fileids)){
+			
+			gresult.setReturnValue(false);
+			gresult.setMessage("fileids is required", false);
+		}
+		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.MOVE_FILE)){
+			
+			for(InfoId<?> fid : fileids){
+				fileservice.moveFile(svcctx, (InfoId<Long>)fid, destid);
+			}
+			gresult.setReturnValue(true);
+			gresult.setMessage("success copy file", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when copy file.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to copy file.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		return gresult;
+		
+	}
+	
 }
