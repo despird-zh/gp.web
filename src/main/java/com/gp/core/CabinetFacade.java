@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -429,24 +430,40 @@ public class CabinetFacade {
 		
 	}
 	
-	public static GeneralResult<Boolean> moveCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<?> ... fileids){
+	public static GeneralResult<Boolean[]> moveCabinetEntries(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids){
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		
+		GeneralResult<Boolean[]> gresult = new GeneralResult<Boolean[]>();
+		Boolean[] rtv = new Boolean[0];
 		if(ArrayUtils.isEmpty(fileids)){
 			
-			gresult.setReturnValue(false);
+			gresult.setReturnValue(rtv);
 			gresult.setMessage("fileids is required", false);
+		}else{
+			rtv = new Boolean[fileids.length];
 		}
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.MOVE_FILE)){
 			
-			for(InfoId<?> fid : fileids){
-				fileservice.moveFile(svcctx, (InfoId<Long>)fid, destid);
+			int cnt = 0;
+			for(InfoId<Long> fid : fileids){
+				
+				if(IdKey.CAB_FILE.getSchema().equals(fid.getIdKey()))
+					
+					rtv[cnt] = fileservice.moveFile(svcctx, fid, destid);
+				else if(IdKey.CAB_FOLDER.getSchema().equals(fid.getIdKey())){
+					
+					String tgt_path = folderservice.getFolderPath(svcctx, destid);
+					String src_path = folderservice.getFolderPath(svcctx, fid);
+					if(StringUtils.indexOfIgnoreCase(tgt_path, src_path) < 0)
+						rtv[cnt] = folderservice.moveFolder(svcctx, fid, destid);
+					else
+						rtv[cnt] = false;
+				}
+				cnt ++ ;
 			}
-			gresult.setReturnValue(true);
+			gresult.setReturnValue(rtv);
 			gresult.setMessage("success move file", true);
 			
 		} catch (ServiceException e)  {
