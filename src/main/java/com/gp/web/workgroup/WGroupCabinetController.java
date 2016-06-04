@@ -19,14 +19,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
+import com.gp.common.Instances;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.GeneralResult;
+import com.gp.core.InstanceFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
 import com.gp.info.InfoId;
+import com.gp.info.InstanceInfo;
 import com.gp.info.TagInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
@@ -84,7 +87,7 @@ public class WGroupCabinetController extends BaseController{
 	public ModelAndView doNetdiskContent(HttpServletRequest request){
 		
 		ModelAndView mav = super.getJsonModelView();
-		List<CabinetItem> clist = new ArrayList<CabinetItem>();
+
 		ActionResult actrst = new ActionResult();
 		
 		String cabinetId = super.readRequestParam("cabinet_id");
@@ -103,6 +106,7 @@ public class WGroupCabinetController extends BaseController{
 		List<CabEntryInfo> entries = fresult.getReturnValue().getRows();
 		List<CabinetItem> items = new ArrayList<CabinetItem>();
 		List<InfoId<Long>> ids = new ArrayList<InfoId<Long>>();
+		List<String> accounts = new ArrayList<String>();
 		for(int i = 0; i< entries.size() ; i++){
 			CabinetItem item = new CabinetItem();
 			CabEntryInfo entry = entries.get(i);
@@ -145,13 +149,21 @@ public class WGroupCabinetController extends BaseController{
 			}
 
 			ids.add(entries.get(i).getInfoId());
+			accounts.add(entry.getOwner());
 			items.add(item);
 		}
 		// decorate tag information
 		Map<InfoId<Long>, Set<TagInfo>> tagmap = CabinetFacade.findCabEntriesTags(accesspoint,
 				principal, ids).getReturnValue();
+		// decorate favorite summary
+		Map<InfoId<Long>, Integer> favmap = CabinetFacade.findCabEntriesFavSummary(accesspoint,
+				principal, ids).getReturnValue();
+		Map<String, InstanceInfo> srcmap = InstanceFacade.findInstances(accesspoint,
+				principal, accounts).getReturnValue();
 		// set tags
 		for(int i = 0; i< ids.size() ; i++){
+			CabinetItem citem = items.get(i);
+			// set entry tag
 			Set<TagInfo> tinfos = tagmap.get(ids.get(i));
 			Set<Tag> tags = new HashSet<Tag>();
 			for(TagInfo tinfo : tinfos){
@@ -161,18 +173,25 @@ public class WGroupCabinetController extends BaseController{
 				tag.setTagName(tinfo.getTagName());
 				tags.add(tag);
 			}
-			items.get(i).setTags(tags);
-		}
-		// decorate favorite summary
-		Map<InfoId<Long>, Integer> favmap = CabinetFacade.findCabEntriesFavSummary(accesspoint,
-				principal, ids).getReturnValue();
-		for(int i = 0; i< ids.size() ; i++){
+			citem.setTags(tags);
+			// set favorite statistics
 			Integer favsum = favmap.get(ids.get(i));
 			ItemStat stat = new ItemStat();
 			stat.setStatText(String.valueOf(favsum));
 			stat.setStatTooltip(favsum + "People favorite");
-			items.get(i).setFavoriteStat(stat);
+			citem.setFavoriteStat(stat);
+			
+			InstanceInfo instinfo = srcmap.get(accounts.get(i));
+			if(null != instinfo){
+				citem.setExternalOwned(!Instances.LOCAL_INST_ID.equals(instinfo.getInfoId()));
+				ItemStat srcstat = new ItemStat();
+				srcstat.setStatText("Owned Externally");
+				srcstat.setStatTooltip("owned by " + accounts.get(i) + " from " + instinfo.getInstanceName());
+				
+				citem.setSourceStat(srcstat);
+			}
 		}
+
 		actrst.setData(items);
 		actrst.setState(ActionResult.SUCCESS);
 		actrst.setMessage(fresult.getMessage());

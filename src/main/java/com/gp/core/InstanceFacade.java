@@ -241,4 +241,29 @@ public class InstanceFacade {
 		}
 		return result;
 	}
+	
+	public static GeneralResult<Map<String,InstanceInfo>> findInstances(AccessPoint accesspoint,
+			Principal principal,
+			List<String> accounts){
+		
+		GeneralResult<Map<String,InstanceInfo>> result = new GeneralResult<Map<String,InstanceInfo>>();
+		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_INSTANCES)){
+						
+			// query accounts information
+			Map<String,InstanceInfo> smap = instanceservice.getAccountSources(svcctx, accounts);
+			
+			result.setReturnValue(smap);			
+			result.setMessage("success get instances ", true);
+		} catch (Exception e) {
+			LOGGER.error("Fail query instances",e);
+			ContextHelper.stampContext(e);
+			result.setMessage("fail get instances ", false);
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return result;
+	}
 }

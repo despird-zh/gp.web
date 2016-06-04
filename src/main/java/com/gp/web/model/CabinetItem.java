@@ -20,6 +20,8 @@ public class CabinetItem {
 	
 	private String description;
 	
+	private ItemStat sourceStat;
+	
 	private ItemStat childStat;
 	
 	private ItemStat favoriteStat;
@@ -132,6 +134,14 @@ public class CabinetItem {
 
 	public void setClassification(String classification) {
 		this.classification = classification;
+	}
+
+	public ItemStat getSourceStat() {
+		return sourceStat;
+	}
+
+	public void setSourceStat(ItemStat sourceStat) {
+		this.sourceStat = sourceStat;
 	}
 
 }
