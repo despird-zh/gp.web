@@ -130,13 +130,14 @@ var PageContext = (function ($, window, undefined) {
 			"content": function(){
 				var div_id =  "tmp-id-" + $.now(),
 					_file_id = $(this).attr('data-file-id');
-				return _self.popoverContent("../cabinet/file-version.do?file_id="+_file_id, div_id);
+				return _self.popoverContent("../cabinet/file-versions.do?file_id="+_file_id, div_id);
 			},
 			placement : 'bottom',
 			template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content p-xs" ><p></p></div></div></div>'
 		});
 
 	};
+	
 	Netdisk.popoverContent = function(content_link, div_id){
 		$.ajax({
 			url: content_link,
@@ -151,7 +152,7 @@ var PageContext = (function ($, window, undefined) {
 		
 		var $el = $(this), _file_id = $(this).attr('data-file-id');
 		
-        $.get("../cabinet/file-version.do?file_id="+_file_id,function(remote_content) {
+        $.get("../cabinet/file-versions.do?file_id="+_file_id,function(remote_content) {
             $el.popover({
 				html : true,
 				placement : 'bottom',

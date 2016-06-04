@@ -1,19 +1,23 @@
 package com.gp.web.workgroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.keyvalue.DefaultKeyValue;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
@@ -33,13 +37,14 @@ import com.gp.web.BaseController;
 import com.gp.web.model.CabinetItem;
 import com.gp.web.model.ItemStat;
 import com.gp.web.model.Tag;
-import com.gp.web.model.Version;
 /**
  * This controller wrap the operation on cabinet and repository 
  **/
 @Controller("wg-cabinet-ctrl")
 @RequestMapping("/workgroup")
 public class WGroupCabinetController extends BaseController{
+	
+	List<String > TIMESTRINGS = Arrays.asList("年","月","天","小时","分钟","秒");
 	
 	@RequestMapping("publish")
 	public ModelAndView doPublishInitial(HttpServletRequest request){
@@ -96,117 +101,89 @@ public class WGroupCabinetController extends BaseController{
 				cabid, folderid, "", new PageQuery(20,1) );
 		
 		List<CabEntryInfo> entries = fresult.getReturnValue().getRows();
-		
-		InfoId<?>[] ids = new InfoId<?>[entries.size()];
-		for(int i = 0; i< ids.length ; i++){
-			ids[i] = entries.get(i).getInfoId();
+		List<CabinetItem> items = new ArrayList<CabinetItem>();
+		List<InfoId<Long>> ids = new ArrayList<InfoId<Long>>();
+		for(int i = 0; i< entries.size() ; i++){
+			CabinetItem item = new CabinetItem();
+			CabEntryInfo entry = entries.get(i);
+			
+			item.setItemId(entry.getInfoId().getId());			
+			item.setAccount(entry.getOwner());
+			item.setDescription(entry.getDescription());
+			item.setTimeElapse(toDuration(System.currentTimeMillis() - entry.getModifyDate().getTime(), principal.getLocale()));
+			item.setExternalOwned(false);
+			item.setClassification(entry.getClassification());
+			item.setItemName(entry.getEntryName());
+			item.setItemType(entry.isFolder()? Cabinets.EntryType.FOLDER.name():Cabinets.EntryType.FILE.name());
+			
+			if(entry.isFolder()){
+				CabFolderInfo fldr = (CabFolderInfo)entry;
+				ItemStat childstat = new ItemStat();
+				childstat.setStatText(String.valueOf(fldr.getFileCount() + fldr.getFolderCount()));
+				childstat.setStatTooltip( fldr.getFolderCount() +"Folders " + fldr.getFileCount() + "files" + fldr.getTotalSize() + " bytes");
+				item.setChildStat(childstat);
+				
+				if(StringUtils.isNotBlank(fldr.getProfile())){
+					
+					item.setPropStat(new ItemStat());
+				}
+			}else{
+				CabFileInfo file = (CabFileInfo)entry;
+				ItemStat childstat = new ItemStat();
+				childstat.setStatTooltip( file.getSize() + " bytes");
+				item.setChildStat(childstat);
+				
+				ItemStat verstat = new ItemStat();
+				verstat.setStatText(file.getVersion());
+				verstat.setStatTooltip(file.getVersionLabel());
+				item.setVersionStat(verstat);
+				
+				if(StringUtils.isNotBlank(file.getProfile())){
+					
+					item.setPropStat(new ItemStat());
+				}
+			}
+
+			ids.add(entries.get(i).getInfoId());
+			items.add(item);
 		}
-		
-		GeneralResult<Map<InfoId<?>, Set<TagInfo>>> tresult = CabinetFacade.findCabEntriesTags(accesspoint,
-				principal, ids);
-		
-		mav.addObject("tags" , tresult.getReturnValue());
+		// decorate tag information
+		Map<InfoId<Long>, Set<TagInfo>> tagmap = CabinetFacade.findCabEntriesTags(accesspoint,
+				principal, ids).getReturnValue();
+		// set tags
+		for(int i = 0; i< ids.size() ; i++){
+			Set<TagInfo> tinfos = tagmap.get(ids.get(i));
+			Set<Tag> tags = new HashSet<Tag>();
+			for(TagInfo tinfo : tinfos){
+				Tag tag = new Tag();
+				tag.setCategory(tinfo.getCategory());
+				tag.setTagColor(tinfo.getTagColor());
+				tag.setTagName(tinfo.getTagName());
+				tags.add(tag);
+			}
+			items.get(i).setTags(tags);
+		}
+		// decorate favorite summary
+		Map<InfoId<Long>, Integer> favmap = CabinetFacade.findCabEntriesFavSummary(accesspoint,
+				principal, ids).getReturnValue();
+		for(int i = 0; i< ids.size() ; i++){
+			Integer favsum = favmap.get(ids.get(i));
+			ItemStat stat = new ItemStat();
+			stat.setStatText(String.valueOf(favsum));
+			stat.setStatTooltip(favsum + "People favorite");
+			items.get(i).setFavoriteStat(stat);
+		}
+		actrst.setData(items);
 		actrst.setState(ActionResult.SUCCESS);
 		actrst.setMessage(fresult.getMessage());
-		actrst.setData(fresult.getReturnValue());
 		
 		mav.addAllObjects(actrst.asMap());
 		
 		return mav;
 	}
-	
-	@RequestMapping("netdisk-pub-content")
-	public ModelAndView doPubContent(){
+
+	private String toDuration(Long elapse, Locale locale){
 		
-		String cabinetId = super.readRequestParam("cabinet_id");
-		String folderId = super.readRequestParam("folder_id");
-		
-		ModelAndView jmav = super.getJsonModelView();
-		List<CabinetItem> clist = new ArrayList<CabinetItem>();
-		
-		for(int i =0; i<3; i++){
-			CabinetItem item = new CabinetItem();
-			Long daytime = 24*60*60*1000l;
-			Long currtime =(long)((1- Math.random())*daytime);
-			
-			item.setTimeElapse(DateTimeUtils.toDuration(currtime));
-			
-			item.setAccount("account1");
-			item.setDescription("this is a demo description");
-			item.setExternalOwned(false);
-			item.setItemId(23456);
-			item.setItemName("this demo ");
-			item.setItemType("folder");
-			
-			ItemStat substat = new ItemStat();
-			substat.setStatTooltip("15 files, 60M");
-			substat.setStatText("15");			
-			item.setChildStat(substat);
-			
-			ItemStat favstat = new ItemStat();
-			favstat.setStatTooltip("3 People favorite this ");
-			favstat.setStatText("2");			
-			item.setFavoriteStat(favstat);
-			
-			ItemStat verstat = new ItemStat();
-			verstat.setStatTooltip("Current version is 1.3");
-			verstat.setStatText("1.3");			
-			item.setVersionStat(verstat);
-			List<Version> vlist = new ArrayList<Version> ();
-			for(int v = 1; v<4; v++){
-				Version ver = new Version();
-				ver.setAuthor("demo"+v);
-				ver.setDescription("description demo string");
-				ver.setVersion(v+".0");
-				vlist.add(ver);
-			}
-			verstat.setStatData(vlist);
-			
-			ItemStat propstat = new ItemStat();
-			propstat.setStatTooltip("Property Detail");		
-			item.setPropStat(propstat);
-			List<DefaultKeyValue> plist = new ArrayList<DefaultKeyValue> ();
-			for(int p = 0; p < 4; p++){
-				
-				DefaultKeyValue dkv = new DefaultKeyValue();
-				dkv.setKey("key"+p);
-				dkv.setValue("value"+p);
-				plist.add(dkv);
-			}
-			propstat.setStatData(plist);
-			
-			List<Tag> tlist = new ArrayList<Tag>();
-			for(int t=0; t<4; t++){
-				Tag tag = new Tag();
-				tag.setTagName("文化"+t);
-				tag.setTagColor("blue");
-				tlist.add(tag);
-			}
-			item.setTaglist(tlist);
-			item.setHasTag(true);
-			clist.add(item);
-		}
-		
-		for(int i =0; i<3; i++){
-			CabinetItem item = new CabinetItem();
-			Long daytime = 24*60*60*1000l;
-			Long currtime =(long)((1- Math.random())*daytime);
-			
-			item.setTimeElapse(DateTimeUtils.toDuration(currtime));
-			
-			item.setAccount("account1");
-			item.setDescription("this is a demo description");
-			item.setExternalOwned(false);
-			item.setItemId(23456);
-			item.setItemName("this demo ");
-			item.setItemType("file");
-			
-			clist.add(item);
-		}
-		
-		jmav.addObject(MODEL_KEY_ROWS, clist);
-		jmav.addObject(MODEL_KEY_MESSAGE, "success load");
-		jmav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-		return jmav;
+		return DateTimeUtils.toDuration(elapse, TIMESTRINGS, locale);
 	}
 }

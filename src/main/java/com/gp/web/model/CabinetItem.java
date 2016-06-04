@@ -1,6 +1,6 @@
 package com.gp.web.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class CabinetItem {
 	
@@ -10,7 +10,9 @@ public class CabinetItem {
 	
 	private String itemType;
 	
-	private int itemId;
+	private String classification;
+	
+	private long itemId;
 	
 	private boolean externalOwned;
 	
@@ -24,13 +26,9 @@ public class CabinetItem {
 	
 	private ItemStat versionStat;
 	
-	private ItemStat detailStat;
-	
 	private ItemStat propStat;
 	
-	private List<Tag> taglist;
-	
-	private Boolean hasTag;
+	private Set<Tag> tags;
 	
 	public String getItemName() {
 		return itemName;
@@ -48,11 +46,11 @@ public class CabinetItem {
 		this.itemType = itemType;
 	}
 
-	public int getItemId() {
+	public long getItemId() {
 		return itemId;
 	}
 
-	public void setItemId(int itemId) {
+	public void setItemId(long itemId) {
 		this.itemId = itemId;
 	}
 
@@ -112,14 +110,6 @@ public class CabinetItem {
 		this.versionStat = versionStat;
 	}
 
-	public ItemStat getDetailStat() {
-		return detailStat;
-	}
-
-	public void setDetailStat(ItemStat detailStat) {
-		this.detailStat = detailStat;
-	}
-
 	public ItemStat getPropStat() {
 		return propStat;
 	}
@@ -128,20 +118,20 @@ public class CabinetItem {
 		this.propStat = propStat;
 	}
 
-	public List<Tag> getTaglist() {
-		return taglist;
+	public Set<Tag> getTags() {
+		return tags;
 	}
 
-	public void setTaglist(List<Tag> taglist) {
-		this.taglist = taglist;
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
 	}
 
-	public Boolean getHasTag() {
-		return hasTag;
+	public String getClassification() {
+		return classification;
 	}
 
-	public void setHasTag(Boolean hasTag) {
-		this.hasTag = hasTag;
+	public void setClassification(String classification) {
+		this.classification = classification;
 	}
 
 }

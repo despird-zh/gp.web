@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -38,6 +39,7 @@ import com.gp.svc.FileService;
 import com.gp.svc.FolderService;
 import com.gp.svc.TagService;
 import com.gp.svc.CommonService;
+import com.gp.svc.FavoriteService;
 import com.gp.util.DateTimeUtils;
 import com.gp.validation.ValidationMessage;
 import com.gp.validation.ValidationUtils;
@@ -57,18 +59,22 @@ public class CabinetFacade {
 	
 	static TagService tagservice;
 	
+	static FavoriteService favservice;
+	
 	@Autowired
 	private CabinetFacade(CabinetService cabinetservice, 
 			FolderService folderservice, 
 			FileService fileservice,
 			CommonService idservice,
-			TagService tagservice){
+			TagService tagservice,
+			FavoriteService favservice){
 		
 		CabinetFacade.cabinetservice = cabinetservice;
 		CabinetFacade.fileservice = fileservice;
 		CabinetFacade.folderservice = folderservice;
 		CabinetFacade.idservice = idservice;
 		CabinetFacade.tagservice = tagservice;
+		CabinetFacade.favservice = favservice;
 	}
 	
 	/**
@@ -357,17 +363,59 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Map<InfoId<?>, Set<TagInfo>>> findCabEntriesTags(AccessPoint accesspoint,
-			Principal principal, InfoId<?> ...entryids){
+	public static GeneralResult<Map<InfoId<Long>, Integer>> findCabEntriesFavSummary(AccessPoint accesspoint,
+			Principal principal, List<InfoId<Long>> entryids){
 		
-		GeneralResult<Map<InfoId<?>, Set<TagInfo>>> gresult = new GeneralResult<Map<InfoId<?>, Set<TagInfo>>>();
-		if(ArrayUtils.isEmpty(entryids)){
+		GeneralResult<Map<InfoId<Long>, Integer>> gresult = new GeneralResult<Map<InfoId<Long>, Integer>>();
+		
+		if(CollectionUtils.isEmpty(entryids)){
 			gresult.setMessage("success query", true);
 			return gresult;
 		}
-		List<InfoId<?>> files = new ArrayList<InfoId<?>>();
-		List<InfoId<?>> folders = new ArrayList<InfoId<?>>();
-		for(InfoId<?> id: entryids){
+		List<InfoId<Long>> files = new ArrayList<InfoId<Long>>();
+		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
+		for(InfoId<Long> id: entryids){
+			
+			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
+				files.add(id);
+			}else if(IdKey.CAB_FOLDER.getTable().equals(id.getIdKey())){
+				folders.add(id);
+			}
+		}
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_FAV_SUM)){
+			
+			Map<InfoId<Long>, Integer> filefavs = favservice.getFavFileSummary(svcctx, files);
+			Map<InfoId<Long>, Integer> folderfavs = favservice.getFavFolderSummary(svcctx, folders);
+			// merge two maps together
+			filefavs.putAll(folderfavs);
+			gresult.setReturnValue(filefavs);
+			gresult.setMessage("success find the entry tags", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when find entry tags.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to find entry tags.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		return gresult;
+	}
+	
+	public static GeneralResult<Map<InfoId<Long>, Set<TagInfo>>> findCabEntriesTags(AccessPoint accesspoint,
+			Principal principal, List<InfoId<Long>> entryids){
+		
+		GeneralResult<Map<InfoId<Long>, Set<TagInfo>>> gresult = new GeneralResult<Map<InfoId<Long>, Set<TagInfo>>>();
+		if(CollectionUtils.isEmpty(entryids)){
+			gresult.setMessage("success query", true);
+			return gresult;
+		}
+		List<InfoId<Long>> files = new ArrayList<InfoId<Long>>();
+		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
+		for(InfoId<Long> id: entryids){
 			
 			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
 				files.add(id);
@@ -378,8 +426,8 @@ public class CabinetFacade {
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
-			Map<InfoId<?>, Set<TagInfo>> filetags = tagservice.getTags(svcctx, files.toArray(new InfoId[0]));
-			Map<InfoId<?>, Set<TagInfo>> foldertags = tagservice.getTags(svcctx, folders.toArray(new InfoId[0]));
+			Map<InfoId<Long>, Set<TagInfo>> filetags = tagservice.getTags(svcctx, files);
+			Map<InfoId<Long>, Set<TagInfo>> foldertags = tagservice.getTags(svcctx, folders);
 			// merge two maps together
 			filetags.putAll(foldertags);
 			gresult.setReturnValue(filetags);
@@ -480,24 +528,37 @@ public class CabinetFacade {
 		
 	}
 	
-	public static GeneralResult<Boolean> copyCabinetFile(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<?> ... fileids){
+	public static GeneralResult<List<InfoId<Long>>> copyCabinetEntries(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids){
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		
+		GeneralResult<List<InfoId<Long>>> gresult = new GeneralResult<List<InfoId<Long>>>();
+		List<InfoId<Long>> rtv = new ArrayList<InfoId<Long>>();
 		if(ArrayUtils.isEmpty(fileids)){
 			
-			gresult.setReturnValue(false);
+			gresult.setReturnValue(rtv);
 			gresult.setMessage("fileids is required", false);
 		}
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.MOVE_FILE)){
+				Operations.COPY_FILE)){
 			
-			for(InfoId<?> fid : fileids){
-				fileservice.moveFile(svcctx, (InfoId<Long>)fid, destid);
+			for(InfoId<Long> fid : fileids){
+				if(IdKey.CAB_FILE.getSchema().equals(fid.getIdKey())){
+					
+					InfoId<Long> newId = fileservice.copyFile(svcctx, fid, destid);
+					rtv.add(newId);
+				}else if(IdKey.CAB_FOLDER.getSchema().equals(fid.getIdKey())){
+					
+					String tgt_path = folderservice.getFolderPath(svcctx, destid);
+					String src_path = folderservice.getFolderPath(svcctx, fid);
+					if(StringUtils.indexOfIgnoreCase(tgt_path, src_path) < 0){
+						InfoId<Long> newId = folderservice.copyFolder(svcctx, fid, destid);
+						rtv.add(newId);
+					}else
+						rtv.add(IdKey.CAB_FOLDER.getInfoId(-1l));
+				}
 			}
-			gresult.setReturnValue(true);
+			gresult.setReturnValue(rtv);
 			gresult.setMessage("success copy file", true);
 			
 		} catch (ServiceException e)  {

@@ -26,10 +26,12 @@ import com.gp.web.model.Version;
 @RequestMapping("/cabinet")
 public class CabFileExtController extends BaseController{
 	
-	@RequestMapping("tag-search")
-	public ModelAndView doTagSearch(HttpServletRequest request){
-		return null;
+	@RequestMapping("file-tags")
+	public ModelAndView doFileTagSearch(HttpServletRequest request){
 		
+		ModelAndView  mav = super.getJspModelView("dialog/file-tags");
+		
+		return mav;
 	}
 	
 	@RequestMapping("tag-attach")
@@ -44,10 +46,10 @@ public class CabFileExtController extends BaseController{
 		
 	}
 	
-	@RequestMapping("file-version")
+	@RequestMapping("file-versions")
 	public ModelAndView doVersionSearch(HttpServletRequest request){
 		
-		ModelAndView  mav = super.getJspModelView("dialog/version-list");
+		ModelAndView  mav = super.getJspModelView("dialog/file-versions");
 		
 		ActionResult aresult = new ActionResult();
 		Principal principal = super.getPrincipalFromShiro();

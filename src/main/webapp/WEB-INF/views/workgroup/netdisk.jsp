@@ -108,9 +108,7 @@
                                         </a>
                                     </li>
                                     <li class="item-stat" data-toggle="tooltip" title="" data-original-title="13 Files, 8.4 MB">
-										
 										<span style="" class="label label-default v-center"><i class="fa fa-file"></i></span>
-										
 										<div class="countinfo-wrapper">
 											<div class="countinfo">
 												<span>
@@ -193,7 +191,7 @@
 										<a class="tag-default tag-point-blue" href="" title="">评分</a>
 										<a class="tag-default  " href="" title="">投票</a>
 										<a class="tag-red  " href="" title="">更新</a>
-                                    </p>                                
+                                    </p>
                                 </div>
                                 <div gpid="comment-list-container" class="hidden">
                                     <div obid="comment_list" class="direct-chat-messages" style="margin-top:5px;margin-bottom:0px;">
