@@ -26,7 +26,7 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Version;
 
-@Controller("cab-entry-ctrl")
+@Controller("cab-entry-ext-ctrl")
 @RequestMapping("/cabinet")
 public class CabEntryExtController extends BaseController{
 	
