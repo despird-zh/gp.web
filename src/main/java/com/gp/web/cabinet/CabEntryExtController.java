@@ -34,7 +34,22 @@ public class CabEntryExtController extends BaseController{
 	public ModelAndView doFileTagSearch(HttpServletRequest request){
 		
 		ModelAndView  mav = super.getJspModelView("dialog/entry-tags");
+		Long entryid = NumberUtils.toLong(readRequestParam("entry_id"));
+		String entryType = readRequestParam("entry_type");
 		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
+			
+			InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(entryid);
+
+		}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
+			
+			InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(entryid);
+
+		}
+
 		return mav;
 	}
 	

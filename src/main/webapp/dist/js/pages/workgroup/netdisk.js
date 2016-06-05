@@ -114,6 +114,10 @@ var PageContext = (function ($, window, undefined) {
 		_$self_p.find('div[gpid="comment-list-container"]').toggleClass('hidden');
 	});
 
+	$('button[gpid="test-btn"]').bind('click', function(){
+		GPContext.editEntryTags(158,'FILE');
+	});
+	
 	$('body').on('click', function (e) {
 		$('.popup-marker').each(function () {
 			//the 'is' for buttons that trigger popups

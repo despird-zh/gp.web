@@ -62,7 +62,7 @@
 						</form>												
 					</div>
 				</div>
-				<div id="cabinet-container" class="box-body repo-list">
+				<div id="cabinet-container" class="box-body repo-list p-none">
 					
 				</div><!-- /.box-body -->
 			  </div><!-- /.box -->
@@ -251,6 +251,7 @@
 	<script src="${path_script}/message.js"></script>
 	<%@include file="../dialog/new-file.jsp" %>
 	<%@include file="../dialog/new-folder.jsp" %>
+	<%@include file="../dialog/entry-tags.jsp" %>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/netdisk.js"></script>
   </body>

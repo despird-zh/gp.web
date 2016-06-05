@@ -20,22 +20,22 @@
 			  <div class="repo-item bd" data-item-id="${cabitem.itemId}" data-item-type="${cabitem.itemType}">
 				<ul class="action-list">
 					<li class="action" data-toggle="tooltip" title="Edit tags">
-						<a href="#"><i class="fa fa-tags"></i></a>
+						<a href="javascript:void(0)"><i class="fa fa-tags"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="Add to clipboard">
-						<a  href="#"><i class="fa fa-clipboard"></i></a>
+						<a  href="javascript:void(0)"><i class="fa fa-clipboard"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="comments information">
-						<a  href="#" gpid="show-comments-btn" ><i class="fa fa-commenting"></i></a>
+						<a  href="javascript:void(0)" gpid="show-comments-btn" ><i class="fa fa-commenting"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="Share file">
-						<a  href="#"><i class="fa fa-share-alt"></i></a>
+						<a  href="javascript:void(0)"><i class="fa fa-share-alt"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="favorite file">
-						<a  href="#"><i class="fa fa-star"></i></a>
+						<a  href="javascript:void(0)"><i class="fa fa-star"></i></a>
 					</li>
 					<li class="action">
-						<a  href="#"><i class="fa fa-square-o" ></i></a>
+						<a  href="javascript:void(0)"><i class="fa fa-square-o" ></i></a>
 					</li>
 				</ul>
 				<div class="item-name-container">
@@ -106,9 +106,9 @@
 				</c:if>
 				<c:if test="${!empty cabitem.tags}">
 				<div>
-				   <p style="margin-bottom:0px;" class="tags xsmall">
+				   <p class="tags xsmall m-b-none">
 						<c:forEach var="tag" items="${cabitem.tags}">
-							<a class="tag-default tag-point-${tag.tagColor}" href="" title="">${tag.tagName}</a>
+							<a class="tag-blue tag-point-${tag.tagColor}" href="javascript:void(0)" title="">${tag.tagName}</a>
 						</c:forEach>
 					</p>
 				</div>
