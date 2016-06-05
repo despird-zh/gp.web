@@ -921,7 +921,7 @@ display:block;
 	height:24px;
 	line-height:23px;
 	position:relative;
-	margin: 0 12px 8px 0;
+	margin: 0 12px 2px 0;
 	padding: 0 12px 0 10px;
 	background: #777;
 	-moz-border-radius-bottomleft: 5px;
@@ -932,7 +932,6 @@ display:block;
 	border-top-left-radius: 5px;
 	color: #888;
 	font-size:12px;
-	
 	text-decoration: none;
 	text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 	font-weight: bold;
@@ -1300,7 +1299,7 @@ a.thumbnail {
 	padding : 0;
 }
 .p-t-xxs{
-	padding-top : 5px;
+	padding-top : 3px;
 }
 .p-xxs {
   padding: 5px;

@@ -73,6 +73,447 @@
 				<div class="box-body repo-list">
 					<ul class="list-group list-group-unbordered">
 						
+						<li class="list-group-item">
+							<div class="media">
+							  <div class="item-type">
+								<div class="img-32x32-repo-item img-repo-folder">
+								</div>
+							  </div>
+							  <div class="repo-item bd">
+								<ul class="action-list">
+									<li class="action" data-toggle="tooltip" title="Edit tags">
+										<a href="#"><i class="fa fa-tags"></i></a>
+									</li>
+									<li class="action" data-toggle="tooltip" title="Add to clipboard">
+										<a  href="#"><i class="fa fa-clipboard"></i></a>
+									</li>
+									<li class="action" data-toggle="tooltip" title="comments information">
+										<a  href="#" gpid="show-comments-btn" ><i class="fa fa-commenting"></i></a>
+									</li>
+									<li class="action" data-toggle="tooltip" title="Share file">
+										<a  href="#"><i class="fa fa-share-alt"></i></a>
+									</li>
+									<li class="action" data-toggle="tooltip" title="favorite file">
+										<a  href="#"><i class="fa fa-star"></i></a>
+									</li>
+									<li class="action">
+										<a  href="#"><i class="fa fa-square-o" ></i></a>
+									</li>
+								</ul>
+								<div class="item-name-container">
+								  <a class="item-link " href="#">
+									sub2 folder
+								  </a>     
+
+								  <span class="badge long-badge ellipsis" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
+									Owned externally
+								  </span>
+								</div>
+								<ul class="inline-list">
+                                    <li class="">
+                                        Updated yesterday by 
+                                        <a class="hoverlight profile_link">
+                                        evilsucker
+                                        </a>
+                                    </li>
+                                    <li class="item-stat" data-toggle="tooltip" title="" data-original-title="13 Files, 8.4 MB">
+										<span style="" class="label label-default v-center"><i class="fa fa-file"></i></span>
+										<div class="countinfo-wrapper">
+											<div class="countinfo">
+												<span>
+												<span class="">13</span>
+												</span>
+											</div>
+											<div class="countinfonub"><s></s><i></i></div>
+										</div>
+                                    </li>
+                                    <li class="item-stat" data-toggle="tooltip" title="" data-original-title="3 People favorite this ">
+										<span style="" class="label label-default"><i class="fa fa-star"></i></span>
+										<div class="countinfo-wrapper">
+											<div class="countinfo">
+												<span>
+												<span class="">2</span>
+												</span>
+											</div>
+											<div class="countinfonub"><s></s><i></i></div>
+										</div>
+                                    </li>
+                                    <li class="item-stat" data-toggle="tooltip" title="" data-original-title="Current version is 1.3">
+										<span class="popup-marker label label-default" gpid="versionlist" data-file-id="158"><i class="fa fa-paperclip"></i></span>
+										<div class="countinfo-wrapper">
+											<div class="countinfo">
+												<span>
+												<span class="">1.3</span>
+												</span>
+											</div>
+											<div class="countinfonub"><s></s><i></i></div>
+										</div>
+                                    </li>
+                                    <li class="item-stat">
+                                        <span class="popup-marker label label-default" id="informationlist"><i class="fa fa-info-circle"></i></span>
+                                        <div class="content hide">
+                                            <div class="panel-body popover-content">
+                                                <table class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>First Name</th>
+                                                            <th>Last Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Carter</td>
+                                                            <td>johncarter@mail.com</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Parker</td>
+                                                            <td>peterparker@mail.com</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Rambo</td>
+                                                            <td>johnrambo@mail.com</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
+									</div>
+								  </li>
+								</ul>
+								<div>
+                                   <p style="margin-bottom:0px;" class="tags xsmall">
+										<a class="tag-red " href="" title="">Fashion</a>
+										<a class="tag-yellow " href="" title="">测试</a>
+										<a class="tag-blue " href="" title="">学习</a>
+										<a class="tag-green  " href="" title="">Java</a>
+										<a class="tag-default tag-point-red" href="" title="">工具</a>
+										<a class="tag-default tag-point-yellow " href="" title="">专业</a>
+										<a class="tag-default tag-point-green" href="" title="">电气</a>
+										<a class="tag-default tag-point-blue" href="" title="">评分</a>
+										<a class="tag-default  " href="" title="">投票</a>
+										<a class="tag-red  " href="" title="">更新</a>
+                                    </p>
+                                </div>
+                                <div gpid="comment-list-container" class="hidden">
+                                    <div obid="comment_list" class="direct-chat-messages" style="margin-top:5px;margin-bottom:0px;">
+                                        <!-- Message. Default to the left -->
+                                        <div class="direct-chat-msg">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-left margin-r-5">Alexander Pierce</span>
+												<span class="label label-warning text-center margin-r-5">correct</span>
+												<a href="#" class="link-black text-sm margin-r-5"><i class="fa fa-check "></i>Correct</a>
+												<a href="#" class="link-black text-sm margin-r-5"><i class="fa fa-hand-rock-o"></i>Ignore</a>
+												<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+												Is this template really for free? That's unbelievable!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-left">Alexander Pierce</span>
+												<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+											Is this template really for free? That's unbelievable!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-left">Alexander Pierce</span>
+												<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+												Is this template really for free? That's unbelievable!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg right">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-right">Sarah Bullock</span>
+												<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+											You better believe it!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg right">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-right">Sarah Bullock</span>
+												<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+											You better believe it!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg right">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-right">Sarah Bullock</span>
+												<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+											You better believe it!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-left">Alexander Pierce</span>
+												<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+											Is this template really for free? That's unbelievable!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <div class="direct-chat-msg">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-left">Alexander Pierce</span>
+												<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+												Is this template really for free? That's unbelievable!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                        <!-- Message to the right -->
+                                        <div class="direct-chat-msg right">
+											<div class="direct-chat-info clearfix">
+												<span class="direct-chat-name pull-right">Sarah Bullock</span>
+												<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+											</div><!-- /.direct-chat-info -->
+											<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+											<div class="direct-chat-text">
+											You better believe it!
+											</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->
+                                    </div>
+									<div class="input-group input-group-sm">
+										<input type="text" class="form-control">
+										<span class="input-group-btn">
+										  <button class="btn btn-info btn-flat" type="button"><i class="fa fa-paper-plane-o"></i></button>
+										</span>
+									</div>
+								</div>
+							  </div>
+							</div>
+						</li>
+						<li class="list-group-item clearfix">
+							<div class="media">
+							  <div class="item-type">
+								<div class="img-32x32-repo-item img-repo-folder">
+								</div>
+							  </div>
+							  <div class="repo-item bd">
+								<ul class="action-list">
+									<li class="action">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
+								
+								</ul>
+								<div class="item-name-container">
+								  <a class="item-link " href="#">
+									sub2 folder
+								  </a>      
+
+								  <span class="badge long-badge ellipsis" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
+									Owned externally
+								  </span>
+								</div>
+								<ul class="inline-list" >
+								  <li class="">
+									Updated yesterday by 
+									<a class="hoverlight profile_link">
+									  evilsucker
+									</a>
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-file"></i>
+									  </span>
+									  13
+									</span>
+								  </li>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
+									</div>
+								  </li>
+								</ul>
+							  </div>
+							</div>
+						</li>
+						<li class="list-group-item clearfix">
+							<div class="media">
+							  <div class="item-type">
+								<div class="img-32x32-repo-item img-repo-folder">
+								</div>
+							  </div>
+							  <div class="repo-item bd">
+								<ul class="action-list">
+								  <li class="action">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
+								</ul>
+								<div class="item-name-container">
+								  <a class="item-link " href="#">
+									sub2 folder
+								  </a>      
+
+								  <span class="badge long-badge ellipsis ellipsis_180" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
+									Owned externally
+								  </span>
+								</div>
+								<ul class="inline-list" >
+								  <li class="">
+									Updated yesterday by 
+									<a class="hoverlight profile_link">
+									  evilsucker
+									</a>
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-file"></i>
+									  </span>
+									  13
+									</span>
+								  </li>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
+									</div>
+								  </li>
+								</ul>
+							  </div>
+							</div>
+
+						</li>
+						<li class="list-group-item clearfix">
+							<div class="media">
+							  <div class="item-type">
+								<div class="img-32x32-repo-item img-repo-file">
+								</div>
+							  </div>
+							  <div class="repo-item bd">
+								<ul class="action-list">
+								  <li class="action">
+									<a  href="#">
+									  <i class="fa fa-share-alt"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-star"></i>
+									</a>
+								  </li>
+								  <li class="action">
+									<a  href="#"><i class="fa fa-square-o" ></i>
+									</a>
+								  </li>
+								</ul>
+								<div class="item-name-container">
+								  <a class="item-link " href="#">
+									sub2 file
+								  </a>      
+
+								  <span class="badge long-badge ellipsis ellipsis_200" title="This folder is owned by a user in another enterprise" data-toggle="tooltip" >
+									Owned externally
+								  </span>
+								</div>
+								<ul class="inline-list" >
+								  <li class="">
+									Updated yesterday by 
+									<a class="hoverlight profile_link">
+									  evilsucker
+									</a>
+								  </li>
+								  <li title="13 Files, 8.4 MB" data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-file"></i>
+									  </span>
+									  13
+									</span>
+								  </li>
+								  <li title="3 People favorite this " data-toggle="tooltip" class="item-stat">
+									<span class="">
+									  <span>
+										<i class="fa fa-user"></i>
+									  </span>
+									  2
+									</span>
+								  </li>
+								</ul>
+								<ul class="inline-list">
+								  <li class="">
+									<div class="description-text-container">
+									  <span class="" >
+										this is for demo usage
+									  </span>
+									</div>
+								  </li>
+								</ul>
+							  </div>
+							</div>
+
+						</li>
 					</ul>
 				</div><!-- /.box-body -->
 			  </div><!-- /.box -->

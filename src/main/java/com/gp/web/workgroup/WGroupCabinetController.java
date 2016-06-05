@@ -1,10 +1,8 @@
 package com.gp.web.workgroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
+import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Instances;
 import com.gp.common.Principal;
@@ -35,7 +34,6 @@ import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.util.DateTimeUtils;
-import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.CabinetItem;
 import com.gp.web.model.ItemStat;
@@ -46,8 +44,6 @@ import com.gp.web.model.Tag;
 @Controller("wg-cabinet-ctrl")
 @RequestMapping("/workgroup")
 public class WGroupCabinetController extends BaseController{
-	
-	List<String > TIMESTRINGS = Arrays.asList("年","月","天","小时","分钟","秒");
 	
 	@RequestMapping("publish")
 	public ModelAndView doPublishInitial(HttpServletRequest request){
@@ -79,19 +75,20 @@ public class WGroupCabinetController extends BaseController{
 		GeneralResult<WorkgroupInfo> gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
 		
 		mav.addObject("wgroup_id",  wgid);
+		mav.addObject("folder_id",  GeneralConstants.FOLDER_ROOT);
 		mav.addObject("cabinet_id",  gresult.getReturnValue().getNetdiskCabinet());
 		return mav;
 	}	
 	
-	@RequestMapping("netdisk-content")
-	public ModelAndView doNetdiskContent(HttpServletRequest request){
+	@RequestMapping("netdisk-next")
+	public ModelAndView doNetdiskContentNext(HttpServletRequest request){
 		
-		ModelAndView mav = super.getJsonModelView();
+		ModelAndView mav = super.getJspModelView("workgroup/netdisk-next");
 
-		ActionResult actrst = new ActionResult();
-		
+		PageQuery pquery = new PageQuery(4,1);
 		String cabinetId = super.readRequestParam("cabinet_id");
 		String folderId = super.readRequestParam("folder_id");
+		super.readRequestData(pquery);
 		
 		InfoId<Long> cabid = IdKey.CABINET.getInfoId(NumberUtils.toLong(cabinetId));
 		InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(NumberUtils.toLong(folderId));
@@ -99,9 +96,8 @@ public class WGroupCabinetController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
-		//GeneralResult<List<CabFolderInfo>> fresult = CabinetFacade.findCabinetFolders(accesspoint, principal, cabid, folderid, "" );
 		GeneralResult<PageWrapper<CabEntryInfo>> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 
-				cabid, folderid, "", new PageQuery(20,1) );
+				cabid, folderid, "", pquery );
 		
 		List<CabEntryInfo> entries = fresult.getReturnValue().getRows();
 		List<CabinetItem> items = new ArrayList<CabinetItem>();
@@ -114,8 +110,8 @@ public class WGroupCabinetController extends BaseController{
 			item.setItemId(entry.getInfoId().getId());			
 			item.setAccount(entry.getOwner());
 			item.setDescription(entry.getDescription());
-			item.setTimeElapse(toDuration(System.currentTimeMillis() - entry.getModifyDate().getTime(), principal.getLocale()));
-			item.setExternalOwned(false);
+			item.setTimeElapse(DateTimeUtils.toDuration(System.currentTimeMillis() - entry.getModifyDate().getTime(), principal.getLocale()));
+			
 			item.setClassification(entry.getClassification());
 			item.setItemName(entry.getEntryName());
 			item.setItemType(entry.isFolder()? Cabinets.EntryType.FOLDER.name():Cabinets.EntryType.FILE.name());
@@ -124,7 +120,7 @@ public class WGroupCabinetController extends BaseController{
 				CabFolderInfo fldr = (CabFolderInfo)entry;
 				ItemStat childstat = new ItemStat();
 				childstat.setStatText(String.valueOf(fldr.getFileCount() + fldr.getFolderCount()));
-				childstat.setStatTooltip( fldr.getFolderCount() +"Folders " + fldr.getFileCount() + "files" + fldr.getTotalSize() + " bytes");
+				childstat.setStatTooltip( fldr.getFolderCount() +" folders " + fldr.getFileCount() + " files " + fldr.getTotalSize() + " bytes");
 				item.setChildStat(childstat);
 				
 				if(StringUtils.isNotBlank(fldr.getProfile())){
@@ -165,20 +161,23 @@ public class WGroupCabinetController extends BaseController{
 			CabinetItem citem = items.get(i);
 			// set entry tag
 			Set<TagInfo> tinfos = tagmap.get(ids.get(i));
-			Set<Tag> tags = new HashSet<Tag>();
-			for(TagInfo tinfo : tinfos){
-				Tag tag = new Tag();
-				tag.setCategory(tinfo.getCategory());
-				tag.setTagColor(tinfo.getTagColor());
-				tag.setTagName(tinfo.getTagName());
-				tags.add(tag);
+			if(tinfos != null){
+				Set<Tag> tags = new HashSet<Tag>();
+				for(TagInfo tinfo : tinfos){
+					Tag tag = new Tag();
+					tag.setCategory(tinfo.getCategory());
+					tag.setTagColor(tinfo.getTagColor());
+					tag.setTagName(tinfo.getTagName());
+					tags.add(tag);
+				}
+				citem.setTags(tags);
 			}
-			citem.setTags(tags);
 			// set favorite statistics
 			Integer favsum = favmap.get(ids.get(i));
+			if(favsum == null) favsum = 0;
 			ItemStat stat = new ItemStat();
 			stat.setStatText(String.valueOf(favsum));
-			stat.setStatTooltip(favsum + "People favorite");
+			stat.setStatTooltip(favsum + " People favorite");
 			citem.setFavoriteStat(stat);
 			
 			InstanceInfo instinfo = srcmap.get(accounts.get(i));
@@ -192,17 +191,13 @@ public class WGroupCabinetController extends BaseController{
 			}
 		}
 
-		actrst.setData(items);
-		actrst.setState(ActionResult.SUCCESS);
-		actrst.setMessage(fresult.getMessage());
-		
-		mav.addAllObjects(actrst.asMap());
+		mav.addObject("entries", items);
+		mav.addObject("hasMore", items.size() == 4);
+		mav.addObject("nextPage", pquery.getPageNumber() + 1);
+		mav.addObject("cabinetId", cabinetId);
+		mav.addObject("folderId", folderId);
 		
 		return mav;
 	}
 
-	private String toDuration(Long elapse, Locale locale){
-		
-		return DateTimeUtils.toDuration(elapse, TIMESTRINGS, locale);
-	}
 }

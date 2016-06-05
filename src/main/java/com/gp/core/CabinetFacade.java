@@ -2,6 +2,7 @@ package com.gp.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -385,8 +386,10 @@ public class CabinetFacade {
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FAV_SUM)){
 			
-			Map<InfoId<Long>, Integer> filefavs = favservice.getFavFileSummary(svcctx, files);
-			Map<InfoId<Long>, Integer> folderfavs = favservice.getFavFolderSummary(svcctx, folders);
+			Map<InfoId<Long>, Integer> filefavs = CollectionUtils.isEmpty(files)? 
+					new HashMap<InfoId<Long>, Integer>() : favservice.getFavFileSummary(svcctx, files);
+			Map<InfoId<Long>, Integer> folderfavs = CollectionUtils.isEmpty(folders)? 
+					new HashMap<InfoId<Long>, Integer>() : favservice.getFavFolderSummary(svcctx, folders);
 			// merge two maps together
 			filefavs.putAll(folderfavs);
 			gresult.setReturnValue(filefavs);
