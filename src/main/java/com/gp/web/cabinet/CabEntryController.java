@@ -26,9 +26,9 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Version;
 
-@Controller("cab-file-ext-ctrl")
+@Controller("cab-entry-ext-ctrl")
 @RequestMapping("/cabinet")
-public class CabFileExtController extends BaseController{
+public class CabEntryController extends BaseController{
 	
 	@RequestMapping("entry-tags")
 	public ModelAndView doFileTagSearch(HttpServletRequest request){
