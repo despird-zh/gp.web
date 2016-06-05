@@ -8,6 +8,8 @@ public class Tag {
 	
 	private String tagColor;
 
+	private Boolean checked;
+	
 	public String getTagName() {
 		return tagName;
 	}
@@ -30,6 +32,14 @@ public class Tag {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public Boolean getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Boolean checked) {
+		this.checked = checked;
 	}
 	
 }

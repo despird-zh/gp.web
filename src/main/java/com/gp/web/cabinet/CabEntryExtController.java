@@ -55,6 +55,8 @@ public class CabEntryExtController extends BaseController{
 	
 	@RequestMapping("tag-attach")
 	public ModelAndView doTagAttach(HttpServletRequest request){
+		
+		
 		return null;
 		
 	}

@@ -104,17 +104,17 @@
 <script src="${path_plugins}/jQueryUpload/js/vendor/jquery.ui.widget.js"></script>
 <script src="${path_plugins}/jQueryUpload/js/jquery.fileupload.js"></script>
 <script src="${path_plugins}/jQueryUpload/js/jquery.iframe-transport.js"></script>
-	<script id="select-file-template" type="x-tmpl-mustache">
-		<tr >
-		  <td style="width: 80%;">{{name}}</td>
-		  <td style="width: 20%;text-align:center;">
-			<div class="btn-group">
-			  <button gpid="item-edit-btn" gp-data-file="{{name}}" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button>
-			  <button gpid="item-remove-btn" gp-data-file="{{name}}" class="btn btn-default btn-xs"><i class="fa fa-trash"></i></button>
-			</div>
-		  </td>
-		</tr>
-	</script><!-- /.template:select-user-list-template -->
+<script id="select-file-template" type="x-tmpl-mustache">
+	<tr >
+	  <td style="width: 80%;">{{name}}</td>
+	  <td style="width: 20%;text-align:center;">
+		<div class="btn-group">
+		  <button gpid="item-edit-btn" gp-data-file="{{name}}" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button>
+		  <button gpid="item-remove-btn" gp-data-file="{{name}}" class="btn btn-default btn-xs"><i class="fa fa-trash"></i></button>
+		</div>
+	  </td>
+	</tr>
+</script><!-- /.template:select-user-list-template -->
 <!--script src="${path_plugins}/jQueryUpload/js/jquery.fileupload-ui.js"></script>
 <script src="${path_plugins}/jQueryUpload/js/jquery.fileupload-process.js"></script-->
 <script type="text/javascript">

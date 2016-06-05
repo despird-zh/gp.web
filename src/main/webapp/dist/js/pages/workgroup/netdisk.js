@@ -96,13 +96,17 @@ var PageContext = (function ($, window, undefined) {
 			{	
 				_self.$cabinet_container.html($(response).html());
 				_self.$infinite_list = $('ul.infinite-container');
+				
 				_self.setVersionPopover(_self.$infinite_list.find('span[gpid="versionlist"]'));
 				_self.setPropertyPopover(_self.$infinite_list.find('span[gpid="informationlist"]'));
+				
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list,
 					onAfterPageLoad : function($items){
+						
 						_self.setPropertyPopover($items.find('span[gpid="informationlist"]'));
 						_self.setVersionPopover($items.find('span[gpid="versionlist"]'));
+						
 					}
 				});
 			}
