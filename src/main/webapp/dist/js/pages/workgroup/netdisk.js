@@ -96,10 +96,11 @@ var PageContext = (function ($, window, undefined) {
 			{	
 				_self.$cabinet_container.html($(response).html());
 				_self.$infinite_list = $('ul.infinite-container');
-				
+				_self.setVersionPopover(_self.$infinite_list.find('span[gpid="versionlist"]'));
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list,
 					onAfterPageLoad : function($items){
+						
 						_self.setVersionPopover($items.find('span[gpid="versionlist"]'));
 					}
 				});
@@ -117,7 +118,6 @@ var PageContext = (function ($, window, undefined) {
 		html : true,
 		placement : 'bottom',
 		content : function () {
-			
 			return $(this).parent().find('.content').html();
 		},
 		template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content" style="padding:0px;"><p></p></div></div></div>'
@@ -133,21 +133,45 @@ var PageContext = (function ($, window, undefined) {
 		});
 	});
 	
+	/*
+	 * setup popover with property buttons
+	 */
+	Netdisk.setPropertyPopover = function($els){
+		var _self = this;
+		$els.popover({
+			"html": true,
+			"content": function(){
+				var div_id =  "tmp-id-" + $.now(),
+					_item_id = $(this).closest('div.repo-item').attr('data-item-id'),
+					_item_type = $(this).closest('div.repo-item').attr('data-item-type');
+				return _self.popoverContent("../cabinet/entry-properties.do?entry_id=" + _item_id + '&entry_type=' + _item_type , div_id);
+			},
+			placement : 'bottom',
+			template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content p-xs" ></div></div></div>'
+		});
+
+	};
+	
+	/*
+	 * setup popover with version buttons
+	 */
 	Netdisk.setVersionPopover = function($els){
 		var _self = this;
 		$els.popover({
 			"html": true,
 			"content": function(){
 				var div_id =  "tmp-id-" + $.now(),
-					_file_id = $(this).attr('data-file-id');
+					_file_id = $(this).closest('div.repo-item').attr('data-item-id');
 				return _self.popoverContent("../cabinet/file-versions.do?file_id="+_file_id, div_id);
 			},
 			placement : 'bottom',
-			template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content p-xs" ><p></p></div></div></div>'
+			template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content p-xs" ></div></div></div>'
 		});
 
 	};
-	
+	/*
+	 * Render the popover with remote content in asyc mode.
+	 */
 	Netdisk.popoverContent = function(content_link, div_id){
 		$.ajax({
 			url: content_link,
@@ -157,25 +181,9 @@ var PageContext = (function ($, window, undefined) {
 		});
 		return '<div style="width: 250px;" id="'+ div_id +'">Loading...</div>';
 	}
-	// 尝试使用全部的button作为参数
-	Netdisk.setVersionPopover1 = function(evt){
-		
-		var $el = $(this), _file_id = $(this).attr('data-file-id');
-		
-        $.get("../cabinet/file-versions.do?file_id="+_file_id,function(remote_content) {
-            $el.popover({
-				html : true,
-				placement : 'bottom',
-				content: remote_content,
-				template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content" style="padding:0px;"><p></p></div></div></div>'
-			});//.popover('show') 报异常
-        });
-	};
-	
-		
+
 	Netdisk.initial();
 
-	
 	return {
 		
 	};

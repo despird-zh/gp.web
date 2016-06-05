@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.GeneralResult;
+import com.gp.info.CabFileInfo;
 import com.gp.info.CabVersionInfo;
 import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
@@ -43,6 +45,28 @@ public class CabFileExtController extends BaseController{
 	@RequestMapping("tag-detach")
 	public ModelAndView doTagDetach(HttpServletRequest request){
 		return null;
+		
+	}
+	
+	@RequestMapping("entry-properties")
+	public ModelAndView doPropertySearch(HttpServletRequest request){
+		
+		ModelAndView  mav = super.getJspModelView("entry-properties");
+		Long entryid = NumberUtils.toLong(readRequestParam("entry_id"));
+		String entryType = readRequestParam("entry_type");
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
+			InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(entryid);
+			
+		}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
+			InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(entryid);
+			GeneralResult<CabFileInfo> result = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
+			CabFileInfo finfo = result.getReturnValue();
+			
+		}
+		return mav;
 		
 	}
 	

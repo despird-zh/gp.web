@@ -17,7 +17,7 @@
 				</c:when> 
 			</c:choose>
 			  </div>
-			  <div class="repo-item bd">
+			  <div class="repo-item bd" data-item-id="${cabitem.itemId}" data-item-type="${cabitem.itemType}">
 				<ul class="action-list">
 					<li class="action" data-toggle="tooltip" title="Edit tags">
 						<a href="#"><i class="fa fa-tags"></i></a>

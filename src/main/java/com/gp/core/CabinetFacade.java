@@ -335,8 +335,41 @@ public class CabinetFacade {
 	 * find cabinet file information by file id
 	 * @param fileid the id of cabinet file 
 	 **/
+	public static GeneralResult<CabFolderInfo> findCabinetFolder(AccessPoint accesspoint,
+			Principal principal,InfoId<Long> fileid){
+		
+		GeneralResult<CabFolderInfo> gresult  =  new GeneralResult<CabFolderInfo>();
+		
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_FOLDER)){
+			
+			svcctx.setAuditObject(fileid);
+			
+			CabFolderInfo folderinfo = folderservice.getFolder(svcctx, fileid);
+			
+			gresult.setReturnValue(folderinfo);
+			gresult.setMessage("success find the folder", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when create cabinet file.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to create cabinet file.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		
+		return gresult;
+	}
+	
+	/**
+	 * find cabinet file information by file id
+	 * @param fileid the id of cabinet file 
+	 **/
 	public static GeneralResult<CabFileInfo> findCabinetFile(AccessPoint accesspoint,
-			Principal principal,String sourceId, InfoId<Long> fileid){
+			Principal principal,InfoId<Long> fileid){
 		
 		GeneralResult<CabFileInfo> gresult  =  new GeneralResult<CabFileInfo>();
 		
