@@ -10,13 +10,13 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 
 
-public class CustomSubProtocolWebSocketHandler extends SubProtocolWebSocketHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomSubProtocolWebSocketHandler.class);
+public class CustSubProtocolHandler extends SubProtocolWebSocketHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustSubProtocolHandler.class);
 
     @Autowired
     private SessionHandler sessionHandler;
 
-    public CustomSubProtocolWebSocketHandler(MessageChannel clientInboundChannel, SubscribableChannel clientOutboundChannel) {
+    public CustSubProtocolHandler(MessageChannel clientInboundChannel, SubscribableChannel clientOutboundChannel) {
         super(clientInboundChannel, clientOutboundChannel);
     }
 

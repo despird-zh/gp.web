@@ -16,11 +16,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-import com.gp.web.socket.CustomSubProtocolWebSocketHandler;
+import com.gp.web.socket.CustSubProtocolHandler;
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebsocketConfigurer extends WebSocketMessageBrokerConfigurationSupport implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfigurer extends WebSocketMessageBrokerConfigurationSupport implements WebSocketMessageBrokerConfigurer {
   
 	@Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
@@ -66,7 +66,7 @@ public class WebsocketConfigurer extends WebSocketMessageBrokerConfigurationSupp
 
     @Bean
     public WebSocketHandler subProtocolWebSocketHandler() {
-        return new CustomSubProtocolWebSocketHandler(clientInboundChannel(), clientOutboundChannel());
+        return new CustSubProtocolHandler(clientInboundChannel(), clientOutboundChannel());
     }
 
 }
