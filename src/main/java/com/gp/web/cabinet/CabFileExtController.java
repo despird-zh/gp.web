@@ -2,6 +2,7 @@ package com.gp.web.cabinet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +19,7 @@ import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.GeneralResult;
 import com.gp.info.CabFileInfo;
+import com.gp.info.CabFolderInfo;
 import com.gp.info.CabVersionInfo;
 import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
@@ -28,10 +30,10 @@ import com.gp.web.model.Version;
 @RequestMapping("/cabinet")
 public class CabFileExtController extends BaseController{
 	
-	@RequestMapping("file-tags")
+	@RequestMapping("entry-tags")
 	public ModelAndView doFileTagSearch(HttpServletRequest request){
 		
-		ModelAndView  mav = super.getJspModelView("dialog/file-tags");
+		ModelAndView  mav = super.getJspModelView("dialog/entry-tags");
 		
 		return mav;
 	}
@@ -51,21 +53,34 @@ public class CabFileExtController extends BaseController{
 	@RequestMapping("entry-properties")
 	public ModelAndView doPropertySearch(HttpServletRequest request){
 		
-		ModelAndView  mav = super.getJspModelView("entry-properties");
+		ModelAndView  mav = super.getJspModelView("dialog/entry-properties");
 		Long entryid = NumberUtils.toLong(readRequestParam("entry_id"));
 		String entryType = readRequestParam("entry_type");
 		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
+		Map<String, Object> propmap = null;
+		
 		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
+			
 			InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(entryid);
+			GeneralResult<CabFolderInfo> result = CabinetFacade.findCabinetFolder(accesspoint, principal, folderid);
+			CabFolderInfo finfo = result.getReturnValue();
+			String propstr = finfo.getProperties();
+			propmap = Cabinets.toPropertyMap(propstr);
 			
 		}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
+			
 			InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(entryid);
 			GeneralResult<CabFileInfo> result = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
 			CabFileInfo finfo = result.getReturnValue();
+			String propstr = finfo.getProperties();
+			propmap = Cabinets.toPropertyMap(propstr);
 			
 		}
+		
+		mav.addObject("propmap", propmap);
+		
 		return mav;
 		
 	}

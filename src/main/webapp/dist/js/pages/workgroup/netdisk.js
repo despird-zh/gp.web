@@ -97,10 +97,11 @@ var PageContext = (function ($, window, undefined) {
 				_self.$cabinet_container.html($(response).html());
 				_self.$infinite_list = $('ul.infinite-container');
 				_self.setVersionPopover(_self.$infinite_list.find('span[gpid="versionlist"]'));
+				_self.setPropertyPopover(_self.$infinite_list.find('span[gpid="informationlist"]'));
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list,
 					onAfterPageLoad : function($items){
-						
+						_self.setPropertyPopover($items.find('span[gpid="informationlist"]'));
 						_self.setVersionPopover($items.find('span[gpid="versionlist"]'));
 					}
 				});
@@ -111,16 +112,6 @@ var PageContext = (function ($, window, undefined) {
 	$('a[gpid="show-comments-btn"]').bind('click', function(){
 		var _$self_p = $(this).parent().parent().parent();
 		_$self_p.find('div[gpid="comment-list-container"]').toggleClass('hidden');
-	});
-	
-
-	$('#informationlist').popover({
-		html : true,
-		placement : 'bottom',
-		content : function () {
-			return $(this).parent().find('.content').html();
-		},
-		template : '<div class="popover "><div class="arrow"></div><div class="popover-inner"><div class="popover-content" style="padding:0px;"><p></p></div></div></div>'
 	});
 
 	$('body').on('click', function (e) {

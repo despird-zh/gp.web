@@ -80,7 +80,7 @@
 					</li>
 					<c:if test="${cabitem.itemType == 'FILE'}">
 					<li class="item-stat" data-toggle="tooltip" title="" data-original-title="${cabitem.versionStat.statTooltip}">
-						<span class="popup-marker label label-default v-center p-t-xxs" gpid="versionlist" data-file-id="158"><i class="fa fa-signal"></i></span>
+						<span class="popup-marker label label-default v-center p-t-xxs" gpid="versionlist"><i class="fa fa-signal"></i></span>
 						<div class="countinfo-wrapper">
 							<div class="countinfo">
 								<span class="">${cabitem.versionStat.statText}</span>
@@ -90,7 +90,7 @@
 					</li>
 					</c:if>
 					<li class="item-stat">
-						<span class="popup-marker label label-default p-t-xxs" id="informationlist"><i class="fa fa-info-circle"></i></span>
+						<span class="popup-marker label label-default v-center p-t-xxs" gpid="informationlist"><i class="fa fa-info-circle"></i></span>
 					</li>
 				</ul>
 				<c:if test="${!empty cabitem.description}">
