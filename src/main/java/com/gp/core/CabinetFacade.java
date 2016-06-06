@@ -488,6 +488,7 @@ public class CabinetFacade {
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 
+			svcctx.setAuditObject(entryid);
 			List<TagInfo> attachtags = tagservice.getTags(svcctx, null, entryid);
 
 			gresult.setReturnValue(attachtags);
