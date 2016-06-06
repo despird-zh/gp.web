@@ -631,6 +631,7 @@ public class CabinetFacade {
 		
 	}
 	
+	
 	public static GeneralResult<List<InfoId<Long>>> copyCabinetEntries(AccessPoint accesspoint,
 			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids){
 		
@@ -678,4 +679,17 @@ public class CabinetFacade {
 		
 	}
 	
+	public static GeneralResult<Boolean> attachCabEntryTags(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> entryid, String ...tag){
+				return null;
+		
+		
+	}
+	
+	public static GeneralResult<Boolean> detachCabEntryTags(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> entryid, String ...tag){
+				return null;
+		
+		
+	}
 }

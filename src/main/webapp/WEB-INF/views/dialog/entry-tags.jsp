@@ -95,24 +95,33 @@ var EditTagContext = (function ($, window, undefined) {
 		$entry_tags_modal : $('#entry-tags-modal'),
 		$tag_a : $('#entry-tags-modal p.tags > a'),
 		$tags_save_btn : $('#entry-tags-modal button[gpid="save-tags-btn"]'),
+		// tag change
+		edit_tags : {},
 		initial : function(){
 			
 			var _self = this;
-			_self.$tag_a.on('click', _self.checkTag);
+			_self.$tag_a.on('click', $.proxy(_self.checkTag, _self));
 			_self.$tags_save_btn.on('click', $.proxy(_self.saveTags, _self));
 		}
 	};
 	
-	EntryTagsModal.checkTag = function(tagel){
+	EntryTagsModal.checkTag = function(evt){
 		
-		var $tag_check = $(this).find('i');
+		var _self = EntryTagsModal;
+		// this is the elment of a
+		var $tag_check = $(evt.target).find('i');
 		if($tag_check.hasClass('fa-check-square-o')){
 			$tag_check.removeClass('fa-check-square-o').addClass('fa-square-o');
+			_self.edit_tags[$(this).attr('data-tag-name')] = "detach";
 		}else{
 			$tag_check.removeClass('fa-square-o').addClass('fa-check-square-o');
+			_self.edit_tags[$(this).attr('data-tag-name')] = "attatch";
 		}
 	};
 	
+	/*
+	 * Save tag update 
+	 */
 	EntryTagsModal.saveTags = function(){
 		
 		var tags = new Array(), _self = this;
@@ -123,11 +132,13 @@ var EditTagContext = (function ($, window, undefined) {
 			}
 		});
 		$.ajax({
-			url: "../workgroup/meta-summary.do",
+			url: "../cabinet/tag-update.do",
 			dataType : "json",
 			type: 'POST',
 			data: { 
-					"wgroup_id" : _self.$wgroup_id.val()
+					"entry_id" : _self.$entry_id.val(),
+					"entry_type" : _self.$entry_type.val(),
+					"tags" : JSON.stringify(_self.edit_tags)
 				},
 			success: function(response)
 			{	
