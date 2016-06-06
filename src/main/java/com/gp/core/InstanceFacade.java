@@ -3,6 +3,7 @@ package com.gp.core;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
@@ -247,6 +248,11 @@ public class InstanceFacade {
 			List<String> accounts){
 		
 		GeneralResult<Map<String,InstanceInfo>> result = new GeneralResult<Map<String,InstanceInfo>>();
+		
+		if(CollectionUtils.isEmpty(accounts)){
+			result.setMessage("accounts is required", false);
+			return result;
+		}
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
