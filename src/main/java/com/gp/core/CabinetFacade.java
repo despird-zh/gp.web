@@ -441,6 +441,72 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Find the all the available tags of specified cabinet entry type
+	 * @param entrytype the cabinet entry type 
+	 **/
+	public static GeneralResult<List<TagInfo>> findCabEntryAvailTags(AccessPoint accesspoint,
+			Principal principal, String entrytype){
+		
+		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
+
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_TAGS)){
+
+			List<TagInfo> alltags = tagservice.getTags(svcctx, entrytype);
+
+			gresult.setReturnValue(alltags);
+			gresult.setMessage("success find the entry tags", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when find entry tags.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to find entry tags.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		return gresult;
+
+	}
+	
+	/**
+	 * Find a cabinet entry's tags
+	 * @param entryid the id of cabinet entry
+	 **/
+	public static GeneralResult<List<TagInfo>> findCabEntryTags(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> entryid){
+		
+		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
+		if(InfoId.isValid(entryid)){
+			gresult.setMessage("success query", true);
+			return gresult;
+		}
+
+		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_TAGS)){
+
+			List<TagInfo> attachtags = tagservice.getTags(svcctx, null, entryid);
+
+			gresult.setReturnValue(attachtags);
+			gresult.setMessage("success find the entry tags", true);
+			
+		} catch (ServiceException e)  {
+			
+			LOGGER.error("Exception when find entry tags.",e);
+			ContextHelper.stampContext(e);
+			gresult.setMessage("fail to find entry tags.", false);
+		
+		}finally{
+			
+			ContextHelper.handleContext();
+		}	
+		return gresult;
+
+	}
+	
 	public static GeneralResult<Map<InfoId<Long>, Set<TagInfo>>> findCabEntriesTags(AccessPoint accesspoint,
 			Principal principal, List<InfoId<Long>> entryids){
 		
@@ -487,7 +553,7 @@ public class CabinetFacade {
 	 * Find the cabinet version by file id
 	 * @param fileid the id of file
 	 **/
-	public static GeneralResult<List<CabVersionInfo>> findCabinetVersions(AccessPoint accesspoint,
+	public static GeneralResult<List<CabVersionInfo>> findCabinetFileVersions(AccessPoint accesspoint,
 			Principal principal, InfoId<Long> fileid){
 		
 		GeneralResult<List<CabVersionInfo>> gresult = new GeneralResult<List<CabVersionInfo>>();
