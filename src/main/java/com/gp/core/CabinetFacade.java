@@ -480,7 +480,7 @@ public class CabinetFacade {
 			Principal principal, InfoId<Long> entryid){
 		
 		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
-		if(InfoId.isValid(entryid)){
+		if(!InfoId.isValid(entryid)){
 			gresult.setMessage("success query", true);
 			return gresult;
 		}
@@ -684,7 +684,7 @@ public class CabinetFacade {
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.COPY_FILE)){
+				Operations.ATTACH_TAG)){
 			
 			for(String tag : tags){
 				tagservice.attachTag(svcctx, entryid, null, tag);
@@ -693,9 +693,9 @@ public class CabinetFacade {
 			gresult.setMessage("success attach the entry tags", true);
 		} catch (ServiceException e)  {
 			
-			LOGGER.error("Exception when copy file.",e);
+			LOGGER.error("Exception when attach file tag.",e);
 			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to copy file.", false);
+			gresult.setMessage("fail to attach file tag.", false);
 			gresult.setReturnValue(false);
 		}finally{
 			
@@ -710,7 +710,7 @@ public class CabinetFacade {
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
 		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.COPY_FILE)){
+				Operations.DETACH_TAG)){
 			
 			for(String tag : tags){
 				tagservice.detachTag(svcctx, entryid, tag);
@@ -719,9 +719,9 @@ public class CabinetFacade {
 			gresult.setMessage("success detach the entry tags", true);
 		} catch (ServiceException e)  {
 			
-			LOGGER.error("Exception when copy file.",e);
+			LOGGER.error("Exception when detach file tag.",e);
 			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to copy file.", false);
+			gresult.setMessage("fail to detach file tag.", false);
 			gresult.setReturnValue(false);
 		}finally{
 			

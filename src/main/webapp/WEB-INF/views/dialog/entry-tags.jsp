@@ -30,7 +30,7 @@
 			<p class="tags xsmall m-b-none">
 				{{#value}}
 				<a href="javascript:void(0)" class="tag-blue tag-point-{{tagColor}}" data-tag-name="{{tagName}}">
-					<i class="fa fa-{{#checked}}check{{/checked}}-square-o"></i>&nbsp;{{tagName}}
+					<i class="fa fa{{#checked}}-check{{/checked}}-square-o"></i>&nbsp;{{tagName}}
 				</a>
 				{{/value}}
 			</p>
@@ -66,7 +66,7 @@ var EditTagContext = (function ($, window, undefined) {
 	 * collect the tag operations : { "tag1" : "attach", "tag2" : "detach"} 
      */
 	EntryTagsModal.checkTag = function(evt){
-		
+		console.log(evt);
 		var _self = EntryTagsModal;
 		// this is the elment of a
 		var $tag_check = $(evt.target).find('i');
@@ -90,7 +90,7 @@ var EditTagContext = (function ($, window, undefined) {
 	 * Load the tags of entry from remote server
 	 */
 	EntryTagsModal.loadTags = function(){
-
+		var _self = this;
 		$.ajax({
 			url: "../cabinet/entry-tags.do",
 			dataType : "json",
@@ -115,7 +115,7 @@ var EditTagContext = (function ($, window, undefined) {
 	 * Save tag update on entry of cabinet
 	 */
 	EntryTagsModal.saveTags = function(){
-		
+		var _self = this;
 		$.ajax({
 			url: "../cabinet/tag-update.do",
 			dataType : "json",

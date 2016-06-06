@@ -44,7 +44,7 @@ public class CabEntryExtController extends BaseController{
 	@RequestMapping("entry-tags")
 	public ModelAndView doFileTagSearch(HttpServletRequest request){
 		
-		ModelAndView  mav = super.getJspModelView("dialog/entry-tags");
+		ModelAndView  mav = super.getJsonModelView();
 		Long entryid = NumberUtils.toLong(readRequestParam("entry_id"));
 		String entryType = readRequestParam("entry_type");
 		
