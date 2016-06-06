@@ -16,9 +16,13 @@ var PageContext = (function ($, window, undefined) {
 		$cabinet_id : $('#cabinet-id'),
 		$folder_id : $('#folder-id'),
 		$version_list : $('span[gpid="versionlist"]'),
+		clipboard_item_tmpl : $("#clipboard-item-template").html(),
+		$clipboard_container : $('ul[gpid="clipboard-container"]'),
 		
 		initial : function () {
 			var _self = this;
+			Mustache.parse(_self.clipboard_item_tmpl);
+			
 			_self.$filter_switch_btn.bind('click', function () {
 				var _$self = $(this);
 				Netdisk.$filter_panel.toggleClass('hidden');
@@ -31,12 +35,10 @@ var PageContext = (function ($, window, undefined) {
 			});
 						
 			_self.$new_file.bind('click', function(){
-			
 				GPContext.showNewFile(function(){},Netdisk.$cabinet_id.val());
 			});
 			
 			_self.$new_folder.bind('click', function(){
-			
 				GPContext.showNewFolder(function(){},Netdisk.$cabinet_id.val(),-98);
 			});
 			
@@ -60,7 +62,6 @@ var PageContext = (function ($, window, undefined) {
 			{	
 				console.log(response);
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
-				
 			}
 		});
 		$.ajax({
@@ -74,7 +75,6 @@ var PageContext = (function ($, window, undefined) {
 			{	
 				console.log(response);
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
-				
 			}
 		});
 	};
@@ -82,7 +82,6 @@ var PageContext = (function ($, window, undefined) {
 	Netdisk.loadContent = function(){
 		
 		var _self = this;
-		
 		$.ajax({
 			url: "../workgroup/netdisk-next.do",
 			dataType : "html",
@@ -103,10 +102,8 @@ var PageContext = (function ($, window, undefined) {
 				_self._waypoint = new Waypoint.Infinite({
 					element: _self.$infinite_list,
 					onAfterPageLoad : function($items){
-						
 						_self.setPropertyPopover($items.find('span[gpid="informationlist"]'));
 						_self.setVersionPopover($items.find('span[gpid="versionlist"]'));
-						
 					}
 				});
 			}
@@ -116,10 +113,6 @@ var PageContext = (function ($, window, undefined) {
 	$('a[gpid="show-comments-btn"]').bind('click', function(){
 		var _$self_p = $(this).parent().parent().parent();
 		_$self_p.find('div[gpid="comment-list-container"]').toggleClass('hidden');
-	});
-
-	$('button[gpid="test-btn"]').bind('click', function(){
-		GPContext.editEntryTags(158,'FILE');
 	});
 	
 	$('body').on('click', function (e) {
@@ -180,10 +173,32 @@ var PageContext = (function ($, window, undefined) {
 		});
 		return '<div style="width: 250px;" id="'+ div_id +'">Loading...</div>';
 	}
-
+	
+	Netdisk.doEditTags = function(el){
+		var entry_id = $(el).closest('div.repo-item').attr('data-item-id');
+		var entry_type = $(el).closest('div.repo-item').attr('data-item-type');
+		
+		GPContext.editEntryTags(entry_id, entry_type);
+	}
+	
+	Netdisk.doAddClipboard = function(el){
+		var _self = this;
+		var entry_id = $(el).closest('div.repo-item').attr('data-item-id');
+		var entry_type = $(el).closest('div.repo-item').attr('data-item-type');
+		var entry_name = $(el).closest('div.repo-item').find('a[gpid="item-name"]').html();
+		console.log(_self.clipboard_item_tmpl);
+		var item_html = Mustache.render(_self.clipboard_item_tmpl, {itemId : entry_id, itemName: entry_name, itemType: entry_type});
+		_self.$clipboard_container.append(item_html);
+	};
 	Netdisk.initial();
 
 	return {
+		
+		EditTags : $.proxy(Netdisk.doEditTags, Netdisk),
+		AddClipboard : $.proxy(Netdisk.doAddClipboard, Netdisk),
+		ShowComments : Netdisk.doShowComments,
+		ShareEntry : Netdisk.doShareEntry,
+		FavoriteEntry : Netdisk.doFavoriteEntry
 		
 	};
 })(jQuery, window);

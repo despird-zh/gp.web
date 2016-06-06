@@ -20,26 +20,26 @@
 			  <div class="repo-item bd" data-item-id="${cabitem.itemId}" data-item-type="${cabitem.itemType}">
 				<ul class="action-list">
 					<li class="action" data-toggle="tooltip" title="Edit tags">
-						<a href="javascript:void(0)"><i class="fa fa-tags"></i></a>
+						<a href="javascript:void(0)" onclick="PageContext.EditTags(this)"><i class="fa fa-tags"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="Add to clipboard">
-						<a  href="javascript:void(0)"><i class="fa fa-clipboard"></i></a>
+						<a  href="javascript:void(0)" onclick="PageContext.AddClipboard(this)"><i class="fa fa-clipboard"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="comments information">
-						<a  href="javascript:void(0)" gpid="show-comments-btn" ><i class="fa fa-commenting"></i></a>
+						<a  href="javascript:void(0)" gpid="show-comments-act" ><i class="fa fa-commenting"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="Share file">
-						<a  href="javascript:void(0)"><i class="fa fa-share-alt"></i></a>
+						<a  href="javascript:void(0)" gpid="share-act"><i class="fa fa-share-alt"></i></a>
 					</li>
 					<li class="action" data-toggle="tooltip" title="favorite file">
-						<a  href="javascript:void(0)"><i class="fa fa-star"></i></a>
+						<a  href="javascript:void(0)" gpid="favorite-act"><i class="fa fa-star"></i></a>
 					</li>
 					<li class="action">
 						<a  href="javascript:void(0)"><i class="fa fa-square-o" ></i></a>
 					</li>
 				</ul>
 				<div class="item-name-container">
-				  <a class="item-link " href="#">
+				  <a gpid="item-name" class="item-link " href="#">
 					${cabitem.itemName}
 				  </a>     
 				<c:if test="${cabitem.externalOwned}">
@@ -94,7 +94,7 @@
 					</li>
 				</ul>
 				<c:if test="${!empty cabitem.description}">
-				<ul class="inline-list">
+				<ul class="inline-list m-t-xxs">
 				  <li >
 					<div class="description-text-container">
 					  <span >
@@ -105,7 +105,7 @@
 				</ul>
 				</c:if>
 				<c:if test="${!empty cabitem.tags}">
-				<div>
+				<div class="m-t-xs">
 				   <p class="tags xsmall m-b-none">
 						<c:forEach var="tag" items="${cabitem.tags}">
 							<a class="tag-blue tag-point-${tag.tagColor}" href="javascript:void(0)" title="">${tag.tagName}</a>

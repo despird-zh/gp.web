@@ -86,11 +86,6 @@
 							<i class="fa fa-fw fa-clipboard"></i>
 							</button>
 						</span>
-						<span class="pull-left" title="Test" data-toggle="tooltip" data-placement="top">
-							<button gpid="test-btn" class="btn btn-default btn-xs" >
-							<i class="fa fa-fw fa-gear"></i>
-							</button>
-						</span>
 					</div><!-- toolbar -->
 				</div>
                 <div class="box-body box-profile">
@@ -103,16 +98,16 @@
 						  </div>
 						</div>							
 						<ul class="stats-info list-group list-group-unbordered pull-right" >
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							<li class="list-group-item border-none p-none m-b-xs">
 							  <b>成员</b> <a class="pull-right">1,322</a>
 							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							<li class="list-group-item border-none p-none m-b-xs">
 							  <b>工作组</b> <a class="pull-right">543</a>
 							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							<li class="list-group-item border-none p-none m-b-xs">
 							  <b>文件</b> <a class="pull-right">13,287</a>
 							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
+							<li class="list-group-item border-none p-none m-b-xs">
 							  <b>讨论</b> <a class="pull-right">13,287</a>
 							</li>
 						 </ul>
@@ -149,9 +144,8 @@
               </div><!-- /.box -->	
 			  <div class="box box-widget border-top">
 				<div class="box-header with-border">
-				  <h3 class="box-title">Clipboard Information </h3>
+				  <h3 class="box-title">Clipboard</h3>
 				  <div class="box-tools">    
-
 					<small class="label label-success">5</small>				  
                     <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
@@ -159,61 +153,11 @@
 					<button class="btn btn-box-tool" type="button"><i class="fa fa-trash-o"></i></button>
                   </div>
 				</div><!-- /.box-header -->
-				<div class="box-body">
-
-				<ul class="doc-list">
-                  <li>
+				<div class="box-body p-none">
                     <!-- inner menu: contains the actual data -->
-                    <ul class="doc-items">
-                      <li><!-- start message -->
-                        <a href="#">
-                          <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-                            Support Team                            
-                          </span>
-                          <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                        </a>
-						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-                      </li><!-- end message -->
-                      <li>
-                        <a href="#">
-                          <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-                            AdminLTE Design Team                           
-                          </span>
-                           <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                        </a>
-						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-                            Developers                            
-                          </span>
-                          <small><i class="fa fa-clock-o"></i> Today</small>
-                        </a>
-						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-                            Sales Department                            
-                          </span>
-                          <small><i class="fa fa-clock-o "></i> Yesterday</small>
-                        </a>
-						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-                      </li>
-                      <li>
-                        <a href="#">
-                            
-                         <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-							Reviewers                            
-                          </span>
-                          <small><i class="fa fa-clock-o"></i> 2 days</small>
-                        </a>
-						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-                      </li>
+                    <ul gpid="clipboard-container" class="list-group list-group-unbordered m-b-xs m-r-sm m-l-sm">
+                      
                     </ul>
-                  </li>
-                </ul>
 				</div><!-- /.box-body -->
 			  </div><!-- /.box -->
 			</div>
@@ -223,7 +167,6 @@
 				<input id="workgroup-id" type="hidden" value="${wgroup_id}" />
 			</div>
 		  </div>
-
           </section><!-- /.content -->
         </div><!-- /.container -->
       </div><!-- /.content-wrapper -->
@@ -231,7 +174,16 @@
         <%@include file="../common/footer.jsp" %>
       </footer>
     </div><!-- ./wrapper -->
-
+	<script id="clipboard-item-template" type="x-tmpl-mustache">
+		<li class="list-group-item p-xxs border-none" data-item-id="{{itemId}}" data-item-type="{{itemType}}">
+			<a href="#">
+				<span class="v-center ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o m-r-xs"></i>
+				{{itemName}}                    
+				</span>
+			</a>
+			<a gpid="remove-clipboard-btn" class="pull-right"><i class="fa fa-times"></i></a>
+		</li>
+	</script><!-- /#clipboard-item-template-->
     <!-- jQuery 2.1.4 -->
     <script src="${path_plugins}/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
