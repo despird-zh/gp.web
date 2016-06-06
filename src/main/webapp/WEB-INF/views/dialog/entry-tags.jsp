@@ -7,55 +7,8 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="select-user-modal-label">Entry tags edit</h4>
 			</div>
-			<div class="modal-body clearfix">
-				<div class="row">
-					<div class="col-md-2">									
-						<span>分类一</span>						
-					</div>
-					<div class="col-md-10">
-						<p class="tags xsmall m-b-none">
-							<a href="javascript:void(0)" class="tag-blue tag-point-yellow" data-tag-name="表现l3">
-								<i class="fa fa-check-square-o"></i>&nbsp;表现l3
-							</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-green" data-tag-name="表现l2"><i class="fa fa-square-o"></i>&nbsp;表现l2</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red" data-tag-name="表现l1"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red" data-tag-name="表现l1"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red" data-tag-name="表现l1"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-							<a href="javascript:void(0)" class="tag-blue tag-point-red"><i class="fa fa-square-o"></i>&nbsp;表现l1</a>
-						</p>
-					</div>
-				</div>
-				<hr class="m-t-xs m-b-xs">
-				<div class="row">
-					<div class="col-md-2">									
-						<span>分类一</span> 									
-					</div>
-					<div class="col-md-10">
-						<p class="tags xsmall m-b-none">
-							<a title="" href="" class="tag-default tag-point-">表现l3</a>
-							<a title="" href="" class="tag-default tag-point-green">表现l2</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-							<a title="" href="" class="tag-default tag-point-red">表现l1</a>
-						</p>
-					</div>
-				</div>
-				<hr class="m-t-xs m-b-xs">
+			<div gpid="tags-container" class="modal-body clearfix">
+				
 			</div>
 			<div class="modal-footer">
 				<input type="hidden" gpid="entry-id">
@@ -77,7 +30,7 @@
 			<p class="tags xsmall m-b-none">
 				{{#value}}
 				<a href="javascript:void(0)" class="tag-blue tag-point-{{tagColor}}" data-tag-name="{{tagName}}">
-					<i class="fa fa-check-square-o"></i> &nbsp;{{tagName}}
+					<i class="fa fa-{{#checked}}check{{/checked}}-square-o"></i>&nbsp;{{tagName}}
 				</a>
 				{{/value}}
 			</p>
@@ -95,13 +48,16 @@ var EditTagContext = (function ($, window, undefined) {
 		$entry_type : $('#entry-tags-modal input[gpid="entry-type"]'),
 		$entry_tags_modal : $('#entry-tags-modal'),
 		$tag_a : $('#entry-tags-modal p.tags > a'),
+		$tags_container : $('#entry-tags-modal div[gpid="tags-container"]'),
 		$tags_save_btn : $('#entry-tags-modal button[gpid="save-tags-btn"]'),
+		_tags_tmpl : $('#entry-tags-template').html(),
 		// tag change
 		edit_tags : {},
 		initial : function(){
 			
 			var _self = this;
-			_self.$tag_a.on('click', $.proxy(_self.checkTag, _self));
+			Mustache.parse(_self._tags_tmpl);
+			
 			_self.$tags_save_btn.on('click', $.proxy(_self.saveTags, _self));
 		}
 	};
@@ -124,8 +80,39 @@ var EditTagContext = (function ($, window, undefined) {
 		}
 	};
 	
+	EntryTagsModal.clearTags = function(){
+
+		var _self = this;
+		_self.$tags_container.empty();
+	};
+
 	/*
-	 * Save tag update 
+	 * Load the tags of entry from remote server
+	 */
+	EntryTagsModal.loadTags = function(){
+
+		$.ajax({
+			url: "../cabinet/entry-tags.do",
+			dataType : "json",
+			type: 'POST',
+			data: { 
+					"entry_id" : _self.$entry_id.val(),
+					"entry_type" : _self.$entry_type.val()
+				},
+			success: function(response)
+			{	
+				var _self = EntryTagsModal;
+				var html_txt = Mustache.render(_self._tags_tmpl,response);
+				_self.$tags_container.html(html_txt);
+				_self.$tag_a = $('#entry-tags-modal p.tags > a');
+				_self.$tag_a.on('click', $.proxy(_self.checkTag, _self));
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+
+	/*
+	 * Save tag update on entry of cabinet
 	 */
 	EntryTagsModal.saveTags = function(){
 		
@@ -146,12 +133,17 @@ var EditTagContext = (function ($, window, undefined) {
 		});
 	};
 	
+	/*
+	 * Show entry tags edit
+	 */
 	EntryTagsModal.showEntryTagsEdit = function(entryId, entryType){
 		
 		var _self = this;
 		_self.$entry_id.val(entryId);
 		_self.$entry_type.val(entryType);
 		_self.$entry_tags_modal.modal('show');
+		_self.clearTags();
+		_self.loadTags();
 	};
 	
 	EntryTagsModal.initial();
