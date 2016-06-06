@@ -66,19 +66,20 @@
 		</div>
 	</div>
 </div><!-- tag edit modal -->
+<!-- key=category / value=set of tag -->
 <script id="entry-tags-template" type="x-tmpl-mustache">
 {{#data}}
 	<div class="row">
 		<div class="col-md-2">									
-			<span>{{#category}}</span>						
+			<span>{{key}}</span>						
 		</div>
 		<div class="col-md-10">
 			<p class="tags xsmall m-b-none">
-				{{#tags}}
+				{{#value}}
 				<a href="javascript:void(0)" class="tag-blue tag-point-{{tagColor}}" data-tag-name="{{tagName}}">
-					<i class="fa fa-check-square-o"></i>&nbsp;表现l3
+					<i class="fa fa-check-square-o"></i> &nbsp;{{tagName}}
 				</a>
-				{{/tags}}
+				{{/value}}
 			</p>
 		</div>
 	</div>
@@ -105,17 +106,21 @@ var EditTagContext = (function ($, window, undefined) {
 		}
 	};
 	
+	/**
+	 * collect the tag operations : { "tag1" : "attach", "tag2" : "detach"} 
+     */
 	EntryTagsModal.checkTag = function(evt){
 		
 		var _self = EntryTagsModal;
 		// this is the elment of a
 		var $tag_check = $(evt.target).find('i');
+		var tagname = $(evt.target).attr('data-tag-name');
 		if($tag_check.hasClass('fa-check-square-o')){
 			$tag_check.removeClass('fa-check-square-o').addClass('fa-square-o');
-			_self.edit_tags[$(this).attr('data-tag-name')] = "detach";
+			_self.edit_tags[tagname] = "detach";
 		}else{
 			$tag_check.removeClass('fa-square-o').addClass('fa-check-square-o');
-			_self.edit_tags[$(this).attr('data-tag-name')] = "attatch";
+			_self.edit_tags[tagname] = "attach";
 		}
 	};
 	
@@ -124,13 +129,6 @@ var EditTagContext = (function ($, window, undefined) {
 	 */
 	EntryTagsModal.saveTags = function(){
 		
-		var tags = new Array(), _self = this;
-		$.each(_self.$tag_a, function(i, curr){
-			var checked = $(curr).find('i').hasClass('fa-check-square-o');
-			if(checked){
-				tags.push($(curr).attr('data-tag-name'));
-			}
-		});
 		$.ajax({
 			url: "../cabinet/tag-update.do",
 			dataType : "json",
@@ -138,7 +136,7 @@ var EditTagContext = (function ($, window, undefined) {
 			data: { 
 					"entry_id" : _self.$entry_id.val(),
 					"entry_type" : _self.$entry_type.val(),
-					"tags" : JSON.stringify(_self.edit_tags)
+					"tag_ops" : JSON.stringify(_self.edit_tags)
 				},
 			success: function(response)
 			{	
