@@ -3,14 +3,18 @@ package com.gp.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.gp.web.DatabaseMessageSource;
+import com.gp.web.PrincipalLocaleResolver;
 import com.gp.web.view.GenericFileView;
 import com.gp.web.view.GenericFileViewResolver;
 import com.gp.web.view.MultipleViewResolver;
@@ -29,7 +33,19 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 		   resolvers.put("swf", getConfigResolver());
 		   return rtv;
 	}
-	   
+	
+	@Bean
+	public LocaleResolver localeResolver() {
+	    return new PrincipalLocaleResolver();
+	}
+	
+    @Bean
+    public MessageSource messageSource() {
+    	
+        DatabaseMessageSource source = new DatabaseMessageSource();
+        return source;
+    }
+    
 	public GenericFileViewResolver getConfigResolver(){
 		
 		GenericFileViewResolver config = new GenericFileViewResolver();
@@ -79,6 +95,5 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 		
 		return resolver;
 	}
-	
 	
 }
