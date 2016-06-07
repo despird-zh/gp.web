@@ -15,7 +15,6 @@
 		<!-- Morris charts -->
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-		<link rel="stylesheet" href="${path_plugins}/jstree/dist/thremes/default/style.css" />
 	</head>
 	<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 	<body class="hold-transition skin-blue fixed layout-top-nav">
@@ -67,10 +66,51 @@
 			$('#ajax').jstree({
 				'core' : {
 					'data' : {
-						"url" : "./root.json",
-						"dataType" : "json" // needed only if you do not supply JSON headers
-					}
-				}
+				      	'url' : function (node) {
+				        	return '../test/tree-node.do';
+				      	},
+				      	'data' : function (node) {
+				        	return { 'id' : node.id };
+				      	},
+				      	'cache' : false
+				    },
+				    'themes': {
+		                'name': 'proton'
+		            }
+				},
+				"types" : {
+				    "#" : {
+				      	"max_children" : 1,
+				      	"max_depth" : 4,
+				      	"valid_children" : ["root"]
+				    },
+				    "root" : {
+				      	"icon" : "fa fa-folder-o",
+				      	"valid_children" : ["default"]
+				    },
+				    "default" : {
+				      	"valid_children" : ["default","file","folder"]
+				    },
+				    "file" : {
+				      	"icon" : "fa fa-file-o",
+				      	"valid_children" : []
+				    },
+				    "folder" : {
+				      	"icon" : "fa fa-folder-o",
+				      	"valid_children" : []
+				    }
+				},
+				"plugins" : [
+				    "types"
+				]
+			}).on("open_node.jstree", function (evt, data) {
+			
+				//$('#'+data.node.a_attr.id).find('i').removeClass('fa-folder-o').addClass('fa-folder-open-o');
+			}).on("after_close.jstree", function (evt, data) {
+				var tree = $('#ajax').jstree(true);
+					tree.delete_node(data.node.children);
+					tree._model.data[data.node.id].state.loaded = false;
+				//$('#'+data.node.a_attr.id).find('i').removeClass('fa-folder-open-o').addClass('fa-folder-o');
 			});
         });		  
 		 
