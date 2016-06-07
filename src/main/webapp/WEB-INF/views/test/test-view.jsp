@@ -15,7 +15,7 @@
 		<!-- Morris charts -->
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-
+		<link rel="stylesheet" href="${path_plugins}/jstree/dist/thremes/default/style.css" />
 	</head>
 	<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 	<body class="hold-transition skin-blue fixed layout-top-nav">
@@ -34,6 +34,9 @@
 						<span gpid="audit-test-msg" class="label label-default"> blank </span>
 					</div>
 				</div>
+					<h1>AJAX demo</h1>
+					<div id="ajax" class="demo"></div>
+				</div>
 			</div>
 			<!-- /.container -->
 		</div>
@@ -51,14 +54,24 @@
 	<script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script> 
 	<!-- FastClick -->	
 	<script src="${path_plugins}/fastclick/fastclick.min.js"></script> 
+	<script src="${path_plugins}/jstree/dist/jstree.min.js"></script>
 	<!-- Sparkline -->	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> 
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
 			
-
+			// ajax demo
+			$('#ajax').jstree({
+				'core' : {
+					'data' : {
+						"url" : "./root.json",
+						"dataType" : "json" // needed only if you do not supply JSON headers
+					}
+				}
+			});
         });		  
 		 
     </script>
