@@ -11,10 +11,10 @@ import com.gp.web.test.TestController.TestBean;
 @RequestMapping("/test")
 public class TestViewController extends BaseController{
 	
-	@RequestMapping("public-hot-topics")
+	@RequestMapping("test-view")
 	public ModelAndView test(){
 		
-		ModelAndView mav = super.getJspModelView("test/test");
+		ModelAndView mav = super.getJspModelView("test/test-view");
 
 		return mav;
 	}
