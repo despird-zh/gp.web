@@ -51,8 +51,8 @@ public class DictEntriesController  extends BaseController{
 				de.setEntryKey(info.getKey());
 				de.setGroupKey(info.getGroup());
 				de.setEntryValue(info.getValue());
-				de.setLabel(info.getLabel());
-				de.setLanguage(info.getLanguage());
+				//de.setLabel(info.getLabel());
+				de.setLanguage(info.getDefaultLang());
 				de.setModifier(info.getModifier());
 				de.setModifyDate(MDF_DATE_FORMAT.format(info.getModifyDate()));
 				
@@ -85,8 +85,8 @@ public class DictEntriesController  extends BaseController{
 		dinfo.setKey(dentry.getEntryKey());
 		dinfo.setValue(dentry.getEntryValue());
 		dinfo.setGroup(dentry.getGroupKey());
-		dinfo.setLabel(dentry.getLabel());
-		dinfo.setLanguage(dentry.getLanguage());
+		//dinfo.setLabel(dentry.getLabel());
+		dinfo.setDefaultLang(dentry.getLanguage());
 		
 		GeneralResult<Boolean> gresult = MasterFacade.saveDictEntry(accesspoint, principal, dinfo);
 		if(!gresult.isSuccess()){
