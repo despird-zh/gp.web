@@ -23,7 +23,7 @@ public class DatabaseMessageSource extends AbstractMessageSource implements Reso
 	@Override
 	protected MessageFormat resolveCode(String code, Locale locale) {
 
-		String msg = DictionaryFacade.findDictEntry(code, locale);
+		String msg = DictionaryFacade.findMessagePattern(code, locale);
 		MessageFormat result = createMessageFormat(msg, locale);
 		return result;
 	}
