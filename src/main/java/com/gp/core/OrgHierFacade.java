@@ -40,7 +40,7 @@ public class OrgHierFacade {
 		
 		GeneralResult<List<OrgHierInfo>> gresult = new GeneralResult<List<OrgHierInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIERS)){
 
 			List<OrgHierInfo> groups = orghierservice.getOrgHierNodes(svcctx, orgNodeId);
@@ -77,7 +77,7 @@ public class OrgHierFacade {
 			orghier.setInfoId(id);
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ORGHIER)){
 			
 			svcctx.setAuditObject(orghier.getInfoId());
@@ -121,7 +121,7 @@ public class OrgHierFacade {
 			return result;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_ORGHIER)){
 			
 			svcctx.setAuditObject(orghier.getInfoId());
@@ -164,7 +164,7 @@ public class OrgHierFacade {
 			return rst;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER)){
 			
 			svcctx.setAuditObject(orgid);
@@ -203,7 +203,7 @@ public class OrgHierFacade {
 			return rst;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ADD_ORGHIER_MEMBER)){
 			
 			svcctx.setAuditObject(orgid);
@@ -244,7 +244,7 @@ public class OrgHierFacade {
 			return rst;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_ORGHIER_MEMBER)){
 			
 			svcctx.setAuditObject(orgid);
@@ -271,7 +271,7 @@ public class OrgHierFacade {
 		
 		GeneralResult<List<UserInfo>> result = new GeneralResult<List<UserInfo>>();	
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
 			svcctx.setAuditObject(orgid);
 			// query accounts information

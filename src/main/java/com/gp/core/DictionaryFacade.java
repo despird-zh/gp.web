@@ -49,7 +49,7 @@ public class DictionaryFacade {
 		
 		GeneralResult<List<DictionaryInfo>> gresult = new GeneralResult<List<DictionaryInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_DICTS)){
 
 			List<DictionaryInfo> dicts = dictservice.getDictEntries(svcctx);
@@ -81,7 +81,7 @@ public class DictionaryFacade {
 			gresult.setReturnValue(false);
 			return gresult;
 		}
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_DICT)){
 			
 			svcctx.setAuditObject(dictinfo.getInfoId());

@@ -46,7 +46,7 @@ public class MasterFacade {
 		
 		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_SYSOPTION)){
 			
 			SysOptionInfo sinfo = systemservice.getOption(svcctx, optionKey);
@@ -74,7 +74,7 @@ public class MasterFacade {
 			String groupKey){
 			
 		GeneralResult<List<SysOptionInfo>> result = new GeneralResult<List<SysOptionInfo>>();		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_SYSOPTIONS)){
 			
 			String[][] parms = new String[][]{
@@ -107,7 +107,7 @@ public class MasterFacade {
 		
 		GeneralResult<List<String>> result = new GeneralResult<List<String>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_SYSOPT_GRPS)){
 
 			List<String> groups = systemservice.getOptionGroups(svcctx);

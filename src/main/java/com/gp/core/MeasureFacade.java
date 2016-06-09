@@ -42,7 +42,7 @@ public class MeasureFacade {
 			return gresult;
 		}
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_MEASURE)){
 			
 			svcctx.setAuditObject(wid);

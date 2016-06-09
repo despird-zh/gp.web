@@ -16,7 +16,7 @@ import com.gp.info.InfoId;
  * @author gary diao
  * @version 0.1 2014-12-12
  **/
-public class AuditServiceContext extends ServiceContext<AuditData>{
+public class AuditServiceContext extends ServiceContext{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(AuditServiceContext.class);
 	
@@ -128,10 +128,11 @@ public class AuditServiceContext extends ServiceContext<AuditData>{
 		return super.getWorkgroupId();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public AuditData getAuditData(){
+	public <A> A getAuditData(Class<A> clazz){
 
-		return auditdata;
+		return (A)auditdata;
 	}
 	
 	@Override 

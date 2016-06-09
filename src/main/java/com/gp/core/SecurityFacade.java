@@ -77,7 +77,7 @@ public class SecurityFacade {
 			String account, String type){
 		
 		GeneralResult<UserExInfo> gresult = new GeneralResult<UserExInfo>();
-		try (ServiceContext<?> svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
 					new DefaultKeyValue("account",account));
@@ -111,7 +111,7 @@ public class SecurityFacade {
 			UserInfo uinfo, Long pubcapacity, Long pricapacity){
 
 		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_ACCOUNT)){
 			
 			svcctx.addAuditPredicates(uinfo);
@@ -122,11 +122,8 @@ public class SecurityFacade {
 			}
 			// amend the operation information
 			svcctx.setAuditObject(uinfo.getInfoId());
-			// append the capacity setting to context and send to service
-			svcctx.putContextData(SecurityService.CTX_KEY_PUBCAPACITY, pubcapacity);
-			svcctx.putContextData(SecurityService.CTX_KEY_PRICAPACITY, pricapacity);
-			
-			boolean bval = securityservice.updateAccount(svcctx, uinfo) > 0;
+
+			boolean bval = securityservice.updateAccount(svcctx, uinfo, pubcapacity, pricapacity) > 0;
 			result.setReturnValue(bval);
 			result.setMessage("success to save account", true);
 					
@@ -155,7 +152,7 @@ public class SecurityFacade {
 			UserInfo uinfo, Long pubcapacity, Long pricapacity){
 		
 		GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
 			svcctx.addAuditPredicates(uinfo);
 			// encrypt the password
@@ -181,11 +178,8 @@ public class SecurityFacade {
 			}
 			// amend the operation information
 			svcctx.setAuditObject(uinfo.getInfoId());
-			// append the capacity setting to context and send to service
-			svcctx.putContextData(SecurityService.CTX_KEY_PUBCAPACITY, pubcapacity);
-			svcctx.putContextData(SecurityService.CTX_KEY_PRICAPACITY, pricapacity);
-			
-			securityservice.newAccount(svcctx, uinfo);
+
+			securityservice.newAccount(svcctx, uinfo, pubcapacity, pricapacity);
 			result.setReturnValue(uinfo.getInfoId());
 			result.setMessage("success to save account", true);
 					
@@ -215,7 +209,7 @@ public class SecurityFacade {
 			UserInfo uinfo, String entity, String node){
 		
 		GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
 			
 			svcctx.addAuditPredicates(uinfo);
@@ -296,7 +290,7 @@ public class SecurityFacade {
 			String[] states){
 		
 		GeneralResult<List<UserExInfo>> result = new GeneralResult<List<UserExInfo>>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
 			String[][] parms = new String[][]{
@@ -342,7 +336,7 @@ public class SecurityFacade {
 			PageQuery pagequery){
 		
 		GeneralResult<PageWrapper<UserExInfo>> result = new GeneralResult<PageWrapper<UserExInfo>>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
 			String[][] parms = new String[][]{
@@ -374,7 +368,7 @@ public class SecurityFacade {
 			Principal principal,
 			String password)throws CoreException{
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.AUTHENTICATE)){
 			
 			svcctx.addAuditPredicates(new DefaultKeyValue("password", password));
@@ -407,7 +401,7 @@ public class SecurityFacade {
 			Principal principal,
 			UserState state)throws CoreException{
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(Users.PESUOD_USER, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(Users.PESUOD_USER, accesspoint,
 				Operations.CHANGE_ACCOUNT_STATE)){
 			
 			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
@@ -430,7 +424,7 @@ public class SecurityFacade {
 			InfoId<Long> userId, String account){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_ACCOUNT)){
 			
 			svcctx.addAuditPredicates(new DefaultKeyValue("account", account));
@@ -456,7 +450,7 @@ public class SecurityFacade {
 			String password){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.CHANGE_PWD)){
 
 			// password match means logon success reset the retry_times

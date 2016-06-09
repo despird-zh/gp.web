@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
+import com.gp.core.DictionaryFacade;
 import com.gp.core.GeneralResult;
 import com.gp.core.MasterFacade;
 import com.gp.info.DictionaryInfo;
@@ -42,7 +43,7 @@ public class DictEntriesController  extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		List<DictEntry> list = new ArrayList<DictEntry>();
-		GeneralResult<List<DictionaryInfo>> gresult = MasterFacade.findDictEntries(accesspoint, principal, "", "");
+		GeneralResult<List<DictionaryInfo>> gresult = DictionaryFacade.findDictEntries(accesspoint, principal, "", "");
 		
 		if(gresult.isSuccess()){
 			for(DictionaryInfo info: gresult.getReturnValue()){
@@ -88,7 +89,7 @@ public class DictEntriesController  extends BaseController{
 		//dinfo.setLabel(dentry.getLabel());
 		dinfo.setDefaultLang(dentry.getLanguage());
 		
-		GeneralResult<Boolean> gresult = MasterFacade.saveDictEntry(accesspoint, principal, dinfo);
+		GeneralResult<Boolean> gresult = DictionaryFacade.saveDictEntry(accesspoint, principal, dinfo);
 		if(!gresult.isSuccess()){
 			List<ValidationMessage> msg = gresult.getMessages();
 			

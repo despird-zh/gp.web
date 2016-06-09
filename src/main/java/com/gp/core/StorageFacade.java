@@ -64,7 +64,7 @@ public class StorageFacade {
     	
     	GeneralResult<PageWrapper<StorageInfo>> result = new GeneralResult<PageWrapper<StorageInfo>>();
     	
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint, 
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint, 
     			Operations.FIND_STORAGES)){
 			String[][] parms = new String[][]{
 				{"storagename",storagename}};				
@@ -97,7 +97,7 @@ public class StorageFacade {
     	
     	GeneralResult<List<StorageInfo>> result = new GeneralResult<List<StorageInfo>>();
     	
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint, 
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint, 
     			Operations.FIND_STORAGES)){
 			String[][] parms = new String[][]{
 				{"storagename",storagename}};				
@@ -135,7 +135,7 @@ public class StorageFacade {
 		
     	GeneralResult<InfoId<Integer>> result = new GeneralResult<InfoId<Integer>>();
     	
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_STORAGE)){
 
 			svcctx.addAuditPredicates(storage);
@@ -187,7 +187,7 @@ public class StorageFacade {
 			return gresult;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_STORAGE)){
 			
 			svcctx.setAuditObject(storageid);
@@ -220,7 +220,7 @@ public class StorageFacade {
 			return gresult;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_STORAGE)){
 			
 			svcctx.setAuditObject(storage.getInfoId());
@@ -253,7 +253,7 @@ public class StorageFacade {
 			return gresult;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_STORAGE)){
 			
 			svcctx.setAuditObject(storageid);
@@ -289,7 +289,7 @@ public class StorageFacade {
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
     	BufferManager bmgr = BufferManager.instance();
     	
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN_CHUNK);
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN_CHUNK);
     		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
 			
     		BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
@@ -324,7 +324,7 @@ public class StorageFacade {
 		
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
 
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
 			
     		svcctx.setAuditObject(binaryId);
 			BinaryManager.instance().dumpBinary(binaryId, outputStream);
@@ -356,7 +356,7 @@ public class StorageFacade {
     	GeneralResult<ChunkBuffer> gresult = new GeneralResult<ChunkBuffer>();    	
     	BufferManager bmgr = BufferManager.instance();
     	
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, 
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, 
     			accesspoint,
     			Operations.FETCH_BIN_CHUNK)){
     		svcctx.setAuditObject(binaryId);
@@ -389,7 +389,7 @@ public class StorageFacade {
 		
     	GeneralResult<ChunkBuffer> gresult = new GeneralResult<ChunkBuffer>();    	
     	BufferManager bmgr = BufferManager.instance();
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
 			
     		svcctx.setAuditObject(binaryId);
     		BinaryInfo binfo = storageService.getBinary(svcctx, binaryId);
@@ -435,7 +435,7 @@ public class StorageFacade {
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
     	BufferManager bmgr = BufferManager.instance();
     	
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK);
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK);
     		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
     		svcctx.setAuditObject(binaryId);			
 			// read the content of InputStream into buffer
@@ -470,7 +470,7 @@ public class StorageFacade {
     	
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
 
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN)){
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN)){
     		
     		BinaryManager.instance().fillBinary(binaryId, inputStream);			
 			gresult.setReturnValue(true);
@@ -502,7 +502,7 @@ public class StorageFacade {
 		
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
 
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
     		svcctx.setAuditObject(binaryId);
 
     		BinaryManager.instance().fillBinaryChunk(binaryId, chunkbuffer);	
@@ -533,7 +533,7 @@ public class StorageFacade {
     	
     	GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();    	
 
-    	try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
     		svcctx.setAuditObject(binaryId);
 
     		BinaryManager.instance().fillBinaryChunk(binaryId, chunkbuffer);	
@@ -557,7 +557,7 @@ public class StorageFacade {
     	
     	GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
     	
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_BIN)){
 
 			svcctx.addAuditPredicates(binfo);

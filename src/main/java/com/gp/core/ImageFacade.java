@@ -40,7 +40,7 @@ public class ImageFacade {
 		
 		GeneralResult<List<ImageInfo>> gresult = new GeneralResult<List<ImageInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGES)){
 			
 			List<ImageInfo> imgs = imageservice.getImages(svcctx, format);
@@ -64,7 +64,7 @@ public class ImageFacade {
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_IMAGE)){
 			
 			String filename = FilenameUtils.getName(imagePath);
@@ -103,7 +103,7 @@ public class ImageFacade {
 		
 		GeneralResult<ImageInfo> gresult = new GeneralResult<ImageInfo>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGE)){
 
 			svcctx.setAuditObject(imageId);
@@ -128,7 +128,7 @@ public class ImageFacade {
 		
 		GeneralResult<ImageInfo> gresult = new GeneralResult<ImageInfo>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGE)){
 
 			Long imgid = Images.parseImageId(fileName);
@@ -161,7 +161,7 @@ public class ImageFacade {
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_IMAGE)){
 			
 			
@@ -200,7 +200,7 @@ public class ImageFacade {
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_IMAGE)){
 			
 			InfoId<Long> imgid = IdKey.IMAGE.getInfoId(imageId);

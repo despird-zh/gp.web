@@ -43,7 +43,7 @@ public class AuditFacade {
 			return;
 		
 		try {
-			ServiceContext<?> svcctx = ServiceContext.getPseudoServiceContext();
+			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
 			// retrieve and set audit id
 			InfoId<Long> auditId = idService.generateId( IdKey.AUDIT, Long.class);
 			auditinfo.setInfoId(auditId); 

@@ -29,12 +29,12 @@ public class ContextHelper {
 	 * Use thread local to hold current thread service context
 	 * 
 	 **/
-	private static final ThreadLocal<ServiceContext<?>> threadLocal = new ThreadLocal<ServiceContext<?>>(); 
+	private static final ThreadLocal<ServiceContext> threadLocal = new ThreadLocal<ServiceContext>(); 
     
 	/**
 	 * keep the service context in thread local
 	 **/
-    private static final void keepContext(ServiceContext<?> svcctx){
+    private static final void keepContext(ServiceContext svcctx){
         threadLocal.set(svcctx);
     }
     
@@ -48,7 +48,7 @@ public class ContextHelper {
     /**
      * get the service context from thread local
      **/
-    public static final ServiceContext<?> getContext(){
+    public static final ServiceContext getContext(){
     	
     	return threadLocal.get();
     }
@@ -60,7 +60,7 @@ public class ContextHelper {
 	 * @param accesspoint the access point object
 	 * 
 	 **/
-	public static ServiceContext<?> buildServiceContext(Principal principal, AccessPoint accesspoint){
+	public static ServiceContext buildServiceContext(Principal principal, AccessPoint accesspoint){
 		
 		String audit = ConfigSettingUtils.getSystemOption(SystemOptions.AUDIT_ENABLE);
 		//GeneralConfig.getString(GeneralConstants.ENV_AUDIT_ENABLE);
@@ -68,14 +68,14 @@ public class ContextHelper {
 		audit = StringUtils.isBlank(audit)? "true" : audit;
 		Boolean auditenable = Boolean.valueOf(audit);
 		
-		ServiceContext<?> svcctx = null;
+		ServiceContext svcctx = null;
 		if(auditenable){
 			
 			svcctx = new AuditServiceContext(principal, accesspoint);
 
 		}else{
 			
-			svcctx = new ServiceContext<Object>(principal);
+			svcctx = new ServiceContext(principal);
 		}
 		// keep context to thread local
 		keepContext(svcctx);
@@ -92,9 +92,9 @@ public class ContextHelper {
 	 * @param operation the operation name
 	 * @param verb the verb name
 	 **/
-	public static ServiceContext<?> beginServiceContext(Principal principal, AccessPoint accesspoint, String verb){
+	public static ServiceContext beginServiceContext(Principal principal, AccessPoint accesspoint, String verb){
 		
-		ServiceContext<?> svcctx = buildServiceContext(principal, accesspoint);
+		ServiceContext svcctx = buildServiceContext(principal, accesspoint);
 		// if auditable then begin operation with blind object and predicates
 		svcctx.beginAudit(verb, null, null);
 		
@@ -110,9 +110,9 @@ public class ContextHelper {
 	 * @param operation the operation name
 	 * @param verb the verb name
 	 **/
-	public static ServiceContext<?> beginServiceContext(Principal principal, AccessPoint accesspoint, Operations operation){
+	public static ServiceContext beginServiceContext(Principal principal, AccessPoint accesspoint, Operations operation){
 		
-		ServiceContext<?> svcctx = buildServiceContext(principal, accesspoint);
+		ServiceContext svcctx = buildServiceContext(principal, accesspoint);
 		// if auditable then begin operation with blind object and predicates
 		svcctx.beginAudit(operation.name(), null, null);
 		
@@ -125,9 +125,9 @@ public class ContextHelper {
 	 * @param principal the principal object
 	 * 
 	 **/
-	public static ServiceContext<?> buildServiceContext(Principal principal){
+	public static ServiceContext buildServiceContext(Principal principal){
 				
-		ServiceContext<?> svcctx = new ServiceContext<Object>(principal);
+		ServiceContext svcctx = new ServiceContext(principal);
 		
 		keepContext(svcctx);
 		return svcctx;
@@ -141,7 +141,7 @@ public class ContextHelper {
 	 **/
 	public static void handleContext(){
 		
-		ServiceContext<?> svcctx = getContext();
+		ServiceContext svcctx = getContext();
 		
 		// if valid ServiceContext continue work.
 		if(null != svcctx)
@@ -159,7 +159,7 @@ public class ContextHelper {
 	 **/
 	public static void stampContext(Exception e){
 		
-		ServiceContext<?> svcctx = getContext();
+		ServiceContext svcctx = getContext();
 		
 		// if valid ServiceContext continue work.
 		if(null != svcctx){

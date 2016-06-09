@@ -70,7 +70,7 @@ public class WorkgroupFacade {
 			String imagePath){
 			
 		GeneralResult<InfoId<Long>> gresult = new GeneralResult<InfoId<Long>>();		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_WORKGROUP)){
 			
 			// amend the information key data
@@ -121,7 +121,7 @@ public class WorkgroupFacade {
 			
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();	
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_WORKGROUP)){
 			
 			// amend the operation information
@@ -170,7 +170,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey){
 		
 		GeneralResult<WorkgroupInfo> gresult = new GeneralResult<WorkgroupInfo>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP)){
 			
 			WorkgroupInfo winfo = null;
@@ -199,7 +199,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey){
 		
 		GeneralResult<WorkgroupExInfo> gresult = new GeneralResult<WorkgroupExInfo>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP)){
 			
 			WorkgroupExInfo winfo = null;
@@ -237,7 +237,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey, String uname, InfoId<Integer> entityid){
 		
 		GeneralResult<List<WorkgroupUserExInfo>> gresult = new GeneralResult<List<WorkgroupUserExInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP_USERS)){
 			
 			List<WorkgroupUserExInfo> winfo = null;
@@ -269,7 +269,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey, String uname, InfoId<Integer> entityid, PageQuery pagequery){
 		
 		GeneralResult<PageWrapper<WorkgroupUserExInfo>> gresult = new GeneralResult<PageWrapper<WorkgroupUserExInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP_USERS)){
 			
 			PageWrapper<WorkgroupUserExInfo> winfo = null;
@@ -298,7 +298,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey, String account){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_WORKGROUP_USER)){
 
 			// amend the operation information
@@ -325,7 +325,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey, String account, String role){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ADD_WORKGROUP_USER)){
 
 			// amend the operation information
@@ -368,7 +368,7 @@ public class WorkgroupFacade {
 		
 		GeneralResult<List<UserExInfo>> result = new GeneralResult<List<UserExInfo>>();	
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
 			svcctx.setAuditObject(wkey);
 			// query accounts information
@@ -398,7 +398,7 @@ public class WorkgroupFacade {
 		
 		GeneralResult<PageWrapper<UserExInfo>> result = new GeneralResult<PageWrapper<UserExInfo>>();	
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
 			svcctx.setAuditObject(wkey);
 			// query accounts information
@@ -425,7 +425,7 @@ public class WorkgroupFacade {
 			Principal principal, GroupInfo ginfo){
 		
 		GeneralResult<InfoId<Long>> gresult = new GeneralResult<InfoId<Long>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_GROUP)){
 			
 			// check the validation of user information
@@ -470,7 +470,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey, String gname){
 		
 		GeneralResult<List<GroupInfo>> gresult = new GeneralResult<List<GroupInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_GROUPS)){
 			
 			List<GroupInfo> winfo = null;
@@ -499,7 +499,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wkey, String group){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_GROUP)){
 
 			// amend the operation information
@@ -526,7 +526,7 @@ public class WorkgroupFacade {
 			InfoId<Long> groupid){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_GROUP)){
 
 			// amend the operation information
@@ -553,7 +553,7 @@ public class WorkgroupFacade {
 			InfoId<Long> groupid, String ...accounts){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ADD_GROUP_USER)){
 
 			// amend the operation information
@@ -580,7 +580,7 @@ public class WorkgroupFacade {
 			InfoId<Long> groupid){
 		
 		GeneralResult<List<UserInfo>> gresult = new GeneralResult<List<UserInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_GROUP_USERS)){
 
 			// amend the operation information
@@ -607,7 +607,7 @@ public class WorkgroupFacade {
 			InfoId<Long> groupid, String account){
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_GROUP_USER)){
 
 			// amend the operation information
@@ -634,7 +634,7 @@ public class WorkgroupFacade {
 			String wgroupname){
 		
 		GeneralResult<List<WorkgroupExInfo>> gresult = new GeneralResult<List<WorkgroupExInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
@@ -663,7 +663,7 @@ public class WorkgroupFacade {
 			String wgroupname,List<String> tags, PageQuery pagequery){
 		
 		GeneralResult<PageWrapper<WorkgroupLiteInfo>> gresult = new GeneralResult<PageWrapper<WorkgroupLiteInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
@@ -690,7 +690,7 @@ public class WorkgroupFacade {
 			String wgroupname){
 		
 		GeneralResult<List<WorkgroupExInfo>> gresult = new GeneralResult<List<WorkgroupExInfo>>();
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
@@ -724,7 +724,7 @@ public class WorkgroupFacade {
 		
 		GeneralResult<PageWrapper<ActLogInfo>> gresult = new GeneralResult<PageWrapper<ActLogInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACT_LOGS)){
 
 			// amend the operation information
@@ -759,7 +759,7 @@ public class WorkgroupFacade {
 			return gresult;
 		}
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
 			List<TagInfo> list = tagservice.getTags(svcctx, null, wid);

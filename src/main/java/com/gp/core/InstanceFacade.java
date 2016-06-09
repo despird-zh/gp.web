@@ -57,7 +57,7 @@ public class InstanceFacade {
 			return rst;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCE)){
 			
 			svcctx.setAuditObject(instanceid);
@@ -81,7 +81,7 @@ public class InstanceFacade {
 			InfoId<Integer> instance, State state){
 		
 		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_INSTANCE)){
 			
 			svcctx.setAuditObject(instance);
@@ -116,7 +116,7 @@ public class InstanceFacade {
 			return result;
 		}
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_INSTANCE)){
 			
 			svcctx.setAuditObject(instance.getInfoId());
@@ -150,7 +150,7 @@ public class InstanceFacade {
 		
 		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
 		
-		try (ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_EXT_INSTANCE)){
 			
 			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.INSTANCE, Integer.class);
@@ -188,7 +188,7 @@ public class InstanceFacade {
 		
 		GeneralResult<List<InstanceInfo>> result = new GeneralResult<List<InstanceInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
 			
 			String[][] parms = new String[][]{
@@ -219,7 +219,7 @@ public class InstanceFacade {
 		
 		GeneralResult<PageWrapper<InstanceInfo>> result = new GeneralResult<PageWrapper<InstanceInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
 			
 			String[][] parms = new String[][]{
@@ -254,7 +254,7 @@ public class InstanceFacade {
 			return result;
 		}
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
 						
 			// query accounts information

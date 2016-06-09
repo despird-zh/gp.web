@@ -87,7 +87,7 @@ public class CabinetFacade {
 		
 		GeneralResult<List<CabinetInfo>> gresult  =  new GeneralResult<List<CabinetInfo>>();
 	
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_CABINETS)){
 			
 			List<CabinetInfo> cabs = cabinetservice.getCabinets(svcctx, account);
@@ -111,7 +111,7 @@ public class CabinetFacade {
 
 		GeneralResult<Boolean> gresult  =  new GeneralResult<Boolean>();
 
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FOLDER)){
 			
 			InfoId<Long> fkey = idservice.generateId(IdKey.CAB_FOLDER, Long.class);
@@ -155,7 +155,7 @@ public class CabinetFacade {
 		
 		GeneralResult<List<CabFolderInfo>> gresult  =  new GeneralResult<List<CabFolderInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FOLDERS)){
 
 			List<CabFolderInfo> cabs = cabinetservice.getCabFolders(svcctx, cabinetId, parentId, namecond);
@@ -189,7 +189,7 @@ public class CabinetFacade {
 				
 		GeneralResult<List<CabFileInfo>> gresult  =  new GeneralResult<List<CabFileInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
 			
 			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, cabinetId, parentId, filename);
@@ -230,7 +230,7 @@ public class CabinetFacade {
 				
 		GeneralResult<PageWrapper<CabEntryInfo>> gresult  =  new GeneralResult<PageWrapper<CabEntryInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
 
 			PageWrapper<CabEntryInfo> cabs = cabinetservice.getCabEntries(svcctx, cabinetId, parentId, filename, pquery);
@@ -256,7 +256,7 @@ public class CabinetFacade {
 		
 		GeneralResult<CabinetInfo> gresult  =  new GeneralResult<CabinetInfo>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_CABINET)){
 			
 			svcctx.setAuditObject(cabinetId);
@@ -291,7 +291,7 @@ public class CabinetFacade {
 		
 		GeneralResult<InfoId<Long>> gresult  =  new GeneralResult<InfoId<Long>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FILE)){
 			
 			InfoId<Long> fileid = fileinfo.getInfoId();
@@ -340,7 +340,7 @@ public class CabinetFacade {
 		
 		GeneralResult<CabFolderInfo> gresult  =  new GeneralResult<CabFolderInfo>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FOLDER)){
 			
 			svcctx.setAuditObject(fileid);
@@ -373,7 +373,7 @@ public class CabinetFacade {
 		
 		GeneralResult<CabFileInfo> gresult  =  new GeneralResult<CabFileInfo>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILE)){
 			
 			svcctx.setAuditObject(fileid);
@@ -416,7 +416,7 @@ public class CabinetFacade {
 				folders.add(id);
 			}
 		}
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FAV_SUM)){
 			
 			Map<InfoId<Long>, Integer> filefavs = CollectionUtils.isEmpty(files)? 
@@ -450,7 +450,7 @@ public class CabinetFacade {
 		
 		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
 
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 
 			List<TagInfo> alltags = tagservice.getTags(svcctx, entrytype);
@@ -485,7 +485,7 @@ public class CabinetFacade {
 			return gresult;
 		}
 
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 
 			svcctx.setAuditObject(entryid);
@@ -526,7 +526,7 @@ public class CabinetFacade {
 				folders.add(id);
 			}
 		}
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
 			Map<InfoId<Long>, Set<TagInfo>> filetags = tagservice.getTags(svcctx, files);
@@ -559,7 +559,7 @@ public class CabinetFacade {
 		
 		GeneralResult<List<CabVersionInfo>> gresult = new GeneralResult<List<CabVersionInfo>>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
 			List<CabVersionInfo> verions = fileservice.getVersions(svcctx, fileid);
@@ -594,7 +594,7 @@ public class CabinetFacade {
 			rtv = new Boolean[fileids.length];
 		}
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.MOVE_FILE)){
 			
 			int cnt = 0;
@@ -643,7 +643,7 @@ public class CabinetFacade {
 			gresult.setMessage("fileids is required", false);
 		}
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.COPY_FILE)){
 			
 			for(InfoId<Long> fid : fileids){
@@ -683,7 +683,7 @@ public class CabinetFacade {
 			Principal principal, InfoId<Long> entryid, String ...tags){
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ATTACH_TAG)){
 			
 			for(String tag : tags){
@@ -709,7 +709,7 @@ public class CabinetFacade {
 		
 		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
 		
-		try(ServiceContext<?> svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.DETACH_TAG)){
 			
 			for(String tag : tags){
