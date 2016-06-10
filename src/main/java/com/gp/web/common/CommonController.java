@@ -1,13 +1,9 @@
 package com.gp.web.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,19 +19,20 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
-import com.gp.core.GeneralResult;
 import com.gp.core.InstanceFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.InfoId;
 import com.gp.info.InstanceInfo;
+import com.gp.info.KVPair;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.UserExInfo;
-import com.gp.info.WorkgroupUserExInfo;
+import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.util.CommonUtils;
@@ -54,7 +51,7 @@ public class CommonController extends BaseController{
 	@RequestMapping("entity-list")
 	public ModelAndView doGetEntityNodeList(HttpServletRequest request) throws WebException {
 		
-		GeneralResult<PageWrapper<InstanceInfo>> gresult = null;
+		PageWrapper<InstanceInfo> gresult = null;
 		
 		PageQuery pquery = new PageQuery(10,1);
 		this.readRequestData(request, pquery);
@@ -67,26 +64,26 @@ public class CommonController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = getJsonModelView();		
-		List<DefaultKeyValue> enlist = new ArrayList<DefaultKeyValue>();
+		List<KVPair<String, String>> enlist = new ArrayList<KVPair<String, String>>();
 		int totalcnt = -1;
-		gresult = InstanceFacade.findInstances(accesspoint, principal, namecond, pquery);
-		if(gresult.isSuccess() && gresult.getReturnValue().getRows() != null){
-			
-			for(InstanceInfo einfo : gresult.getReturnValue().getRows()){
-				
-				DefaultKeyValue kv = new DefaultKeyValue(einfo.getInfoId().getId(), einfo.getInstanceName());
+		
+		try{
+			gresult = InstanceFacade.findInstances(accesspoint, principal, namecond, pquery);
+			for(InstanceInfo einfo : gresult.getRows()){
+				Integer id = einfo.getInfoId().getId();
+				KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id), einfo.getInstanceName());
 				enlist.add(kv);
 			}
-			totalcnt = gresult.getReturnValue().getPagination().getTotalRows();
+			totalcnt = gresult.getPagination().getTotalRows();
 			if(allsupport && pquery.getPageNumber() == 1){
-				enlist.add(0,new DefaultKeyValue("_all", "All"));
+				enlist.add(0,new KVPair<String, String>("_all", "All"));
 				totalcnt += 1;
 			}
 
-		}else{
+		}catch(CoreException ce){
 			totalcnt = 0;
 			if(allsupport && pquery.getPageNumber() == 1){
-				enlist.add(new DefaultKeyValue("_all", "All"));
+				enlist.add(new KVPair<String, String>("_all", "All"));
 				totalcnt += 1;
 			}
 		}
@@ -97,28 +94,29 @@ public class CommonController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping("storage-info")
-	public ModelAndView doGetStorageInfo(HttpServletRequest request){
-		
-		Principal principal = super.getPrincipalFromShiro();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		
-		ModelAndView mav = super.getJsonModelView();
-		String id = this.readRequestParam("storage_id");
-		if(StringUtils.isNotBlank(id)){
-			StorageInfo sinfo = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(Integer.valueOf(id))).getReturnValue();
-			if(null != sinfo){
-				mav.addObject("id", id);
-				mav.addObject("text", sinfo.getStorageName());
-			}				
-		}
-		return mav;
-	}
-	
+//	@RequestMapping("storage-info")
+//	public ModelAndView doGetStorageInfo(HttpServletRequest request){
+//		
+//		Principal principal = super.getPrincipalFromShiro();
+//		AccessPoint accesspoint = super.getAccessPoint(request);
+//		
+//		ModelAndView mav = super.getJsonModelView();
+//		String id = this.readRequestParam("storage_id");
+//		
+//		if(StringUtils.isNotBlank(id)){
+//			StorageInfo sinfo = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(Integer.valueOf(id)));
+//			if(null != sinfo){
+//				mav.addObject("id", id);
+//				mav.addObject("text", sinfo.getStorageName());
+//			}				
+//		}
+//		return mav;
+//	}
+
 	@RequestMapping("storage-list")
 	public ModelAndView doGetStorageList(HttpServletRequest request){
 		
-		GeneralResult<PageWrapper<StorageInfo>> gresult = null;
+		PageWrapper<StorageInfo> gresult = null;
 		
 		PageQuery pquery = new PageQuery(10,1);
 		this.readRequestData(request, pquery);
@@ -132,28 +130,29 @@ public class CommonController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = super.getJsonModelView();
-		gresult = StorageFacade.findStorages(accesspoint, principal, namecond, pquery);
+		
 		int totalcnt = -1;
-		List<DefaultKeyValue> enlist = new ArrayList<DefaultKeyValue>();
-		if(gresult.isSuccess()){			
+		List<KVPair<String, String>> enlist = new ArrayList<KVPair<String, String>>();
+		try{
 			
-			for(StorageInfo sinfo : gresult.getReturnValue().getRows()){
-				
-				DefaultKeyValue kv = new DefaultKeyValue(sinfo.getInfoId().getId(), 
+			gresult = StorageFacade.findStorages(accesspoint, principal, namecond, pquery);
+			for(StorageInfo sinfo : gresult.getRows()){
+				Integer id = sinfo.getInfoId().getId();
+				KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id), 
 						sinfo.getStorageName());
 				enlist.add(kv);
 			}
 			
-			totalcnt = gresult.getReturnValue().getPagination().getTotalRows();
+			totalcnt = gresult.getPagination().getTotalRows();
 			if(allsupport && pquery.getPageNumber() == 1){
-				enlist.add(0,new DefaultKeyValue("_all", "All"));
+				enlist.add(0,new KVPair<String, String>("_all", "All"));
 				totalcnt += 1;
 			}
 
-		}else{
+		}catch(CoreException ce){
 			totalcnt = 0;
 			if(allsupport && pquery.getPageNumber() == 1){
-				enlist.add(new DefaultKeyValue("_all", "All"));
+				enlist.add(new KVPair<String, String>("_all", "All"));
 				totalcnt += 1;
 			}
 		}
@@ -169,21 +168,16 @@ public class CommonController extends BaseController{
 	 **/
 	@RequestMapping("user-list")
 	public ModelAndView doGetUserList(HttpServletRequest request){
-		
 
 		List<Account> list = new ArrayList<Account>();
-		Map<String,Object> pagedata = new HashMap<String,Object>();
-		
 		Principal principal = super.getPrincipalFromShiro();
-
 		String uname = request.getParameter("user_name");
-
+		ActionResult ars = new ActionResult();
 		Integer instanceId = null;
-
-		GeneralResult<List<UserExInfo>> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
-		if(cresult.isSuccess()){
-			List<UserExInfo> ulist = cresult.getReturnValue();
-			for(UserExInfo info: ulist){
+		try{
+			List<UserExInfo> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
+		
+			for(UserExInfo info: cresult){
 				
 				Account ui = new Account();
 				ui.setSourceId(info.getSourceId());
@@ -198,18 +192,17 @@ public class CommonController extends BaseController{
 				list.add(ui);
 			}			
 
-			pagedata.put(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			pagedata.put(MODEL_KEY_MESSAGE, cresult.getMessage());
-
-			pagedata.put(MODEL_KEY_ROWS, list);
-		}else{
-
-			pagedata.put(MODEL_KEY_STATE, ActionResult.ERROR);
-			pagedata.put(MODEL_KEY_MESSAGE, cresult.getMessage());
+			ars.setState(ActionResult.SUCCESS);
+			ars.setMessage(getMessage("mesg.find.account", principal.getLocale()));
+			ars.setData(list);
+			
+		}catch(CoreException ce){
+			ars.setState(ActionResult.ERROR);
+			ars.setMessage(ce.getMessage());
 		}
 		
 		ModelAndView mav = getJsonModelView();		
-		mav.addAllObjects(pagedata);
+		mav.addAllObjects(ars.asMap());
 
 		return mav;
 		
@@ -219,10 +212,7 @@ public class CommonController extends BaseController{
 	public ModelAndView doGetOrghierNodes(HttpServletRequest request){
 		
 		String orgIdStr = request.getParameter("org_id");
-		
-		if(LOGGER.isDebugEnabled())
-			LOGGER.debug("request org parent : ", orgIdStr);
-		
+
 		List<OrgNode> olist = new ArrayList<OrgNode>();		
 		Long orgId = null;
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
@@ -240,12 +230,10 @@ public class CommonController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
-		GeneralResult<List<OrgHierInfo>> gresult = OrgHierFacade.findOrgHiers(accesspoint, principal, orgId);
-		
-		if(gresult.isSuccess() && gresult.getReturnValue() != null){
-			
-			List<OrgHierInfo> list = gresult.getReturnValue();
-			for(OrgHierInfo orghier : list){
+		try{
+			List<OrgHierInfo> gresult = OrgHierFacade.findOrgHiers(accesspoint, principal, orgId);
+
+			for(OrgHierInfo orghier : gresult){
 				OrgNode node = new OrgNode();
 				
 				node.setId(String.valueOf(orghier.getInfoId().getId()));
@@ -261,6 +249,8 @@ public class CommonController extends BaseController{
 				
 				olist.add(node);
 			}			
+		}catch(CoreException ce){
+			// ignore
 		}
 		
 		ModelAndView mav = getJsonModelView(olist);
@@ -290,10 +280,11 @@ public class CommonController extends BaseController{
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
 		int totalcnt = -1;
-		GeneralResult<PageWrapper<UserExInfo>> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
+		
 		ModelAndView mav = super.getJsonModelView();
-		if(gresult.isSuccess()){
-			List<UserExInfo> ulist = gresult.getReturnValue().getRows();
+		try{
+			PageWrapper<UserExInfo> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
+			List<UserExInfo> ulist = gresult.getRows();
 			for(UserExInfo info: ulist){
 				
 				Account ui = new Account();
@@ -309,7 +300,7 @@ public class CommonController extends BaseController{
 				list.add(ui);
 			}			
 
-			totalcnt = gresult.getReturnValue().getPagination().getTotalRows();
+			totalcnt = gresult.getPagination().getTotalRows();
 			if(allsupport && pq.getPageNumber() == 1){
 				Account ui = new Account();
 				ui.setUserId(-1l);
@@ -319,7 +310,7 @@ public class CommonController extends BaseController{
 				totalcnt += 1;
 			}
 
-		}else{
+		}catch(CoreException ce){
 			totalcnt = 0;
 			if(allsupport && pq.getPageNumber() == 1){
 				Account ui = new Account();
@@ -345,7 +336,7 @@ public class CommonController extends BaseController{
 		
 		String wgroupid = request.getParameter("wgroup_id");
 		String account = super.readRequestParam("user_name");
-
+		ActionResult ars = new ActionResult();
 		List<Account> list = new ArrayList<Account>();
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
@@ -355,12 +346,11 @@ public class CommonController extends BaseController{
 			
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
-		
-		GeneralResult<List<WorkgroupUserExInfo>> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, account, null);
+
 		ModelAndView mav = super.getJsonModelView();
-		if(gresult.isSuccess()){
-			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue();
-			for(WorkgroupUserExInfo info: ulist){
+		try{
+			List<WorkgroupMemberInfo> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, account, null);
+			for(WorkgroupMemberInfo info: gresult){
 				
 				Account ui = new Account();
 				ui.setSourceId(info.getInstanceId());
@@ -373,14 +363,13 @@ public class CommonController extends BaseController{
 				list.add(ui);
 			}			
 
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			ars.setState(ActionResult.SUCCESS);
+			ars.setMessage(getMessage("mesg.find.wgroup.mbr", principal.getLocale()));
+			ars.setData(list);
+		}catch(CoreException ce){
 
-			mav.addObject(MODEL_KEY_ROWS, list);
-		}else{
-
-			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			ars.setState(ActionResult.ERROR);
+			ars.setMessage(ce.getMessage());
 		}
 		
 		return mav;

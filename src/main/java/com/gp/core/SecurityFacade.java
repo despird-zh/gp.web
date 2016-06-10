@@ -1,8 +1,9 @@
 package com.gp.core;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
@@ -15,19 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.GeneralContext.ExecState;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.SystemOptions;
-import com.gp.common.Users;
-import com.gp.common.Users.UserState;
+import com.gp.common.GroupUsers;
+import com.gp.common.GroupUsers.UserState;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.InstanceInfo;
+import com.gp.info.KVPair;
 import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
 import com.gp.pagination.PageQuery;
@@ -37,8 +38,8 @@ import com.gp.svc.InstanceService;
 import com.gp.svc.SecurityService;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.util.HashUtils;
-import com.gp.validation.ValidationMessage;
-import com.gp.validation.ValidationUtils;
+import com.gp.validate.ValidateMessage;
+import com.gp.validate.ValidateUtils;
 
 /**
  * this class handle the security related operation, include group organization user etc.
@@ -71,30 +72,26 @@ public class SecurityFacade {
 	 * @param ap the AccessPoint 
 	 * @param account the account  
 	 **/
-	public static GeneralResult<UserExInfo> findAccount(AccessPoint accesspoint, 
+	public static UserExInfo findAccount(AccessPoint accesspoint, 
 			Principal principal,
 			InfoId<Long> userId,
-			String account, String type){
+			String account, String type) throws CoreException{
 		
-		GeneralResult<UserExInfo> gresult = new GeneralResult<UserExInfo>();
+		UserExInfo uinfo = null;
 		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
-					new DefaultKeyValue("account",account));
+					new KVPair<String, String>("account",account));
 			
-			UserExInfo uinfo = securityservice.getAccountFull(svcctx, userId, account, type);
-			gresult.setReturnValue(uinfo);
-			gresult.setMessage("success find the account", true);
-		
+			uinfo = securityservice.getAccountFull(svcctx, userId, account, type);
 		} catch (ServiceException e) {
-			LOGGER.error("Exception when find account",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail find the account", false);
+			
+			ContextHelper.stampContext(e, "excp.find.account");
 		}finally{
 			
 			ContextHelper.handleContext();
 		}
-		return gresult;
+		return uinfo;
 	}
 	
 	/**
@@ -106,11 +103,11 @@ public class SecurityFacade {
 	 * @param pubcapacity public cabinet capacity
 	 * @param pricapacity private cabinet capacity
 	 **/
-	public static GeneralResult<Boolean> saveAccount(AccessPoint accesspoint,
+	public static boolean saveAccount(AccessPoint accesspoint,
 			Principal principal,
-			UserInfo uinfo, Long pubcapacity, Long pricapacity){
+			UserInfo uinfo, Long pubcapacity, Long pricapacity)throws CoreException{
 
-		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
+		Boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_ACCOUNT)){
 			
@@ -123,16 +120,11 @@ public class SecurityFacade {
 			// amend the operation information
 			svcctx.setAuditObject(uinfo.getInfoId());
 
-			boolean bval = securityservice.updateAccount(svcctx, uinfo, pubcapacity, pricapacity) > 0;
-			result.setReturnValue(bval);
-			result.setMessage("success to save account", true);
-					
-		} catch (ServiceException e) {
-			LOGGER.error("Exception when new account",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail to save account", false);
-		}finally{
+			result = securityservice.updateAccount(svcctx, uinfo, pubcapacity, pricapacity) > 0;
 			
+		} catch (ServiceException e) {
+			ContextHelper.stampContext(e,"excp.save.account");
+		}finally{
 			ContextHelper.handleContext();
 		}
 		
@@ -147,11 +139,12 @@ public class SecurityFacade {
 	 * @param pubcapacity public cabinet capacity
 	 * @param pricapacity private cabinet capacity
 	 **/
-	public static GeneralResult<InfoId<Long>> newAccount(AccessPoint accesspoint,
+	public static InfoId<Long> newAccount(AccessPoint accesspoint,
 			Principal principal,
-			UserInfo uinfo, Long pubcapacity, Long pricapacity){
+			UserInfo uinfo, Long pubcapacity, Long pricapacity) throws CoreException{
 		
-		GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
+		InfoId<Long> result = null;
+		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
 			svcctx.addAuditPredicates(uinfo);
@@ -161,12 +154,11 @@ public class SecurityFacade {
 			// set local entity id
 			uinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
 			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), uinfo);
+			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), uinfo);
 			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
-				result.addMessages(vmsg);
-				result.setMessage("fail to validate the message", false);
-				svcctx.endAudit(ExecState.FAIL, "fail to validate the message");
-				return result;
+				CoreException coreexcp = new CoreException(svcctx.getPrincipal().getLocale(), "excp.validate");
+				coreexcp.addValidateMessages(vmsg);
+				throw coreexcp;
 			}
 			
 			// amend the information key data
@@ -174,19 +166,15 @@ public class SecurityFacade {
 				
 				InfoId<Long> ukey = idservice.generateId( IdKey.USER, Long.class);
 				uinfo.setInfoId(ukey);
-				
 			}
 			// amend the operation information
 			svcctx.setAuditObject(uinfo.getInfoId());
 
 			securityservice.newAccount(svcctx, uinfo, pubcapacity, pricapacity);
-			result.setReturnValue(uinfo.getInfoId());
-			result.setMessage("success to save account", true);
-					
-		} catch (ServiceException e) {
-			LOGGER.error("Exception when new account",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail to save account", false);
+			result = uinfo.getInfoId();
+	
+		} catch (Exception e) {
+			ContextHelper.stampContext(e, "excp.save.account");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -204,11 +192,11 @@ public class SecurityFacade {
 	 * @param pubcapacity public cabinet capacity
 	 * @param pricapacity private cabinet capacity
 	 **/
-	public static GeneralResult<InfoId<Long>> newAccountExt(AccessPoint accesspoint,
+	public static InfoId<Long> newAccountExt(AccessPoint accesspoint,
 			Principal principal,
-			UserInfo uinfo, String entity, String node){
+			UserInfo uinfo, String entity, String node) throws CoreException{
 		
-		GeneralResult<InfoId<Long>> result = new GeneralResult<InfoId<Long>>();
+		InfoId<Long> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
 			
@@ -218,34 +206,20 @@ public class SecurityFacade {
 			uinfo.setPassword(hashpwd);
 
 			// check the validation of user information
-			List<ValidationMessage> vmsg = new ArrayList<ValidationMessage>();
+			Set<ValidateMessage> vmsg = new HashSet<ValidateMessage>();
 			InstanceInfo instance = masterservice.getInstnace(svcctx, entity, node);
 			if(instance != null){
 				
 				uinfo.setSourceId(instance.getInfoId().getId());
 			}else{				
-				vmsg.add(new ValidationMessage("source","target entity not existed"));
+				vmsg.add(new ValidateMessage("source","target entity not existed"));
 			}
-			if(StringUtils.isBlank(uinfo.getAccount())){
-				vmsg.add(new ValidationMessage("account","Account can't be empty"));
-			}
-			if(StringUtils.isBlank(uinfo.getGlobalAccount())){
-				vmsg.add(new ValidationMessage("gaccount","global account can't be empty"));
-			}
-			if(StringUtils.isBlank(uinfo.getEmail())){
-				vmsg.add(new ValidationMessage("email","Email can't be empty"));
-			}
-			if(StringUtils.isBlank(uinfo.getMobile())){
-				vmsg.add(new ValidationMessage("mobile","mobile can't be empty"));
-			}
-			if(StringUtils.isBlank(uinfo.getFullName())){
-				vmsg.add(new ValidationMessage("full","name can't be empty"));
-			}
-			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
-				result.addMessages(vmsg);
-				result.setMessage("fail to validate the message", false);
-				svcctx.endAudit(ExecState.FAIL, "fail to validate the message");
-				return result;
+			Set<ValidateMessage> vmsg1= ValidateUtils.validateProperty(svcctx.getPrincipal().getLocale(), "account", "globalAccount", "email", "mobile","fullName");
+			vmsg.addAll(vmsg1);
+			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
+				CoreException coreexcp = new CoreException(svcctx.getPrincipal().getLocale(), "excp.validate");
+				coreexcp.addValidateMessages(vmsg);
+				throw coreexcp;
 			}
 			// amend the information key data
 			if(!InfoId.isValid(uinfo.getInfoId())){
@@ -258,13 +232,11 @@ public class SecurityFacade {
 			svcctx.setAuditObject(uinfo.getInfoId());
 
 			securityservice.newAccountExt(svcctx, uinfo);
-			result.setReturnValue(uinfo.getInfoId());
-			result.setMessage("success to create external account", true);
-					
+			
 		} catch (ServiceException e) {
-			LOGGER.error("Exception when create external account",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail to create external account", false);
+			
+			ContextHelper.stampContext(e, "excp.save.account");
+			
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -282,14 +254,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static GeneralResult<List<UserExInfo>> findAccounts(AccessPoint accesspoint,
+	public static List<UserExInfo> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] types,
-			String[] states){
+			String[] states)throws CoreException{
 		
-		GeneralResult<List<UserExInfo>> result = new GeneralResult<List<UserExInfo>>();
+		List<UserExInfo> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
@@ -303,15 +275,10 @@ public class SecurityFacade {
 			svcctx.addAuditPredicates(parmap);
 
 			// query accounts information
-			List<UserExInfo> pwrapper = securityservice.getAccounts(svcctx, accountname, instanceId, types,states);
-			
-			result.setReturnValue(pwrapper);
-			result.setMessage("success find the user accounts", true);
-						
+			result = securityservice.getAccounts(svcctx, accountname, instanceId, types,states);
+
 		} catch (ServiceException e) {
-			LOGGER.error("Fail query accounts",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail find the user accounts", false);
+			ContextHelper.stampContext(e, "excp.find.account");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -328,14 +295,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static GeneralResult<PageWrapper<UserExInfo>> findAccounts(AccessPoint accesspoint,
+	public static PageWrapper<UserExInfo> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] type, 
-			PageQuery pagequery){
+			PageQuery pagequery)throws CoreException{
 		
-		GeneralResult<PageWrapper<UserExInfo>> result = new GeneralResult<PageWrapper<UserExInfo>>();
+		PageWrapper<UserExInfo> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
@@ -348,15 +315,10 @@ public class SecurityFacade {
 			svcctx.addAuditPredicates(parmap);
 
 			// query accounts information
-			PageWrapper<UserExInfo> pwrapper = securityservice.getAccounts(svcctx, accountname, instanceId, type, pagequery);
-			
-			result.setReturnValue(pwrapper);
-			result.setMessage("success find the user accounts", true);
-						
+			result = securityservice.getAccounts(svcctx, accountname, instanceId, type, pagequery);
+		
 		} catch (ServiceException e) {
-			LOGGER.error("Fail query accounts",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail find the user accounts", false);
+			ContextHelper.stampContext(e,"excp.find.account");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -367,15 +329,13 @@ public class SecurityFacade {
 	public static Boolean authenticate(AccessPoint accesspoint,
 			Principal principal,
 			String password)throws CoreException{
-		
+		boolean pass = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.AUTHENTICATE)){
 			
 			svcctx.addAuditPredicates(new DefaultKeyValue("password", password));
 			byte[] pwdbytes;
-			boolean pass = false;
 			try {
-				
 				pwdbytes = Base64.decode(principal.getPassword());
 				pass =  HashUtils.isExpectedPassword(password.toCharArray(), HASH_SALT.getBytes(), pwdbytes);
 				
@@ -384,24 +344,20 @@ public class SecurityFacade {
 			}
 			// password match means logon success reset the retry_times
 			securityservice.updateLogonTrace(svcctx, principal.getUserId(), pass);
-			
-			return pass;
-			
 		} catch (ServiceException e) {
-			LOGGER.error("Error authenticate account state",e);
-			ContextHelper.stampContext(e);
-			throw new CoreException("Fail authenticate accounts",e);
+			ContextHelper.stampContext(e, "excp.authen");
 		}finally{
 			
 			ContextHelper.handleContext();
 		}
+		return pass;
 	}
 	
 	public static void changeAccountState(AccessPoint accesspoint,
 			Principal principal,
 			UserState state)throws CoreException{
 		
-		try (ServiceContext svcctx = ContextHelper.beginServiceContext(Users.PESUOD_USER, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(GroupUsers.PESUOD_USER, accesspoint,
 				Operations.CHANGE_ACCOUNT_STATE)){
 			
 			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
@@ -410,33 +366,32 @@ public class SecurityFacade {
 			securityservice.changeAccountState(svcctx, principal.getUserId(), state);			
 			
 		} catch (ServiceException e) {
-			LOGGER.error("Error change account state",e);
-			ContextHelper.stampContext(e);
-			throw new CoreException("Error change account state",e);
+		
+			ContextHelper.stampContext(e, "excp.change.state");
+			
 		}finally{
 			
 			ContextHelper.handleContext();
 		}
 	}
 	
-	public static GeneralResult<Boolean> removeAccount(AccessPoint accesspoint,
+	public static boolean removeAccount(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> userId, String account){
+			InfoId<Long> userId, String account)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_ACCOUNT)){
 			
-			svcctx.addAuditPredicates(new DefaultKeyValue("account", account));
+			svcctx.addAuditPredicates(new KVPair<String,String>("account", account));
 			
 			// password match means logon success reset the retry_times
-			boolean rtv = securityservice.removeAccount(svcctx, userId, account);
-			gresult.setReturnValue(rtv);
-			gresult.setMessage("success remove account", true);
+			gresult = securityservice.removeAccount(svcctx, userId, account);
+			
 		} catch (ServiceException e) {
-			LOGGER.error("Error change account state",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail remove account", false);
+			
+			ContextHelper.stampContext(e, "excp.remove_account");
+			
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -444,23 +399,22 @@ public class SecurityFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> changePassword(AccessPoint accesspoint,
+	public static Boolean changePassword(AccessPoint accesspoint,
 			Principal principal,
 			String account, 
-			String password){
+			String password)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.CHANGE_PWD)){
 
 			// password match means logon success reset the retry_times
-			boolean rtv = securityservice.changePassword(svcctx, account, password);
-			gresult.setReturnValue(rtv);
-			gresult.setMessage("success change account password", true);
+			gresult = securityservice.changePassword(svcctx, account, password);
+			
 		} catch (ServiceException e) {
-			LOGGER.error("Error change account state",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail change account password", false);
+			
+			ContextHelper.stampContext(e, "excp.change.pwd");
+			
 		}finally{
 			
 			ContextHelper.handleContext();

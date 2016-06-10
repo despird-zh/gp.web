@@ -20,6 +20,7 @@ import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
+import com.gp.exception.CoreException;
 import com.gp.web.BaseController;
 import com.gp.web.ServletUtils;
 
@@ -85,7 +86,12 @@ public class ImageFilter implements Filter{
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		
-		ImageFacade.findImage(accesspoint, principal, parent, fileName);
+		try {
+			ImageFacade.findImage(accesspoint, principal, parent, fileName);
+		} catch (CoreException e) {
+			
+			e.printStackTrace();
+		}
 	}
 	
 }

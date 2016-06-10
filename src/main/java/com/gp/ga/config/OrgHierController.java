@@ -16,8 +16,8 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
-import com.gp.core.GeneralResult;
 import com.gp.core.OrgHierFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.UserInfo;
@@ -70,16 +70,14 @@ public class OrgHierController extends BaseController{
 		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		GeneralResult<InfoId<Long>> gresult = OrgHierFacade.newOrgHier(accesspoint, principal, orghier);
-		
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			OrgHierFacade.newOrgHier(accesspoint, principal, orghier);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.new.orghier",principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(aresult.asMap());
@@ -94,46 +92,43 @@ public class OrgHierController extends BaseController{
 		}
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
 		OrgNode params = new OrgNode();		
 		readRequestData(request, params);
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(params.getId()) && CommonUtils.isNumeric(params.getId())){
-		
 			Long nid = Long.valueOf(params.getId());
 			nodeId = IdKey.ORG_HIER.getInfoId( nid);
 		}else {
-			
 			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage("node id must be specified");
+			aresult.setMessage(getMessage("mesg.post.unqualified", principal.getLocale()));
 			mav.addAllObjects(aresult.asMap());
 			return mav;
 		}
 		
-		Principal principal = super.getPrincipalFromShiro();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		OrgHierInfo orghier = null;
-		GeneralResult<OrgHierInfo> orgresult = OrgHierFacade.findOrgHier(accesspoint, principal, nodeId);
-		
-		if(orgresult.isSuccess()){
-			orghier = orgresult.getReturnValue();
-			orghier.setAdmin(params.getAdmin());
-			orghier.setDescription(params.getDescription());
-			orghier.setEmail(params.getEmail());
-			orghier.setManager(params.getManager());
-			orghier.setOrgName(params.getText());
-		}
-		GeneralResult<Boolean> gresult = OrgHierFacade.saveOrgHier(accesspoint, principal, orghier);
-		
-		if(!gresult.isSuccess()){
+		try{
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, nodeId);
+			if(null != orghier){
+				orghier.setAdmin(params.getAdmin());
+				orghier.setDescription(params.getDescription());
+				orghier.setEmail(params.getEmail());
+				orghier.setManager(params.getManager());
+				orghier.setOrgName(params.getText());
+				OrgHierFacade.saveOrgHier(accesspoint, principal, orghier);
+				aresult.setState(ActionResult.SUCCESS);
+				aresult.setMessage(getMessage("mesg.save.orghier", principal.getLocale()));
+			}else{
+				aresult.setState(ActionResult.ERROR);
+				aresult.setMessage(getMessage("mesg.target.none", principal.getLocale()));
+			}
+		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
-			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
-		
 		mav.addAllObjects(aresult.asMap());
 		return mav;
 	}
@@ -160,16 +155,15 @@ public class OrgHierController extends BaseController{
 		}
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		GeneralResult<Boolean> gresult = OrgHierFacade.addOrgHierMember(accesspoint, principal, nodeId, accounts);
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			OrgHierFacade.addOrgHierMember(accesspoint, principal, nodeId, accounts);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.save.org.mbr", principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -193,18 +187,18 @@ public class OrgHierController extends BaseController{
 		String account = super.readRequestParam("account");
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		GeneralResult<Boolean> gresult = OrgHierFacade.removeOrgHierMember(accesspoint, principal, nodeId, account);
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
-			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
-		}
 		
+		try{
+			OrgHierFacade.removeOrgHierMember(accesspoint, principal, nodeId, account);
+			aresult.setState(ActionResult.SUCCESS);
+			aresult.setMessage(getMessage("mesg.remove.org.mbr", principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
+		}
+
 		ModelAndView mav = getJsonModelView();
 		mav.addAllObjects(aresult.asMap());
 		return mav;
@@ -226,13 +220,13 @@ public class OrgHierController extends BaseController{
 
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		
+		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();
-		GeneralResult<List<UserInfo>> gresult = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
-		List<Account> list = new ArrayList<Account>();
-		if(gresult.isSuccess()){
-			
-			List<UserInfo> ulist = gresult.getReturnValue();
+		
+		try{
+			List<UserInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
+			List<Account> list = new ArrayList<Account>();
+
 			for(UserInfo info: ulist){
 				
 				Account ui = new Account();
@@ -250,14 +244,13 @@ public class OrgHierController extends BaseController{
 	
 				list.add(ui);
 			}	
-			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
-			mav.addObject(MODEL_KEY_ROWS, list);
-		}else{
-			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			aresult.setData(list);
+			aresult.setState(ActionResult.SUCCESS);
+			aresult.setMessage(getMessage("mesg.find.org.mbrs", principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 
 		return mav;

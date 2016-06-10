@@ -2,6 +2,7 @@ package com.gp.core;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
@@ -16,16 +17,16 @@ import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
-import com.gp.common.GeneralContext.ExecState;
 import com.gp.common.Instances.State;
+import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.InstanceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.InstanceService;
-import com.gp.validation.ValidationMessage;
-import com.gp.validation.ValidationUtils;
+import com.gp.validate.ValidateMessage;
+import com.gp.validate.ValidateUtils;
 
 @Component
 public class InstanceFacade {
@@ -43,18 +44,16 @@ public class InstanceFacade {
 	/**
 	 * Get the local instance information 
 	 **/
-	public static GeneralResult<InstanceInfo> findInstance(AccessPoint accesspoint,
+	public static InstanceInfo findInstance(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Integer> instanceid){
+			InfoId<Integer> instanceid) throws CoreException{
 
-		GeneralResult<InstanceInfo> rst = new GeneralResult<InstanceInfo>();
+		InstanceInfo rst = null;
 		
 		if(!InfoId.isValid(instanceid)){
-			ValidationMessage noidmsg = new ValidationMessage("instance_id", "miss required instance id");
-			rst.addMessage(noidmsg);
-			rst.setReturnValue(null);
-			rst.setMessage("fail to valid the message.", false);
-			return rst;
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
+			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
+			throw cexcp;
 		}
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
@@ -62,39 +61,30 @@ public class InstanceFacade {
 			
 			svcctx.setAuditObject(instanceid);
 			
-			InstanceInfo iinfo = instanceservice.getInstnaceInfo(svcctx, instanceid);
-			rst.setReturnValue(iinfo);
-			rst.setMessage("success to find instance.", true);
+			rst = instanceservice.getInstnaceInfo(svcctx, instanceid);
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when find instance",e);
-			ContextHelper.stampContext(e);
-			rst.setMessage("fail to find instance.", false);
+			ContextHelper.stampContext(e, "excp.find.instance");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		return rst;
 	}
 	
-	public static GeneralResult<Boolean> changeInstanceState(AccessPoint accesspoint,
+	public static Boolean changeInstanceState(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Integer> instance, State state){
+			InfoId<Integer> instance, State state)throws CoreException{
 		
-		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
+		Boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_INSTANCE)){
 			
 			svcctx.setAuditObject(instance);
 			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
 			
-			Boolean success =  instanceservice.changeInstanceState(svcctx, instance, state);
-			
-			result.setReturnValue(success);			
-			result.setMessage("success change instance state", true);
+			result =  instanceservice.changeInstanceState(svcctx, instance, state);
+
 		} catch (ServiceException e)  {
-			LOGGER.error("Fail change instance state",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail change instance state", false);
+			ContextHelper.stampContext(e, "excp.update.instance");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -102,18 +92,15 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static GeneralResult<Boolean> saveInstance(AccessPoint accesspoint,
+	public static Boolean saveInstance(AccessPoint accesspoint,
 			Principal principal,
-			InstanceInfo instance){
+			InstanceInfo instance)throws CoreException{
 		
-		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
-		
+		Boolean result = false;
 		if(!InfoId.isValid(instance.getInfoId())){
-			ValidationMessage noidmsg = new ValidationMessage("instance_id", "miss required instance id");
-			result.addMessage(noidmsg);
-			result.setMessage("fail to valid the message.", false);
-			result.setReturnValue(false);
-			return result;
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.instance");
+			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
+			throw cexcp;
 		}
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
@@ -122,33 +109,26 @@ public class InstanceFacade {
 			svcctx.setAuditObject(instance.getInfoId());
 			svcctx.addAuditPredicates(instance);
 			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), instance);
-			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
-				result.addMessages(vmsg);				
-				svcctx.endAudit(ExecState.EXCEP, "row info validation fail");
-				return result;
+			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), instance);
+			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
+				CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+				cexcp.addValidateMessages(vmsg);
+				throw cexcp;
 			}
-			
-			Boolean success =  instanceservice.saveInstnace(svcctx, instance);
-			
-			result.setReturnValue(success);			
-			result.setMessage("success save instance ", true);
+			result =  instanceservice.saveInstnace(svcctx, instance);
 		} catch (ServiceException e)  {
-			LOGGER.error("Fail query accounts",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail save instance ", false);
+			ContextHelper.stampContext(e , "excp.save.instance");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		return result;
 	}
 
-	public static GeneralResult<Boolean> saveExtInstance(AccessPoint accesspoint,
+	public static Boolean saveExtInstance(AccessPoint accesspoint,
 			Principal principal,
-			InstanceInfo instance){
+			InstanceInfo instance)throws CoreException{
 		
-		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
+		Boolean result = false;
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_EXT_INSTANCE)){
@@ -158,23 +138,17 @@ public class InstanceFacade {
 			svcctx.setAuditObject(instanceId);
 			svcctx.addAuditPredicates(instance);
 			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), instance);
+			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), instance);
 			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
-				result.addMessages(vmsg);				
-				svcctx.endAudit(ExecState.EXCEP, "row info validation fail");
-				result.setMessage("Submitted data fail validation.", false);
-				result.setReturnValue(false);
-				return result;
+				CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+				cexcp.addValidateMessages(vmsg);
+				throw cexcp;
 			}
 			instance.setInfoId(instanceId);
-			Boolean success =  instanceservice.addExtInstnace(svcctx, instance);
+			result =  instanceservice.addExtInstnace(svcctx, instance);
 			
-			result.setReturnValue(success);			
-			result.setMessage("success save external instance ", true);
 		} catch (ServiceException e)  {
-			LOGGER.error("Fail query accounts",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail save external instance ", false);
+			ContextHelper.stampContext(e, "excp.save.instance");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -182,11 +156,11 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static GeneralResult<List<InstanceInfo>> findInstances(AccessPoint accesspoint,
+	public static List<InstanceInfo> findInstances(AccessPoint accesspoint,
 			Principal principal,
-			String instancename){
+			String instancename)throws CoreException{
 		
-		GeneralResult<List<InstanceInfo>> result = new GeneralResult<List<InstanceInfo>>();
+		List<InstanceInfo> result = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
@@ -197,27 +171,22 @@ public class InstanceFacade {
 			svcctx.addAuditPredicates(parmap);
 						
 			// query accounts information
-			List<InstanceInfo> pwrapper = instanceservice.getInstances(svcctx, instancename);
+			result = instanceservice.getInstances(svcctx, instancename);
 			
-			result.setReturnValue(pwrapper);			
-			result.setMessage("success get instances ", true);
 		} catch (Exception e) {
-			LOGGER.error("Fail query instances",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get instances ", false);
+			ContextHelper.stampContext(e,"excp.find.instance");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		return result;
 	}
 	
 	
-	public static GeneralResult<PageWrapper<InstanceInfo>> findInstances(AccessPoint accesspoint,
+	public static PageWrapper<InstanceInfo> findInstances(AccessPoint accesspoint,
 			Principal principal,
-			String instancename, PageQuery pquery){
+			String instancename, PageQuery pquery)throws CoreException{
 		
-		GeneralResult<PageWrapper<InstanceInfo>> result = new GeneralResult<PageWrapper<InstanceInfo>>();
+		PageWrapper<InstanceInfo> result = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
@@ -228,14 +197,10 @@ public class InstanceFacade {
 			svcctx.addAuditPredicates(parmap);
 						
 			// query accounts information
-			PageWrapper<InstanceInfo> pwrapper = instanceservice.getInstances(svcctx, instancename, pquery);
+			result = instanceservice.getInstances(svcctx, instancename, pquery);
 			
-			result.setReturnValue(pwrapper);			
-			result.setMessage("success get instances ", true);
 		} catch (Exception e) {
-			LOGGER.error("Fail query instances",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get instances ", false);
+			ContextHelper.stampContext(e,"excp.find.instance");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -243,31 +208,25 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static GeneralResult<Map<String,InstanceInfo>> findInstances(AccessPoint accesspoint,
+	public static Map<String,InstanceInfo> findInstances(AccessPoint accesspoint,
 			Principal principal,
-			List<String> accounts){
+			List<String> accounts)throws CoreException{
 		
-		GeneralResult<Map<String,InstanceInfo>> result = new GeneralResult<Map<String,InstanceInfo>>();
+		Map<String,InstanceInfo> result = null;
 		
 		if(CollectionUtils.isEmpty(accounts)){
-			result.setMessage("accounts is required", false);
-			return result;
+			throw new CoreException(principal.getLocale(),"mesg.account.miss");
 		}
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_INSTANCES)){
 						
 			// query accounts information
-			Map<String,InstanceInfo> smap = instanceservice.getAccountSources(svcctx, accounts);
+			result = instanceservice.getAccountSources(svcctx, accounts);
 			
-			result.setReturnValue(smap);			
-			result.setMessage("success get instances ", true);
 		} catch (Exception e) {
-			LOGGER.error("Fail query instances",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get instances ", false);
+			ContextHelper.stampContext(e, "excp.find.instance");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		return result;

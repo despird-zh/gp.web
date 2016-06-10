@@ -32,7 +32,7 @@ import com.gp.info.StorageInfo;
 import com.gp.info.WorkgroupExInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.util.DateTimeUtils;
-import com.gp.validation.ValidationMessage;
+import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
@@ -180,7 +180,7 @@ public class WorkgroupEditController extends BaseController{
 		
 		if(!gresult.isSuccess() || gresult.getReturnValue()){
 			if(gresult.hasValidationMessage()){
-				List<ValidationMessage> msg = gresult.getMessages();
+				List<ValidateMessage> msg = gresult.getMessages();
 				result.setDetailmsgs(msg);
 			}
 			result.setState(ActionResult.ERROR);

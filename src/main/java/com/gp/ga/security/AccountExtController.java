@@ -13,12 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.common.Users;
+import com.gp.common.GroupUsers;
 import com.gp.core.GeneralResult;
 import com.gp.core.SecurityFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.UserInfo;
-import com.gp.validation.ValidationMessage;
+import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
@@ -38,9 +39,9 @@ public class AccountExtController extends BaseController{
 		DEFAULT.setPhone("99998888");
 		DEFAULT.setLanguage("zh_CN");
 		DEFAULT.setTimeZone("GMT+08:00");
-		DEFAULT.setType(Users.UserType.EXTERNAL.name());
+		DEFAULT.setType(GroupUsers.UserType.EXTERNAL.name());
 		DEFAULT.setStorageId(-999);
-		DEFAULT.setState(Users.UserState.ACTIVE.name());
+		DEFAULT.setState(GroupUsers.UserState.ACTIVE.name());
 	}
 	
 	@RequestMapping("account-ext")
@@ -106,20 +107,18 @@ public class AccountExtController extends BaseController{
 		uinfo.setStorageId(DEFAULT.getStorageId());
 		uinfo.setState(DEFAULT.getState());
 
-		GeneralResult<InfoId<Long>> gresult = SecurityFacade.newAccountExt(accesspoint, principal, 
+		try{
+			InfoId<Long> gresult = SecurityFacade.newAccountExt(accesspoint, principal, 
 				uinfo, 
 				account.getEntity(), 
 				account.getNode());
-		
-		if(!gresult.isSuccess() && gresult.hasValidationMessage()){
-			List<ValidationMessage> msg = gresult.getMessages();
-			
-			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
-			result.setDetailmsgs(msg);
-		}else{			
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(getMessage("mesg.save.account.ext", principal.getLocale()));
+			
+		}catch(CoreException ce){			
+			result.setState(ActionResult.ERROR);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();		

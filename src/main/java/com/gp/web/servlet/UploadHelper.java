@@ -23,6 +23,7 @@ import com.gp.common.Principal;
 import com.gp.common.SpringContextUtil;
 import com.gp.core.CabinetFacade;
 import com.gp.core.StorageFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.BinaryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabinetInfo;
@@ -55,7 +56,7 @@ class UploadHelper {
 	/**
 	 * Save the upload file 
 	 **/
-	static void storeFile(String storepath, PartMeta filepart,HttpServletRequest request){
+	static void storeFile(String storepath, PartMeta filepart,HttpServletRequest request)throws CoreException{
 		
 		InputStream inputStream = null;
 
@@ -78,7 +79,7 @@ class UploadHelper {
 	/**
 	 * Save upload file chunk 
 	 **/
-	static void storeFileChunk(String storepath, PartMeta filepart, HttpServletRequest request){
+	static void storeFileChunk(String storepath, PartMeta filepart, HttpServletRequest request)throws CoreException{
 		
 		InputStream inputStream = null;
 		RandomAccessFile file = null;
@@ -142,14 +143,14 @@ class UploadHelper {
 	 * @return InfoId<Long> the id of cabinet file
 	 **/
 	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart,
-			HttpServletRequest request){
+			HttpServletRequest request) throws CoreException{
 		
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
 		InfoId<Long> cabid = IdKey.CABINET.getInfoId(cabinetId);
-		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid).getReturnValue();
+		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid);
 
 		BinaryInfo binfo = new BinaryInfo();
 		binfo.setSourceId(cabinfo.getSourceId());		
@@ -160,7 +161,7 @@ class UploadHelper {
 		binfo.setCreator(principal.getAccount());
 		binfo.setCreateDate(new Date());
 		
-		InfoId<Long> binaryId = StorageFacade.newBinary(accesspoint, principal, binfo).getReturnValue();
+		InfoId<Long> binaryId = StorageFacade.newBinary(accesspoint, principal, binfo);
 		tsfinfo.setBinaryId(binaryId);// save the binary id
 		
 		CabFileInfo fileinfo = new CabFileInfo();
@@ -178,7 +179,7 @@ class UploadHelper {
 		fileinfo.setCreator(principal.getAccount());
 		fileinfo.setCreateDate(new Date());
 		
-		InfoId<Long> fileId = CabinetFacade.addCabinetFile(accesspoint, principal, fileinfo).getReturnValue();
+		InfoId<Long> fileId = CabinetFacade.addCabinetFile(accesspoint, principal, fileinfo);
 		tsfinfo.setFileId(fileId); // save the file id
 		
 		return fileId;
@@ -191,7 +192,7 @@ class UploadHelper {
 	 * @param inputStream the input stream of upload file
 	 * @param request the http request to extract access point and principal. 
 	 **/
-	public static void saveBinary(InfoId<Long> binaryId, InputStream inputStream, HttpServletRequest request){
+	public static void saveBinary(InfoId<Long> binaryId, InputStream inputStream, HttpServletRequest request)throws CoreException{
 		
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
@@ -206,7 +207,7 @@ class UploadHelper {
 	 * @param inputStream the input stream of upload file
 	 * @param request the http request to extract access point and principal. 
 	 **/
-	public static void saveBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange,  InputStream inputStream,	HttpServletRequest request){
+	public static void saveBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange,  InputStream inputStream,	HttpServletRequest request)throws CoreException{
 		
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);

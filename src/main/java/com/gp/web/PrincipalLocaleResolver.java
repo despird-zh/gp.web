@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.servlet.i18n.AbstractLocaleResolver;
-
 import com.gp.common.Principal;
 public class PrincipalLocaleResolver extends AbstractLocaleResolver{
 
@@ -16,7 +15,11 @@ public class PrincipalLocaleResolver extends AbstractLocaleResolver{
 	public Locale resolveLocale(HttpServletRequest request) {
 		Subject current = SecurityUtils.getSubject();
 		Principal principal = (Principal)current.getPrincipal();
-		setDefaultLocale(principal.getLocale());
+		if(null != principal){
+			setDefaultLocale(principal.getLocale());
+		}else{
+			setDefaultLocale(request.getLocale());
+		}
         return getDefaultLocale();
 	}
 

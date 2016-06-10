@@ -2,12 +2,14 @@ package com.gp.web;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
+import com.gp.common.SpringContextUtil;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
 
@@ -46,7 +49,9 @@ public abstract class BaseController extends MultiActionController{
 	/** Model key : message */
 	public static final String MODEL_KEY_MESSAGE = "message";
 	
-	public ObjectMapper JACKSON_MAPPER = new ObjectMapper();
+	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
+	
+	private static MessageSource messageSource;
 	
 	/**
 	 * Get the access point object for the request
@@ -226,5 +231,32 @@ public abstract class BaseController extends MultiActionController{
 		}
 		
 		return sbuf.toString();
+	}
+	
+	/**
+	 * Get the message in different locale
+	 * @param code the message code
+	 * @param args the arguments
+	 * @param locale the locale 
+	 **/
+	public static String getMessage(String code, Object[] args, Locale locale){
+		
+		if(null == messageSource){
+			messageSource = SpringContextUtil.getSpringBean("messageSource", MessageSource.class);
+		}
+		return messageSource.getMessage(code, args, locale);
+	}
+	
+	/**
+	 * Get the message in different locale
+	 * @param code the message code
+	 * @param locale the locale 
+	 **/
+	public static String getMessage(String code, Locale locale){
+		
+		if(null == messageSource){
+			messageSource = SpringContextUtil.getSpringBean("messageSource", MessageSource.class);
+		}
+		return messageSource.getMessage(code, new String[0], locale);
 	}
 }

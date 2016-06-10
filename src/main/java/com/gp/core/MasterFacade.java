@@ -14,15 +14,11 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
-import com.gp.common.GeneralContext.ExecState;
+import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.DictionaryInfo;
-import com.gp.info.InfoId;
 import com.gp.info.SysOptionInfo;
 import com.gp.svc.DictionaryService;
 import com.gp.svc.SystemService;
-import com.gp.validation.ValidationMessage;
-import com.gp.validation.ValidationUtils;
 
 @Component
 public class MasterFacade {
@@ -39,12 +35,12 @@ public class MasterFacade {
 		MasterFacade.dictservice = dictservice;
 	}
 		
-	public static GeneralResult<Boolean> saveSystemOption(AccessPoint accesspoint,
+	public static Boolean saveSystemOption(AccessPoint accesspoint,
 			Principal principal,
 			String optionKey,
-			String optionValue){
+			String optionValue)throws CoreException{
 		
-		GeneralResult<Boolean> result = new GeneralResult<Boolean>();
+		Boolean result = false;
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_SYSOPTION)){
@@ -53,27 +49,21 @@ public class MasterFacade {
 			svcctx.setAuditObject(sinfo.getInfoId());
 			svcctx.addAuditPredicates(new DefaultKeyValue("value", optionValue));
 
-			Boolean success =  systemservice.updateOption(svcctx, optionKey, optionValue);
-			
-			result.setReturnValue(success);			
-			result.setMessage("success save system option ", true);
+			result =  systemservice.updateOption(svcctx, optionKey, optionValue);
 		} catch (ServiceException e)  {
-			LOGGER.error("Fail query accounts",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail save system option ", false);
+			ContextHelper.stampContext(e, "excp.save.sysopt");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		return result;		
 		
 	}
 	
-	public static GeneralResult<List<SysOptionInfo>> findSystemOptions(AccessPoint accesspoint,
+	public static List<SysOptionInfo> findSystemOptions(AccessPoint accesspoint,
 			Principal principal,
-			String groupKey){
+			String groupKey)throws CoreException{
 			
-		GeneralResult<List<SysOptionInfo>> result = new GeneralResult<List<SysOptionInfo>>();		
+		List<SysOptionInfo> result = null;		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_SYSOPTIONS)){
 			
@@ -83,17 +73,11 @@ public class MasterFacade {
 			svcctx.addAuditPredicates(parmap);
 
 			// query accounts information
-			List<SysOptionInfo> pwrapper = systemservice.getOptions(svcctx, groupKey);
-			
-			result.setReturnValue(pwrapper);
-			result.setMessage("success get options ", true);			
-			
+			result = systemservice.getOptions(svcctx, groupKey);
+
 		} catch (Exception e) {
-			
-			LOGGER.error("Fail query system options",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get options ", false);
-			
+		
+			ContextHelper.stampContext(e, "excp.find.sysopts");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -102,24 +86,19 @@ public class MasterFacade {
 		return result;
 	}
 	
-	public static GeneralResult<List<String>> findSystemOptionGroups(AccessPoint accesspoint,
-			Principal principal){
+	public static List<String> findSystemOptionGroups(AccessPoint accesspoint,
+			Principal principal)throws CoreException{
 		
-		GeneralResult<List<String>> result = new GeneralResult<List<String>>();
+		List<String> result = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_SYSOPT_GRPS)){
 
-			List<String> groups = systemservice.getOptionGroups(svcctx);
-			result.setReturnValue(groups);
-			result.setMessage("success get option groups ", true);
-			
+			result = systemservice.getOptionGroups(svcctx);
+
 		} catch (Exception e) {
 			
-			LOGGER.error("Fail query option group",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get option groups ", false);
-			
+			ContextHelper.stampContext(e,"excp.find.sysopt.group");
 		}finally{
 			
 			ContextHelper.handleContext();

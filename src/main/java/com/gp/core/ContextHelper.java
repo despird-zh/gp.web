@@ -11,6 +11,7 @@ import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.SystemOptions;
+import com.gp.exception.CoreException;
 import com.gp.util.ConfigSettingUtils;
 
 /**
@@ -142,13 +143,17 @@ public class ContextHelper {
 	public static void handleContext(){
 		
 		ServiceContext svcctx = getContext();
-		
-		// if valid ServiceContext continue work.
-		if(null != svcctx)
-			svcctx.persistAuditData();
-		
 		// clear the thread local context object.
 		dropContext();
+		// if valid ServiceContext continue work.
+		if(null != svcctx){
+			svcctx.endAudit(ExecState.SUCCESS, "Process success");
+			svcctx.persistAuditData();
+		}
+	}
+	
+	public static void stampContext(Exception e) throws CoreException{
+		stampContext(e, "excp.unknown");
 	}
 	
 	/**
@@ -157,7 +162,7 @@ public class ContextHelper {
 	 * this method fetch service context from thread local, and drop it post persistence.
 	 * it's used for buildServiceContext(?) method only
 	 **/
-	public static void stampContext(Exception e){
+	public static void stampContext(Exception e, String excpcode) throws CoreException{
 		
 		ServiceContext svcctx = getContext();
 		
@@ -172,8 +177,14 @@ public class ContextHelper {
 				svcctx.endAudit(ExecState.EXCEP, e.getMessage());
 			}
 		}
-		
-		if(LOGGER.isDebugEnabled())
-			LOGGER.debug("Audit collector stamp on the exception", e);
+
+		if(e instanceof CoreException){
+			if(LOGGER.isDebugEnabled())
+				LOGGER.debug("Audit collector stamp on the exception", e);
+			throw (CoreException)e;
+		}else{
+			LOGGER.error("Audit collector stamp on the exception", e);
+			throw new CoreException(svcctx.getPrincipal().getLocale(), excpcode, e);
+		}
 	}
 }

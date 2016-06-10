@@ -15,6 +15,8 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.core.GeneralResult;
 import com.gp.core.MasterFacade;
+import com.gp.exception.CoreException;
+import com.gp.info.KVPair;
 import com.gp.info.SysOptionInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -36,25 +38,25 @@ public class SysOptionController extends BaseController{
 	public ModelAndView doGetSystemOptionGroups(HttpServletRequest request){
 		
 		ActionResult ars = new ActionResult();
-		List<DefaultKeyValue> groups = new ArrayList<DefaultKeyValue>();
+		List<KVPair<?,?>> groups = new ArrayList<KVPair<?,?>>();
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
 
-		GeneralResult<List<String>> grst = MasterFacade.findSystemOptionGroups(ap, princ);
-		if(grst.isSuccess()){
-			for(String group : grst.getReturnValue()){
-				DefaultKeyValue item = new DefaultKeyValue(group,group);
+		try{
+			List<String> grst = MasterFacade.findSystemOptionGroups(ap, princ);
+			for(String group : grst){
+				KVPair<String,String> item = new KVPair<String,String>(group,group);
 				groups.add(item);
 			}
-			
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(grst.getMessage());
+			ars.setMessage(getMessage("mesg.find.sysopt.group", princ.getLocale()));
 			ars.setData(groups);
-		}else{
+			
+		}catch(CoreException ce){
 			ars.setState(ActionResult.ERROR);
-			ars.setMessage(grst.getMessage());
-			ars.setData(groups);
+			ars.setMessage(ce.getMessage());
 		}
+
 		ModelAndView mav = super.getJsonModelView();
 		mav.addAllObjects(ars.asMap());
 		
@@ -67,15 +69,14 @@ public class SysOptionController extends BaseController{
 		List<SysOption> rows = new ArrayList<SysOption>();
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
-
+		ActionResult ars = new ActionResult();
 		String optgroup = this.readRequestParam("opt_group");
-		GeneralResult<List<SysOptionInfo>> grst = MasterFacade.findSystemOptions(ap, princ, optgroup);
-		
 		ModelAndView mav = super.getJsonModelView();
 		
-		if(grst.isSuccess()){
-			
-			for(SysOptionInfo opt : grst.getReturnValue()){
+		try{
+			List<SysOptionInfo> grst = MasterFacade.findSystemOptions(ap, princ, optgroup);
+
+			for(SysOptionInfo opt : grst){
 				
 				SysOption item = new SysOption();
 				item.setGroup(opt.getOptionGroup());
@@ -86,17 +87,16 @@ public class SysOptionController extends BaseController{
 				rows.add(item);
 			}
 			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, grst.getMessage());
-			mav.addObject(MODEL_KEY_ROWS, rows);
+			ars.setState(ActionResult.SUCCESS);
+			ars.setMessage(getMessage("mesg.find.sysopts", princ.getLocale()));
+			ars.setData(rows);
 
-		}else{
+		}catch(CoreException ce){
 			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, grst.getMessage());
-
+			ars.setState(ActionResult.ERROR);
+			ars.setMessage(ce.getMessage());
 		}
-		
+		mav.addAllObjects(ars.asMap());
 		return mav;
 	}
 	
@@ -105,25 +105,23 @@ public class SysOptionController extends BaseController{
 		
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
-		
+		ActionResult ars = new ActionResult();
 		String optkey = this.readRequestParam("option_key");
 		String optvalue = this.readRequestParam("option_value");
-		
-		GeneralResult<Boolean> grst = MasterFacade.saveSystemOption(ap, princ, optkey, optvalue);
-		
 		ModelAndView mav = super.getJsonModelView();
 		
-		if(grst.isSuccess()){
-						
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, grst.getMessage());
+		try{
+			MasterFacade.saveSystemOption(ap, princ, optkey, optvalue);
 
-		}else{
+			ars.setState(ActionResult.SUCCESS);
+			ars.setMessage(getMessage("mesg.save.sysopt", princ.getLocale()));
+
+		}catch(CoreException ce){
 			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, grst.getMessage());
+			ars.setState(ActionResult.ERROR);
+			ars.setMessage(ce.getMessage());
 		}
-		
+		mav.addAllObjects(ars.asMap());
 		return mav;
 	}
 }

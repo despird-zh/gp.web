@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.common.Users;
-import com.gp.common.Users.UserState;
+import com.gp.common.GroupUsers;
+import com.gp.common.GroupUsers.UserState;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.UserInfo;
@@ -107,7 +107,7 @@ public class AuthorizeRealm extends AuthorizingRealm {
 		AccessPoint ap = authtoken.getAccessPoint();
 		try {		
 			
-			uinfo = SecurityFacade.findAccount(ap, Users.PESUOD_USER, null, authtoken.getUsername(), null).getReturnValue();
+			uinfo = SecurityFacade.findAccount(ap, GroupUsers.PESUOD_USER, null, authtoken.getUsername(), null);
 
 			if (uinfo == null) {
 				throw new UnknownAccountException("Login name [" + authtoken.getUsername() + "] not found!");

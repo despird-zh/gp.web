@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.Principal;
 import com.gp.core.GeneralResult;
 import com.gp.core.InstanceFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.InstanceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.web.ActionResult;
@@ -38,14 +39,12 @@ public class ExternInfoController extends BaseController{
 		PageQuery pq = new PageQuery(5,1);
 		// read paging parameter
 		readRequestData(request, pq);
-		
+		ActionResult result = new ActionResult();	
 		List<Instance> list = new ArrayList<Instance>();
 		Principal principal = super.getPrincipalFromShiro();
-		Map<String,Object> pagedata = new HashMap<String,Object>();
-					
-		GeneralResult<List<InstanceInfo>> gresult = InstanceFacade.findInstances(getAccessPoint(request), principal, name);
-		if(gresult.isSuccess()){
-			List<InstanceInfo> instances = gresult.getReturnValue();
+
+		try{
+			List<InstanceInfo> instances = InstanceFacade.findInstances(getAccessPoint(request), principal, name);
 			//
 			int cnt = 0;
 			for(InstanceInfo instinfo: instances){
@@ -65,17 +64,17 @@ public class ExternInfoController extends BaseController{
 				cnt++;
 				list.add(data);
 			}
-
-			pagedata.put(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			pagedata.put(MODEL_KEY_MESSAGE, gresult.getMessage());
-			pagedata.put(MODEL_KEY_ROWS, list);
-		}else{
-			pagedata.put(MODEL_KEY_STATE, ActionResult.ERROR);
-			pagedata.put(MODEL_KEY_MESSAGE, gresult.getMessage());
+			result.setData(list);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.find.instance", principal.getLocale()));
+		}catch(CoreException ce){
+			result.setState(ActionResult.ERROR);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();		
-		mav.addAllObjects(pagedata);
+		mav.addAllObjects(result.asMap());
 
 		return mav;		
 	}

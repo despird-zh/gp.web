@@ -25,7 +25,7 @@ import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.info.WorkgroupUserExInfo;
 import com.gp.util.CommonUtils;
-import com.gp.validation.ValidationMessage;
+import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
@@ -91,7 +91,7 @@ public class WorkgroupAddController extends BaseController{
 				imagePath);
 		
 		if(!gresult.isSuccess() && gresult.hasValidationMessage()){
-			List<ValidationMessage> msg = gresult.getMessages();
+			List<ValidateMessage> msg = gresult.getMessages();
 			
 			result.setState(ActionResult.ERROR);
 			result.setMessage(gresult.getMessage());

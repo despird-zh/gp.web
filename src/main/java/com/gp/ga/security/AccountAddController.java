@@ -18,13 +18,14 @@ import com.gp.web.CustomWebUtils;
 import com.gp.web.model.Account;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.common.Users;
+import com.gp.common.GroupUsers;
 import com.gp.core.GeneralResult;
 import com.gp.core.SecurityFacade;
+import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.InfoId;
 import com.gp.info.UserInfo;
-import com.gp.validation.ValidationMessage;
+import com.gp.validate.ValidateMessage;
 
 @Controller("ga-account-new-ctlr")
 @RequestMapping("/ga")
@@ -68,37 +69,30 @@ public class AccountAddController extends BaseController{
 		uinfo.setTimeZone(account.getTimezone());
 		uinfo.setType(account.getType());
 		uinfo.setStorageId(account.getStorageId());
-		uinfo.setState(Users.UserState.ACTIVE.name());
+		uinfo.setState(GroupUsers.UserState.ACTIVE.name());
 	
 		Long pubcapacity = account.getPubcapacity();
 		Long pricapacity = account.getPricapacity();
 		
-		List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
 		// password not consistent
 		if(!StringUtils.equals(confirmPwd, account.getPassword())){
-			
-			ValidationMessage msg = new ValidationMessage("password", "password and confirm not consistent");			
-			msgs.add(msg);
+		
 			result.setState(ActionResult.FAIL);
-			result.setMessage("Fail create account");
-			result.setDetailmsgs(msgs);
-			
+			result.setMessage(getMessage("mesg.pwd.diff.cfm", principal.getLocale()));
+			mav.addAllObjects(result.asMap());
+
 		}else{
-			
-			GeneralResult<InfoId<Long>> gresult = SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
-			
-			if(!gresult.isSuccess() && gresult.hasValidationMessage()){
-				msgs = gresult.getMessages();				
-				result.setState(ActionResult.ERROR);
-				result.setMessage(gresult.getMessage());
-				result.setDetailmsgs(msgs);
-			}else{
-				
+			try{
+				InfoId<Long> gresult = SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 				result.setState(ActionResult.SUCCESS);
-				result.setMessage(gresult.getMessage());
+				result.setMessage(getMessage("mesg.pwd.diff.cfm", principal.getLocale()));
+			}catch(CoreException ce){
+				result.setState(ActionResult.ERROR);
+				result.setMessage(ce.getMessage());
+				result.setDetailmsgs(ce.getValidateMessages());
 			}
+			mav.addAllObjects(result.asMap());
 		}
-		mav.addAllObjects(result.asMap());
 
 		return mav;
 	}

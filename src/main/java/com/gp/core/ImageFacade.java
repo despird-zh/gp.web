@@ -17,6 +17,7 @@ import com.gp.common.Images;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
+import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
@@ -35,22 +36,19 @@ public class ImageFacade {
 		
 	}
 	
-	public static GeneralResult<List<ImageInfo>> findImages(AccessPoint accesspoint,
-			Principal principal, String format){
+	public static List<ImageInfo> findImages(AccessPoint accesspoint,
+			Principal principal, String format) throws CoreException{
 		
-		GeneralResult<List<ImageInfo>> gresult = new GeneralResult<List<ImageInfo>>();
+		List<ImageInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGES)){
 			
-			List<ImageInfo> imgs = imageservice.getImages(svcctx, format);
-			
-			gresult.setReturnValue(imgs);
-			gresult.setMessage("success to find images.", true);
+			gresult = imageservice.getImages(svcctx, format);
+
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when find images",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find images.", false);
+			ContextHelper.stampContext(e, "excp.find.images");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -59,10 +57,10 @@ public class ImageFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> saveImage(AccessPoint accesspoint,
-			Principal principal, String imagePath , String srcFileName){
+	public static Boolean saveImage(AccessPoint accesspoint,
+			Principal principal, String imagePath , String srcFileName)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_IMAGE)){
@@ -79,14 +77,10 @@ public class ImageFacade {
 			image.setFormat(FilenameUtils.getExtension(filename));
 			image.setInfoId(IdKey.IMAGE.getInfoId(imgid));
 			
-			imageservice.newImage(svcctx, image);
-			
-			gresult.setReturnValue(true);
-			gresult.setMessage("success to save image.", true);
+			gresult = imageservice.newImage(svcctx, image);
+
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when save image",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to save image.", false);
+			ContextHelper.stampContext(e, "excp.new.image");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -98,23 +92,19 @@ public class ImageFacade {
 	/**
 	 * Find image information without retrieve the image binary data. 
 	 **/
-	public static GeneralResult<ImageInfo> findImage(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> imageId){
+	public static ImageInfo findImage(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> imageId)throws CoreException{
 		
-		GeneralResult<ImageInfo> gresult = new GeneralResult<ImageInfo>();
+		ImageInfo gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGE)){
 
 			svcctx.setAuditObject(imageId);
-			ImageInfo imginfo = imageservice.getImage(svcctx, imageId, "");
+			gresult = imageservice.getImage(svcctx, imageId, "");
 			
-			gresult.setReturnValue(imginfo);
-			gresult.setMessage("success to find image.", true);
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when find image",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find image.", false);
+			ContextHelper.stampContext(e, "excp.find.images");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -123,10 +113,10 @@ public class ImageFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<ImageInfo> findImage(AccessPoint accesspoint,
-			Principal principal, String parentPath, String fileName){
+	public static ImageInfo findImage(AccessPoint accesspoint,
+			Principal principal, String parentPath, String fileName)throws CoreException{
 		
-		GeneralResult<ImageInfo> gresult = new GeneralResult<ImageInfo>();
+		ImageInfo gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGE)){
@@ -134,16 +124,11 @@ public class ImageFacade {
 			Long imgid = Images.parseImageId(fileName);
 			InfoId<Long> infoid = IdKey.IMAGE.getInfoId(imgid);
 			
-			ImageInfo imginfo = imageservice.getImage(svcctx, infoid, parentPath);
-			
-			gresult.setReturnValue(imginfo);
-			gresult.setMessage("success to find image.", true);
+			gresult = imageservice.getImage(svcctx, infoid, parentPath);
+		
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when find image",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find image.", false);
+			ContextHelper.stampContext(e, "excp.find.images");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 				
@@ -156,15 +141,14 @@ public class ImageFacade {
 	 * @param imageName the name of new image
 	 * @param imagePath the image file to save
 	 **/
-	public static GeneralResult<Boolean> updateImage(AccessPoint accesspoint,
-			Principal principal,Long imageId, String imageName, String imagePath){
+	public static Boolean updateImage(AccessPoint accesspoint,
+			Principal principal,Long imageId, String imageName, String imagePath)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_IMAGE)){
-			
-			
+
 			ImageInfo image = new ImageInfo();
 			image.setImageName(imageName);
 			
@@ -178,15 +162,11 @@ public class ImageFacade {
 			}
 			image.setInfoId(IdKey.IMAGE.getInfoId(imageId));
 			svcctx.setAuditObject(image.getInfoId());// set audit data
-			imageservice.updateImage(svcctx, image);
-			
-			gresult.setReturnValue(true);
-			gresult.setMessage("success to save image.", true);
+			gresult = imageservice.updateImage(svcctx, image);
+
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when save image",e);
-			gresult.setReturnValue(false);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to save image.", false);
+
+			ContextHelper.stampContext(e, "excp.update.image");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -195,26 +175,22 @@ public class ImageFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> removeImage(AccessPoint accesspoint,
-			Principal principal,Long imageId){
+	public static Boolean removeImage(AccessPoint accesspoint,
+			Principal principal,Long imageId)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_IMAGE)){
 			
 			InfoId<Long> imgid = IdKey.IMAGE.getInfoId(imageId);
 			svcctx.setAuditObject(imgid);
-			boolean done = imageservice.removeImage(svcctx, imgid);			
-			gresult.setReturnValue(done);
-			gresult.setMessage("success to save image.", true);
+			gresult = imageservice.removeImage(svcctx, imgid);			
 			
 		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when save image",e);
-			gresult.setReturnValue(false);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to save image.", false);			
+
+			ContextHelper.stampContext(e, "excp.remove.image");
+		
 		}finally{
 			
 			ContextHelper.handleContext();

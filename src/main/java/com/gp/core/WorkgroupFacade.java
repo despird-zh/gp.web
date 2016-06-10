@@ -1,6 +1,7 @@
 package com.gp.core;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
@@ -11,15 +12,15 @@ import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
-import com.gp.common.GeneralContext.ExecState;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
-import com.gp.common.Tags;
+import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.ActLogInfo;
 import com.gp.info.GroupInfo;
+import com.gp.info.GroupUserInfo;
 import com.gp.info.InfoId;
 import com.gp.info.TagInfo;
 import com.gp.info.UserExInfo;
@@ -27,16 +28,15 @@ import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupExInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.info.WorkgroupLiteInfo;
-import com.gp.info.WorkgroupUserExInfo;
-import com.gp.info.WorkgroupUserInfo;
+import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.ActLogService;
 import com.gp.svc.CommonService;
 import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
-import com.gp.validation.ValidationMessage;
-import com.gp.validation.ValidationUtils;
+import com.gp.validate.ValidateMessage;
+import com.gp.validate.ValidateUtils;
 
 @Component
 public class WorkgroupFacade {
@@ -62,14 +62,22 @@ public class WorkgroupFacade {
 		WorkgroupFacade.tagservice = tagservice;
 	}
 	
-	public static GeneralResult<InfoId<Long>> newWorkgroup(AccessPoint accesspoint,
+	public static boolean newWorkgroup(AccessPoint accesspoint,
 			Principal principal,
 			WorkgroupInfo winfo, 
 			Long pubcapacity, 
 			Long pricapacity, 
-			String imagePath){
-			
-		GeneralResult<InfoId<Long>> gresult = new GeneralResult<InfoId<Long>>();		
+			String imagePath)throws CoreException{
+		
+		boolean gresult = false;		
+		
+		// check the validation of user information
+		Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), winfo);
+		if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+			cexcp.addValidateMessages(vmsg);
+			throw cexcp;
+		}
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_WORKGROUP)){
 			
@@ -83,28 +91,14 @@ public class WorkgroupFacade {
 			// amend the operation information
 			svcctx.setAuditObject(winfo.getInfoId());
 			svcctx.addAuditPredicates(winfo);
-			
-			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), winfo);
-			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
-				gresult.addMessages( vmsg);
-				gresult.setMessage("fail create new workgroup", false);
-				return gresult;
-			}
+
 			// append the capacity setting to context and send to service
-			svcctx.putContextData(WorkgroupService.CTX_KEY_PUBCAPACITY, pubcapacity);
-			svcctx.putContextData(WorkgroupService.CTX_KEY_PRICAPACITY, pricapacity);
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
 			winfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
-			workgroupservice.newWorkgroup(svcctx, winfo);
-			
-			gresult.setReturnValue(winfo.getInfoId());
-			gresult.setMessage("success create new workgroup", true);
-			
+			gresult = workgroupservice.newWorkgroup(svcctx, winfo, pubcapacity, pricapacity);
+	
 		}catch(ServiceException e){
-			LOGGER.error("Exception when create new workgroup",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail create new workgroup", false);
+			ContextHelper.stampContext(e, "excp.new.wgroup");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -112,52 +106,44 @@ public class WorkgroupFacade {
 		return gresult;	
 	}
 	
-	public static GeneralResult<Boolean> updateWorkgroup(AccessPoint accesspoint,
+	public static Boolean updateWorkgroup(AccessPoint accesspoint,
 			Principal principal,
 			WorkgroupInfo winfo, 
 			Long pubcapacity, 
 			Long pricapacity, 
-			String imagePath){
+			String imagePath) throws CoreException{
 			
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();	
-		
+		Boolean gresult = false;	
+		// id not set return directly
+		if(!InfoId.isValid(winfo.getInfoId())){
+			
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.wgroup");
+			cexcp.addValidateMessage("wrokgroupid", "mesg.prop.miss");
+			throw cexcp;
+		}
+
+		// check the validation of user information
+		Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), winfo);
+		if(null != vmsg && vmsg.size() > 0){ // fail pass validation
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+			cexcp.addValidateMessages(vmsg);
+			throw cexcp;
+		}
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_WORKGROUP)){
 			
 			// amend the operation information
 			svcctx.setAuditObject(winfo.getInfoId());
 			svcctx.addAuditPredicates(winfo);
-			// id not set return directly
-			if(!InfoId.isValid(winfo.getInfoId())){
-				
-				gresult.setReturnValue(null);
-				gresult.setMessage("Unknown the workgroup to be updated", false);
-				svcctx.endAudit(ExecState.FAIL, "Unknown the workgroup to be updated");
-				return gresult;	
-			}
 
-			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), winfo);
-			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
-				gresult.addMessages( vmsg);
-				gresult.setMessage("fail create new workgroup", false);
-				svcctx.endAudit(ExecState.FAIL, "fail create new workgroup");
-				return gresult;
-			}
 			// append the capacity setting to context and send to service
-			svcctx.putContextData(WorkgroupService.CTX_KEY_PUBCAPACITY, pubcapacity);
-			svcctx.putContextData(WorkgroupService.CTX_KEY_PRICAPACITY, pricapacity);
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
 			
-			Boolean done = workgroupservice.updateWorkgroup(svcctx, winfo);
-			
-			gresult.setReturnValue(done);
-			gresult.setMessage("success update workgroup", true);
+			gresult = workgroupservice.updateWorkgroup(svcctx, winfo, pubcapacity, pricapacity);
 			
 		}catch(ServiceException e){
-			LOGGER.error("Exception when update workgroup",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail create new workgroup", false);
+			ContextHelper.stampContext(e, "excp.save.wgroup");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -165,27 +151,20 @@ public class WorkgroupFacade {
 		return gresult;	
 	}
 	
-	public static GeneralResult<WorkgroupInfo> findWorkgroup(AccessPoint accesspoint,
+	public static WorkgroupInfo findWorkgroup(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey){
+			InfoId<Long> wkey)throws CoreException{
 		
-		GeneralResult<WorkgroupInfo> gresult = new GeneralResult<WorkgroupInfo>();
+		WorkgroupInfo gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP)){
-			
-			WorkgroupInfo winfo = null;
-			
+
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			
-			winfo = workgroupservice.getWorkgroup(svcctx, wkey);
-
-			gresult.setReturnValue(winfo);
-			gresult.setMessage("success get workgroup", true);
+			gresult = workgroupservice.getWorkgroup(svcctx, wkey);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup",e);
-			gresult.setMessage("fail get workgroup", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e ,"excp.find.wgroups");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -194,33 +173,22 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<WorkgroupExInfo> findWorkgroupEx(AccessPoint accesspoint,
+	public static WorkgroupExInfo findWorkgroupEx(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey){
+			InfoId<Long> wkey)throws CoreException{
 		
-		GeneralResult<WorkgroupExInfo> gresult = new GeneralResult<WorkgroupExInfo>();
+		WorkgroupExInfo gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP)){
-			
-			WorkgroupExInfo winfo = null;
 			
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			
-			winfo = workgroupservice.getWorkgroupEx(svcctx, wkey);
-			
-			if(null == winfo){
-				gresult.setMessage("the workgroup not exist", false);
-			}else{
-				gresult.setReturnValue(winfo);
-				gresult.setMessage("success get workgroup", true);
-			}
-			
+			gresult = workgroupservice.getWorkgroupEx(svcctx, wkey);
+						
 			
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup",e);
-			gresult.setMessage("fail get workgroup", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e,"excp.find.wgroups");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -232,27 +200,23 @@ public class WorkgroupFacade {
 	/**
 	 * Find all the workgroup members 
 	 **/
-	public static GeneralResult<List<WorkgroupUserExInfo>> findWorkgroupMembers(AccessPoint accesspoint,
+	public static List<WorkgroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey, String uname, InfoId<Integer> entityid){
+			InfoId<Long> wkey, String uname,
+			InfoId<Integer> entityid)throws CoreException{
 		
-		GeneralResult<List<WorkgroupUserExInfo>> gresult = new GeneralResult<List<WorkgroupUserExInfo>>();
+		List<WorkgroupMemberInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP_USERS)){
-			
-			List<WorkgroupUserExInfo> winfo = null;
 			
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			
-			winfo = workgroupservice.getWorkgroupMembers(svcctx, wkey, uname, entityid);
+			gresult = workgroupservice.getWorkgroupMembers(svcctx, wkey, uname, entityid);
 
-			gresult.setReturnValue(winfo);
-			gresult.setMessage("success get workgroup member", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup member",e);
-			gresult.setMessage("fail get workgroup member", true);
-			ContextHelper.stampContext(e);
+
+			ContextHelper.stampContext(e, "excp.find.wgroup.mbr");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -264,27 +228,23 @@ public class WorkgroupFacade {
 	/**
 	 * find all the workgroup members support paging on server-side 
 	 **/
-	public static GeneralResult<PageWrapper<WorkgroupUserExInfo>> findWorkgroupMembers(AccessPoint accesspoint,
+	public static PageWrapper<WorkgroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey, String uname, InfoId<Integer> entityid, PageQuery pagequery){
+			InfoId<Long> wkey, String uname, 
+			InfoId<Integer> entityid, PageQuery pagequery)throws CoreException{
 		
-		GeneralResult<PageWrapper<WorkgroupUserExInfo>> gresult = new GeneralResult<PageWrapper<WorkgroupUserExInfo>>();
+		PageWrapper<WorkgroupMemberInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP_USERS)){
-			
-			PageWrapper<WorkgroupUserExInfo> winfo = null;
-			
+
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			
-			winfo = workgroupservice.getWorkgroupMembers(svcctx, wkey, uname, entityid, pagequery);
+			gresult = workgroupservice.getWorkgroupMembers(svcctx, wkey, uname, entityid, pagequery);
 
-			gresult.setReturnValue(winfo);
-			gresult.setMessage("success get workgroup member", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup member",e);
-			gresult.setMessage("fail get workgroup member", true);
-			ContextHelper.stampContext(e);
+
+			ContextHelper.stampContext(e, "excp.find.wgroup.mbr");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -293,25 +253,22 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> removeWorkgroupMember(AccessPoint accesspoint,
+	public static Boolean removeWorkgroupMember(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey, String account){
+			InfoId<Long> wkey, String account)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_WORKGROUP_USER)){
 
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			svcctx.addAuditPredicates(new DefaultKeyValue("member",account));
-			boolean ok = workgroupservice.removeWorkgroupMember(svcctx, wkey, account);
+			gresult = workgroupservice.removeWorkgroupMember(svcctx, wkey, account);
 
-			gresult.setReturnValue(ok);
-			gresult.setMessage("success remove workgroup member", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when remove workgroup member",e);
-			gresult.setMessage("fail remove workgroup member", true);
-			ContextHelper.stampContext(e);
+
+			ContextHelper.stampContext(e, "excp.remove.wgroup.mbr");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -320,39 +277,34 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> addWorkgroupMember(AccessPoint accesspoint,
+	public static Boolean addWorkgroupMember(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey, String account, String role){
+			InfoId<Long> wkey, String account, String role)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ADD_WORKGROUP_USER)){
 
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			svcctx.addAuditPredicates(new DefaultKeyValue("member",account));
-			
-			WorkgroupUserInfo wuinfo = new WorkgroupUserInfo();
+
+			GroupUserInfo wuinfo = new GroupUserInfo();
 			wuinfo.setAccount(account);
 			wuinfo.setRole(role);
-			wuinfo.setWorkgroupId(wkey.getId());			
-			
+
 			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), wuinfo);
+			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), wuinfo);
 			if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
-				gresult.addMessages( vmsg);
-				gresult.setMessage("fail add workgroup member", false);
-				svcctx.endAudit(ExecState.FAIL, "fail add workgroup member");				
-				return gresult;
+				CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+				cexcp.addValidateMessages(vmsg);
+				throw cexcp;
 			}
 			
-			boolean ok = workgroupservice.addWorkgroupMember(svcctx, wuinfo);
-			gresult.setReturnValue(ok);
-			gresult.setMessage("success update workgroup member", true);
+			gresult = workgroupservice.addWorkgroupMember(svcctx,wkey, wuinfo);
+
 		}catch(ServiceException e){
-			LOGGER.error("Exception when update workgroup member",e);
-			gresult.setMessage("fail update workgroup member", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.add.wgroup.mbr");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -361,27 +313,21 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<List<UserExInfo>> findWrokgroupAvailUsers(AccessPoint accesspoint,
+	public static List<UserExInfo> findWrokgroupAvailUsers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> wkey,
-			String uname){
+			String uname)throws CoreException{
 		
-		GeneralResult<List<UserExInfo>> result = new GeneralResult<List<UserExInfo>>();	
+		List<UserExInfo> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
 			svcctx.setAuditObject(wkey);
 			// query accounts information
-			List<UserExInfo> pwrapper = workgroupservice.getAvailableUsers(svcctx, wkey, uname);
-			
-			result.setReturnValue(pwrapper);
-			result.setMessage("success get org members", true);			
-			
+			result = workgroupservice.getAvailableUsers(svcctx, wkey, uname);
+
 		} catch (ServiceException e) {
-			
-			LOGGER.error("Fail query org members",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get org members", false);
+			ContextHelper.stampContext(e, "excp.find.aval.users");
 			
 		}finally{
 			
@@ -391,28 +337,23 @@ public class WorkgroupFacade {
 		return result;
 	}
 	
-	public static GeneralResult<PageWrapper<UserExInfo>> findWrokgroupAvailUsers(AccessPoint accesspoint,
+	public static PageWrapper<UserExInfo> findWrokgroupAvailUsers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> wkey,
-			String uname, PageQuery pagequery){
+			String uname, PageQuery pagequery)throws CoreException{
 		
-		GeneralResult<PageWrapper<UserExInfo>> result = new GeneralResult<PageWrapper<UserExInfo>>();	
+		PageWrapper<UserExInfo> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
 			svcctx.setAuditObject(wkey);
 			// query accounts information
-			PageWrapper<UserExInfo> pwrapper = workgroupservice.getAvailableUsers(svcctx, wkey, uname, pagequery);
-			
-			result.setReturnValue(pwrapper);
-			result.setMessage("success get org members", true);			
+			result = workgroupservice.getAvailableUsers(svcctx, wkey, uname, pagequery);
 			
 		} catch (ServiceException e) {
 			
-			LOGGER.error("Fail query org members",e);
-			ContextHelper.stampContext(e);
-			result.setMessage("fail get org members", false);
-			
+			ContextHelper.stampContext(e, "excp.find.wgroup.aval.users");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -421,21 +362,19 @@ public class WorkgroupFacade {
 		return result;
 	}
 	
-	public static GeneralResult<InfoId<Long>> newWorkgroupGroup(AccessPoint accesspoint,
-			Principal principal, GroupInfo ginfo){
+	public static boolean newWorkgroupGroup(AccessPoint accesspoint,
+			Principal principal, GroupInfo ginfo)throws CoreException{
 		
-		GeneralResult<InfoId<Long>> gresult = new GeneralResult<InfoId<Long>>();
+		boolean gresult = false;
+		// check the validation of user information
+		Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), ginfo);
+		if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+			cexcp.addValidateMessages(vmsg);
+			throw cexcp;
+		}
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_GROUP)){
-			
-			// check the validation of user information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), ginfo);
-			if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
-				gresult.addMessages( vmsg);
-				gresult.setMessage("fail create new group", false);
-				svcctx.endAudit(ExecState.FAIL, "fail create new group");
-				return gresult;
-			}
 
 			if(!InfoId.isValid(ginfo.getInfoId())){
 				
@@ -446,16 +385,11 @@ public class WorkgroupFacade {
 			svcctx.setAuditObject(ginfo.getInfoId());
 			svcctx.addAuditPredicates(ginfo);
 			// query accounts information
-			workgroupservice.addWorkgroupGroup(svcctx, ginfo);
-			
-			gresult.setReturnValue(ginfo.getInfoId());
-			gresult.setMessage("success create workgroup group", true);			
-			
+			gresult  = workgroupservice.addWorkgroupGroup(svcctx, ginfo);
+
 		} catch (ServiceException e) {
-			
-			LOGGER.error("Fail create workgroup group",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail create workgroup group", false);
+
+			ContextHelper.stampContext(e, "excp.add.group");
 			
 		}finally{
 			
@@ -465,27 +399,21 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<List<GroupInfo>> findWorkgroupGroups(AccessPoint accesspoint,
+	public static List<GroupInfo> findWorkgroupGroups(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey, String gname){
+			InfoId<Long> wkey, 
+			String gname) throws CoreException{
 		
-		GeneralResult<List<GroupInfo>> gresult = new GeneralResult<List<GroupInfo>>();
+		List<GroupInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_GROUPS)){
-			
-			List<GroupInfo> winfo = null;
 			
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			
-			winfo = workgroupservice.getWorkgroupGroups(svcctx, wkey, gname);
-
-			gresult.setReturnValue(winfo);
-			gresult.setMessage("success get workgroup groups", true);
+			gresult = workgroupservice.getWorkgroupGroups(svcctx, wkey, gname);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when get workgroup groups",e);
-			gresult.setMessage("fail get workgroup groups", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.find.groups");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -494,52 +422,45 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> removeWorkgroupGroup(AccessPoint accesspoint,
+	public static Boolean removeWorkgroupGroup(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wkey, String group){
+			InfoId<Long> wkey, String group)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_GROUP)){
 
 			// amend the operation information
 			svcctx.setAuditObject(wkey);
 			svcctx.addAuditPredicates(new DefaultKeyValue("group",group));
-			boolean ok = workgroupservice.removeWorkgroupGroup(svcctx, wkey, group);
+			gresult = workgroupservice.removeWorkgroupGroup(svcctx, wkey, group);
 
-			gresult.setReturnValue(ok);
-			gresult.setMessage("success remove workgroup group", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when remove workgroup group",e);
-			gresult.setMessage("fail remove workgroup group", true);
-			ContextHelper.stampContext(e);
-		}finally{
 			
+			ContextHelper.stampContext(e, "excp.remove.group");
+		}finally{
 			ContextHelper.handleContext();
 		}
 		
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> removeWorkgroupGroup(AccessPoint accesspoint,
+	public static Boolean removeWorkgroupGroup(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> groupid){
+			InfoId<Long> groupid)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_GROUP)){
 
 			// amend the operation information
 			svcctx.setAuditObject(groupid);
 
-			boolean ok = workgroupservice.removeWorkgroupGroup(svcctx,  groupid);
+			gresult = workgroupservice.removeWorkgroupGroup(svcctx,  groupid);
 
-			gresult.setReturnValue(ok);
-			gresult.setMessage("success remove workgroup group", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when remove workgroup group",e);
-			gresult.setMessage("fail remove workgroup group", true);
-			ContextHelper.stampContext(e);
+
+			ContextHelper.stampContext(e,"excp.remove.group");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -548,52 +469,42 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> addWorkgroupGroupMembers(AccessPoint accesspoint,
+	public static Boolean addWorkgroupGroupMembers(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> groupid, String ...accounts){
+			InfoId<Long> groupid, String ...accounts)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ADD_GROUP_USER)){
 
 			// amend the operation information
 			svcctx.setAuditObject(groupid);
 
-			boolean ok = workgroupservice.addWorkgroupGroupMember(svcctx, groupid, accounts);
-
-			gresult.setReturnValue(ok);
-			gresult.setMessage("success add workgroup group members", true);
+			gresult = workgroupservice.addWorkgroupGroupMember(svcctx, groupid, accounts);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when add workgroup group members",e);
-			gresult.setMessage("fail add workgroup group members", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e,"excp.add.group.mbr");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		
 		return gresult;
 	}
 	
-	public static GeneralResult<List<UserInfo>> findWorkgroupGroupMembers(AccessPoint accesspoint,
+	public static List<UserInfo> findWorkgroupGroupMembers(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> groupid){
+			InfoId<Long> groupid)throws CoreException{
 		
-		GeneralResult<List<UserInfo>> gresult = new GeneralResult<List<UserInfo>>();
+		List<UserInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_GROUP_USERS)){
 
 			// amend the operation information
 			svcctx.setAuditObject(groupid);
 
-			List<UserInfo> pwrapper = workgroupservice.getWorkgroupGroupMembers(svcctx, groupid);
+			gresult = workgroupservice.getWorkgroupGroupMembers(svcctx, groupid);
 
-			gresult.setReturnValue(pwrapper);
-			gresult.setMessage("success find workgroup group members", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when find workgroup group members",e);
-			gresult.setMessage("fail find workgroup group members", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.find.group.mbrs");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -602,51 +513,41 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> removeWorkgroupGroupMember(AccessPoint accesspoint,
+	public static Boolean removeWorkgroupGroupMember(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> groupid, String account){
+			InfoId<Long> groupid, String account)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		Boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_GROUP_USER)){
 
 			// amend the operation information
 			svcctx.setAuditObject(groupid);
 
-			boolean ok = workgroupservice.removeWorkgroupGroupMember(svcctx, groupid, account);
+			gresult = workgroupservice.removeWorkgroupGroupMember(svcctx, groupid, account);
 
-			gresult.setReturnValue(ok);
-			gresult.setMessage("success remove workgroup group member", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when remove workgroup group member",e);
-			gresult.setMessage("fail remove workgroup group member", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.remove.group.mbr");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		
 		return gresult;
 	}
 	
-	public static GeneralResult<List<WorkgroupExInfo>> findLocalWorkgroups(AccessPoint accesspoint,
+	public static List<WorkgroupExInfo> findLocalWorkgroups(AccessPoint accesspoint,
 			Principal principal,
-			String wgroupname){
+			String wgroupname)throws CoreException{
 		
-		GeneralResult<List<WorkgroupExInfo>> gresult = new GeneralResult<List<WorkgroupExInfo>>();
+		List<WorkgroupExInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
 			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
-			List<WorkgroupExInfo> pwrapper = workgroupservice.getLocalWorkgroups(svcctx, wgroupname);
-
-			gresult.setReturnValue(pwrapper);
-			gresult.setMessage("success find workgroups", true);
+			gresult = workgroupservice.getLocalWorkgroups(svcctx, wgroupname);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when find workgroups",e);
-			gresult.setMessage("fail find workgroups", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.find.wgroups");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -658,51 +559,40 @@ public class WorkgroupFacade {
 	/**
 	 * Find the local workgroup in paging mode
 	 **/
-	public static GeneralResult<PageWrapper<WorkgroupLiteInfo>> findLocalWorkgroups(AccessPoint accesspoint,
+	public static PageWrapper<WorkgroupLiteInfo> findLocalWorkgroups(AccessPoint accesspoint,
 			Principal principal,
-			String wgroupname,List<String> tags, PageQuery pagequery){
+			String wgroupname,List<String> tags, PageQuery pagequery)throws CoreException{
 		
-		GeneralResult<PageWrapper<WorkgroupLiteInfo>> gresult = new GeneralResult<PageWrapper<WorkgroupLiteInfo>>();
+		PageWrapper<WorkgroupLiteInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
 			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
-			PageWrapper<WorkgroupLiteInfo> pwrapper = workgroupservice.getLocalWorkgroups(svcctx, wgroupname, tags, pagequery);
-
-			gresult.setReturnValue(pwrapper);
-			gresult.setMessage("success find workgroups", true);
+			gresult = workgroupservice.getLocalWorkgroups(svcctx, wgroupname, tags, pagequery);
 			
 		}catch(ServiceException e){
-			LOGGER.error("Exception when find workgroups",e);
-			gresult.setMessage("fail find workgroups", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.find.wgroups");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
-		
 		return gresult;
 	}
 	
-	public static GeneralResult<List<WorkgroupExInfo>> findMirrorWorkgroups(AccessPoint accesspoint,
+	public static List<WorkgroupExInfo> findMirrorWorkgroups(AccessPoint accesspoint,
 			Principal principal,
-			String wgroupname){
+			String wgroupname)throws CoreException{
 		
-		GeneralResult<List<WorkgroupExInfo>> gresult = new GeneralResult<List<WorkgroupExInfo>>();
+		List<WorkgroupExInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
 			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
-			List<WorkgroupExInfo> pwrapper = workgroupservice.getMirrorWorkgroups(svcctx, wgroupname);
+			gresult = workgroupservice.getMirrorWorkgroups(svcctx, wgroupname);
 
-			gresult.setReturnValue(pwrapper);
-			gresult.setMessage("success find workgroups", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when find workgroups",e);
-			gresult.setMessage("fail find workgroups", true);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.find.wgroup");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -718,25 +608,22 @@ public class WorkgroupFacade {
 	 * @param pquery the page query
 	 *  
 	 **/
-	public static GeneralResult<PageWrapper<ActLogInfo>> findWorkgroupActivityLogs(AccessPoint accesspoint,
+	public static PageWrapper<ActLogInfo> findWorkgroupActivityLogs(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wid, PageQuery pquery){
+			InfoId<Long> wid, PageQuery pquery)throws CoreException{
 		
-		GeneralResult<PageWrapper<ActLogInfo>> gresult = new GeneralResult<PageWrapper<ActLogInfo>>();
+		PageWrapper<ActLogInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACT_LOGS)){
 
 			// amend the operation information
 			svcctx.setAuditObject(wid);
-			PageWrapper<ActLogInfo> logs = actlogservice.getWorkgroupActivityLogs(svcctx, wid, pquery);
+			gresult = actlogservice.getWorkgroupActivityLogs(svcctx, wid, pquery);
 
-			gresult.setReturnValue(logs);
-			gresult.setMessage("success find workgroup activity logs", true);
 		}catch(ServiceException e){
-			LOGGER.error("Exception when find workgroup activity logs",e);
-			gresult.setMessage("fail find workgroup activity logs", true);
-			ContextHelper.stampContext(e);
+
+			ContextHelper.stampContext(e, "excp.find.actlogs");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -749,27 +636,24 @@ public class WorkgroupFacade {
 	 * Find the tags attached on the work group
 	 * @param wid the work group id 
 	 **/
-	public static GeneralResult<List<TagInfo>> findWorkgroupTags(AccessPoint accesspoint,
+	public static List<TagInfo> findWorkgroupTags(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wid ){
+			InfoId<Long> wid )throws CoreException{
 		
-		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
+		List<TagInfo> gresult = null;
 		if(!InfoId.isValid(wid)){
-			gresult.setMessage("workgroup id is required", false);
-			return gresult;
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.actlogs");
+			cexcp.addValidateMessage("wrokgroupid", "mesg.prop.miss");
+			throw cexcp;
 		}
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
-			List<TagInfo> list = tagservice.getTags(svcctx, null, wid);
-			gresult.setReturnValue(list);
-			gresult.setMessage("success find work group tags", true);
-			
+			gresult = tagservice.getTags(svcctx, null, wid);
+
 		}catch(ServiceException e){
-			LOGGER.error("Exception when find work group tags",e);
-			gresult.setMessage("fail find work group tags", false);
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e, "excp.find.actlogs");
 		}finally{
 			
 			ContextHelper.handleContext();

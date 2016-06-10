@@ -23,6 +23,7 @@ import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.GeneralResult;
 import com.gp.core.ImageFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.ImageInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -49,15 +50,12 @@ public class ImagesListController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		
-		GeneralResult<List<ImageInfo>> gresult = null;		
-		gresult = ImageFacade.findImages(accesspoint, principal, format);
-		
-		if(gresult.isSuccess()){
+		ActionResult ars = new ActionResult();
+		try{
 			List<Image> images = new ArrayList<Image>();		
-			
+			List<ImageInfo> gresult = ImageFacade.findImages(accesspoint, principal, format);
 			String image_cache = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
-			for(ImageInfo info: gresult.getReturnValue()){
+			for(ImageInfo info: gresult){
 				
 				Image img = new Image();
 				img.setImageId(info.getInfoId().getId());
@@ -74,14 +72,14 @@ public class ImagesListController  extends BaseController{
 				images.add(img);
 			}
 			
-			mav.addObject(MODEL_KEY_ROWS,images);
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
-			
-		}else{
+			ars.setState(ActionResult.SUCCESS);
+			ars.setMessage(getMessage("mesg.find.images", principal.getLocale()));
+			ars.setData(images);
+
+		}catch(CoreException ce){
 						
-			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			ars.setState(ActionResult.ERROR);
+			ars.setMessage(ce.getMessage());
 		}
 		return mav;
 	}
@@ -96,16 +94,21 @@ public class ImagesListController  extends BaseController{
 		String relativeUri = "/" + imagePath + '/' + cachedFileName;
 		String realPath = request.getServletContext().getRealPath(relativeUri);
 		LOGGER.debug(relativeUri);
-		
+		// new operation 
+        ActionResult rmsg = new ActionResult();
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		ImageFacade.saveImage(accesspoint, principal, realPath, srcFileName);
-    	// new operation 
-        ActionResult rmsg = new ActionResult();
-        rmsg.setMessage("OK");
-        rmsg.setState("200");
-        rmsg.setData("../" + imagePath + '/' + cachedFileName);
-        
+		try {
+			ImageFacade.saveImage(accesspoint, principal, realPath, srcFileName);
+				    	
+	        rmsg.setMessage("OK");
+	        rmsg.setState("200");
+	        rmsg.setData("../" + imagePath + '/' + cachedFileName);
+		} catch (CoreException e) {
+			
+			e.printStackTrace();
+		}
+
         mav.addAllObjects(rmsg.asMap());
         
         return mav;
@@ -137,11 +140,15 @@ public class ImagesListController  extends BaseController{
 		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		GeneralResult<Boolean> gresult = ImageFacade.updateImage(accesspoint, principal,Long.valueOf(imgId), imgName, realPath);
-		if(gresult.isSuccess() && gresult.getReturnValue()){
+		try {
+			ImageFacade.updateImage(accesspoint, principal,Long.valueOf(imgId), imgName, realPath);
+	
 			rmsg.setMessage("Success in update the image");
 			rmsg.setState(ActionResult.SUCCESS);
 			rmsg.setData("../" + imagePath + '/' + imgSrc);
+		} catch (CoreException e) {
+			
+			e.printStackTrace();
 		}
         mav.addAllObjects(rmsg.asMap());
         
@@ -161,11 +168,14 @@ public class ImagesListController  extends BaseController{
 		
     	Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
+		try{
+			ImageFacade.removeImage(accesspoint, principal,Long.valueOf(imgId));
 		
-		GeneralResult<Boolean> gresult = ImageFacade.removeImage(accesspoint, principal,Long.valueOf(imgId));
-		if(gresult.isSuccess() && gresult.getReturnValue()){
 			rmsg.setMessage("Success remove the image");
 			rmsg.setState(ActionResult.SUCCESS);
+		} catch (CoreException e) {
+			
+			e.printStackTrace();
 		}
         mav.addAllObjects(rmsg.asMap());
         

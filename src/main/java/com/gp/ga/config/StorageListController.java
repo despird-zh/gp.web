@@ -22,8 +22,8 @@ import com.gp.common.Storages;
 import com.gp.common.Storages.StorageState;
 import com.gp.common.Storages.StorageType;
 import com.gp.common.Storages.StoreSetting;
-import com.gp.core.GeneralResult;
 import com.gp.core.StorageFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.StorageInfo;
 import com.gp.util.CommonUtils;
@@ -85,16 +85,15 @@ public class StorageListController extends BaseController{
 		}
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		
+		ActionResult aresult = new ActionResult();
 		ModelAndView mav = super.getJsonModelView();
 		
-		GeneralResult<List<StorageInfo>> gresult = StorageFacade.findStorages(accesspoint, 
+		try{
+			List<StorageInfo> gresult = StorageFacade.findStorages(accesspoint, 
 				principal, 
 				namecond, types, states);
 		
-		if(gresult.isSuccess()){
-			
-			for(StorageInfo sinfo : gresult.getReturnValue()){
+			for(StorageInfo sinfo : gresult){
 				
 				Storage storage = new Storage();
 				storage.setStorageId(sinfo.getInfoId().getId());
@@ -116,15 +115,14 @@ public class StorageListController extends BaseController{
 				
 				rows.add(storage);
 			}
+			aresult.setData(rows);
+			aresult.setState(ActionResult.SUCCESS);
+			aresult.setMessage(getMessage("mesg.find.storage", principal.getLocale()));
+		}catch(CoreException ce){
 			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
-
-			mav.addObject(MODEL_KEY_ROWS, rows);
-		}else{
-			
-			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		return mav;
@@ -163,17 +161,16 @@ public class StorageListController extends BaseController{
 		sinfo.setState(storage.getState());
 		sinfo.setStorageType(storage.getType());
 		sinfo.setStorageName(storage.getName());
-		
-		GeneralResult<Boolean> gresult = StorageFacade.saveStorage(accesspoint, principal, sinfo);
-
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
+		try{
 			
+			StorageFacade.saveStorage(accesspoint, principal, sinfo);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.save.storage", principal.getLocale()));
+			
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(aresult.asMap());
@@ -188,16 +185,16 @@ public class StorageListController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult aresult = new ActionResult();
+		
 		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
-		GeneralResult<Boolean> gresult = StorageFacade.removeStorage(accesspoint, principal, sid);
-		if(!gresult.isSuccess() || !gresult.getReturnValue()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			StorageFacade.removeStorage(accesspoint, principal, sid);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.remove.storage", principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		mav.addAllObjects(aresult.asMap());
 		return mav;
@@ -215,14 +212,8 @@ public class StorageListController extends BaseController{
 		ActionResult aresult = new ActionResult();
 		
 		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
-		GeneralResult<StorageInfo> gresult = StorageFacade.findStorage(accesspoint, principal, sid);
-		StorageInfo sinfo = gresult.getReturnValue();
-		if(!gresult.isSuccess() || sinfo == null){
-			
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-		}else{
-
+		try{
+			StorageInfo sinfo = StorageFacade.findStorage(accesspoint, principal, sid);
 			storage.setStorageId(sinfo.getInfoId().getId());
 			storage.setName(sinfo.getStorageName());
 			storage.setState(sinfo.getState());
@@ -237,8 +228,13 @@ public class StorageListController extends BaseController{
 			storage.setHdfsPort((String)setting.get(StoreSetting.HdfsPort.name()));
 			
 			aresult.setData(storage);
-			aresult.setMessage(gresult.getMessage());
-		}	
+			aresult.setState(ActionResult.SUCCESS);
+			aresult.setMessage(getMessage("mesg.find.storage", principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+		}
+		
 		mav.addAllObjects(aresult.asMap());
 		return mav;	
 	}

@@ -7,8 +7,9 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.common.Users;
+import com.gp.common.GroupUsers;
 import com.gp.core.SecurityFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.UserInfo;
 import com.gp.svc.SystemService;
 
@@ -26,7 +27,7 @@ public class SecurityFacadeTest  extends AbstractJUnit4SpringContextTests{
 				"127.0.0.1",
 				"web",
 				"0.1");
-		Principal principal = Users.PESUOD_USER;
+		Principal principal = GroupUsers.PESUOD_USER;
 		
 		UserInfo admin = new UserInfo();
 		admin.setAccount("admin");
@@ -37,10 +38,15 @@ public class SecurityFacadeTest  extends AbstractJUnit4SpringContextTests{
 		admin.setPassword("1");
 		admin.setMobile("18601253554");
 		admin.setPhone("52436454");
-		admin.setType(Users.UserType.INLINE.name());
-		admin.setState(Users.UserState.ACTIVE.name());
+		admin.setType(GroupUsers.UserType.INLINE.name());
+		admin.setState(GroupUsers.UserState.ACTIVE.name());
 		
-		SecurityFacade.newAccount(ap, principal, admin, null, null);
+		try {
+			SecurityFacade.newAccount(ap, principal, admin, null, null);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }

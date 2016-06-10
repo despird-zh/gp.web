@@ -2,7 +2,8 @@ package com.gp.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.gp.validation.ValidationMessage;
+
+import com.gp.validate.ValidateMessage;
 
 /**
  * Wrap the result value and necessary message, it's mostly used in core facade classed.
@@ -18,9 +19,9 @@ public class GeneralResult<R> {
 	/** the return value */
 	private R returnValue = null;
 	/** the message holder */
-	private List<ValidationMessage> messages = null;
+	private List<ValidateMessage> messages = null;
 	
-	private ValidationMessage defaultmsg = new ValidationMessage(SUCCESS, null);
+	private ValidateMessage defaultmsg = new ValidateMessage(SUCCESS, null);
 	
 	/**
 	 * get the return value 
@@ -57,7 +58,7 @@ public class GeneralResult<R> {
 	/**
 	 * get the message  
 	 **/
-	public List<ValidationMessage> getMessages(){
+	public List<ValidateMessage> getMessages(){
 		
 		return messages;
 	}
@@ -65,7 +66,7 @@ public class GeneralResult<R> {
 	/**
 	 * put validation message list of certain category
 	 **/
-	public void addMessages(List<ValidationMessage> messagelist){
+	public void addMessages(List<ValidateMessage> messagelist){
 		
 		if(messages == null){
 			messages = messagelist;
@@ -94,9 +95,9 @@ public class GeneralResult<R> {
 	/**
 	 * put message to certain category
 	 **/
-	public void addMessage(ValidationMessage message){
+	public void addMessage(ValidateMessage message){
 		if(messages == null){
-			messages = new ArrayList<ValidationMessage>();
+			messages = new ArrayList<ValidateMessage>();
 		}
 		messages.add(message);
 	}

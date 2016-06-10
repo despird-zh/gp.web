@@ -1,10 +1,7 @@
 package com.gp.ga.sysinfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,8 +14,8 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Instances.State;
 import com.gp.common.Principal;
-import com.gp.core.GeneralResult;
 import com.gp.core.InstanceFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.InstanceInfo;
 import com.gp.util.CommonUtils;
@@ -58,18 +55,14 @@ public class BasicInfoController extends BaseController{
 			rst.setState(ActionResult.ERROR);
 			rst.setMessage("parameter [instanceid] must be number.");
 		}else{
-			Principal princ = super.getPrincipalFromShiro();
+			Principal principal = super.getPrincipalFromShiro();
 			AccessPoint ap = super.getAccessPoint(request);
 			
 			InfoId<Integer> id = IdKey.INSTANCE.getInfoId(Integer.valueOf(instanceId));
-			InstanceInfo instinfo ;
-			GeneralResult<InstanceInfo> gresult = InstanceFacade.findInstance(ap, princ, id);
-			instinfo = gresult.getReturnValue();
-			if(!gresult.isSuccess() || instinfo == null){
-				
-				rst.setState(ActionResult.ERROR);
-				rst.setMessage(gresult.getMessage());
-			}else{
+			
+			
+			try{
+				InstanceInfo instinfo  = InstanceFacade.findInstance(ap, principal, id);
 				Instance data = new Instance();
 				
 				data.setAbbr(instinfo.getAbbr());
@@ -84,9 +77,13 @@ public class BasicInfoController extends BaseController{
 				data.setName(instinfo.getInstanceName());
 				data.setInstanceId(instinfo.getInfoId().getId());
 				data.setGlobalId(instinfo.getHashKey());
+				
 				rst.setData(data);
-				rst.setMessage(gresult.getMessage());
-			}				
+				rst.setMessage(getMessage("mesg.find.instance", principal.getLocale()));
+			}catch(CoreException ce){
+				rst.setState(ActionResult.ERROR);
+				rst.setMessage(ce.getMessage());
+			}	
 		}
 	
 		mav.addAllObjects(rst.asMap());
@@ -105,16 +102,17 @@ public class BasicInfoController extends BaseController{
 		
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
-		
-		GeneralResult<Boolean> grst = InstanceFacade.changeInstanceState(ap, princ, id, State.valueOf(stateStr));
-		if(!grst.isSuccess() || !grst.getReturnValue()){
-			rst.setState(ActionResult.ERROR);
-			rst.setMessage(grst.getMessage());
-			rst.setDetailmsgs(grst.getMessages());
-		}else{
-			
+
+		try{
+			InstanceFacade.changeInstanceState(ap, princ, id, State.valueOf(stateStr));
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(grst.getMessage());
+			rst.setMessage(getMessage("mesg.change.instance.state", princ.getLocale()));
+			
+		}catch(CoreException ce){
+			
+			rst.setState(ActionResult.ERROR);
+			rst.setMessage(ce.getMessage());
+			rst.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(rst.asMap());
@@ -146,15 +144,14 @@ public class BasicInfoController extends BaseController{
 		instinfo.setInstanceName(data.getName());
 		instinfo.setHashKey(data.getGlobalId());
 
-		GeneralResult<Boolean> grst = InstanceFacade.saveExtInstance(ap, princ, instinfo);
-		if(!grst.isSuccess() || !grst.getReturnValue()){
-			rst.setState(ActionResult.ERROR);
-			rst.setMessage(grst.getMessage());
-			rst.setDetailmsgs(grst.getMessages());
-		}else{
-			
+		try{
+			InstanceFacade.saveExtInstance(ap, princ, instinfo);
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(grst.getMessage());
+			rst.setMessage(getMessage("mesg.save.instance.ext", princ.getLocale()));
+		}catch(CoreException ce){
+			rst.setState(ActionResult.ERROR);
+			rst.setMessage(ce.getMessage());
+			rst.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(rst.asMap());
@@ -189,15 +186,16 @@ public class BasicInfoController extends BaseController{
 		instinfo.setInstanceName(data.getName());
 		instinfo.setHashKey(data.getGlobalId());
 
-		GeneralResult<Boolean> grst = InstanceFacade.saveInstance(ap, princ, instinfo);
-		if(!grst.isSuccess() || !grst.getReturnValue()){
-			rst.setState(ActionResult.ERROR);
-			rst.setMessage(grst.getMessage());
-			rst.setDetailmsgs(grst.getMessages());
-		}else{
-			
+		try{
+			InstanceFacade.saveInstance(ap, princ, instinfo);
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(grst.getMessage());
+			rst.setMessage(getMessage("mesg.save.instance", princ.getLocale()));
+			
+		}catch(CoreException ce){
+			
+			rst.setState(ActionResult.ERROR);
+			rst.setMessage(ce.getMessage());
+			rst.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(rst.asMap());
@@ -211,13 +209,13 @@ public class BasicInfoController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		String name = request.getParameter("instanceName");
 
+		Principal princ = super.getPrincipalFromShiro();
+		AccessPoint ap = super.getAccessPoint(request);
 		List<Instance> list = new ArrayList<Instance>();
-		Principal principal = super.getPrincipalFromShiro();
-		Map<String,Object> pagedata = new HashMap<String,Object>();
-
-		GeneralResult<List<InstanceInfo>> gresult = InstanceFacade.findInstances(getAccessPoint(request), principal, name);
-		if(gresult.isSuccess()){
-			List<InstanceInfo> instances = gresult.getReturnValue();
+		ActionResult rst = new ActionResult();
+		try{
+			
+			List<InstanceInfo> instances = InstanceFacade.findInstances(ap, princ, name);
 			for(InstanceInfo instinfo: instances){
 				Instance data = new Instance();
 				data.setAbbr(instinfo.getAbbr());
@@ -235,15 +233,17 @@ public class BasicInfoController extends BaseController{
 				data.setState(instinfo.getState());
 				list.add(data);
 			}
-			pagedata.put(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			pagedata.put(MODEL_KEY_MESSAGE, gresult.getMessage());
-			pagedata.put(MODEL_KEY_ROWS, list);
-		}else{
-			pagedata.put(MODEL_KEY_STATE, ActionResult.ERROR);
-			pagedata.put(MODEL_KEY_MESSAGE, gresult.getMessage());
+			rst.setData(list);
+			rst.setState(ActionResult.SUCCESS);
+			rst.setMessage(getMessage("mesg.find.instance", princ.getLocale()));
+		}catch(CoreException ce){
+			
+			rst.setState(ActionResult.ERROR);
+			rst.setMessage(ce.getMessage());
+			rst.setDetailmsgs(ce.getValidateMessages());
 		}
 		ModelAndView mav = getJsonModelView();		
-		mav.addAllObjects(pagedata);
+		mav.addAllObjects(rst.asMap());
 
 		return mav;		
 	}

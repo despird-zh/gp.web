@@ -16,8 +16,8 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.Storages;
 import com.gp.common.Storages.StoreSetting;
-import com.gp.core.GeneralResult;
 import com.gp.core.StorageFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.StorageInfo;
 import com.gp.web.ActionResult;
@@ -69,16 +69,15 @@ public class StorageAddController extends BaseController{
 		sinfo.setStorageType(storage.getType());
 		sinfo.setStorageName(storage.getName());
 		sinfo.setUsed(0l);
-		GeneralResult<InfoId<Integer>> gresult = StorageFacade.newStorage(accesspoint, principal, sinfo);
-
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		
+		try{
+			InfoId<Integer> gresult = StorageFacade.newStorage(accesspoint, principal, sinfo);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.new.storage", principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(aresult.asMap());

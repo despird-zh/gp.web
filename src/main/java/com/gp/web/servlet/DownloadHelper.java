@@ -20,6 +20,7 @@ import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.GeneralResult;
+import com.gp.exception.CoreException;
 import com.gp.info.CabFileInfo;
 import com.gp.info.InfoId;
 import com.gp.storage.ContentRange;
@@ -45,7 +46,7 @@ public class DownloadHelper {
 	 *             If something fails at I/O level.
 	 */
 	public static void processRequest(HttpServletRequest request, HttpServletResponse response, boolean content)
-			throws IOException {
+			throws IOException , CoreException{
 
 		// Get requested file by path info : /10202.0192.doc
 		// Here the full URI will be : /transfer/10202.0192.doc
@@ -57,18 +58,14 @@ public class DownloadHelper {
 		Principal principal = BaseController.getPrincipalFromShiro();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
-		GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
-		CabFileInfo cabfile = null;
+		CabFileInfo cabfile = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
 		// Check if file is actually supplied to the request URL.
-		if (gresult.getReturnValue() == null) {
+		if (cabfile == null) {
 			// Do your thing if the file is not supplied to the request URL.
 			// Throw an exception, or send 404, or show default/warning page, or
 			// just ignore it.
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
-		}else{
-			
-			cabfile = gresult.getReturnValue();
 		}
 
 		// Prepare some variables. The ETag is an unique identifier of the file.

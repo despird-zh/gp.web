@@ -45,8 +45,8 @@ public class WebException extends BaseException{
 			rb = loadResourceBundle(locale, WebException.class);
 			web_bundles.put(locale, rb);
 		}
-		String messagePattern = (rb == null) ? errorcode : rb.getString(errorcode);
-		if(StringUtils.isBlank(messagePattern)){
+		String messagePattern =  (rb == null || !rb.containsKey(errorcode)) ? errorcode :  rb.getString(errorcode);
+		if(StringUtils.equals(messagePattern, errorcode)){
 			return super.findMessage(locale, errorcode, param);
 		}
 		return MessageFormat.format(messagePattern, param);

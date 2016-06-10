@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gp.common.GeneralConfig;
 import com.gp.common.SystemOptions;
+import com.gp.exception.CoreException;
 import com.gp.storage.ContentRange;
 
 /**
@@ -43,20 +44,23 @@ public class TransferServlet extends HttpServlet {
     	
         // parse the request
     	PartMeta fmeta = processRequest(request);            
-
-    	if(fmeta.isChunkPart()){
-    		UploadHelper.storeFileChunk(upload_cache, fmeta, request);
-    	}else{
-    		UploadHelper.storeFile(upload_cache, fmeta, request);
-    	}
-        // prepare write back json string
-        response.setContentType("application/json");
- 
-        // Convert FilePart into JSON format
-        ObjectMapper mapper = new ObjectMapper();
-        // Send result to client
-        mapper.writeValue(response.getOutputStream(), fmeta);
- 
+    	try {
+	    	if(fmeta.isChunkPart()){
+	    		UploadHelper.storeFileChunk(upload_cache, fmeta, request);
+	    	}else{
+	    		UploadHelper.storeFile(upload_cache, fmeta, request);
+	    	}
+	        // prepare write back json string
+	        response.setContentType("application/json");
+	 
+	        // Convert FilePart into JSON format
+	        ObjectMapper mapper = new ObjectMapper();
+	        // Send result to client
+	        mapper.writeValue(response.getOutputStream(), fmeta);
+    	} catch (CoreException e) {
+			
+			e.printStackTrace();
+		}
     }
     
     /**
@@ -69,7 +73,12 @@ public class TransferServlet extends HttpServlet {
       throws ServletException, IOException
     {
     	// Process request without content.
-    	DownloadHelper.processRequest(request, response, false);
+    	try {
+			DownloadHelper.processRequest(request, response, false);
+		} catch (CoreException e) {
+			
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -82,7 +91,12 @@ public class TransferServlet extends HttpServlet {
       throws ServletException, IOException
     {
     	// Process request with content.
-    	DownloadHelper.processRequest(request, response, true);
+    	try {
+			DownloadHelper.processRequest(request, response, true);
+		} catch (CoreException e) {
+			
+			e.printStackTrace();
+		}
     }
 
     /**

@@ -1,9 +1,7 @@
 package com.gp.ga.security;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,12 +21,12 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
-import com.gp.common.Users;
-import com.gp.common.Users.UserState;
-import com.gp.common.Users.UserType;
+import com.gp.common.GroupUsers;
+import com.gp.common.GroupUsers.UserState;
+import com.gp.common.GroupUsers.UserType;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.SecurityFacade;
+import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.CabinetInfo;
 import com.gp.info.InfoId;
@@ -36,7 +34,6 @@ import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
-import com.gp.validation.ValidationMessage;
 
 @Controller("ga-account-list-ctlr")
 @RequestMapping("/ga")
@@ -76,14 +73,14 @@ public class AccountListController extends BaseController{
 	public ModelAndView doAccountSearch(HttpServletRequest request, HttpServletResponse response) throws WebException {
 				
 		List<Account> list = new ArrayList<Account>();
-		Map<String,Object> pagedata = new HashMap<String,Object>();
-		
+
 		Principal principal = super.getPrincipalFromShiro();
 
 		String uname = request.getParameter("uname");
 		String instanceStr = request.getParameter("instance_id");
 		String type = request.getParameter("type");
 		String state = request.getParameter("state");
+		ActionResult result = new ActionResult();		
 		Integer instanceId = null;
 		if(StringUtils.isNotBlank(instanceStr) && CommonUtils.isNumeric(instanceStr))
 			instanceId = Integer.valueOf(instanceStr);
@@ -106,14 +103,14 @@ public class AccountListController extends BaseController{
 		}else{
 			states = new String[]{state};
 		}
-		GeneralResult<List<UserExInfo>> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
+		
+		try{
+			List<UserExInfo> ulist = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
 				uname, // name
 				instanceId,  // entity
 				types,  // type
 				states); // state
-		
-		if(cresult.isSuccess()){
-			List<UserExInfo> ulist = cresult.getReturnValue();
+
 			for(UserExInfo info: ulist){
 				
 				Account ui = new Account();
@@ -134,17 +131,18 @@ public class AccountListController extends BaseController{
 				list.add(ui);
 			}			
 			
-			pagedata.put(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			pagedata.put(MODEL_KEY_MESSAGE, cresult.getMessage());
-			pagedata.put(MODEL_KEY_ROWS, list);
-		}else{
+			result.setState(ActionResult.SUCCESS);
+			result.setData(list);
+			result.setMessage(getMessage("mesg.find.account", principal.getLocale()));
+		}catch(CoreException ce){
 
-			pagedata.put(MODEL_KEY_STATE, ActionResult.ERROR);
-			pagedata.put(MODEL_KEY_MESSAGE, cresult.getMessage());
+			result.setState(ActionResult.ERROR);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();		
-		mav.addAllObjects(pagedata);
+		mav.addAllObjects(result.asMap());
 
 		return mav;
 	}
@@ -179,18 +177,16 @@ public class AccountListController extends BaseController{
 		Long pubcapacity = account.getPubcapacity();
 		Long pricapacity = account.getPricapacity();
 		
-		GeneralResult<Boolean> gresult = SecurityFacade.saveAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
-		
-		if(!gresult.isSuccess() && gresult.hasValidationMessage()){
-			List<ValidationMessage> msg = gresult.getMessages();
+		try{
+			SecurityFacade.saveAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.save.account", principal.getLocale()));
+			
+		}catch(CoreException ce){
 			
 			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
-			result.setDetailmsgs(msg);
-		}else{
-			
-			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();		
@@ -223,11 +219,10 @@ public class AccountListController extends BaseController{
 			userkey = IdKey.USER.getInfoId(userId);
 		}
 
-		GeneralResult<UserExInfo> gresult = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
 		ActionResult result = new ActionResult();
 		
-		if(gresult.isSuccess() && gresult.getReturnValue() != null){
-			UserExInfo info = gresult.getReturnValue();
+		try{
+			UserExInfo info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
 			Account ui = new Account();
 			ui.setUserId(info.getInfoId().getId());
 			ui.setSourceId(info.getSourceId());
@@ -243,8 +238,8 @@ public class AccountListController extends BaseController{
 			ui.setTimezone(info.getTimeZone());
 			ui.setStorageName(info.getStorageName());
 			
-			GeneralResult<List<CabinetInfo>> cabs = CabinetFacade.findPersonCabinets(accesspoint,Users.PESUOD_USER,info.getAccount());
-			for(CabinetInfo cinfo: cabs.getReturnValue()){
+			List<CabinetInfo> cabs = CabinetFacade.findPersonCabinets(accesspoint,GroupUsers.PESUOD_USER,info.getAccount());
+			for(CabinetInfo cinfo: cabs){
 				if(Cabinets.CabinetType.NETDISK.name().equals(cinfo.getCabinetType()))
 					ui.setPricapacity(cinfo.getCapacity());
 				
@@ -252,11 +247,11 @@ public class AccountListController extends BaseController{
 					ui.setPubcapacity(cinfo.getCapacity());
 			}
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(getMessage("mesg.find.account", principal.getLocale()));
 			result.setData(ui);
-		}else{
+		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(ce.getMessage());
 		}
 		ModelAndView mav = getJsonModelView();		
 		mav.addAllObjects(result.asMap());
@@ -281,14 +276,15 @@ public class AccountListController extends BaseController{
 			userId = Long.valueOf(uid);
 			userkey = IdKey.USER.getInfoId(userId);
 		}
-		GeneralResult<Boolean> gresult = SecurityFacade.removeAccount(accesspoint, principal, userkey, account);
-		if(gresult.isSuccess() && gresult.getReturnValue()){
-			
+		
+		
+		try{
+			SecurityFacade.removeAccount(accesspoint, principal, userkey, account);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
-		}else{
+			result.setMessage(getMessage("mesg.remove.account", principal.getLocale()));
+		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(ce.getMessage());
 		}
 		ModelAndView mav = getJsonModelView();		
 		mav.addAllObjects(result.asMap());

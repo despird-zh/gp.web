@@ -27,7 +27,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the messages
 	 * 
 	 **/
-	public GeneralResult<PageWrapper<MessageInfo>> findMessages(ServiceContext svcctx, String account){
+	public PageWrapper<MessageInfo> findMessages(ServiceContext svcctx, String account){
 		return null;
 		
 	}
@@ -38,7 +38,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the notifications
 	 * 
 	 **/
-	public GeneralResult<PageWrapper<MessageInfo>> findNotifications(ServiceContext svcctx, String account){
+	public PageWrapper<MessageInfo> findNotifications(ServiceContext svcctx, String account){
 		return null;
 		
 	}
@@ -49,7 +49,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the tasks
 	 * 
 	 **/
-	public GeneralResult<PageWrapper<TaskInfo>> findTasks(ServiceContext svcctx, String account){
+	public PageWrapper<TaskInfo> findTasks(ServiceContext svcctx, String account){
 		return null;
 		
 	}

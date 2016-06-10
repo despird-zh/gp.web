@@ -1,10 +1,10 @@
 package com.gp.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import com.gp.validation.ValidationMessage;
+import com.gp.validate.ValidateMessage;
 
 /**
  **/
@@ -14,7 +14,7 @@ public class ActionResult  extends BaseResult{
 
 	private Object data = null;
 	
-	private List<ValidationMessage> detailmsgs = null;
+	private Set<ValidateMessage> detailmsgs = null;
 	
 	public String getMessage() {
 		return message;
@@ -46,11 +46,11 @@ public class ActionResult  extends BaseResult{
 		return map;
 	}
 
-	public List<ValidationMessage> getDetailmsgs() {
+	public Set<ValidateMessage> getDetailmsgs() {
 		return detailmsgs;
 	}
 
-	public void setDetailmsgs(List<ValidationMessage> detailmsgs) {
+	public void setDetailmsgs(Set<ValidateMessage> detailmsgs) {
 		this.detailmsgs = detailmsgs;
 	}
 }

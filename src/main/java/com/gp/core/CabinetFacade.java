@@ -25,6 +25,7 @@ import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.GeneralContext.ExecState;
+import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
@@ -42,8 +43,8 @@ import com.gp.svc.TagService;
 import com.gp.svc.CommonService;
 import com.gp.svc.FavoriteService;
 import com.gp.util.DateTimeUtils;
-import com.gp.validation.ValidationMessage;
-import com.gp.validation.ValidationUtils;
+import com.gp.validate.ValidateMessage;
+import com.gp.validate.ValidateUtils;
 
 @Component
 public class CabinetFacade {
@@ -81,22 +82,21 @@ public class CabinetFacade {
 	/**
 	 * Find the Cabinets of an account. include public and private cabinet. 
 	 **/
-	public static GeneralResult<List<CabinetInfo>> findPersonCabinets(AccessPoint accesspoint,
+	public static List<CabinetInfo> findPersonCabinets(AccessPoint accesspoint,
 			Principal principal,
-			String account){
+			String account) throws CoreException{
 		
-		GeneralResult<List<CabinetInfo>> gresult  =  new GeneralResult<List<CabinetInfo>>();
+		List<CabinetInfo> gresult  = null;
 	
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_CABINETS)){
 			
-			List<CabinetInfo> cabs = cabinetservice.getCabinets(svcctx, account);
-			gresult.setReturnValue(cabs);
-			gresult.setMessage("success to find person cabinets.", true);
+			gresult = cabinetservice.getCabinets(svcctx, account);
+
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when find instance",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find person cabinets.", false);
+
+			ContextHelper.stampContext(e, "excp.personal.cabs");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -106,10 +106,10 @@ public class CabinetFacade {
 	}
 	
 	//
-	public static GeneralResult<Boolean> addCabinetFolder(AccessPoint accesspoint,
-			Principal principal, CabFolderInfo folderinfo){
+	public static boolean addCabinetFolder(AccessPoint accesspoint,
+			Principal principal, CabFolderInfo folderinfo) throws CoreException{
 
-		GeneralResult<Boolean> gresult  =  new GeneralResult<Boolean>();
+		Boolean gresult  = false;
 
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FOLDER)){
@@ -122,12 +122,11 @@ public class CabinetFacade {
 			InfoId<Long> parentkey  = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
 			folderinfo.setState(Cabinets.FolderState.READY.name());
 			// check the validation of folder information
-			List<ValidationMessage> vmsg = ValidationUtils.validate(principal.getLocale(), folderinfo);
-			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
-				gresult.addMessages(vmsg);	
-				gresult.setMessage("fail save org hierarchy ", false);
-				svcctx.endAudit(ExecState.EXCEP, "row info validation fail");
-				return gresult;
+			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), folderinfo);
+			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
+				CoreException coreexcp = new CoreException(svcctx.getPrincipal().getLocale(), "excp.validate");
+				coreexcp.addValidateMessages(vmsg);
+				throw coreexcp;
 			}
 			Acl acl =  Cabinets.getDefaultAcl();
 			InfoId<Long> tempid = idservice.generateId(IdKey.CAB_ACL, Long.class);
@@ -137,12 +136,12 @@ public class CabinetFacade {
 				tempid = idservice.generateId(IdKey.CAB_ACE, Long.class);
 				ace.setAceId(tempid);
 			}
-			folderservice.newFolder(svcctx, parentkey, folderinfo, acl);
-			gresult.setMessage("success create folder.", true);
+			InfoId<Long> fid = folderservice.newFolder(svcctx, parentkey, folderinfo, acl);
+			gresult = InfoId.isValid(fid);
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when create folder",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to create folder.", false);
+
+			ContextHelper.stampContext(e, "excp.new.folde");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -150,21 +149,23 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<List<CabFolderInfo>> findCabinetFolders(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> cabinetId, InfoId<Long> parentId, String namecond){
+	public static List<CabFolderInfo> findCabinetFolders(AccessPoint accesspoint,
+			Principal principal, 
+			InfoId<Long> cabinetId, 
+			InfoId<Long> parentId, 
+			String namecond) throws CoreException{
 		
-		GeneralResult<List<CabFolderInfo>> gresult  =  new GeneralResult<List<CabFolderInfo>>();
+		List<CabFolderInfo> gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FOLDERS)){
 
-			List<CabFolderInfo> cabs = cabinetservice.getCabFolders(svcctx, cabinetId, parentId, namecond);
-			gresult.setReturnValue(cabs);
-			gresult.setMessage("success to find person cabinets.", true);
+			gresult = cabinetservice.getCabFolders(svcctx, cabinetId, parentId, namecond);
+	
 		} catch (ServiceException e)  {
-			LOGGER.error("Exception when find instance",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find person cabinets.", false);
+			
+			ContextHelper.stampContext(e, "excp.find.folders");
+		
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -184,24 +185,23 @@ public class CabinetFacade {
 	 * 
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
-	public static GeneralResult<List<CabFileInfo>> findCabinetFiles(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> cabinetId, InfoId<Long> parentId, String filename){
+	public static List<CabFileInfo> findCabinetFiles(AccessPoint accesspoint,
+			Principal principal, 
+			InfoId<Long> cabinetId, 
+			InfoId<Long> parentId, 
+			String filename)throws CoreException{
 				
-		GeneralResult<List<CabFileInfo>> gresult  =  new GeneralResult<List<CabFileInfo>>();
+		List<CabFileInfo> gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
 			
-			List<CabFileInfo> cabs = cabinetservice.getCabFiles(svcctx, cabinetId, parentId, filename);
-			gresult.setReturnValue(cabs);
-			gresult.setMessage("success to find person cabinets.", true);
+			gresult = cabinetservice.getCabFiles(svcctx, cabinetId, parentId, filename);
 		
 		} catch (ServiceException e)  {
-		
-			LOGGER.error("Exception when find instance",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find person cabinets.", false);
-		
+
+			ContextHelper.stampContext(e, "excp.find.files");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -221,28 +221,23 @@ public class CabinetFacade {
 	 * 
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
-	public static GeneralResult<PageWrapper<CabEntryInfo>> findCabinetEntries(AccessPoint accesspoint,
+	public static PageWrapper<CabEntryInfo> findCabinetEntries(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String filename,
-			PageQuery pquery){
+			PageQuery pquery)throws CoreException{
 				
-		GeneralResult<PageWrapper<CabEntryInfo>> gresult  =  new GeneralResult<PageWrapper<CabEntryInfo>>();
+		PageWrapper<CabEntryInfo> gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILES)){
 
-			PageWrapper<CabEntryInfo> cabs = cabinetservice.getCabEntries(svcctx, cabinetId, parentId, filename, pquery);
-			gresult.setReturnValue(cabs);
-			gresult.setMessage("success find cabinet entries.", true);
-		
+			gresult = cabinetservice.getCabEntries(svcctx, cabinetId, parentId, filename, pquery);
+
 		} catch (ServiceException e)  {
-		
-			LOGGER.error("Exception when find cabinet entries.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find cabinet entries.", false);
-		
+
+			ContextHelper.stampContext(e, "excp.find.files");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -251,25 +246,20 @@ public class CabinetFacade {
 	}
 	
 	
-	public static GeneralResult<CabinetInfo> findCabinet(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> cabinetId){
+	public static CabinetInfo findCabinet(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> cabinetId)throws CoreException{
 		
-		GeneralResult<CabinetInfo> gresult  =  new GeneralResult<CabinetInfo>();
+		CabinetInfo gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_CABINET)){
 			
 			svcctx.setAuditObject(cabinetId);
-			CabinetInfo cab = cabinetservice.getCabinet(svcctx, cabinetId);
-			gresult.setReturnValue(cab);
-			gresult.setMessage("success to find cabinet.", true);
-		
+			gresult = cabinetservice.getCabinet(svcctx, cabinetId);
+
 		} catch (ServiceException e)  {
 		
-			LOGGER.error("Exception when find cabinet.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find cabinets.", false);
-		
+			ContextHelper.stampContext(e, "excp.find.cab");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -286,10 +276,10 @@ public class CabinetFacade {
 	 * 
 	 * @return The General Result that wrap the cabinet file id 
 	 **/
-	public static GeneralResult<InfoId<Long>> addCabinetFile(AccessPoint accesspoint,
-			Principal principal, CabFileInfo fileinfo){
+	public static InfoId<Long> addCabinetFile(AccessPoint accesspoint,
+			Principal principal, CabFileInfo fileinfo)throws CoreException{
 		
-		GeneralResult<InfoId<Long>> gresult  =  new GeneralResult<InfoId<Long>>();
+		InfoId<Long> gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FILE)){
@@ -314,15 +304,10 @@ public class CabinetFacade {
 				tempid = idservice.generateId(IdKey.CAB_ACE, Long.class);
 				ace.setAceId(tempid);
 			}
-			fileservice.newFile(svcctx, fileinfo, acl);
-			gresult.setReturnValue(fileid);
-			gresult.setMessage("success to find cabinet.", true);
-		
+			InfoId<Long> fid = fileservice.newFile(svcctx, fileinfo, acl);
+			gresult = fid;
 		} catch (ServiceException e)  {
-		
-			LOGGER.error("Exception when create cabinet file.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to create cabinet file.", false);
+			ContextHelper.stampContext(e, "excp.new.file");
 		
 		}finally{
 			
@@ -335,27 +320,22 @@ public class CabinetFacade {
 	 * find cabinet file information by file id
 	 * @param fileid the id of cabinet file 
 	 **/
-	public static GeneralResult<CabFolderInfo> findCabinetFolder(AccessPoint accesspoint,
-			Principal principal,InfoId<Long> fileid){
+	public static CabFolderInfo findCabinetFolder(AccessPoint accesspoint,
+			Principal principal,InfoId<Long> fileid)throws CoreException{
 		
-		GeneralResult<CabFolderInfo> gresult  =  new GeneralResult<CabFolderInfo>();
+		CabFolderInfo gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FOLDER)){
 			
 			svcctx.setAuditObject(fileid);
 			
-			CabFolderInfo folderinfo = folderservice.getFolder(svcctx, fileid);
-			
-			gresult.setReturnValue(folderinfo);
-			gresult.setMessage("success find the folder", true);
-			
-		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when create cabinet file.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to create cabinet file.", false);
+			gresult = folderservice.getFolder(svcctx, fileid);
 		
+		} catch (ServiceException e)  {
+		
+			ContextHelper.stampContext(e, "excp.find.files");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -368,27 +348,23 @@ public class CabinetFacade {
 	 * find cabinet file information by file id
 	 * @param fileid the id of cabinet file 
 	 **/
-	public static GeneralResult<CabFileInfo> findCabinetFile(AccessPoint accesspoint,
-			Principal principal,InfoId<Long> fileid){
+	public static CabFileInfo findCabinetFile(AccessPoint accesspoint,
+			Principal principal,InfoId<Long> fileid)throws CoreException{
 		
-		GeneralResult<CabFileInfo> gresult  =  new GeneralResult<CabFileInfo>();
+		CabFileInfo gresult  =  null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILE)){
 			
 			svcctx.setAuditObject(fileid);
 			
-			CabFileInfo fileinfo = fileservice.getFile(svcctx, fileid);
-			
-			gresult.setReturnValue(fileinfo);
-			gresult.setMessage("success find the file", true);
+			gresult = fileservice.getFile(svcctx, fileid);
+
 			
 		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when create cabinet file.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to create cabinet file.", false);
-		
+
+			ContextHelper.stampContext(e, "excp.find.files");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -397,14 +373,13 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Map<InfoId<Long>, Integer>> findCabEntriesFavSummary(AccessPoint accesspoint,
-			Principal principal, List<InfoId<Long>> entryids){
+	public static Map<InfoId<Long>, Integer> findCabEntriesFavSummary(AccessPoint accesspoint,
+			Principal principal, List<InfoId<Long>> entryids)throws CoreException{
 		
-		GeneralResult<Map<InfoId<Long>, Integer>> gresult = new GeneralResult<Map<InfoId<Long>, Integer>>();
+		Map<InfoId<Long>, Integer> gresult = null;
 		
 		if(CollectionUtils.isEmpty(entryids)){
-			gresult.setMessage("success query", true);
-			return gresult;
+			throw new CoreException("excp.entryids.empty");
 		}
 		List<InfoId<Long>> files = new ArrayList<InfoId<Long>>();
 		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
@@ -425,15 +400,11 @@ public class CabinetFacade {
 					new HashMap<InfoId<Long>, Integer>() : favservice.getFavFolderSummary(svcctx, folders);
 			// merge two maps together
 			filefavs.putAll(folderfavs);
-			gresult.setReturnValue(filefavs);
-			gresult.setMessage("success find the entry tags", true);
-			
+			gresult = filefavs;
 		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when find entry tags.",e);
+
 			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find entry tags.", false);
-		
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -445,25 +416,20 @@ public class CabinetFacade {
 	 * Find the all the available tags of specified cabinet entry type
 	 * @param entrytype the cabinet entry type 
 	 **/
-	public static GeneralResult<List<TagInfo>> findCabEntryAvailTags(AccessPoint accesspoint,
-			Principal principal, String entrytype){
+	public static List<TagInfo> findCabEntryAvailTags(AccessPoint accesspoint,
+			Principal principal, String entrytype)throws CoreException{
 		
-		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
+		List<TagInfo> gresult = null;
 
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 
-			List<TagInfo> alltags = tagservice.getTags(svcctx, entrytype);
-
-			gresult.setReturnValue(alltags);
-			gresult.setMessage("success find the entry tags", true);
+			gresult = tagservice.getTags(svcctx, entrytype);
 			
 		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when find entry tags.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find entry tags.", false);
-		
+
+			ContextHelper.stampContext(e,"excp.find.tags");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -476,29 +442,22 @@ public class CabinetFacade {
 	 * Find a cabinet entry's tags
 	 * @param entryid the id of cabinet entry
 	 **/
-	public static GeneralResult<List<TagInfo>> findCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid){
+	public static List<TagInfo> findCabEntryTags(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> entryid)throws CoreException{
 		
-		GeneralResult<List<TagInfo>> gresult = new GeneralResult<List<TagInfo>>();
+		List<TagInfo> gresult = null;
 		if(!InfoId.isValid(entryid)){
-			gresult.setMessage("success query", true);
-			return gresult;
+			throw new CoreException("excp.entryids.empty");
 		}
 
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 
 			svcctx.setAuditObject(entryid);
-			List<TagInfo> attachtags = tagservice.getTags(svcctx, null, entryid);
-
-			gresult.setReturnValue(attachtags);
-			gresult.setMessage("success find the entry tags", true);
-			
+			gresult = tagservice.getTags(svcctx, null, entryid);
 		} catch (ServiceException e)  {
 			
-			LOGGER.error("Exception when find entry tags.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find entry tags.", false);
+			ContextHelper.stampContext(e, "excp.find.tags");
 		
 		}finally{
 			
@@ -508,13 +467,12 @@ public class CabinetFacade {
 
 	}
 	
-	public static GeneralResult<Map<InfoId<Long>, Set<TagInfo>>> findCabEntriesTags(AccessPoint accesspoint,
-			Principal principal, List<InfoId<Long>> entryids){
+	public static Map<InfoId<Long>, Set<TagInfo>> findCabEntriesTags(AccessPoint accesspoint,
+			Principal principal, List<InfoId<Long>> entryids)throws CoreException{
 		
-		GeneralResult<Map<InfoId<Long>, Set<TagInfo>>> gresult = new GeneralResult<Map<InfoId<Long>, Set<TagInfo>>>();
+		Map<InfoId<Long>, Set<TagInfo>> gresult = null;
 		if(CollectionUtils.isEmpty(entryids)){
-			gresult.setMessage("success query", true);
-			return gresult;
+			throw new CoreException("excp.entryids.empty");
 		}
 		List<InfoId<Long>> files = new ArrayList<InfoId<Long>>();
 		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
@@ -533,15 +491,12 @@ public class CabinetFacade {
 			Map<InfoId<Long>, Set<TagInfo>> foldertags = tagservice.getTags(svcctx, folders);
 			// merge two maps together
 			filetags.putAll(foldertags);
-			gresult.setReturnValue(filetags);
-			gresult.setMessage("success find the entry tags", true);
+			gresult = filetags;
 			
 		} catch (ServiceException e)  {
 			
-			LOGGER.error("Exception when find entry tags.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find entry tags.", false);
-		
+			ContextHelper.stampContext(e,"excp.find.tags");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -554,25 +509,20 @@ public class CabinetFacade {
 	 * Find the cabinet version by file id
 	 * @param fileid the id of file
 	 **/
-	public static GeneralResult<List<CabVersionInfo>> findCabinetFileVersions(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> fileid){
+	public static List<CabVersionInfo> findCabinetFileVersions(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> fileid)throws CoreException{
 		
-		GeneralResult<List<CabVersionInfo>> gresult = new GeneralResult<List<CabVersionInfo>>();
+		List<CabVersionInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 			
-			List<CabVersionInfo> verions = fileservice.getVersions(svcctx, fileid);
-			
-			gresult.setReturnValue(verions);
-			gresult.setMessage("success find the entry tags", true);
-			
+			gresult = fileservice.getVersions(svcctx, fileid);
+	
 		} catch (ServiceException e)  {
 			
-			LOGGER.error("Exception when find entry tags.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to find entry tags.", false);
-		
+			ContextHelper.stampContext(e, "excp.find.versions");
+	
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -581,15 +531,13 @@ public class CabinetFacade {
 		
 	}
 	
-	public static GeneralResult<Boolean[]> moveCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids){
+	public static Boolean[] moveCabinetEntries(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
 		
-		GeneralResult<Boolean[]> gresult = new GeneralResult<Boolean[]>();
 		Boolean[] rtv = new Boolean[0];
 		if(ArrayUtils.isEmpty(fileids)){
 			
-			gresult.setReturnValue(rtv);
-			gresult.setMessage("fileids is required", false);
+			throw new CoreException("excp.entryids.empty");
 		}else{
 			rtv = new Boolean[fileids.length];
 		}
@@ -614,33 +562,25 @@ public class CabinetFacade {
 				}
 				cnt ++ ;
 			}
-			gresult.setReturnValue(rtv);
-			gresult.setMessage("success move file", true);
 			
 		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when move file.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to move file.", false);
-		
+
+			ContextHelper.stampContext(e, "excp.move.entries");
 		}finally{
 			
 			ContextHelper.handleContext();
 		}	
-		return gresult;
+		return rtv;
 		
 	}
 	
 	
-	public static GeneralResult<List<InfoId<Long>>> copyCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids){
+	public static List<InfoId<Long>> copyCabinetEntries(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
 		
-		GeneralResult<List<InfoId<Long>>> gresult = new GeneralResult<List<InfoId<Long>>>();
 		List<InfoId<Long>> rtv = new ArrayList<InfoId<Long>>();
 		if(ArrayUtils.isEmpty(fileids)){
-			
-			gresult.setReturnValue(rtv);
-			gresult.setMessage("fileids is required", false);
+			throw new CoreException("excp.entryids.empty");
 		}
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
@@ -662,41 +602,32 @@ public class CabinetFacade {
 						rtv.add(IdKey.CAB_FOLDER.getInfoId(-1l));
 				}
 			}
-			gresult.setReturnValue(rtv);
-			gresult.setMessage("success copy file", true);
-			
-		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when copy file.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to copy file.", false);
 		
+		} catch (ServiceException e)  {
+
+			ContextHelper.stampContext(e, "excp.copy.entries");
 		}finally{
 			
 			ContextHelper.handleContext();
 		}	
-		return gresult;
+		return rtv;
 		
 	}
 	
-	public static GeneralResult<Boolean> attachCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid, String ...tags){
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
-		
+	public static Boolean attachCabEntryTags(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
+		boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ATTACH_TAG)){
 			
 			for(String tag : tags){
 				tagservice.attachTag(svcctx, entryid, null, tag);
 			}
-			gresult.setReturnValue(true);
-			gresult.setMessage("success attach the entry tags", true);
+			gresult = true;
 		} catch (ServiceException e)  {
-			
-			LOGGER.error("Exception when attach file tag.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to attach file tag.", false);
-			gresult.setReturnValue(false);
+
+			ContextHelper.stampContext(e, "excp.attach.tag");
+
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -704,10 +635,10 @@ public class CabinetFacade {
 		return gresult;
 	}
 	
-	public static GeneralResult<Boolean> detachCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid, String ...tags){
+	public static Boolean detachCabEntryTags(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
 		
-		GeneralResult<Boolean> gresult = new GeneralResult<Boolean>();
+		boolean gresult = false;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.DETACH_TAG)){
@@ -715,14 +646,11 @@ public class CabinetFacade {
 			for(String tag : tags){
 				tagservice.detachTag(svcctx, entryid, tag);
 			}
-			gresult.setReturnValue(true);
-			gresult.setMessage("success detach the entry tags", true);
+
 		} catch (ServiceException e)  {
 			
-			LOGGER.error("Exception when detach file tag.",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail to detach file tag.", false);
-			gresult.setReturnValue(false);
+			ContextHelper.stampContext(e, "excp.detach.tag");
+
 		}finally{
 			
 			ContextHelper.handleContext();

@@ -9,6 +9,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
+import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.MeasureInfo;
@@ -30,16 +31,14 @@ public class MeasureFacade {
 	 * Find the work group latest summary information: docs amount etc.
 	 * @param wid the work group id  
 	 **/
-	public static GeneralResult<MeasureInfo> findWorkgroupSummary(AccessPoint accesspoint,
+	public static MeasureInfo findWorkgroupSummary(AccessPoint accesspoint,
 			Principal principal,
-			InfoId<Long> wid){
+			InfoId<Long> wid)throws CoreException{
 		
-		GeneralResult<MeasureInfo> gresult = new GeneralResult<MeasureInfo>();
+		MeasureInfo gresult = null;
 		
 		if(!InfoId.isValid(wid)){
-			
-			gresult.setMessage("workgroup id is required", false);
-			return gresult;
+			throw new CoreException(principal.getLocale(), "mesg.prop.miss");
 		}
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
@@ -47,16 +46,10 @@ public class MeasureFacade {
 			
 			svcctx.setAuditObject(wid);
 			
-			MeasureInfo minfo = measuresvc.getWorkgroupLatestSummary(wid);
-			gresult.setReturnValue(minfo);
-			gresult.setMessage("success find the workgroup summary", true);
-			
+			gresult = measuresvc.getWorkgroupLatestSummary(wid);
 		}catch (ServiceException e)  {
-			LOGGER.error("Fail find the workgroup summary",e);
-			ContextHelper.stampContext(e);
-			gresult.setMessage("fail find the workgroup summary", false);
+			ContextHelper.stampContext(e,"excp.find.wgroup.stat");
 		}finally{
-			
 			ContextHelper.handleContext();
 		}
 		

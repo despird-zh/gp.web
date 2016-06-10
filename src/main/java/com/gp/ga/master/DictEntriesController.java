@@ -16,9 +16,10 @@ import com.gp.common.Principal;
 import com.gp.core.DictionaryFacade;
 import com.gp.core.GeneralResult;
 import com.gp.core.MasterFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.DictionaryInfo;
 import com.gp.info.InfoId;
-import com.gp.validation.ValidationMessage;
+import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.DictEntry;
@@ -41,12 +42,12 @@ public class DictEntriesController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		
+		ActionResult ars = new ActionResult();
 		List<DictEntry> list = new ArrayList<DictEntry>();
-		GeneralResult<List<DictionaryInfo>> gresult = DictionaryFacade.findDictEntries(accesspoint, principal, "", "");
-		
-		if(gresult.isSuccess()){
-			for(DictionaryInfo info: gresult.getReturnValue()){
+
+		try{
+			List<DictionaryInfo> gresult = DictionaryFacade.findDictEntries(accesspoint, principal, "", "");
+			for(DictionaryInfo info: gresult){
 				DictEntry de = new DictEntry();
 				de.setEntryId(info.getInfoId().getId());
 				de.setEntryKey(info.getKey());
@@ -59,12 +60,12 @@ public class DictEntriesController  extends BaseController{
 				
 				list.add(de);
 			}
-			mav.addObject(MODEL_KEY_ROWS,list);
-			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, "ok");
-		}else{
-			mav.addObject(MODEL_KEY_STATE, ActionResult.FAIL);
-			mav.addObject(MODEL_KEY_MESSAGE, "fail");
+			ars.setState(ActionResult.SUCCESS);
+			ars.setMessage(getMessage("mesg.find.sysopts", principal.getLocale()));
+			ars.setData(list);
+		}catch(CoreException ce){
+			ars.setState(ActionResult.ERROR);
+			ars.setMessage(ce.getMessage());
 		}
 		
 		return mav;
@@ -88,18 +89,16 @@ public class DictEntriesController  extends BaseController{
 		dinfo.setGroup(dentry.getGroupKey());
 		//dinfo.setLabel(dentry.getLabel());
 		dinfo.setDefaultLang(dentry.getLanguage());
-		
-		GeneralResult<Boolean> gresult = DictionaryFacade.saveDictEntry(accesspoint, principal, dinfo);
-		if(!gresult.isSuccess()){
-			List<ValidationMessage> msg = gresult.getMessages();
-			
-			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
-			result.setDetailmsgs(msg);
-		}else{
-			result.setData(gresult.getReturnValue());
+
+		try{
+			Boolean gresult = DictionaryFacade.saveDictEntry(accesspoint, principal, dinfo);
+			result.setData(gresult);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(getMessage("mesg.save.dict", principal.getLocale()));
+		}catch(CoreException ce){
+			result.setState(ActionResult.ERROR);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(result.asMap());
