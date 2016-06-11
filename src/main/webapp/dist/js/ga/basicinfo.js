@@ -245,7 +245,7 @@ var PageContext = (function ($, AdminLTE) {
 			success: function(response)
 			{
 				_self.$table.dataTable().api().clear();
-				_self.$table.dataTable().api().rows.add(response.rows).draw();
+				_self.$table.dataTable().api().rows.add(response.data).draw();
 			}
 		});
 	};
@@ -396,11 +396,11 @@ var PageContext = (function ($, AdminLTE) {
 			success: function(response)
 			{
 				_self.$table.dataTable().api().clear();
-				$.each(response.rows, function(index, e ){
+				$.each(response.data, function(index, e ){
 					e.DT_RowId = e.instanceId;
 				});
 				
-				_self.$table.dataTable().api().rows.add(response.rows).draw();
+				_self.$table.dataTable().api().rows.add(response.data).draw();
 			}
 		});
 	}

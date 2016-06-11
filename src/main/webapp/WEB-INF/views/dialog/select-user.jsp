@@ -319,10 +319,10 @@ var SelectUserContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				_self.$search_table.dataTable().api().clear();
-				$.each(response.rows, function(i, cur){
+				$.each(response.data, function(i, cur){
 					cur.DT_RowId = cur.userId;	
 				});
-				_self.$search_table.dataTable().api().rows.add(response.rows).draw();
+				_self.$search_table.dataTable().api().rows.add(response.data).draw();
 				
 			}
 		});
