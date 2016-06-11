@@ -1,7 +1,5 @@
 package com.gp.ga.security;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,9 +20,7 @@ import com.gp.common.GroupUsers;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
-import com.gp.info.InfoId;
 import com.gp.info.UserInfo;
-import com.gp.validate.ValidateMessage;
 
 @Controller("ga-account-new-ctlr")
 @RequestMapping("/ga")
@@ -82,9 +78,9 @@ public class AccountAddController extends BaseController{
 
 		}else{
 			try{
-				InfoId<Long> gresult = SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
+				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 				result.setState(ActionResult.SUCCESS);
-				result.setMessage(getMessage("mesg.pwd.diff.cfm"));
+				result.setMessage(getMessage("mesg.save.account"));
 			}catch(CoreException ce){
 				result.setState(ActionResult.ERROR);
 				result.setMessage(ce.getMessage());
