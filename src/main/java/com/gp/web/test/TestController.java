@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gp.common.Principal;
 import com.gp.exception.WebException;
 import com.gp.web.BaseController;
 
@@ -22,9 +23,10 @@ public class TestController extends BaseController{
 	
 	@RequestMapping("test")
 	public ModelAndView test(){
-		
+		Principal principal = super.getPrincipalFromShiro();
 		ModelAndView mav = super.getJspModelView("test/test");
-		mav.addObject("test", "test-value-xxx");
+		String msg = getMessage("excp.demo");
+		mav.addObject("test", msg);
 		TestBean tb = new TestBean();
 		tb.setAttr1("attr-value-x1");
 		mav.addObject("testbean", tb);

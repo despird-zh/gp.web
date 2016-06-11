@@ -65,7 +65,7 @@ public class ExternInfoController extends BaseController{
 			}
 			result.setData(list);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.find.instance", principal.getLocale()));
+			result.setMessage(getMessage("mesg.find.instance"));
 		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
 			result.setMessage(ce.getMessage());

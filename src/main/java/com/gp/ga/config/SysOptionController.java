@@ -48,7 +48,7 @@ public class SysOptionController extends BaseController{
 				groups.add(item);
 			}
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.find.sysopt.group", princ.getLocale()));
+			ars.setMessage(getMessage("mesg.find.sysopt.group"));
 			ars.setData(groups);
 			
 		}catch(CoreException ce){
@@ -87,7 +87,7 @@ public class SysOptionController extends BaseController{
 			}
 			
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.find.sysopts", princ.getLocale()));
+			ars.setMessage(getMessage("mesg.find.sysopts"));
 			ars.setData(rows);
 
 		}catch(CoreException ce){
@@ -113,7 +113,7 @@ public class SysOptionController extends BaseController{
 			MasterFacade.saveSystemOption(ap, princ, optkey, optvalue);
 
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.save.sysopt", princ.getLocale()));
+			ars.setMessage(getMessage("mesg.save.sysopt"));
 
 		}catch(CoreException ce){
 			

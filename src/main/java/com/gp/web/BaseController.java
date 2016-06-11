@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.common.SpringContextUtil;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
 
@@ -34,7 +34,7 @@ import com.gp.util.ConfigSettingUtils;
  * @author gary diao
  * @version 0.1 2015-12-12 
  **/
-public abstract class BaseController extends MultiActionController{
+public abstract class BaseController extends MultiActionController implements MessageSourceAware{
 
 	static Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
 	
@@ -51,7 +51,11 @@ public abstract class BaseController extends MultiActionController{
 	
 	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
 	
-	private static MessageSource messageSource;
+	private MessageSource messageSource;
+	
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 	
 	/**
 	 * Get the access point object for the request
@@ -239,12 +243,10 @@ public abstract class BaseController extends MultiActionController{
 	 * @param args the arguments
 	 * @param locale the locale 
 	 **/
-	public static String getMessage(String code, Object[] args, Locale locale){
+	public String getMessage(String code, Object[] args){
 		
-		if(null == messageSource){
-			messageSource = SpringContextUtil.getSpringBean("messageSource", MessageSource.class);
-		}
-		
+		Principal principal = getPrincipalFromShiro();
+		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, args, locale);
 	}
 	
@@ -253,11 +255,9 @@ public abstract class BaseController extends MultiActionController{
 	 * @param code the message code
 	 * @param locale the locale 
 	 **/
-	public static String getMessage(String code, Locale locale){
-		
-		if(null == messageSource){
-			messageSource = SpringContextUtil.getSpringBean("messageSource", MessageSource.class);
-		}
+	public String getMessage(String code){
+		Principal principal = getPrincipalFromShiro();
+		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, new String[0], locale);
 	}
 }

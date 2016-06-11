@@ -357,7 +357,7 @@ public class SecurityFacade {
 			Principal principal,
 			UserState state)throws CoreException{
 		
-		try (ServiceContext svcctx = ContextHelper.beginServiceContext(GroupUsers.PESUOD_USER, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(GroupUsers.PSEUDO_USER, accesspoint,
 				Operations.CHANGE_ACCOUNT_STATE)){
 			
 			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));

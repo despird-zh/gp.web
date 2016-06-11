@@ -101,9 +101,9 @@ public class StorageListController extends BaseController{
 				storage.setState(sinfo.getState());
 				storage.setType(sinfo.getStorageType());
 				storage.setDescription(sinfo.getDescription());
-				String cap = CommonUtils.humanReadableByteCount(sinfo.getCapacity());
+				String cap = CommonUtils.humanReadableByteCount(sinfo.getCapacity() * 1024 * 1024);
 				storage.setCapacity(cap);
-				String used = CommonUtils.humanReadableByteCount(sinfo.getUsed());
+				String used = CommonUtils.humanReadableByteCount(sinfo.getUsed() * 1024 * 1024);
 				storage.setUsed(used);
 				int percent = (int)((double)sinfo.getUsed()/(double)sinfo.getCapacity()*100);
 				storage.setPercent(percent);
@@ -117,7 +117,7 @@ public class StorageListController extends BaseController{
 			}
 			aresult.setData(rows);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.find.storage", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.find.storage"));
 		}catch(CoreException ce){
 			
 			aresult.setState(ActionResult.ERROR);
@@ -125,6 +125,7 @@ public class StorageListController extends BaseController{
 			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
+		mav.addAllObjects(aresult.asMap());
 		return mav;
 	}
 	
@@ -165,7 +166,7 @@ public class StorageListController extends BaseController{
 			
 			StorageFacade.saveStorage(accesspoint, principal, sinfo);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.save.storage", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.save.storage"));
 			
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
@@ -187,10 +188,17 @@ public class StorageListController extends BaseController{
 		ActionResult aresult = new ActionResult();
 		
 		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
+		if(Storages.DEFAULT_STORAGE_ID == sid.getId()){
+			
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(getMessage("mesg.rsrv.storage"));
+			mav.addAllObjects(aresult.asMap());
+			return mav;
+		}
 		try{
 			StorageFacade.removeStorage(accesspoint, principal, sid);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.remove.storage", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.remove.storage"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -229,7 +237,7 @@ public class StorageListController extends BaseController{
 			
 			aresult.setData(storage);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.find.storage", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.find.storage"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());

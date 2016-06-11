@@ -73,7 +73,7 @@ public class OrgHierController extends BaseController{
 		try{
 			OrgHierFacade.newOrgHier(accesspoint, principal, orghier);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.new.orghier",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.new.orghier"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -104,7 +104,7 @@ public class OrgHierController extends BaseController{
 			nodeId = IdKey.ORG_HIER.getInfoId( nid);
 		}else {
 			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(getMessage("mesg.post.unqualified", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.post.unqualified"));
 			mav.addAllObjects(aresult.asMap());
 			return mav;
 		}
@@ -119,10 +119,10 @@ public class OrgHierController extends BaseController{
 				orghier.setOrgName(params.getText());
 				OrgHierFacade.saveOrgHier(accesspoint, principal, orghier);
 				aresult.setState(ActionResult.SUCCESS);
-				aresult.setMessage(getMessage("mesg.save.orghier", principal.getLocale()));
+				aresult.setMessage(getMessage("mesg.save.orghier"));
 			}else{
 				aresult.setState(ActionResult.ERROR);
-				aresult.setMessage(getMessage("mesg.target.none", principal.getLocale()));
+				aresult.setMessage(getMessage("mesg.target.none"));
 			}
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
@@ -159,7 +159,7 @@ public class OrgHierController extends BaseController{
 		try{
 			OrgHierFacade.addOrgHierMember(accesspoint, principal, nodeId, accounts);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.save.org.mbr", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.save.org.mbr"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -192,7 +192,7 @@ public class OrgHierController extends BaseController{
 		try{
 			OrgHierFacade.removeOrgHierMember(accesspoint, principal, nodeId, account);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.remove.org.mbr", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.remove.org.mbr"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -246,7 +246,7 @@ public class OrgHierController extends BaseController{
 			}	
 			aresult.setData(list);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.find.org.mbrs", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.find.org.mbrs"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());

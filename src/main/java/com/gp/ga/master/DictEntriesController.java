@@ -60,7 +60,7 @@ public class DictEntriesController  extends BaseController{
 				list.add(de);
 			}
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.find.sysopts", principal.getLocale()));
+			ars.setMessage(getMessage("mesg.find.sysopts"));
 			ars.setData(list);
 		}catch(CoreException ce){
 			ars.setState(ActionResult.ERROR);
@@ -93,7 +93,7 @@ public class DictEntriesController  extends BaseController{
 			Boolean gresult = DictionaryFacade.saveDictEntry(accesspoint, principal, dinfo);
 			result.setData(gresult);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.save.dict", principal.getLocale()));
+			result.setMessage(getMessage("mesg.save.dict"));
 		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
 			result.setMessage(ce.getMessage());

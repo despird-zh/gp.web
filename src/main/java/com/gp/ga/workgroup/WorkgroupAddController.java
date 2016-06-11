@@ -91,7 +91,7 @@ public class WorkgroupAddController extends BaseController{
 				imagePath);
 			
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.new.wgroup", principal.getLocale()));
+			result.setMessage(getMessage("mesg.new.wgroup"));
 		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
 			result.setMessage(ce.getMessage());
@@ -150,7 +150,7 @@ public class WorkgroupAddController extends BaseController{
 			}			
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup.mbr",principal.getLocale()));
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup.mbr"));
 			mav.addObject(MODEL_KEY_DATA, list);
 		}catch(CoreException ce){
 
@@ -183,7 +183,7 @@ public class WorkgroupAddController extends BaseController{
 		try{
 			WorkgroupFacade.removeWorkgroupMember(accesspoint, principal, wkey, account);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.remove.wgroup.mbr",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.remove.wgroup.mbr"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -219,7 +219,7 @@ public class WorkgroupAddController extends BaseController{
 		try{
 			WorkgroupFacade.addWorkgroupMember(accesspoint, principal, wkey, account,role);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.add.wgroup.mbr",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.add.wgroup.mbr"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -257,7 +257,7 @@ public class WorkgroupAddController extends BaseController{
 		try{
 			WorkgroupFacade.newWorkgroupGroup(accesspoint, principal, ginfo);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.new.wgroup.group",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.new.wgroup.group"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -302,7 +302,7 @@ public class WorkgroupAddController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup.group",principal.getLocale()));
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup.group"));
 
 			mav.addObject(MODEL_KEY_DATA, list);
 		}catch(CoreException ce){
@@ -335,7 +335,7 @@ public class WorkgroupAddController extends BaseController{
 		try{
 			WorkgroupFacade.removeWorkgroupGroup(accesspoint, principal, gid);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.remove.wgroup.group",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.remove.wgroup.group"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -375,7 +375,7 @@ public class WorkgroupAddController extends BaseController{
 		try{
 			WorkgroupFacade.addWorkgroupGroupMembers(accesspoint, principal, gid, accounts);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.add.group.mbr",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.add.group.mbr"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());
@@ -418,7 +418,7 @@ public class WorkgroupAddController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.group.mbr",principal.getLocale()));
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.group.mbr"));
 
 			mav.addObject(MODEL_KEY_DATA, list);
 		}catch(CoreException ce){
@@ -452,7 +452,7 @@ public class WorkgroupAddController extends BaseController{
 		try{
 			WorkgroupFacade.removeWorkgroupGroupMember(accesspoint, principal, gid, account);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.remove.group.mbr",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.remove.group.mbr"));
 			
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);

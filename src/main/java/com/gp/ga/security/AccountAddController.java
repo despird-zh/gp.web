@@ -77,14 +77,14 @@ public class AccountAddController extends BaseController{
 		if(!StringUtils.equals(confirmPwd, account.getPassword())){
 		
 			result.setState(ActionResult.FAIL);
-			result.setMessage(getMessage("mesg.pwd.diff.cfm", principal.getLocale()));
+			result.setMessage(getMessage("mesg.pwd.diff.cfm"));
 			mav.addAllObjects(result.asMap());
 
 		}else{
 			try{
 				InfoId<Long> gresult = SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 				result.setState(ActionResult.SUCCESS);
-				result.setMessage(getMessage("mesg.pwd.diff.cfm", principal.getLocale()));
+				result.setMessage(getMessage("mesg.pwd.diff.cfm"));
 			}catch(CoreException ce){
 				result.setState(ActionResult.ERROR);
 				result.setMessage(ce.getMessage());

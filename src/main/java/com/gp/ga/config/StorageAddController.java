@@ -73,7 +73,7 @@ public class StorageAddController extends BaseController{
 		try{
 			InfoId<Integer> gresult = StorageFacade.newStorage(accesspoint, principal, sinfo);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.new.storage", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.new.storage"));
 		}catch(CoreException ce){
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(ce.getMessage());

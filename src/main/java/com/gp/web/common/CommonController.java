@@ -193,7 +193,7 @@ public class CommonController extends BaseController{
 			}			
 
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.find.account", principal.getLocale()));
+			ars.setMessage(getMessage("mesg.find.account"));
 			ars.setData(list);
 			
 		}catch(CoreException ce){
@@ -364,7 +364,7 @@ public class CommonController extends BaseController{
 			}			
 
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.find.wgroup.mbr", principal.getLocale()));
+			ars.setMessage(getMessage("mesg.find.wgroup.mbr"));
 			ars.setData(list);
 		}catch(CoreException ce){
 

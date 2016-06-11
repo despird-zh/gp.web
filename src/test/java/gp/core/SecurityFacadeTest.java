@@ -27,7 +27,7 @@ public class SecurityFacadeTest  extends AbstractJUnit4SpringContextTests{
 				"127.0.0.1",
 				"web",
 				"0.1");
-		Principal principal = GroupUsers.PESUOD_USER;
+		Principal principal = GroupUsers.PSEUDO_USER;
 		
 		UserInfo admin = new UserInfo();
 		admin.setAccount("admin");

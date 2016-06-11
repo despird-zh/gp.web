@@ -107,7 +107,7 @@ public class AuthorizeRealm extends AuthorizingRealm {
 		AccessPoint ap = authtoken.getAccessPoint();
 		try {		
 			
-			uinfo = SecurityFacade.findAccount(ap, GroupUsers.PESUOD_USER, null, authtoken.getUsername(), null);
+			uinfo = SecurityFacade.findAccount(ap, GroupUsers.PSEUDO_USER, null, authtoken.getUsername(), null);
 
 			if (uinfo == null) {
 				throw new UnknownAccountException("Login name [" + authtoken.getUsername() + "] not found!");

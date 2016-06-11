@@ -112,7 +112,7 @@ public class AccountExtController extends BaseController{
 				account.getEntity(), 
 				account.getNode());
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.save.account.ext", principal.getLocale()));
+			result.setMessage(getMessage("mesg.save.account.ext"));
 			
 		}catch(CoreException ce){			
 			result.setState(ActionResult.ERROR);

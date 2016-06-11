@@ -79,7 +79,7 @@ public class BasicInfoController extends BaseController{
 				data.setGlobalId(instinfo.getHashKey());
 				
 				rst.setData(data);
-				rst.setMessage(getMessage("mesg.find.instance", principal.getLocale()));
+				rst.setMessage(getMessage("mesg.find.instance"));
 			}catch(CoreException ce){
 				rst.setState(ActionResult.ERROR);
 				rst.setMessage(ce.getMessage());
@@ -106,7 +106,7 @@ public class BasicInfoController extends BaseController{
 		try{
 			InstanceFacade.changeInstanceState(ap, princ, id, State.valueOf(stateStr));
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(getMessage("mesg.change.instance.state", princ.getLocale()));
+			rst.setMessage(getMessage("mesg.change.instance.state"));
 			
 		}catch(CoreException ce){
 			
@@ -147,7 +147,7 @@ public class BasicInfoController extends BaseController{
 		try{
 			InstanceFacade.saveExtInstance(ap, princ, instinfo);
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(getMessage("mesg.save.instance.ext", princ.getLocale()));
+			rst.setMessage(getMessage("mesg.save.instance.ext"));
 		}catch(CoreException ce){
 			rst.setState(ActionResult.ERROR);
 			rst.setMessage(ce.getMessage());
@@ -189,7 +189,7 @@ public class BasicInfoController extends BaseController{
 		try{
 			InstanceFacade.saveInstance(ap, princ, instinfo);
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(getMessage("mesg.save.instance", princ.getLocale()));
+			rst.setMessage(getMessage("mesg.save.instance"));
 			
 		}catch(CoreException ce){
 			
@@ -235,7 +235,7 @@ public class BasicInfoController extends BaseController{
 			}
 			rst.setData(list);
 			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(getMessage("mesg.find.instance", princ.getLocale()));
+			rst.setMessage(getMessage("mesg.find.instance"));
 		}catch(CoreException ce){
 			
 			rst.setState(ActionResult.ERROR);

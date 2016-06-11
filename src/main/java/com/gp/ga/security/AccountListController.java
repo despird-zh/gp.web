@@ -133,7 +133,7 @@ public class AccountListController extends BaseController{
 			
 			result.setState(ActionResult.SUCCESS);
 			result.setData(list);
-			result.setMessage(getMessage("mesg.find.account", principal.getLocale()));
+			result.setMessage(getMessage("mesg.find.account"));
 		}catch(CoreException ce){
 
 			result.setState(ActionResult.ERROR);
@@ -180,7 +180,7 @@ public class AccountListController extends BaseController{
 		try{
 			SecurityFacade.saveAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.save.account", principal.getLocale()));
+			result.setMessage(getMessage("mesg.save.account"));
 			
 		}catch(CoreException ce){
 			
@@ -238,7 +238,7 @@ public class AccountListController extends BaseController{
 			ui.setTimezone(info.getTimeZone());
 			ui.setStorageName(info.getStorageName());
 			
-			List<CabinetInfo> cabs = CabinetFacade.findPersonCabinets(accesspoint,GroupUsers.PESUOD_USER,info.getAccount());
+			List<CabinetInfo> cabs = CabinetFacade.findPersonCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getAccount());
 			for(CabinetInfo cinfo: cabs){
 				if(Cabinets.CabinetType.NETDISK.name().equals(cinfo.getCabinetType()))
 					ui.setPricapacity(cinfo.getCapacity());
@@ -247,7 +247,7 @@ public class AccountListController extends BaseController{
 					ui.setPubcapacity(cinfo.getCapacity());
 			}
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.find.account", principal.getLocale()));
+			result.setMessage(getMessage("mesg.find.account"));
 			result.setData(ui);
 		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
@@ -266,7 +266,7 @@ public class AccountListController extends BaseController{
 		
 		String account = request.getParameter("account");
 		String uid = request.getParameter("user_id");
-		
+		ModelAndView mav = getJsonModelView();	
 		ActionResult result = new ActionResult();
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
@@ -277,16 +277,23 @@ public class AccountListController extends BaseController{
 			userkey = IdKey.USER.getInfoId(userId);
 		}
 		
+		if(userId == GroupUsers.ADMIN_USER.getUserId().getId()){
+			
+			result.setState(ActionResult.ERROR);
+			result.setMessage(getMessage("mesg.rsrv.admin"));
+			mav.addAllObjects(result.asMap());
+			return mav;
+		}
 		
 		try{
 			SecurityFacade.removeAccount(accesspoint, principal, userkey, account);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.remove.account", principal.getLocale()));
+			result.setMessage(getMessage("mesg.remove.account"));
 		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);
 			result.setMessage(ce.getMessage());
 		}
-		ModelAndView mav = getJsonModelView();		
+			
 		mav.addAllObjects(result.asMap());
 
 		return mav;

@@ -148,7 +148,7 @@ public class CabEntryExtController extends BaseController{
 			CabinetFacade.attachCabEntryTags(accesspoint, principal, fid, attachTag.toArray(new String[0]));
 			CabinetFacade.detachCabEntryTags(accesspoint, principal, fid, detachTag.toArray(new String[0]));
 			actrst.setState(ActionResult.SUCCESS);
-			actrst.setMessage(getMessage("mesg.save.tags", principal.getLocale()));
+			actrst.setMessage(getMessage("mesg.save.tags"));
 		}catch(CoreException ce){
 			actrst.setState(ActionResult.ERROR);
 			actrst.setMessage(ce.getMessage());
@@ -221,7 +221,7 @@ public class CabEntryExtController extends BaseController{
 			}
 			aresult.setData(nlist);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.find.versions", principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.find.versions"));
 		}catch(CoreException ce){
 			
 			aresult.setState(ActionResult.FAIL);

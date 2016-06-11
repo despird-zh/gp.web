@@ -76,7 +76,7 @@ public class WGroupMetaController extends BaseController{
 				wsum.setSumTopics(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_TOPIC), 0));
 			}
 			actrst.setState(ActionResult.SUCCESS);
-			actrst.setMessage(getMessage("", principal.getLocale()));
+			actrst.setMessage(getMessage("mesg.find.wgroup.sum"));
 		}catch(CoreException ce){
 			
 			actrst.setState(ActionResult.FAIL);

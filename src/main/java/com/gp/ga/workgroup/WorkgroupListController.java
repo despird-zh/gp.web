@@ -65,7 +65,7 @@ public class WorkgroupListController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup", principal.getLocale()));
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup"));
 			mav.addObject(MODEL_KEY_DATA, list);
 			
 		}catch(CoreException ce){
@@ -108,7 +108,7 @@ public class WorkgroupListController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup", principal.getLocale()));
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup"));
 
 			mav.addObject(MODEL_KEY_DATA, list);
 			

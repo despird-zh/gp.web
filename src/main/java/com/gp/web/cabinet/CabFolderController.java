@@ -50,7 +50,7 @@ public class CabFolderController extends BaseController{
 			CabinetFacade.addCabinetFolder(accesspoint, principal, cabfolder);
 			
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(getMessage("mesg.new.folder",principal.getLocale()));
+			aresult.setMessage(getMessage("mesg.new.folder"));
 		}catch(CoreException ce){
 			
 			aresult.setState(ActionResult.ERROR);

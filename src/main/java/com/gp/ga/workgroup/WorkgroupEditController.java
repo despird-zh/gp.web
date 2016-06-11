@@ -119,7 +119,7 @@ public class WorkgroupEditController extends BaseController{
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.find.wgroup", principal.getLocale()));
+			result.setMessage(getMessage("mesg.find.wgroup"));
 			result.setData(wgroup);
 			
 		}catch(CoreException ce){
@@ -179,7 +179,7 @@ public class WorkgroupEditController extends BaseController{
 				imagePath);
 
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.save.wgroup", principal.getLocale()));
+			result.setMessage(getMessage("mesg.save.wgroup"));
 					
 		}catch(CoreException ce){
 			result.setState(ActionResult.ERROR);

@@ -72,7 +72,7 @@ public class ImagesListController  extends BaseController{
 			}
 			
 			ars.setState(ActionResult.SUCCESS);
-			ars.setMessage(getMessage("mesg.find.images", principal.getLocale()));
+			ars.setMessage(getMessage("mesg.find.images"));
 			ars.setData(images);
 
 		}catch(CoreException ce){
