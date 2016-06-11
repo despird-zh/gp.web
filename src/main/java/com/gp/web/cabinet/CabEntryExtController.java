@@ -23,7 +23,7 @@ import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
+import com.gp.exception.CoreException;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
 import com.gp.info.CabVersionInfo;
@@ -64,28 +64,32 @@ public class CabEntryExtController extends BaseController{
 			fid = IdKey.CAB_FILE.getInfoId(entryid);
 
 		}
-		alltags = CabinetFacade.findCabEntryAvailTags(accesspoint, principal, fid.getIdKey()).getReturnValue();
-		usedtags = CabinetFacade.findCabEntryTags(accesspoint, principal, fid).getReturnValue();
-		Set<String> attatchTag = new HashSet<String>();
-		for(TagInfo t : usedtags){
-			attatchTag.add(t.getTagName());
-		}
+		
 		// reorganize the tag data
 		Map<String, List<Tag>> tagmap = new HashMap<String, List<Tag>>();
-		for(TagInfo t : alltags){
-			
-			Tag tag = new Tag();
-			tag.setCategory(t.getCategory());
-			tag.setTagName(t.getTagName());
-			tag.setTagColor(t.getTagColor());
-			tag.setChecked(attatchTag.contains(t.getTagName()));
-			
-			if(null == tagmap.get(t.getCategory()))
-				tagmap.put(t.getCategory(), new LinkedList<Tag>());
-			
-			tagmap.get(t.getCategory()).add(tag);
+		try{
+			alltags = CabinetFacade.findCabEntryAvailTags(accesspoint, principal, fid.getIdKey());
+			usedtags = CabinetFacade.findCabEntryTags(accesspoint, principal, fid);
+			Set<String> attatchTag = new HashSet<String>();
+			for(TagInfo t : usedtags){
+				attatchTag.add(t.getTagName());
+			}
+			for(TagInfo t : alltags){
+				
+				Tag tag = new Tag();
+				tag.setCategory(t.getCategory());
+				tag.setTagName(t.getTagName());
+				tag.setTagColor(t.getTagColor());
+				tag.setChecked(attatchTag.contains(t.getTagName()));
+				
+				if(null == tagmap.get(t.getCategory()))
+					tagmap.put(t.getCategory(), new LinkedList<Tag>());
+				
+				tagmap.get(t.getCategory()).add(tag);
+			}
+		}catch(CoreException ce){
+			//
 		}
-		
 		List<DefaultKeyValue> dkvs = new ArrayList<DefaultKeyValue>();
 		for(Map.Entry<String, List<Tag>> entry : tagmap.entrySet()){
 			dkvs.add(new DefaultKeyValue(entry));
@@ -140,13 +144,16 @@ public class CabEntryExtController extends BaseController{
 				detachTag.add(entry.getKey());
 			}
 		}
-		
-		CabinetFacade.attachCabEntryTags(accesspoint, principal, fid, attachTag.toArray(new String[0]));
-		CabinetFacade.detachCabEntryTags(accesspoint, principal, fid, detachTag.toArray(new String[0]));
-		
-		actrst.setState(ActionResult.SUCCESS);
-		actrst.setMessage("success update the tags of entry");
-		
+		try{
+			CabinetFacade.attachCabEntryTags(accesspoint, principal, fid, attachTag.toArray(new String[0]));
+			CabinetFacade.detachCabEntryTags(accesspoint, principal, fid, detachTag.toArray(new String[0]));
+			actrst.setState(ActionResult.SUCCESS);
+			actrst.setMessage(getMessage("mesg.save.tags", principal.getLocale()));
+		}catch(CoreException ce){
+			actrst.setState(ActionResult.ERROR);
+			actrst.setMessage(ce.getMessage());
+		}
+
 		mav.addAllObjects(actrst.asMap());
 		return mav;
 		
@@ -162,25 +169,21 @@ public class CabEntryExtController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, Object> propmap = null;
-		
-		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
-			
-			InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(entryid);
-			GeneralResult<CabFolderInfo> result = CabinetFacade.findCabinetFolder(accesspoint, principal, folderid);
-			CabFolderInfo finfo = result.getReturnValue();
-			String propstr = finfo.getProperties();
-			propmap = Cabinets.toPropertyMap(propstr);
-			
-		}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
-			
-			InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(entryid);
-			GeneralResult<CabFileInfo> result = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
-			CabFileInfo finfo = result.getReturnValue();
-			String propstr = finfo.getProperties();
-			propmap = Cabinets.toPropertyMap(propstr);
-			
+		String propstr = null;
+		try{
+			if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
+				InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(entryid);
+				CabFolderInfo finfo =  CabinetFacade.findCabinetFolder(accesspoint, principal, folderid);
+				propstr = finfo.getProperties();
+			}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
+				InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(entryid);
+				CabFileInfo finfo = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
+				propstr = finfo.getProperties();
+			}
+		}catch(CoreException ce){
+			//
 		}
-		
+		propmap = Cabinets.toPropertyMap(propstr);
 		mav.addObject("propmap", propmap);
 		
 		return mav;
@@ -198,13 +201,13 @@ public class CabEntryExtController extends BaseController{
 		Long fid = NumberUtils.toLong(readRequestParam("file_id"));
 		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(fid);
 		
-		GeneralResult<List<CabVersionInfo>> gresult = CabinetFacade.findCabinetFileVersions(accesspoint, 
-				principal, 
-				fileid);
-		
-		if(gresult.isSuccess()){
-			List<Version> nlist = new ArrayList<Version>();
-			List<CabVersionInfo> olist = gresult.getReturnValue();
+		List<Version> nlist = new ArrayList<Version>();
+		try{
+			
+			List<CabVersionInfo> olist = CabinetFacade.findCabinetFileVersions(accesspoint, 
+					principal, 
+					fileid);
+			
 			if(CollectionUtils.isNotEmpty(olist)){
 				for(CabVersionInfo vinfo : olist){
 					
@@ -218,11 +221,11 @@ public class CabEntryExtController extends BaseController{
 			}
 			aresult.setData(nlist);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
-		}else{
+			aresult.setMessage(getMessage("mesg.find.versions", principal.getLocale()));
+		}catch(CoreException ce){
 			
 			aresult.setState(ActionResult.FAIL);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(ce.getMessage());
 		}
 		
 		return mav.addAllObjects(aresult.asMap());

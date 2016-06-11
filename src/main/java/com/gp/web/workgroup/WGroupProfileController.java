@@ -22,11 +22,11 @@ import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.ImageFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.ActLogInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.ImageInfo;
@@ -34,7 +34,7 @@ import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.WorkgroupExInfo;
-import com.gp.info.WorkgroupUserExInfo;
+import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.pagination.PaginationInfo;
@@ -42,7 +42,6 @@ import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.model.Account;
 import com.gp.web.model.ActivityLog;
 import com.gp.web.model.WGroupMember;
 import com.gp.web.model.Workgroup;
@@ -86,9 +85,8 @@ public class WGroupProfileController extends BaseController{
 		}
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
 		
-		GeneralResult<WorkgroupExInfo> gresult = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
-		if(gresult.isSuccess() && null != gresult.getReturnValue()){
-			WorkgroupExInfo info = gresult.getReturnValue();
+		try{
+			WorkgroupExInfo info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
 			Workgroup wgroup = new Workgroup();
 			
 			wgroup.setWorkgroupId(info.getInfoId().getId());
@@ -111,35 +109,36 @@ public class WGroupProfileController extends BaseController{
 			
 			// sotrage and organiztion
 			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId())).getReturnValue();
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
 			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId())).getReturnValue();
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
 			Long avatarId = info.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId)).getReturnValue();
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + imagePath + "/" + avatar.getFileName());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPublishCabinet();
-			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId)).getReturnValue();
+			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
 			Long pricabId = info.getNetdiskCabinet();
-			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId)).getReturnValue();
+			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
 			result.setState(ActionResult.SUCCESS);
 			result.setData(wgroup);
 			
-		}else{
+		}catch(CoreException ce){
 			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
 		}
 		
-		result.setMessage(gresult.getMessage());
+		
 		mav.addAllObjects(result.asMap());
 		
 		return mav;
@@ -163,12 +162,13 @@ public class WGroupProfileController extends BaseController{
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
 		List<WGroupMember> list = new ArrayList<WGroupMember>();
-		GeneralResult<PageWrapper<WorkgroupUserExInfo>> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
+		
 		Boolean hasMore = false;
 		Integer nextPage = -1;
-		if(gresult.isSuccess()){
-			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue().getRows();
-			for(WorkgroupUserExInfo info: ulist){
+		try{
+			PageWrapper<WorkgroupMemberInfo> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
+			List<WorkgroupMemberInfo> ulist = gresult.getRows();
+			for(WorkgroupMemberInfo info: ulist){
 				
 				WGroupMember wmember = new WGroupMember();
 				wmember.setAccount(info.getAccount());
@@ -180,9 +180,11 @@ public class WGroupProfileController extends BaseController{
 				
 				list.add(wmember);
 			}
-			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			PaginationInfo pginfo = gresult.getPagination();
 			hasMore = pginfo.getNext();
 			nextPage = pginfo.getNextPage();
+		}catch(CoreException ce){
+			//
 		}
 		mav.addObject("members", list);
 		mav.addObject("hasMore", hasMore);
@@ -213,11 +215,11 @@ public class WGroupProfileController extends BaseController{
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
 		List<ActivityLog> list = new ArrayList<ActivityLog>();
-		GeneralResult<PageWrapper<ActLogInfo>> gresult = WorkgroupFacade.findWorkgroupActivityLogs(accesspoint, principal, wkey, pquery);
+		
 		Boolean hasMore = false;
 		Integer nextPage = -1;
-		if(gresult.isSuccess()){
-						
+		try{
+			PageWrapper<ActLogInfo> gresult = WorkgroupFacade.findWorkgroupActivityLogs(accesspoint, principal, wkey, pquery);			
 			try {
 				taildt = StringUtils.isBlank(tailDateStr) ? SDF_DATE.parse("9999-12-31"):
 					SDF_DATE.parse(tailDateStr);
@@ -225,7 +227,7 @@ public class WGroupProfileController extends BaseController{
 				LOGGER.error("Fail parse the date",e);
 			}
 			
-			List<ActLogInfo> ulist = gresult.getReturnValue().getRows();
+			List<ActLogInfo> ulist = gresult.getRows();
 			for(ActLogInfo info: ulist){
 				
 				ActivityLog log = new ActivityLog();
@@ -251,9 +253,11 @@ public class WGroupProfileController extends BaseController{
 				taildt = info.getActivityDate();
 				list.add(log);
 			}
-			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			PaginationInfo pginfo = gresult.getPagination();
 			hasMore = pginfo.getNext();
 			nextPage = pginfo.getNextPage();
+		}catch(CoreException ce){
+			//
 		}
 		mav.addObject("actlogs", list);
 		mav.addObject("hasMore", hasMore);

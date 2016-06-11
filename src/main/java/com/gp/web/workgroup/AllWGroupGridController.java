@@ -1,14 +1,12 @@
 package com.gp.web.workgroup;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +20,8 @@ import com.gp.common.GeneralConfig;
 import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
-import com.gp.core.GeneralResult;
-import com.gp.core.InstanceFacade;
 import com.gp.core.WorkgroupFacade;
-import com.gp.ga.workgroup.WorkgroupAddController;
-import com.gp.info.InstanceInfo;
+import com.gp.exception.CoreException;
 import com.gp.info.WorkgroupLiteInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
@@ -54,13 +49,13 @@ public class AllWGroupGridController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
-		GeneralResult<PageWrapper<WorkgroupLiteInfo>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, "", null, pquery);
+		
 		List<Workgroup> wgroups = new ArrayList<Workgroup>();
 		Boolean hasMore = false;
 		Integer nextPage = -1;
-		if(gresult.isSuccess() && gresult.getReturnValue().getRows() != null){
-			
-			for(WorkgroupLiteInfo winfo : gresult.getReturnValue().getRows()){
+		try{
+			PageWrapper<WorkgroupLiteInfo> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, "", null, pquery);
+			for(WorkgroupLiteInfo winfo : gresult.getRows()){
 				
 				Workgroup wgroup = new Workgroup();
 				wgroup.setWorkgroupId(winfo.getInfoId().getId());
@@ -78,9 +73,11 @@ public class AllWGroupGridController extends BaseController{
 				wgroups.add(wgroup);
 			}
 			
-			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			PaginationInfo pginfo = gresult.getPagination();
 			hasMore = pginfo.getNext();
 			nextPage = pginfo.getNextPage();
+		}catch(CoreException ce){
+			//
 		}
 		
 		mav.addObject("wgroups", wgroups);
@@ -110,14 +107,13 @@ public class AllWGroupGridController extends BaseController{
 		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		
-		GeneralResult<PageWrapper<WorkgroupLiteInfo>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroup_name, taglist, pquery);
+
 		List<Workgroup> wgroups = new ArrayList<Workgroup>();
 		Boolean hasMore = false;
 		Integer nextPage = -1;
-		if(gresult.isSuccess() && gresult.getReturnValue().getRows() != null){
-			
-			for(WorkgroupLiteInfo winfo : gresult.getReturnValue().getRows()){
+		try{
+			PageWrapper<WorkgroupLiteInfo> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroup_name, taglist, pquery);
+			for(WorkgroupLiteInfo winfo : gresult.getRows()){
 				
 				Workgroup wgroup = new Workgroup();
 				wgroup.setWorkgroupId(winfo.getInfoId().getId());
@@ -135,9 +131,11 @@ public class AllWGroupGridController extends BaseController{
 				wgroups.add(wgroup);
 			}
 			
-			PaginationInfo pginfo = gresult.getReturnValue().getPagination();
+			PaginationInfo pginfo = gresult.getPagination();
 			hasMore = pginfo.getNext();
 			nextPage = pginfo.getNextPage();
+		}catch(CoreException ce){
+			//
 		}
 		
 		mav.addObject("wgroups", wgroups);

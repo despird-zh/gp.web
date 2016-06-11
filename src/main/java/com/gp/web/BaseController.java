@@ -43,7 +43,7 @@ public abstract class BaseController extends MultiActionController{
 	/** Model key : pagination */
 	public static final String MODEL_KEY_PAGINATION = "pagination";
 	/** Model key : rows */
-	public static final String MODEL_KEY_ROWS = "rows";
+	public static final String MODEL_KEY_DATA = "data";
 	/** Model key : state */
 	public static final String MODEL_KEY_STATE = "state";
 	/** Model key : message */
@@ -244,6 +244,7 @@ public abstract class BaseController extends MultiActionController{
 		if(null == messageSource){
 			messageSource = SpringContextUtil.getSpringBean("messageSource", MessageSource.class);
 		}
+		
 		return messageSource.getMessage(code, args, locale);
 	}
 	

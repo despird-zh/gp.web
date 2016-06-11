@@ -14,7 +14,6 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.DictionaryFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.MasterFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.DictionaryInfo;

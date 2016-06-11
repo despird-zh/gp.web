@@ -21,9 +21,9 @@ import com.gp.common.IdKey;
 import com.gp.common.Instances;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.InstanceFacade;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
@@ -53,10 +53,14 @@ public class WGroupCabinetController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
-		GeneralResult<WorkgroupInfo> gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
-		
+		WorkgroupInfo gresult = null;
+		try{
+			gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
+		}catch(CoreException ce){
+			//
+		}
 		mav.addObject("wgroup_id",  wgid);
-		mav.addObject("cabinet_id",  gresult.getReturnValue().getNetdiskCabinet());
+		mav.addObject("cabinet_id",  gresult.getNetdiskCabinet());
 		return mav;
 	}
 	
@@ -64,7 +68,7 @@ public class WGroupCabinetController extends BaseController{
 	 * Initial the netdisk page 
 	 **/
 	@RequestMapping("netdisk")
-	public ModelAndView doNetdiskInitial(HttpServletRequest request){
+	public ModelAndView doNetdiskInitial(HttpServletRequest request) throws CoreException{
 		ModelAndView mav = getJspModelView("workgroup/netdisk");
 		String wgid = super.readRequestParam("wgroup_id");
 		
@@ -72,16 +76,16 @@ public class WGroupCabinetController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
-		GeneralResult<WorkgroupInfo> gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
+		WorkgroupInfo gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
 		
 		mav.addObject("wgroup_id",  wgid);
 		mav.addObject("folder_id",  GeneralConstants.FOLDER_ROOT);
-		mav.addObject("cabinet_id",  gresult.getReturnValue().getNetdiskCabinet());
+		mav.addObject("cabinet_id",  gresult.getNetdiskCabinet());
 		return mav;
 	}	
 	
 	@RequestMapping("netdisk-next")
-	public ModelAndView doNetdiskContentNext(HttpServletRequest request){
+	public ModelAndView doNetdiskContentNext(HttpServletRequest request) throws CoreException{
 		
 		ModelAndView mav = super.getJspModelView("workgroup/netdisk-next");
 
@@ -96,10 +100,10 @@ public class WGroupCabinetController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
-		GeneralResult<PageWrapper<CabEntryInfo>> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 
+		PageWrapper<CabEntryInfo> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 
 				cabid, folderid, "", pquery );
 		
-		List<CabEntryInfo> entries = fresult.getReturnValue().getRows();
+		List<CabEntryInfo> entries = fresult.getRows();
 		List<CabinetItem> items = new ArrayList<CabinetItem>();
 		List<InfoId<Long>> ids = new ArrayList<InfoId<Long>>();
 		List<String> accounts = new ArrayList<String>();
@@ -150,12 +154,12 @@ public class WGroupCabinetController extends BaseController{
 		}
 		// decorate tag information
 		Map<InfoId<Long>, Set<TagInfo>> tagmap = CabinetFacade.findCabEntriesTags(accesspoint,
-				principal, ids).getReturnValue();
+				principal, ids);
 		// decorate favorite summary
 		Map<InfoId<Long>, Integer> favmap = CabinetFacade.findCabEntriesFavSummary(accesspoint,
-				principal, ids).getReturnValue();
+				principal, ids);
 		Map<String, InstanceInfo> srcmap = InstanceFacade.findInstances(accesspoint,
-				principal, accounts).getReturnValue();
+				principal, accounts);
 		// set tags
 		for(int i = 0; i< ids.size() ; i++){
 			CabinetItem citem = items.get(i);

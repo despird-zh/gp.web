@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.core.GeneralResult;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.WorkgroupExInfo;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
@@ -44,13 +44,11 @@ public class WorkgroupListController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
-		GeneralResult<List<WorkgroupExInfo>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
-				wgroupname);
-		
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
-		if(gresult.isSuccess()){
-			List<WorkgroupExInfo> ulist = gresult.getReturnValue();
+		try{
+			List<WorkgroupExInfo> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
+					wgroupname);
 			for(WorkgroupExInfo info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
@@ -67,13 +65,13 @@ public class WorkgroupListController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
-			mav.addObject(MODEL_KEY_ROWS, list);
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup", principal.getLocale()));
+			mav.addObject(MODEL_KEY_DATA, list);
 			
-		}else{
+		}catch(CoreException ce){
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, ce.getMessage());
 		}
 
 		return mav;
@@ -87,14 +85,12 @@ public class WorkgroupListController extends BaseController{
 		String wgroupname = super.readRequestParam("wgroup_name");
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-
-		GeneralResult<List<WorkgroupExInfo>> gresult = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
-				wgroupname);
 		
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
-		if(gresult.isSuccess()){
-			List<WorkgroupExInfo> ulist = gresult.getReturnValue();
+		try{
+			List<WorkgroupExInfo> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
+					wgroupname);
 			for(WorkgroupExInfo info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
@@ -112,14 +108,14 @@ public class WorkgroupListController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup", principal.getLocale()));
 
-			mav.addObject(MODEL_KEY_ROWS, list);
+			mav.addObject(MODEL_KEY_DATA, list);
 			
-		}else{
+		}catch(CoreException ce){
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, ce.getMessage());
 		}
 
 		return mav;

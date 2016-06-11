@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.Principal;
-import com.gp.core.GeneralResult;
 import com.gp.core.InstanceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InstanceInfo;

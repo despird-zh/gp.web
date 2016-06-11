@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.GroupUsers;
-import com.gp.core.GeneralResult;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
@@ -76,7 +75,7 @@ public class AccountExtController extends BaseController{
 		
 		mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
 		mav.addObject(MODEL_KEY_MESSAGE, "Success find external users");
-		mav.addObject(MODEL_KEY_ROWS, alist);
+		mav.addObject(MODEL_KEY_DATA, alist);
 
 		return mav;
 	}

@@ -1,8 +1,6 @@
 package com.gp.ga.workgroup;
 
 import java.util.Date;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,11 +17,11 @@ import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.ImageFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.CabinetInfo;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
@@ -32,7 +30,6 @@ import com.gp.info.StorageInfo;
 import com.gp.info.WorkgroupExInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.util.DateTimeUtils;
-import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
@@ -76,9 +73,8 @@ public class WorkgroupEditController extends BaseController{
 		}
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
 		
-		GeneralResult<WorkgroupExInfo> gresult = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
-		if(gresult.isSuccess() && null != gresult.getReturnValue()){
-			WorkgroupExInfo info = gresult.getReturnValue();
+		try{
+			WorkgroupExInfo info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
 			Workgroup wgroup = new Workgroup();
 			
 			wgroup.setWorkgroupId(info.getInfoId().getId());
@@ -101,34 +97,37 @@ public class WorkgroupEditController extends BaseController{
 			
 			// sotrage and organiztion
 			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId())).getReturnValue();
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
 			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId())).getReturnValue();
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
 			Long avatarId = info.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId)).getReturnValue();
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + imagePath + "/" + avatar.getFileName());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPublishCabinet();
-			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId)).getReturnValue();
+			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
 			Long pricabId = info.getNetdiskCabinet();
-			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId)).getReturnValue();
+			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
 			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.find.wgroup", principal.getLocale()));
 			result.setData(wgroup);
-		}else{
+			
+		}catch(CoreException ce){
 			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
 		}
 		
-		result.setMessage(gresult.getMessage());
+		
 		mav.addAllObjects(result.asMap());
 		
 		return mav;
@@ -171,24 +170,21 @@ public class WorkgroupEditController extends BaseController{
 		String basePath = ServletUtils.getBaseUrl(request);
 		String imagePath = request.getServletContext().getRealPath(group.getImagePath().substring(basePath.length()));
 		LOGGER.debug("image file path : {}", imagePath);
-		
-		GeneralResult<Boolean> gresult = WorkgroupFacade.updateWorkgroup(accesspoint, principal, 
+
+		try{
+			WorkgroupFacade.updateWorkgroup(accesspoint, principal, 
 				info, 
 				(long)group.getPublishCapacity()*1024*1024, 
 				(long)group.getNetdiskCapacity()*1024*1024,
 				imagePath);
-		
-		if(!gresult.isSuccess() || gresult.getReturnValue()){
-			if(gresult.hasValidationMessage()){
-				List<ValidateMessage> msg = gresult.getMessages();
-				result.setDetailmsgs(msg);
-			}
-			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());			
-		}else{
-			result.setData(gresult.getReturnValue());
+
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(getMessage("mesg.save.wgroup", principal.getLocale()));
+					
+		}catch(CoreException ce){
+			result.setState(ActionResult.ERROR);
+			result.setMessage(ce.getMessage());	
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 	
 		mav.addAllObjects(result.asMap());

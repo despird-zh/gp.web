@@ -19,7 +19,6 @@ import com.gp.web.model.Account;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.GroupUsers;
-import com.gp.core.GeneralResult;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;

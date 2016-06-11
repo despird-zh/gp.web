@@ -19,7 +19,6 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.exception.CoreException;
 import com.gp.info.CabFileInfo;
 import com.gp.info.InfoId;

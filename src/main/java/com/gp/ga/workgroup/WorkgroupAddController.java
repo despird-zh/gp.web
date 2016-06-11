@@ -17,15 +17,14 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
-import com.gp.core.GeneralResult;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.GroupInfo;
 import com.gp.info.InfoId;
 import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupInfo;
-import com.gp.info.WorkgroupUserExInfo;
+import com.gp.info.WorkgroupMemberInfo;
 import com.gp.util.CommonUtils;
-import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
@@ -83,23 +82,21 @@ public class WorkgroupAddController extends BaseController{
 		String basePath = ServletUtils.getBaseUrl(request);
 		String imagePath = request.getServletContext().getRealPath(group.getImagePath().substring(basePath.length()));
 		LOGGER.debug("image file path : {}", imagePath);
-		
-		GeneralResult<InfoId<Long>> gresult = WorkgroupFacade.newWorkgroup(accesspoint, principal, 
+
+		try{
+			WorkgroupFacade.newWorkgroup(accesspoint, principal, 
 				info, 
 				(long)group.getPublishCapacity()*1024*1024, 
 				(long)group.getNetdiskCapacity()*1024*1024,
 				imagePath);
-		
-		if(!gresult.isSuccess() && gresult.hasValidationMessage()){
-			List<ValidateMessage> msg = gresult.getMessages();
 			
-			result.setState(ActionResult.ERROR);
-			result.setMessage(gresult.getMessage());
-			result.setDetailmsgs(msg);
-		}else{
-			result.setData(gresult.getReturnValue());
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(gresult.getMessage());
+			result.setMessage(getMessage("mesg.new.wgroup", principal.getLocale()));
+		}catch(CoreException ce){
+			result.setState(ActionResult.ERROR);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+			
 		}
 	
 		mav.addAllObjects(result.asMap());
@@ -132,14 +129,14 @@ public class WorkgroupAddController extends BaseController{
 			
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
-		GeneralResult<List<WorkgroupUserExInfo>> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, 
-				wkey, account, entityId);
-		
+
 		ModelAndView mav = getJsonModelView();
 		List<WGroupMember> list = new ArrayList<WGroupMember>();
-		if(gresult.isSuccess()){
-			List<WorkgroupUserExInfo> ulist = gresult.getReturnValue();
-			for(WorkgroupUserExInfo info: ulist){
+		try{
+			
+			List<WorkgroupMemberInfo> ulist = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, 
+					wkey, account, entityId);
+			for(WorkgroupMemberInfo info: ulist){
 				
 				WGroupMember wmember = new WGroupMember();
 				wmember.setAccount(info.getAccount());
@@ -153,12 +150,12 @@ public class WorkgroupAddController extends BaseController{
 			}			
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
-			mav.addObject(MODEL_KEY_ROWS, list);
-		}else{
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup.mbr",principal.getLocale()));
+			mav.addObject(MODEL_KEY_DATA, list);
+		}catch(CoreException ce){
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, ce.getMessage());
 		}
 		
 		return mav;
@@ -181,17 +178,17 @@ public class WorkgroupAddController extends BaseController{
 			
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
-		
-		GeneralResult<Boolean> gresult = WorkgroupFacade.removeWorkgroupMember(accesspoint, principal, wkey, account);
+
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			WorkgroupFacade.removeWorkgroupMember(accesspoint, principal, wkey, account);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.remove.wgroup.mbr",principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
+			
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -217,18 +214,16 @@ public class WorkgroupAddController extends BaseController{
 			
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
-		
-		GeneralResult<Boolean> gresult = WorkgroupFacade.addWorkgroupMember(accesspoint, principal, wkey, account,role);
-		
+
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			WorkgroupFacade.addWorkgroupMember(accesspoint, principal, wkey, account,role);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.add.wgroup.mbr",principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -257,18 +252,17 @@ public class WorkgroupAddController extends BaseController{
 		}
 		ginfo.setDescription(description);
 		ginfo.setGroupName(group);
-		
-		GeneralResult<InfoId<Long>> gresult = WorkgroupFacade.newWorkgroupGroup(accesspoint, principal, ginfo);
-		
+
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			aresult.setData(gresult.getReturnValue().getId());
+		try{
+			WorkgroupFacade.newWorkgroupGroup(accesspoint, principal, ginfo);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.new.wgroup.group",principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
+	
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -292,12 +286,11 @@ public class WorkgroupAddController extends BaseController{
 			
 			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
 		}
-		
-		GeneralResult<List<GroupInfo>> gresult = WorkgroupFacade.findWorkgroupGroups(accesspoint, principal, wkey, group);
+
 		ModelAndView mav = getJsonModelView();
 		List<UserGroup> list = new ArrayList<UserGroup>();
-		if(gresult.isSuccess()){
-			List<GroupInfo> ulist = gresult.getReturnValue();
+		try{
+			List<GroupInfo> ulist = WorkgroupFacade.findWorkgroupGroups(accesspoint, principal, wkey, group);
 			for(GroupInfo info: ulist){
 				
 				UserGroup ug = new UserGroup();
@@ -309,13 +302,13 @@ public class WorkgroupAddController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.wgroup.group",principal.getLocale()));
 
-			mav.addObject(MODEL_KEY_ROWS, list);
-		}else{
+			mav.addObject(MODEL_KEY_DATA, list);
+		}catch(CoreException ce){
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, ce.getMessage());
 		}
 		
 		return mav;		
@@ -337,17 +330,16 @@ public class WorkgroupAddController extends BaseController{
 			
 			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
 		}
-		
-		GeneralResult<Boolean> gresult = WorkgroupFacade.removeWorkgroupGroup(accesspoint, principal, gid);
+
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			WorkgroupFacade.removeWorkgroupGroup(accesspoint, principal, gid);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.remove.wgroup.group",principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -378,16 +370,16 @@ public class WorkgroupAddController extends BaseController{
 			accounts[count] = a.getAccount();
 			count++;
 		}
-		GeneralResult<Boolean> gresult = WorkgroupFacade.addWorkgroupGroupMembers(accesspoint, principal, gid, accounts);
+		
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			WorkgroupFacade.addWorkgroupGroupMembers(accesspoint, principal, gid, accounts);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.add.group.mbr",principal.getLocale()));
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -410,13 +402,11 @@ public class WorkgroupAddController extends BaseController{
 			
 			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
 		}
-		
-		GeneralResult<List<UserInfo>> gresult = WorkgroupFacade.findWorkgroupGroupMembers(accesspoint, principal, gid);
-		
+
 		ModelAndView mav = getJsonModelView();
 		List<GroupMember> list = new ArrayList<GroupMember>();
-		if(gresult.isSuccess()){
-			List<UserInfo> ulist = gresult.getReturnValue();
+		try{
+			List<UserInfo> ulist = WorkgroupFacade.findWorkgroupGroupMembers(accesspoint, principal, gid);
 			for(UserInfo info: ulist){
 				
 				GroupMember gm = new GroupMember();
@@ -428,13 +418,13 @@ public class WorkgroupAddController extends BaseController{
 			}
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.SUCCESS);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, getMessage("mesg.find.group.mbr",principal.getLocale()));
 
-			mav.addObject(MODEL_KEY_ROWS, list);
-		}else{
+			mav.addObject(MODEL_KEY_DATA, list);
+		}catch(CoreException ce){
 
 			mav.addObject(MODEL_KEY_STATE, ActionResult.ERROR);
-			mav.addObject(MODEL_KEY_MESSAGE, gresult.getMessage());
+			mav.addObject(MODEL_KEY_MESSAGE, ce.getMessage());
 		}
 
 		return mav;
@@ -457,16 +447,17 @@ public class WorkgroupAddController extends BaseController{
 			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
 		}
 		
-		GeneralResult<Boolean> gresult = WorkgroupFacade.removeWorkgroupGroupMember(accesspoint, principal, gid, account);
+		
 		ActionResult aresult = new ActionResult();
-		if(!gresult.isSuccess()){
-			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
-			
+		try{
+			WorkgroupFacade.removeWorkgroupGroupMember(accesspoint, principal, gid, account);
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
+			aresult.setMessage(getMessage("mesg.remove.group.mbr",principal.getLocale()));
+			
+		}catch(CoreException ce){
+			aresult.setState(ActionResult.ERROR);
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		ModelAndView mav = getJsonModelView();

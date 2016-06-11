@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
+import com.gp.exception.CoreException;
 import com.gp.info.CabFolderInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -45,17 +45,17 @@ public class CabFolderController extends BaseController{
 		ModelAndView jmav = super.getJsonModelView();
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		GeneralResult<Boolean> gresult = CabinetFacade.addCabinetFolder(accesspoint, principal, cabfolder);
-		if(gresult.isSuccess()){
+		
+		try{
+			CabinetFacade.addCabinetFolder(accesspoint, principal, cabfolder);
 			
 			aresult.setState(ActionResult.SUCCESS);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
-		}else{
+			aresult.setMessage(getMessage("mesg.new.folder",principal.getLocale()));
+		}catch(CoreException ce){
 			
 			aresult.setState(ActionResult.ERROR);
-			aresult.setMessage(gresult.getMessage());
-			aresult.setDetailmsgs(gresult.getMessages());
+			aresult.setMessage(ce.getMessage());
+			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		return jmav.addAllObjects(aresult.asMap());

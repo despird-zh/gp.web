@@ -20,12 +20,12 @@ import com.gp.common.Measures;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
-import com.gp.core.GeneralResult;
 import com.gp.core.ImageFacade;
 import com.gp.core.MeasureFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
+import com.gp.exception.CoreException;
 import com.gp.info.CabinetInfo;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
@@ -62,14 +62,13 @@ public class WGroupMetaController extends BaseController{
 		Long wid = Long.valueOf(widstr);
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		
-		GeneralResult<MeasureInfo> gresult = MeasureFacade.findWorkgroupSummary(accesspoint, principal, 
-				IdKey.WORKGROUP.getInfoId(wid));
+	
 		WGroupSummary wsum = new WGroupSummary();
-		if(gresult.isSuccess()){
+		try{
 			
-			MeasureInfo minfo = gresult.getReturnValue();
-			if(null != gresult.getReturnValue()){
+			MeasureInfo minfo = MeasureFacade.findWorkgroupSummary(accesspoint, principal, 
+					IdKey.WORKGROUP.getInfoId(wid));
+			if(null != minfo){
 				wsum.setSumDocs(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_DOC), 0));
 				wsum.setSumExtMbrs(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_EXT_MBR), 0));
 				wsum.setSumMembers(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_MEMBER), 0));
@@ -77,11 +76,11 @@ public class WGroupMetaController extends BaseController{
 				wsum.setSumTopics(NumberUtils.toInt(minfo.getColValue(Measures.WG_MEAS_TOPIC), 0));
 			}
 			actrst.setState(ActionResult.SUCCESS);
-			actrst.setMessage(gresult.getMessage());
-		}else{
+			actrst.setMessage(getMessage("", principal.getLocale()));
+		}catch(CoreException ce){
 			
 			actrst.setState(ActionResult.FAIL);
-			actrst.setMessage(gresult.getMessage());
+			actrst.setMessage(ce.getMessage());
 		}
 		
 		actrst.setData(wsum);
@@ -107,9 +106,9 @@ public class WGroupMetaController extends BaseController{
 		}
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		Workgroup wgroup = new Workgroup();
-		GeneralResult<WorkgroupExInfo> gresult = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
-		if(gresult.isSuccess() && null != gresult.getReturnValue()){
-			WorkgroupExInfo info = gresult.getReturnValue();
+		
+		try{
+			WorkgroupExInfo info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
 			
 			wgroup.setWorkgroupId(info.getInfoId().getId());
 			wgroup.setWorkgroupName(info.getWorkgroupName());
@@ -131,38 +130,29 @@ public class WGroupMetaController extends BaseController{
 		
 			// storage and organization
 			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId())).getReturnValue();
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
 			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId())).getReturnValue();
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
 			Long avatarId = info.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId)).getReturnValue();
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + imagePath + "/" + avatar.getFileName());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPublishCabinet();
-			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId)).getReturnValue();
+			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
 			Long pricabId = info.getNetdiskCabinet();
-			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId)).getReturnValue();
+			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
-
-			result.setState(ActionResult.SUCCESS);
-			result.setData(wgroup);
 			
-		}else{
-			result.setState(ActionResult.FAIL);
-		}
-		// query the tags information
-		GeneralResult<List<TagInfo>> gtags = WorkgroupFacade.findWorkgroupTags(accesspoint, principal, wgroupId);
-		if(gtags.isSuccess()){
 			List<Tag> tags = new ArrayList<Tag>();
-			List<TagInfo> tinfos = gtags.getReturnValue();
+			List<TagInfo> tinfos = WorkgroupFacade.findWorkgroupTags(accesspoint, principal, wgroupId);
 			for(TagInfo tinfo: tinfos){
 				Tag t = new Tag();
 				t.setTagColor(tinfo.getTagColor());
@@ -173,8 +163,15 @@ public class WGroupMetaController extends BaseController{
 			}
 			
 			wgroup.setTags(tags);
+			result.setState(ActionResult.SUCCESS);
+			result.setData(wgroup);
+			
+		}catch(CoreException ce){
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
 		}
-		result.setMessage(gresult.getMessage());
+
+		
 		mav.addAllObjects(result.asMap());
 		
 		return mav;

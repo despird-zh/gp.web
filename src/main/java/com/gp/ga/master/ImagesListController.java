@@ -21,7 +21,6 @@ import com.gp.common.GeneralConfig;
 import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
-import com.gp.core.GeneralResult;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.ImageInfo;
