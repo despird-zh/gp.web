@@ -55,7 +55,6 @@ public class AccountAddController extends BaseController{
 		
 		String confirmPwd = super.readRequestParam("confirm");
 		UserInfo uinfo = new UserInfo();
-		uinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
 		uinfo.setLanguage(account.getLanguage());
