@@ -16,6 +16,7 @@ import com.gp.web.CustomWebUtils;
 import com.gp.web.model.Account;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
+import com.gp.common.GeneralConstants;
 import com.gp.common.GroupUsers;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
@@ -54,6 +55,7 @@ public class AccountAddController extends BaseController{
 		
 		String confirmPwd = super.readRequestParam("confirm");
 		UserInfo uinfo = new UserInfo();
+		uinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
 		uinfo.setLanguage(account.getLanguage());
