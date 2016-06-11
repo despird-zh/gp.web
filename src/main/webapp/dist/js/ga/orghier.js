@@ -165,6 +165,7 @@ var PageContext =(function ($, window, undefined){
 			url: svr_url,
 			dataType : "json",
 			data: nodedata,
+			method : 'POST',
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, ('success' != response.state));	
