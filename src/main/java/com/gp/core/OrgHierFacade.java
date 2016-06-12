@@ -220,7 +220,7 @@ public class OrgHierFacade {
 			for(String account : accounts){
 				
 				if(StringUtils.equals(admin, account) || StringUtils.equals(manager, account)){
-					throw new CoreException(principal.getLocale(), "");
+					throw new CoreException(principal.getLocale(), "excp.reserv.org.mbr");
 				}
 			}
 			orghierservice.removeOrgHierMember(svcctx, orgid, accounts);

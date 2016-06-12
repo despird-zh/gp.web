@@ -67,6 +67,7 @@ public class DictEntriesController  extends BaseController{
 			ars.setMessage(ce.getMessage());
 		}
 		
+		mav.addAllObjects(ars.asMap());
 		return mav;
 	}
 	

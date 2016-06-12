@@ -252,7 +252,8 @@ public class OrgHierController extends BaseController{
 			aresult.setMessage(ce.getMessage());
 			aresult.setDetailmsgs(ce.getValidateMessages());
 		}
-
+		
+		mav.addAllObjects(aresult.asMap());
 		return mav;
 	}
 }

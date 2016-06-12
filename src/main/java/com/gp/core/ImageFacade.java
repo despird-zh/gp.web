@@ -28,7 +28,7 @@ public class ImageFacade {
 	
 	static Logger LOGGER = LoggerFactory.getLogger(ImageFacade.class);
 	
-	static ImageService imageservice;
+	private static ImageService imageservice;
 	
 	@Autowired
 	private ImageFacade(ImageService imageservice){

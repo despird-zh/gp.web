@@ -80,6 +80,8 @@ public class ImagesListController  extends BaseController{
 			ars.setState(ActionResult.ERROR);
 			ars.setMessage(ce.getMessage());
 		}
+		
+		mav.addAllObjects(ars.asMap());
 		return mav;
 	}
 	

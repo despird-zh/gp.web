@@ -5,4 +5,4 @@
 
 2. after workgroup bind to a org_id, the workgroup can only visible to org_id scope (include sub org).
 
-3. orghierfacade, remove member add coreexception message.
+3. [done]orghierfacade, remove member add coreexception message.

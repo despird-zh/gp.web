@@ -23,14 +23,13 @@ import com.gp.validate.ValidateUtils;
 @Component
 public class DictionaryFacade {
 
-	static Logger LOGGER = LoggerFactory.getLogger(MasterFacade.class);
+	static Logger LOGGER = LoggerFactory.getLogger(DictionaryFacade.class);
 	
-	static DictionaryService dictservice;
+	private static DictionaryService dictservice;
 	
 	@Autowired
 	private DictionaryFacade(DictionaryService dictservice){
-
-		MasterFacade.dictservice = dictservice;
+		DictionaryFacade.dictservice = dictservice;
 	}
 
 	/**

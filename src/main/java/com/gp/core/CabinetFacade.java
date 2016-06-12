@@ -24,7 +24,6 @@ import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
-import com.gp.common.GeneralContext.ExecState;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.CabEntryInfo;
@@ -51,17 +50,17 @@ public class CabinetFacade {
 	
 	static Logger LOGGER = LoggerFactory.getLogger(CabinetFacade.class);
 	
-	static CabinetService cabinetservice;
+	private static CabinetService cabinetservice;
 	
-	static FolderService folderservice;
+	private static FolderService folderservice;
 	
-	static FileService fileservice;
+	private static FileService fileservice;
 	
-	static CommonService idservice;
+	private static CommonService idservice;
 	
-	static TagService tagservice;
+	private static TagService tagservice;
 	
-	static FavoriteService favservice;
+	private static FavoriteService favservice;
 	
 	@Autowired
 	private CabinetFacade(CabinetService cabinetservice, 

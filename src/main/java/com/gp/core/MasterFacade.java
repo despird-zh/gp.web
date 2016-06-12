@@ -17,7 +17,6 @@ import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.SysOptionInfo;
-import com.gp.svc.DictionaryService;
 import com.gp.svc.SystemService;
 
 @Component
@@ -25,14 +24,11 @@ public class MasterFacade {
 
 	static Logger LOGGER = LoggerFactory.getLogger(MasterFacade.class);
 	
-	static SystemService systemservice;
-	
-	static DictionaryService dictservice;
-	
+	private static SystemService systemservice;
+
 	@Autowired
-	private MasterFacade(SystemService systemservice, DictionaryService dictservice){
+	private MasterFacade(SystemService systemservice){
 		MasterFacade.systemservice = systemservice;
-		MasterFacade.dictservice = dictservice;
 	}
 		
 	public static Boolean saveSystemOption(AccessPoint accesspoint,

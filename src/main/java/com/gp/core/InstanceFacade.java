@@ -33,7 +33,7 @@ public class InstanceFacade {
 
 	static Logger LOGGER = LoggerFactory.getLogger(InstanceFacade.class);
 	
-	static InstanceService instanceservice;
+	private static InstanceService instanceservice;
 	
 	@Autowired
 	private InstanceFacade(InstanceService instanceservice){
