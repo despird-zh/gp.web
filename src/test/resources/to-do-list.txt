@@ -6,3 +6,5 @@
 2. after workgroup bind to a org_id, the workgroup can only visible to org_id scope (include sub org).
 
 3. [done]orghierfacade, remove member add coreexception message.
+
+4. make workgrou support manager feature dao update, new func not yet.
