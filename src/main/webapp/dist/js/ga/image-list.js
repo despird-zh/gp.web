@@ -142,7 +142,7 @@ var PageContext =(function ($, window, undefined){
 			success: function(response)
 			{	
 				_self.$table.dataTable().api().clear();
-				_self.$table.dataTable().api().rows.add(response.rows).draw();
+				_self.$table.dataTable().api().rows.add(response.data).draw();
 				
 			}
 		});

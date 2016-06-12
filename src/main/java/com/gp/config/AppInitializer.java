@@ -101,6 +101,7 @@ public class AppInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic servlet2 = servletContext.addServlet("AvatarServlet", avatarServlet);
         servlet2.addMapping("/avatar");
         servlet2.setAsyncSupported(true);
+        servlet2.setMultipartConfig( getMultiPartConfig() );
         servlet2.setLoadOnStartup(3);
         
     }
