@@ -1,0 +1,4 @@
+1 the file should support hidden feature. 
+  manager browse all the cabinet entries.
+  contributor only browse his own hidden entries and other visible ones
+  consumer cannot browse any hidden entries.
