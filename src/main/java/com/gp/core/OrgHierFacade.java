@@ -1,25 +1,30 @@
 package com.gp.core;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.FlatColumns;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
+import com.gp.info.FlatColLocator;
 import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.UserInfo;
+import com.gp.svc.CommonService;
 import com.gp.svc.OrgHierService;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
@@ -31,9 +36,13 @@ public class OrgHierFacade {
 	
 	static OrgHierService orghierservice;
 	
+	static CommonService commonservice;
+	
 	@Autowired
-	private OrgHierFacade(OrgHierService orghierservice){
+	private OrgHierFacade(OrgHierService orghierservice,
+			CommonService commonservice){
 		OrgHierFacade.orghierservice = orghierservice;
+		OrgHierFacade.commonservice = commonservice;
 	}
 	
 
@@ -73,7 +82,8 @@ public class OrgHierFacade {
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
 			cexcp.addValidateMessages(vmsg);
 			throw cexcp;
-		}		
+		}
+		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ORGHIER)){
 			
@@ -201,7 +211,18 @@ public class OrgHierFacade {
 				Operations.REMOVE_ORGHIER_MEMBER)){
 			
 			svcctx.setAuditObject(orgid);
+			Map<String, Object> vals = commonservice.query(orgid, new FlatColLocator[]{
+				FlatColumns.ADMIN, FlatColumns.MANAGER
+			});
+			String admin = (String)vals.get(FlatColumns.ADMIN.getColumn());
+			String manager = (String)vals.get(FlatColumns.MANAGER.getColumn());
 			
+			for(String account : accounts){
+				
+				if(StringUtils.equals(admin, account) || StringUtils.equals(manager, account)){
+					throw new CoreException(principal.getLocale(), "");
+				}
+			}
 			orghierservice.removeOrgHierMember(svcctx, orgid, accounts);
 			rst = true;
 		} catch (ServiceException e)  {

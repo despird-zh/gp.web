@@ -2,3 +2,7 @@
   manager browse all the cabinet entries.
   contributor only browse his own hidden entries and other visible ones
   consumer cannot browse any hidden entries.
+
+2. after workgroup bind to a org_id, the workgroup can only visible to org_id scope (include sub org).
+
+3. orghierfacade, remove member add coreexception message.
