@@ -77,32 +77,37 @@ $(function (){
 			// create file directory tree panel
 			_self.$orghier_tree.jstree({
 				core: {
-					'themes': {
-						responsive: !1
-					},
 					'data' : {
 						'url' : '../common/org-nodes.do',
 						'data' : function (node) {
 						  return { 'org_id' : node.id };
-						}
-					}
+						},
+				      	'cache' : false
+					},
+					'themes': {
+						responsive: !1,
+		                'name': 'proton'
+		            }
 				},
 				types: {
 					"default": {
 						icon: "fa fa-folder text-warning fa-md"
 					},
-					file: {
+					"file": {
 						icon: "fa fa-file text-inverse fa-md"
 					}
 				},
-				plugins: ["types"]
+				"plugins": ["types"]
 			}).on('loaded.jstree', function() {
 				// find the first node to be selected
 				var nid = SelectOrghierModal.$orghier_tree.find("ul li:first-child").attr('id');
 				SelectOrghierModal.$orghier_tree.jstree('select_node', nid);
-			});
+			}).on("after_close.jstree", function (evt, data) {
+				var tree = _self.$orghier_tree.jstree(true);
+					tree.delete_node(data.node.children);
+					tree._model.data[data.node.id].state.loaded = false;
 				
-			_self.$orghier_tree.on("select_node.jstree", function(e, treenode) {
+			}).on("select_node.jstree", function(e, treenode) {
 				SelectOrghierModal.setOrgNode(treenode.node.original);
 			});
 			
