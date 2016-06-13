@@ -7,9 +7,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.gp.common.SpringContextUtil;
+import com.gp.core.DictionaryFacade;
 import com.gp.exception.BaseException;
-import com.gp.svc.DictionaryService;
 import com.gp.validate.ValidateMessage;
 
 /**
@@ -25,9 +24,6 @@ public class CoreException extends BaseException{
 	private static final long serialVersionUID = 6149095030747094149L;
 	
 	private Set<ValidateMessage> messageSet = null;
-	
-	// hold the dictionary service 
-	private static DictionaryService dictservice;
 	
 	public CoreException(String errorcode,Object ...param){
 		this(Locale.getDefault(),errorcode, param);
@@ -65,11 +61,7 @@ public class CoreException extends BaseException{
      **/
     private String getMessagePattern(Locale locale, String code){
 		
-		if(dictservice == null){
-			// Fetch the spring dictionary service bean
-			dictservice = SpringContextUtil.getSpringBean(DictionaryService.class);
-		}
-		String messagePattern = dictservice.getMessagePattern(locale, code);
+		String messagePattern = DictionaryFacade.getMessagePattern(locale, code);
 		return StringUtils.isBlank(messagePattern) ? code : messagePattern;
     }
     
@@ -78,11 +70,7 @@ public class CoreException extends BaseException{
      **/
     private String getPropertyName(Locale locale, String code){
 		
-		if(dictservice == null){
-			// Fetch the spring dictionary service bean
-			dictservice = SpringContextUtil.getSpringBean(DictionaryService.class);
-		}
-		String messagePattern = dictservice.getPropertyName(locale, code);
+		String messagePattern = DictionaryFacade.getPropertyName(locale, code);
 		return StringUtils.isBlank(messagePattern) ? code : messagePattern;
     }
     

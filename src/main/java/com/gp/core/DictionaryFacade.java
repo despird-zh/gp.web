@@ -1,14 +1,17 @@
 package com.gp.core;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.FlatColumns;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
@@ -24,6 +27,12 @@ import com.gp.validate.ValidateUtils;
 public class DictionaryFacade {
 
 	static Logger LOGGER = LoggerFactory.getLogger(DictionaryFacade.class);
+	
+	public static final String LANG_EN_US = "en_US";
+	public static final String LANG_FR_FR = "fr_FR";
+	public static final String LANG_ZH_CN = "zh_CN";
+	public static final String LANG_DE_DE = "de_DE";
+	public static final String LANG_RU_RU = "ru_RU";
 	
 	private static DictionaryService dictservice;
 	
@@ -93,5 +102,49 @@ public class DictionaryFacade {
 		}
 		
 		return state;
+	}
+	
+
+	public static String getMessagePattern(Locale locale, String dictKey){
+		
+		DictionaryInfo dinfo = dictservice.getDictEntry(StringUtils.lowerCase(dictKey), false);
+		String msgptn = null;
+		if(LANG_EN_US.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_EN_US);
+		}else if(LANG_ZH_CN.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_ZH_CN);
+		}else if(LANG_FR_FR.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_FR_FR);
+		}else if(LANG_DE_DE.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_DE_DE);
+		}else if(LANG_RU_RU.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_RU_RU);
+		}
+		
+		return msgptn;
+	}
+	
+
+	public static String getPropertyName(Locale locale, String dictKey){
+		
+		String newkey = StringUtils.lowerCase(dictKey);
+		if(!StringUtils.startsWith(newkey, "prop.")){
+			newkey = "prop." + newkey;
+		}
+		DictionaryInfo dinfo = dictservice.getDictEntry(newkey, true);
+		String msgptn = null;
+		if(LANG_EN_US.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_EN_US);
+		}else if(LANG_ZH_CN.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_ZH_CN);
+		}else if(LANG_FR_FR.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_FR_FR);
+		}else if(LANG_DE_DE.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_DE_DE);
+		}else if(LANG_RU_RU.equals(locale.toString())){
+			msgptn = dinfo.getLabel(FlatColumns.DICT_RU_RU);
+		}
+		
+		return msgptn;
 	}
 }
