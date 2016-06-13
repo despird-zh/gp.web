@@ -119,6 +119,8 @@ public class DictionaryFacade {
 			msgptn = dinfo.getLabel(FlatColumns.DICT_DE_DE);
 		}else if(LANG_RU_RU.equals(locale.toString())){
 			msgptn = dinfo.getLabel(FlatColumns.DICT_RU_RU);
+		}else{
+			msgptn = dictKey;
 		}
 		
 		return msgptn;
@@ -143,6 +145,8 @@ public class DictionaryFacade {
 			msgptn = dinfo.getLabel(FlatColumns.DICT_DE_DE);
 		}else if(LANG_RU_RU.equals(locale.toString())){
 			msgptn = dinfo.getLabel(FlatColumns.DICT_RU_RU);
+		}else{
+			msgptn = dictKey;
 		}
 		
 		return msgptn;
