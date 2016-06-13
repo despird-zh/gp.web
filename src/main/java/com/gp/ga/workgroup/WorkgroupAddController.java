@@ -67,6 +67,7 @@ public class WorkgroupAddController extends BaseController{
 		info.setDescription(group.getDescription());
 		info.setState(group.getState());
 		info.setAdmin(group.getAdmin());
+		info.setManager(group.getManager());
 		info.setCreator(principal.getAccount());
 		info.setCreateDate(new Date(System.currentTimeMillis()));
 		info.setOrgId(group.getOrgId());
@@ -77,7 +78,7 @@ public class WorkgroupAddController extends BaseController{
 		info.setShareEnable(group.getShareOn());
 		info.setLinkEnable(group.getLinkOn());
 		info.setStorageId(group.getStorageId());
-		
+	
 		// convert the url into disk path, ignore [..]
 		String basePath = ServletUtils.getBaseUrl(request);
 		String imagePath = request.getServletContext().getRealPath(group.getImagePath().substring(basePath.length()));

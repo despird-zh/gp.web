@@ -12,6 +12,8 @@ public class Workgroup {
 	
 	private String admin;
 	
+	private String manager;
+	
 	private String adminName;
 	
 	private Long orgId;
@@ -252,5 +254,13 @@ public class Workgroup {
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
 	}	
 }

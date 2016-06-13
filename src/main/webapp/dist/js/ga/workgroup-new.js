@@ -10,6 +10,7 @@ var PageContext = (function ($, window, undefined){
 		$workgroup_name : $('#workgroup-name'),
 		$workgroup_state : $('#workgroup-state-sel'),
 		$workgroup_admin : $('#workgroup-admin'),
+		$workgroup_manager : $('#workgroup-manager'),
 		$workgroup_org_id : $('#workgroup-org-id'),
 		$workgroup_org_name : $('#workgroup-org-name'),
 		$workgroup_descr : $('#workgroup-description'),
@@ -105,7 +106,7 @@ var PageContext = (function ($, window, undefined){
 			method : "POST",
 			success: function(response)
 			{	
-				GPContext.AppendResult(response, true);
+				GPContext.AppendResult(response, (response.state == 'success' ? false : true));
 				  
 			}
 		});
@@ -118,6 +119,7 @@ var PageContext = (function ($, window, undefined){
 		wg_data.workgroupName = _self.$workgroup_name.val();
 		wg_data.state = _self.$workgroup_state.val();
 		wg_data.admin = _self.$workgroup_admin.val();
+		wg_data.manager = _self.$workgroup_manager.val();
 		wg_data.orgId = _self.$workgroup_org_id.val();
 		wg_data.description = _self.$workgroup_descr.val();
 		wg_data.storageId = _self.$workgroup_storage.val();

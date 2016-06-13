@@ -80,10 +80,21 @@
 									  </div>
 									</div>
 									<div class="form-group">
-									  <label class="col-sm-3 control-label" for="workgroup-admin">管理联系人</label>
+									  <label class="col-sm-3 control-label" for="workgroup-admin">Admin</label>
 									  <div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="form-control" id="workgroup-admin" disabled>
+											<span class="input-group-btn">
+											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
+											</span>
+										  </div>
+									  </div>
+									</div>
+									<div class="form-group">
+									  <label class="col-sm-3 control-label" for="workgroup-manager">Manager</label>
+									  <div class="col-sm-4">
+										<div class="input-group">
+											<input type="text" class="form-control" id="workgroup-manager" disabled>
 											<span class="input-group-btn">
 											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
 											</span>

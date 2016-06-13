@@ -8,3 +8,5 @@
 3. [done]orghierfacade, remove member add coreexception message.
 
 4. make workgrou support manager feature dao update, new func not yet.
+
+5. gp_group_mbrs.workgroup_id issue
