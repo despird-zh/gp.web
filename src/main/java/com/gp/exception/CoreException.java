@@ -61,7 +61,7 @@ public class CoreException extends BaseException{
      **/
     private String getMessagePattern(Locale locale, String code){
 		
-		String messagePattern = DictionaryFacade.getMessagePattern(locale, code);
+		String messagePattern = DictionaryFacade.findMessagePattern(locale, code);
 		return StringUtils.isBlank(messagePattern) ? code : messagePattern;
     }
     
@@ -70,7 +70,7 @@ public class CoreException extends BaseException{
      **/
     private String getPropertyName(Locale locale, String code){
 		
-		String messagePattern = DictionaryFacade.getPropertyName(locale, code);
+		String messagePattern = DictionaryFacade.findPropertyName(locale, code);
 		return StringUtils.isBlank(messagePattern) ? code : messagePattern;
     }
     

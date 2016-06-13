@@ -104,10 +104,15 @@ public class DictionaryFacade {
 		return state;
 	}
 	
-
-	public static String getMessagePattern(Locale locale, String dictKey){
+	/**
+	 * Get the message pattern from dictionary 
+	 * @param locale the locale setting
+	 * @param dictKey the key of dictionary entry, eg. excp.find.workgroup 
+	 **/
+	public static String findMessagePattern(Locale locale, String dictKey){
 		
 		DictionaryInfo dinfo = dictservice.getDictEntry(StringUtils.lowerCase(dictKey), false);
+		if(dinfo == null) return dictKey;
 		String msgptn = null;
 		if(LANG_EN_US.equals(locale.toString())){
 			msgptn = dinfo.getLabel(FlatColumns.DICT_EN_US);
@@ -126,14 +131,22 @@ public class DictionaryFacade {
 		return msgptn;
 	}
 	
-
-	public static String getPropertyName(Locale locale, String dictKey){
+	/**
+	 * Find the bean property name, user hibernate validator to check the data.
+	 * but the property name is bean property, here convert the bean property name 
+	 * to localized string. eg. sourceId = 来源ID
+	 * 
+	 * @param locale the locale setting
+	 * @param dictKey the key of dictionary entry
+	 **/
+	public static String findPropertyName(Locale locale, String dictKey){
 		
 		String newkey = StringUtils.lowerCase(dictKey);
 		if(!StringUtils.startsWith(newkey, "prop.")){
 			newkey = "prop." + newkey;
 		}
 		DictionaryInfo dinfo = dictservice.getDictEntry(newkey, true);
+		if(dinfo == null) return dictKey;
 		String msgptn = null;
 		if(LANG_EN_US.equals(locale.toString())){
 			msgptn = dinfo.getLabel(FlatColumns.DICT_EN_US);
