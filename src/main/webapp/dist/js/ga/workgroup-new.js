@@ -73,9 +73,14 @@ var PageContext = (function ($, window, undefined){
 			  placeholder: { id: "", text : "Select a storage"}
 			});
 			
-			$('#tab_2 a[gpid="user-sel-btn"]').on("click", function(){				
+			$('#tab_2 a[gpid="admin-sel-btn"]').on("click", function(){				
 				GPContext.showSelectUser(function(user){
 					WorkgroupBasic.$workgroup_admin.val(user.account);
+				}, true);
+			});	
+			$('#tab_2 a[gpid="manager-sel-btn"]').on("click", function(){				
+				GPContext.showSelectUser(function(user){
+					WorkgroupBasic.$workgroup_manager.val(user.account);
 				}, true);
 			});	
 			$('#tab_2 a[gpid="orghier-sel-btn"]').on("click", function(){				

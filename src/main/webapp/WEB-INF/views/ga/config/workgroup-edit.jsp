@@ -82,12 +82,23 @@
 									  </div>
 									</div>
 									<div class="form-group">
-									  <label class="col-sm-3 control-label" for="workgroup-admin">管理联系人</label>
+									  <label class="col-sm-3 control-label" for="workgroup-admin">管理员</label>
 									  <div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="form-control" id="workgroup-admin" disabled>
 											<span class="input-group-btn">
-											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
+											  <a gpid="admin-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
+											</span>
+										  </div>
+									  </div>
+									</div>
+									<div class="form-group">
+									  <label class="col-sm-3 control-label" for="workgroup-manager">管理人</label>
+									  <div class="col-sm-4">
+										<div class="input-group">
+											<input type="text" class="form-control" id="workgroup-manager" disabled>
+											<span class="input-group-btn">
+											  <a gpid="manager-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
 											</span>
 										  </div>
 									  </div>
@@ -298,9 +309,8 @@
 								  <div class="col-sm-4">
 										<select class="form-control select2" id="member-role">
 											<option value="MANAGER">Manager</option>
-											<option value="ADMIN">Admin</option>
-											<option value="NORMAL">Normal</option>
-											<option value="EXTERN">Extern</option>
+											<option value="CONTRIBUTOR">Contributor</option>
+											<option value="CONSUMER">Consumer</option>
 										</select>
 								  </div>
 								</div>
@@ -432,7 +442,7 @@
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js"></script>
 	<%@include file="../../dialog/select-user.jsp" %>
-	<%@include file="../../dialog/select-workgroup-member.jsp" %>
+	<%@include file="../../dialog/select-wgroup-mbr.jsp" %>
 	<%@include file="../../dialog/select-orghier.jsp" %>
 	<%@include file="../../dialog/avatar-cropper.jsp" %>
     <!-- AdminLTE for demo purposes -->

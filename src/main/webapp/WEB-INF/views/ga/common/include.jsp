@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="${path_plugins}/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="${path_plugins}/ionicons/css/ionicons.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="${path_plugins}/iCheck/flat/blue.css">
+	<!-- JStree style --> 
+    <link rel="stylesheet" href="${path_plugins}/jstree/dist/themes/proton/style.min.css"> 
     <!-- Morris chart 
     <link rel="stylesheet" href="${path_plugins}/morris/morris.css">-->
     <!-- jvectormap -->
@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="${path_plugins}/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 	<!-- Select2 -->
     <link rel="stylesheet" href="${path_plugins}/select2/select2.min.css">
-	<link rel="stylesheet" href="${path_plugins}/jstree/dist/themes/default/style.min.css">	
     <!-- Theme style -->
 	<link rel="stylesheet" href="${path_css}/AdminLTE.new.css">
 

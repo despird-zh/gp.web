@@ -85,7 +85,7 @@
 										<div class="input-group">
 											<input type="text" class="form-control" id="workgroup-admin" disabled>
 											<span class="input-group-btn">
-											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
+											  <a gpid="admin-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
 											</span>
 										  </div>
 									  </div>
@@ -96,7 +96,7 @@
 										<div class="input-group">
 											<input type="text" class="form-control" id="workgroup-manager" disabled>
 											<span class="input-group-btn">
-											  <a gpid="user-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
+											  <a gpid="manager-sel-btn" class="btn btn-info btn-sm" ><i class="fa fa-user"></i></a>
 											</span>
 										  </div>
 									  </div>

@@ -14,6 +14,7 @@ var PageContext = (function ($, window, undefined){
 		$workgroup_name : $('#workgroup-name'),
 		$workgroup_state : $('#workgroup-state-sel'),
 		$workgroup_admin : $('#workgroup-admin'),
+		$workgroup_manager : $('#workgroup-manager'),
 		$workgroup_org_id : $('#workgroup-org-id'),
 		$workgroup_org_name : $('#workgroup-org-name'),
 		$workgroup_descr : $('#workgroup-description'),
@@ -74,9 +75,14 @@ var PageContext = (function ($, window, undefined){
 		  minimumInputLength: 0,
 		  placeholder: { id: "", text : "Select a storage"}		 
 		});
-			$('#tab_2 a[gpid="user-sel-btn"]').on("click", function(){				
+			$('#tab_2 a[gpid="admin-sel-btn"]').on("click", function(){				
 				GPContext.showSelectUser(function(user){
 					WorkgroupBasic.$workgroup_admin.val(user.account);
+				}, true);
+			});
+			$('#tab_2 a[gpid="manager-sel-btn"]').on("click", function(){				
+				GPContext.showSelectUser(function(user){
+					WorkgroupBasic.$workgroup_manager.val(user.account);
 				}, true);
 			});
 			$('#tab_2 a[gpid="orghier-sel-btn"]').on("click", function(){				
@@ -122,6 +128,7 @@ var PageContext = (function ($, window, undefined){
 					_self.$workgroup_name.val(wg_data.workgroupName);				
 					_self.$workgroup_state.val(wg_data.state).trigger('change');
 					_self.$workgroup_admin.val(wg_data.admin);
+					_self.$workgroup_manager.val(wg_data.manager);
 					_self.$workgroup_org_id.val(wg_data.orgId);
 					_self.$workgroup_org_name.val(wg_data.orgName);
 					_self.$workgroup_descr.val(wg_data.description);				
@@ -432,7 +439,7 @@ var PageContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				_self.$member_table.dataTable().api().clear();
-				_self.$member_table.dataTable().api().rows.add(response.rows).draw();			  
+				_self.$member_table.dataTable().api().rows.add(response.data).draw();			  
 			}
 		});
 	};
@@ -697,7 +704,7 @@ var PageContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				_self.$group_mbr_table.dataTable().api().clear();
-				_self.$group_mbr_table.dataTable().api().rows.add(response.rows).draw();
+				_self.$group_mbr_table.dataTable().api().rows.add(response.data).draw();
 			}
 		});
 	};
@@ -738,7 +745,7 @@ var PageContext = (function ($, window, undefined){
 			success: function(response)
 			{	
 				_self.$group_table.dataTable().api().clear();
-				_self.$group_table.dataTable().api().rows.add(response.rows).draw();	  
+				_self.$group_table.dataTable().api().rows.add(response.data).draw();	  
 			}
 		});
 	};
@@ -753,6 +760,7 @@ var PageContext = (function ($, window, undefined){
 			data: {
 				'group_id' : $(el).attr('data-group-id')
 				},
+			method : "POST",
 			success: function(response)
 			{	
 				if('success' == response.state){
@@ -773,9 +781,10 @@ var PageContext = (function ($, window, undefined){
 				'group' : _self.$group_name.val(),
 				'description' : _self.$group_description.val()
 				},
+			method : "POST",
 			success: function(response)
 			{	
-				GPContext.AppendResult(response, true);
+				GPContext.AppendResult(response, ('success' != response.state));
 			}
 		});
 	};

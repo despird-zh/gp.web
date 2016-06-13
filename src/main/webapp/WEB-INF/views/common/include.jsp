@@ -4,8 +4,8 @@
     <link rel="stylesheet" href="${path_plugins}/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="${path_plugins}/ionicons/css/ionicons.min.css">
-	 <!-- JStree style -->
-     <link rel="stylesheet" href="${path_plugins}/jstree/dist/themes/proton/style.min.css">   	
+	<!-- JStree style --> 
+    <link rel="stylesheet" href="${path_plugins}/jstree/dist/themes/proton/style.min.css">   	
 	<!-- Select2 -->
     <link rel="stylesheet" href="${path_plugins}/select2/select2.min.css">
     <!-- Theme style -->

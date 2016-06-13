@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
+import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
@@ -366,6 +368,9 @@ public class WorkgroupFacade {
 			Principal principal, GroupInfo ginfo)throws CoreException{
 		
 		boolean gresult = false;
+		if(StringUtils.isBlank(ginfo.getGroupType())){
+			ginfo.setGroupType(GroupUsers.GroupType.WORKGROUP_GRP.name());
+		}
 		// check the validation of user information
 		Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), ginfo);
 		if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation

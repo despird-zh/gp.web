@@ -2,6 +2,8 @@ package com.gp.web.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -231,26 +233,31 @@ public class CommonController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{
-			List<OrgHierInfo> gresult = OrgHierFacade.findOrgHiers(accesspoint, principal, orgId);
-
+			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			List<OrgHierInfo> gresult = OrgHierFacade.findOrgHiers(accesspoint, principal, 
+					oid);
+			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
+					oid);
+			
 			for(OrgHierInfo orghier : gresult){
 				OrgNode node = new OrgNode();
+				Integer gcnt = grandcnt.get(orghier.getInfoId().getId());
 				
 				node.setId(String.valueOf(orghier.getInfoId().getId()));
 				
 				if(GeneralConstants.ORGHIER_ROOT != orghier.getParentOrg()){
 					node.setParent(String.valueOf(orghier.getParentOrg()));
-				}				
+				}
 				node.setText(orghier.getOrgName());
 				node.setAdmin(orghier.getAdmin());
 				node.setDescription(orghier.getDescription());
 				node.setEmail(orghier.getEmail());
 				node.setManager(orghier.getManager());
-				
+				node.setChildren((gcnt == null ? 0 : gcnt) > 0);
 				olist.add(node);
 			}			
 		}catch(CoreException ce){
-			// ignore
+			ce.printStackTrace();
 		}
 		
 		ModelAndView mav = getJsonModelView(olist);
@@ -372,6 +379,7 @@ public class CommonController extends BaseController{
 			ars.setMessage(ce.getMessage());
 		}
 		
+		mav.addAllObjects(ars.asMap());
 		return mav;
 	}
 }

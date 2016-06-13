@@ -80,6 +80,7 @@ public class WorkgroupEditController extends BaseController{
 			wgroup.setWorkgroupId(info.getInfoId().getId());
 			wgroup.setWorkgroupName(info.getWorkgroupName());
 			wgroup.setAdmin(info.getAdmin());
+			wgroup.setManager(info.getManager());
 			wgroup.setDescription(info.getDescription());
 			wgroup.setInstanceName(info.getInstanceName());
 			wgroup.setState(info.getState());
@@ -155,6 +156,7 @@ public class WorkgroupEditController extends BaseController{
 		info.setDescription(group.getDescription());
 		info.setState(group.getState());
 		info.setAdmin(group.getAdmin());
+		info.setManager(group.getManager());
 		info.setCreator(principal.getAccount());
 		info.setCreateDate(new Date(System.currentTimeMillis()));
 		info.setOrgId(group.getOrgId());
