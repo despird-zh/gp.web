@@ -29,9 +29,10 @@ import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.CabinetInfo;
+import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
-import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
+import com.gp.svc.info.UserExt;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 
@@ -105,28 +106,28 @@ public class AccountListController extends BaseController{
 		}
 		
 		try{
-			List<UserExInfo> ulist = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
+			List<CombineInfo<UserInfo, UserExt>> ulist = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
 				uname, // name
 				instanceId,  // entity
 				types,  // type
 				states); // state
 
-			for(UserExInfo info: ulist){
+			for(CombineInfo<UserInfo, UserExt> info: ulist){
 				
 				Account ui = new Account();
-				ui.setSourceId(info.getSourceId());
-				ui.setUserId(info.getInfoId().getId());
-				ui.setAccount(info.getAccount());
-				ui.setEmail(info.getEmail());
-				ui.setMobile(info.getMobile());
-				ui.setType(info.getType());
-				if(info.getCreateDate() != null)
-					ui.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
+				ui.setSourceId(info.getPrimary().getSourceId());
+				ui.setUserId(info.getPrimary().getInfoId().getId());
+				ui.setAccount(info.getPrimary().getAccount());
+				ui.setEmail(info.getPrimary().getEmail());
+				ui.setMobile(info.getPrimary().getMobile());
+				ui.setType(info.getPrimary().getType());
+				if(info.getPrimary().getCreateDate() != null)
+					ui.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
 				
-				ui.setStorageName(info.getStorageName());
-				ui.setName(info.getFullName());
-				ui.setSourceName(info.getInstanceName());
-				ui.setState(info.getState());
+				ui.setStorageName(info.getExtended().getStorageName());
+				ui.setName(info.getPrimary().getFullName());
+				ui.setSourceName(info.getExtended().getInstanceName());
+				ui.setState(info.getPrimary().getState());
 	
 				list.add(ui);
 			}			
@@ -222,23 +223,23 @@ public class AccountListController extends BaseController{
 		ActionResult result = new ActionResult();
 		
 		try{
-			UserExInfo info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
+			CombineInfo<UserInfo, UserExt> info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
 			Account ui = new Account();
-			ui.setUserId(info.getInfoId().getId());
-			ui.setSourceId(info.getSourceId());
-			ui.setAccount(info.getAccount());
-			ui.setEmail(info.getEmail());
-			ui.setMobile(info.getMobile());
-			ui.setType(info.getType());
-			ui.setPhone(info.getPhone());
-			ui.setName(info.getFullName());
-			ui.setState(info.getState());
-			ui.setStorageId(info.getStorageId());
-			ui.setLanguage(info.getLanguage());
-			ui.setTimezone(info.getTimeZone());
-			ui.setStorageName(info.getStorageName());
+			ui.setUserId(info.getPrimary().getInfoId().getId());
+			ui.setSourceId(info.getPrimary().getSourceId());
+			ui.setAccount(info.getPrimary().getAccount());
+			ui.setEmail(info.getPrimary().getEmail());
+			ui.setMobile(info.getPrimary().getMobile());
+			ui.setType(info.getPrimary().getType());
+			ui.setPhone(info.getPrimary().getPhone());
+			ui.setName(info.getPrimary().getFullName());
+			ui.setState(info.getPrimary().getState());
+			ui.setStorageId(info.getPrimary().getStorageId());
+			ui.setLanguage(info.getPrimary().getLanguage());
+			ui.setTimezone(info.getPrimary().getTimeZone());
+			ui.setStorageName(info.getExtended().getStorageName());
 			
-			List<CabinetInfo> cabs = CabinetFacade.findPersonCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getAccount());
+			List<CabinetInfo> cabs = CabinetFacade.findPersonCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getPrimary().getAccount());
 			for(CabinetInfo cinfo: cabs){
 				if(Cabinets.CabinetType.NETDISK.name().equals(cinfo.getCabinetType()))
 					ui.setPricapacity(cinfo.getCapacity());

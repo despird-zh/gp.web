@@ -22,10 +22,12 @@ import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.WorkgroupLiteInfo;
+import com.gp.info.CombineInfo;
+import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.pagination.PaginationInfo;
+import com.gp.svc.info.WorkgroupLite;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.BaseController;
 import com.gp.web.model.Workgroup;
@@ -54,22 +56,22 @@ public class AllWGroupTopticsController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<WorkgroupLiteInfo> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, "", null, pquery);
-			for(WorkgroupLiteInfo winfo : gresult.getRows()){
+			PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, "", null, pquery);
+			for(CombineInfo<WorkgroupInfo,WorkgroupLite> winfo : gresult.getRows()){
 				
 				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(winfo.getInfoId().getId());
-				wgroup.setWorkgroupName(winfo.getWorkgroupName());
-				wgroup.setAdmin(winfo.getAdmin());
-				wgroup.setAdminName(winfo.getAdminName());
-				wgroup.setDescription(winfo.getDescription());
+				wgroup.setWorkgroupId(winfo.getPrimary().getInfoId().getId());
+				wgroup.setWorkgroupName(winfo.getPrimary().getWorkgroupName());
+				wgroup.setAdmin(winfo.getPrimary().getAdmin());
+				wgroup.setAdminName(winfo.getExtended().getAdminName());
+				wgroup.setDescription(winfo.getPrimary().getDescription());
 				String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
-						winfo.getImageTouch(), winfo.getAvatarId(), winfo.getImageExt());
+						winfo.getExtended().getImageTouch(), winfo.getPrimary().getAvatarId(), winfo.getExtended().getImageExt());
 				
 				wgroup.setImagePath(imagePath);
-				wgroup.setState(winfo.getState());
-				wgroup.setDescription(winfo.getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(winfo.getCreateDate()));
+				wgroup.setState(winfo.getPrimary().getState());
+				wgroup.setDescription(winfo.getPrimary().getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(winfo.getPrimary().getCreateDate()));
 				wgroups.add(wgroup);
 			}
 			
@@ -113,22 +115,22 @@ public class AllWGroupTopticsController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<WorkgroupLiteInfo> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroup_name, taglist, pquery);
-			for(WorkgroupLiteInfo winfo : gresult.getRows()){
+			PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroup_name, taglist, pquery);
+			for(CombineInfo<WorkgroupInfo,WorkgroupLite> winfo : gresult.getRows()){
 				
 				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(winfo.getInfoId().getId());
-				wgroup.setWorkgroupName(winfo.getWorkgroupName());
-				wgroup.setAdmin(winfo.getAdmin());
-				wgroup.setAdminName(winfo.getAdminName());
-				wgroup.setDescription(winfo.getDescription());
+				wgroup.setWorkgroupId(winfo.getPrimary().getInfoId().getId());
+				wgroup.setWorkgroupName(winfo.getPrimary().getWorkgroupName());
+				wgroup.setAdmin(winfo.getPrimary().getAdmin());
+				wgroup.setAdminName(winfo.getExtended().getAdminName());
+				wgroup.setDescription(winfo.getPrimary().getDescription());
 				String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
-						winfo.getImageTouch(), winfo.getAvatarId(), winfo.getImageExt());
+						winfo.getExtended().getImageTouch(), winfo.getPrimary().getAvatarId(), winfo.getExtended().getImageExt());
 				
 				wgroup.setImagePath(imagePath);
-				wgroup.setState(winfo.getState());
-				wgroup.setDescription(winfo.getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(winfo.getCreateDate()));
+				wgroup.setState(winfo.getPrimary().getState());
+				wgroup.setDescription(winfo.getPrimary().getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(winfo.getPrimary().getCreateDate()));
 				wgroups.add(wgroup);
 			}
 			

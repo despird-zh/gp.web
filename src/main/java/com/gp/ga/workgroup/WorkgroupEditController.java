@@ -23,12 +23,13 @@ import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.CabinetInfo;
+import com.gp.info.CombineInfo;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
-import com.gp.info.WorkgroupExInfo;
 import com.gp.info.WorkgroupInfo;
+import com.gp.svc.info.WorkgroupExt;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -74,48 +75,48 @@ public class WorkgroupEditController extends BaseController{
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
 		
 		try{
-			WorkgroupExInfo info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
+			CombineInfo<WorkgroupInfo, WorkgroupExt> info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
 			Workgroup wgroup = new Workgroup();
 			
-			wgroup.setWorkgroupId(info.getInfoId().getId());
-			wgroup.setWorkgroupName(info.getWorkgroupName());
-			wgroup.setAdmin(info.getAdmin());
-			wgroup.setManager(info.getManager());
-			wgroup.setDescription(info.getDescription());
-			wgroup.setInstanceName(info.getInstanceName());
-			wgroup.setState(info.getState());
-			wgroup.setDescription(info.getDescription());
-			wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
-			wgroup.setEntityCode(info.getEntityCode());
-			wgroup.setNodeCode(info.getNodeCode());
+			wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
+			wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
+			wgroup.setAdmin(info.getPrimary().getAdmin());
+			wgroup.setManager(info.getPrimary().getManager());
+			wgroup.setDescription(info.getPrimary().getDescription());
+			wgroup.setInstanceName(info.getExtended().getInstanceName());
+			wgroup.setState(info.getPrimary().getState());
+			wgroup.setDescription(info.getPrimary().getDescription());
+			wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
+			wgroup.setEntityCode(info.getExtended().getEntityCode());
+			wgroup.setNodeCode(info.getExtended().getNodeCode());
 			
-			wgroup.setPublishOn(info.getPublishEnable());
-			wgroup.setNetdiskOn(info.getNetdiskEnable());
-			wgroup.setTopicOn(info.getPostEnable());
-			wgroup.setTaskOn(info.getTaskEnable());
-			wgroup.setShareOn(info.getShareEnable());
-			wgroup.setLinkOn(info.getLinkEnable());
+			wgroup.setPublishOn(info.getPrimary().getPublishEnable());
+			wgroup.setNetdiskOn(info.getPrimary().getNetdiskEnable());
+			wgroup.setTopicOn(info.getPrimary().getPostEnable());
+			wgroup.setTaskOn(info.getPrimary().getTaskEnable());
+			wgroup.setShareOn(info.getPrimary().getShareEnable());
+			wgroup.setLinkOn(info.getPrimary().getLinkEnable());
 			
 			// sotrage and organiztion
-			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
+			wgroup.setStorageId(info.getPrimary().getStorageId());
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getPrimary().getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
-			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
+			wgroup.setOrgId(info.getPrimary().getOrgId());
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getPrimary().getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
-			Long avatarId = info.getAvatarId();
+			Long avatarId = info.getPrimary().getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + imagePath + "/" + avatar.getFileName());
 			}
 			// cabinet capacity
-			Long pubcabId = info.getPublishCabinet();
+			Long pubcabId = info.getPrimary().getPublishCabinet();
 			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
-			Long pricabId = info.getNetdiskCabinet();
+			Long pricabId = info.getPrimary().getNetdiskCabinet();
 			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
