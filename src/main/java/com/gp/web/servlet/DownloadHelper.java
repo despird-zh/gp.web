@@ -70,6 +70,7 @@ public class DownloadHelper {
 		// Prepare some variables. The ETag is an unique identifier of the file.
 		String fileName = cabfile.getEntryName();
 		long length = cabfile.getSize();
+		/*****last modified time should be retrieved from binary record***/
 		long lastModified = cabfile.getModifyDate().getTime();
 		String eTag = fileName + "_" + length + "_" + lastModified;
 
@@ -124,26 +125,18 @@ public class DownloadHelper {
 		String range = request.getHeader("Range");
 		if (range != null) {
 
-			// Range header should match format "bytes=n-n,n-n,n-n...". If not,
-			// then return 416.
+			// Range header should match format "bytes=n-n,n-n,n-n...". If not, then return 416.
 			if (!range.matches("^bytes=\\d*-\\d*(,\\d*-\\d*)*$")) {
-				response.setHeader("Content-Range", "bytes */" + length); // Required
-																			// in
-																			// 416.
+				response.setHeader("Content-Range", "bytes */" + length); // Required in 416.
 				response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
 				return;
 			}
 
-			// If-Range header should either match ETag or be greater then
-			// LastModified. If not,
-			// then return full file.
+			// If-Range header should either match ETag or be greater then LastModified. If not, then return full file.
 			String ifRange = request.getHeader("If-Range");
 			if (ifRange != null && !ifRange.equals(eTag)) {
 				try {
-					long ifRangeTime = request.getDateHeader("If-Range"); // Throws
-																			// IAE
-																			// if
-																			// invalid.
+					long ifRangeTime = request.getDateHeader("If-Range"); // Throws IAE if invalid.
 					if (ifRangeTime != -1 && ifRangeTime + 1000 < lastModified) {
 						ranges.add(full);
 					}
@@ -152,14 +145,11 @@ public class DownloadHelper {
 				}
 			}
 
-			// If any valid If-Range header, then process each part of byte
-			// range.
+			// If any valid If-Range header, then process each part of byte range.
 			if (ranges.isEmpty()) {
 				for (String part : range.substring(6).split(",")) {
 					// Assuming a file with length of 100, the following
-					// examples returns bytes at:
-					// 50-80 (50 to 80), 40- (40 to length=100), -20
-					// (length-20=80 to length=100).
+					// examples returns bytes at: 50-80 (50 to 80), 40- (40 to length=100), -20 (length-20=80 to length=100).
 					long start = sublong(part, 0, part.indexOf("-"));
 					long end = sublong(part, part.indexOf("-") + 1, part.length());
 
@@ -170,8 +160,7 @@ public class DownloadHelper {
 						end = length - 1;
 					}
 
-					// Check if Range is syntactically valid. If not, then
-					// return 416.
+					// Check if Range is syntactically valid. If not, then return 416.
 					if (start > end) {
 						response.setHeader("Content-Range", "bytes */" + length); // Required
 																					// in

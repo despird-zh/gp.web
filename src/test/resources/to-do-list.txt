@@ -12,3 +12,10 @@
 5. gp_group_mbrs.workgroup_id issue
 
 6. orghier add route-ids to links all the hierarchy routes
+
+7. the workgroup can loosely bind to org node. even re-bind to other org node.
+
+8. the org node is a hierarchy structure data, each node can hold his own members. 
+
+9. the work group could hold one parent workgroup, once bind this is not changeable. java side is ok, dao already been modified with parent id. the table not yet.
+

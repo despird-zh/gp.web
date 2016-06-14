@@ -157,6 +157,9 @@ public class StorageFacade {
     	
     }
     
+    /**
+     * Find the storage information 
+     **/
     public static StorageInfo findStorage(AccessPoint accesspoint,
     		Principal principal, InfoId<Integer> storageid)throws CoreException{
     	
