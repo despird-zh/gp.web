@@ -37,11 +37,71 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-6">
+						<h1>AJAX demo</h1>
+						<div id="ajax" class="demo"></div>
+					</div>
+					<div class="col-sm-6">
 						<a href="#" id="username">superuser</a>
 					</div>
 				</div>
-					<h1>AJAX demo</h1>
-					<div id="ajax" class="demo"></div>
+				<div class="row">
+					<div class="col-sm-8">
+		<div >
+			<h1>Type something to see events</h1>
+
+			<div class="btn-toolbar" data-role="editor-toolbar"
+				data-target="#editor">
+				<div class="btn-group">
+					<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a data-edit="fontSize 5" class="fs-Five">Huge</a></li>
+						<li><a data-edit="fontSize 3" class="fs-Three">Normal</a></li>
+						<li><a data-edit="fontSize 1" class="fs-One">Small</a></li>
+					</ul>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+					<a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+					<a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+					<a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+					<a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+					<a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-outdent"></i></a>
+					<a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+					<a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+					<a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+					<a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+					<div class="dropdown-menu input-append">
+						<input placeholder="URL" type="text" data-edit="createLink" />
+						<button class="btn" type="button">Add</button>
+					</div>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-unlink"></i></a>
+					<span class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"> <i class="fa fa-picture-o"></i>
+						<input class="imgUpload" type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+					</span>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+					<a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+				</div>
+			</div>
+			<div id="editor" class="lead" data-placeholder="This is a basic example with no toolbars."></div>
+			<h2>Live Preview</h2>
+			<div id="editorPreview"></div>
+			<h2>Events fired:</h2>
+			<p id="events_log"></p>
+		</div>
+					</div>
 				</div>
 			</div>
 			<!-- /.container -->
@@ -53,7 +113,7 @@
 	</div>
 	<!-- ./wrapper -->
 	<!-- jQuery 2.1.4 -->
-	<script src="${path_plugins}/jQuery/jQuery-2.1.4.min.js"></script> 
+	<script src="${path_plugins}/jQuery/jquery.min.js"></script> 
 	<!-- Bootstrap 3.3.5 -->	
 	<script src="${path_bootstrap}/js/bootstrap.min.js"></script> 
 	<!-- SlimScroll -->	
@@ -70,6 +130,15 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+        	$('#editor').wysiwyg().on('change', function()
+			{
+				$('#editorPreview').html($(this).cleanHtml());
+				$('#events_log').append(' change');
+			});
+			
+			$(".dropdown-menu > input").click(function (e) {
+        		e.stopPropagation();
+    		});
 			$('#username').editable({
 				"mode" : "inline",
 				type: 'text',

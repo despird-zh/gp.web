@@ -171,7 +171,7 @@
     </div><!-- ./wrapper -->
 
 	<!-- jQuery 2.1.4 -->
-	<script src="${path_plugins}/jQuery/jQuery-2.1.4.min.js"></script> 
+	<script src="${path_plugins}/jQuery/jquery.min.js"></script> 
 	<!-- Bootstrap 3.3.5 -->	
 	<script src="${path_bootstrap}/js/bootstrap.min.js"></script> 
 	<!-- SlimScroll -->	
