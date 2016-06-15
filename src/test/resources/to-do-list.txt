@@ -22,3 +22,5 @@
 10. bug when save file not save the fize size.
 
 11. create folder not set classification
+
+12. update grid list next way ,make it use next.do only.
