@@ -81,7 +81,9 @@ public class WorkgroupEditController extends BaseController{
 			wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
 			wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
 			wgroup.setAdmin(info.getPrimary().getAdmin());
+			wgroup.setAdminName(info.getExtended().getAdminName());
 			wgroup.setManager(info.getPrimary().getManager());
+			wgroup.setManagerName(info.getExtended().getManagerName());
 			wgroup.setDescription(info.getPrimary().getDescription());
 			wgroup.setInstanceName(info.getExtended().getInstanceName());
 			wgroup.setState(info.getPrimary().getState());

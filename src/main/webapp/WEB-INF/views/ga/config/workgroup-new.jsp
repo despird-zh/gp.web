@@ -254,7 +254,7 @@
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js"></script>
 	<%@include file="../../dialog/select-user.jsp" %>
-	<%@include file="../../dialog/select-workgroup-member.jsp" %>
+	<%@include file="../../dialog/select-wgroup-mbr.jsp" %>
 	<%@include file="../../dialog/select-orghier.jsp" %>
 	<%@include file="../../dialog/avatar-cropper.jsp" %>
     <!-- AdminLTE for demo purposes -->

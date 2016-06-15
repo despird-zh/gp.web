@@ -56,7 +56,8 @@ public class AllWGroupGridController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, "", null, pquery);
+			PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
+					"", null, pquery);
 			for(CombineInfo<WorkgroupInfo,WorkgroupLite> winfo : gresult.getRows()){
 				
 				Workgroup wgroup = new Workgroup();
@@ -75,9 +76,9 @@ public class AllWGroupGridController extends BaseController{
 				wgroups.add(wgroup);
 			}
 			
-			PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
+			//PaginationInfo pginfo = gresult.getPagination();
+			hasMore = pquery.getPageSize() > gresult.getRows().size() ? false : true;
+			nextPage = pquery.getPageNumber() + 1;
 		}catch(CoreException ce){
 			//
 		}
@@ -133,9 +134,9 @@ public class AllWGroupGridController extends BaseController{
 				wgroups.add(wgroup);
 			}
 			
-			PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
+			//PaginationInfo pginfo = gresult.getPagination();
+			hasMore = pquery.getPageSize() > gresult.getRows().size() ? false : true;
+			nextPage = pquery.getPageNumber() + 1;
 		}catch(CoreException ce){
 			//
 		}

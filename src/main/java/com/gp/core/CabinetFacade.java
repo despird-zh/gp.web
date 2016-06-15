@@ -139,7 +139,7 @@ public class CabinetFacade {
 			gresult = InfoId.isValid(fid);
 		} catch (ServiceException e)  {
 
-			ContextHelper.stampContext(e, "excp.new.folde");
+			ContextHelper.stampContext(e, "excp.new.folder");
 
 		}finally{
 			

@@ -182,9 +182,9 @@ public class WGroupProfileController extends BaseController{
 				
 				list.add(wmember);
 			}
-			PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
+			//PaginationInfo pginfo = gresult.getPagination();
+			hasMore = list.size() == pquery.getPageSize();//pginfo.getNext();
+			nextPage = pquery.getPageNumber() + 1;//pginfo.getNextPage();
 		}catch(CoreException ce){
 			//
 		}
@@ -255,9 +255,9 @@ public class WGroupProfileController extends BaseController{
 				taildt = info.getActivityDate();
 				list.add(log);
 			}
-			PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
+			//PaginationInfo pginfo = gresult.getPagination();
+			hasMore = list.size() == pquery.getPageSize();
+			nextPage = pquery.getPageNumber() +1;
 		}catch(CoreException ce){
 			//
 		}

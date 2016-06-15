@@ -14,6 +14,8 @@ public class Workgroup {
 	
 	private String manager;
 	
+	private String managerName;
+	
 	private String adminName;
 	
 	private Long orgId;
@@ -262,5 +264,13 @@ public class Workgroup {
 
 	public void setManager(String manager) {
 		this.manager = manager;
+	}
+
+	public String getManagerName() {
+		return managerName;
+	}
+
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}	
 }

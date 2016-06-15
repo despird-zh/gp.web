@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -105,6 +106,14 @@ public class WGroupCabinetController extends BaseController{
 		
 		List<CabEntryInfo> entries = fresult.getRows();
 		List<CabinetItem> items = new ArrayList<CabinetItem>();
+		if(CollectionUtils.isEmpty(entries)){
+			mav.addObject("entries", items);
+			mav.addObject("hasMore", false);
+			mav.addObject("nextPage", 1);
+			mav.addObject("cabinetId", cabinetId);
+			mav.addObject("folderId", folderId);
+			return mav;
+		}
 		List<InfoId<Long>> ids = new ArrayList<InfoId<Long>>();
 		List<String> accounts = new ArrayList<String>();
 		for(int i = 0; i< entries.size() ; i++){

@@ -19,3 +19,6 @@
 
 9. the work group could hold one parent workgroup, once bind this is not changeable. java side is ok, dao already been modified with parent id. the table not yet.
 
+10. bug when save file not save the fize size.
+
+11. create folder not set classification
