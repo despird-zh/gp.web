@@ -162,9 +162,7 @@ public class DownloadHelper {
 
 					// Check if Range is syntactically valid. If not, then return 416.
 					if (start > end) {
-						response.setHeader("Content-Range", "bytes */" + length); // Required
-																					// in
-																					// 416.
+						response.setHeader("Content-Range", "bytes */" + length); // Required in 416.
 						response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
 						return;
 					}

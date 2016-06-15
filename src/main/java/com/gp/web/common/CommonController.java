@@ -35,10 +35,12 @@ import com.gp.info.KVPair;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.UserInfo;
+import com.gp.info.WorkgroupInfo;
 import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.info.UserExt;
+import com.gp.svc.info.WorkgroupLite;
 import com.gp.util.CommonUtils;
 
 /**
@@ -97,26 +99,10 @@ public class CommonController extends BaseController{
 		
 		return mav;
 	}
-	
-//	@RequestMapping("storage-info")
-//	public ModelAndView doGetStorageInfo(HttpServletRequest request){
-//		
-//		Principal principal = super.getPrincipalFromShiro();
-//		AccessPoint accesspoint = super.getAccessPoint(request);
-//		
-//		ModelAndView mav = super.getJsonModelView();
-//		String id = this.readRequestParam("storage_id");
-//		
-//		if(StringUtils.isNotBlank(id)){
-//			StorageInfo sinfo = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(Integer.valueOf(id)));
-//			if(null != sinfo){
-//				mav.addObject("id", id);
-//				mav.addObject("text", sinfo.getStorageName());
-//			}				
-//		}
-//		return mav;
-//	}
 
+	/**
+	 * Get the storage list,  
+	 **/
 	@RequestMapping("storage-list")
 	public ModelAndView doGetStorageList(HttpServletRequest request){
 		
@@ -382,6 +368,43 @@ public class CommonController extends BaseController{
 		}
 		
 		mav.addAllObjects(ars.asMap());
+		return mav;
+	}
+	
+	/**
+	 * Find work groups list to show in dropdown widget
+	 * 
+	 **/
+	@RequestMapping("workgroup-list")
+	public ModelAndView doGetWorkgroupList(HttpServletRequest request){
+		String wgroupname = request.getParameter("wgroup_name");
+		PageQuery pq = new PageQuery(8,1);
+		super.readRequestData(request, pq);// read pageNumber
+		ModelAndView mav = super.getJsonModelView();
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		boolean hasMore = false;
+		List<KVPair<String, String>> enlist = new ArrayList<KVPair<String, String>>();
+		try{
+			
+			PageWrapper<CombineInfo<WorkgroupInfo, WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroupname, null, pq);
+			
+			for(CombineInfo<WorkgroupInfo, WorkgroupLite> cinfo : gresult.getRows()){
+				Long id = cinfo.getPrimary().getInfoId().getId();
+				KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id), 
+						cinfo.getPrimary().getWorkgroupName());
+				enlist.add(kv);
+			}
+			
+			hasMore = enlist.size() == pq.getPageSize();
+
+		}catch(CoreException ce){
+			ce.printStackTrace();
+		}
+		
+		mav.addObject("items", enlist);
+		mav.addObject("more", hasMore);
+		
 		return mav;
 	}
 }
