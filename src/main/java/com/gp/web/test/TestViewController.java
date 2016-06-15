@@ -22,8 +22,7 @@ public class TestViewController extends BaseController{
 	public ModelAndView test(){
 		
 		ModelAndView mav = super.getJspModelView("test/test-view");
-		
-		
+	
 		return mav;
 	}
 	

@@ -20,7 +20,7 @@
 	<body class="hold-transition skin-blue fixed layout-top-nav">
 	<div class="wrapper">
 		<header class="main-header">
-			<%@include file="../common/header.jsp" %>
+			
 		</header>
 		<!-- Full Width Column -->
 		<div class="content-wrapper">
