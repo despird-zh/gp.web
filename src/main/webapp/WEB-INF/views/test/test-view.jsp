@@ -13,6 +13,8 @@
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
 		<%@include file="../common/include.jsp" %>
 		<!-- Morris charts -->
+		<link rel="stylesheet" href="${path_plugins}/x-editable/bootstrap3-editable/css/bootstrap-editable.css" />
+		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
 	</head>
@@ -31,6 +33,11 @@
 					</div>
 					<div class="col-sm-10">
 						<span gpid="audit-test-msg" class="label label-default"> blank </span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<a href="#" id="username">superuser</a>
 					</div>
 				</div>
 					<h1>AJAX demo</h1>
@@ -54,6 +61,8 @@
 	<!-- FastClick -->	
 	<script src="${path_plugins}/fastclick/fastclick.min.js"></script> 
 	<script src="${path_plugins}/jstree/dist/jstree.min.js"></script>
+	<script src="${path_plugins}/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
+	<script src="${path_plugins}/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
 	<!-- Sparkline -->	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> 
     <!-- AdminLTE App -->
@@ -61,7 +70,13 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-			
+			$('#username').editable({
+				"mode" : "inline",
+				type: 'text',
+			    pk: 1,
+			    url: '/test/editable-update.do',
+   				title: 'Enter username'
+			});
 			// ajax demo
 			$('#ajax').jstree({
 				'core' : {
