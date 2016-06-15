@@ -26,16 +26,17 @@ import com.gp.common.GroupUsers;
 import com.gp.common.GroupUsers.UserState;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
+import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.info.InstanceInfo;
 import com.gp.info.KVPair;
-import com.gp.info.UserExInfo;
 import com.gp.info.UserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
 import com.gp.svc.InstanceService;
 import com.gp.svc.SecurityService;
+import com.gp.svc.info.UserExt;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.util.HashUtils;
 import com.gp.validate.ValidateMessage;
@@ -66,18 +67,40 @@ public class SecurityFacade {
 		SecurityFacade.masterservice = masterservice;
 	}
 	
+	public static UserInfo findAccountLite(AccessPoint accesspoint, 
+			Principal principal,
+			InfoId<Long> userId,
+			String account, String type) throws CoreException{
+		
+		UserInfo uinfo = null;
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
+			
+			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
+					new KVPair<String, String>("account",account));
+			
+			uinfo = securityservice.getAccountLite(svcctx, userId, account, type);
+		} catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.find.account");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return uinfo;
+	}
+	
 	/**
 	 * Get the account information by account
 	 * 
 	 * @param ap the AccessPoint 
 	 * @param account the account  
 	 **/
-	public static UserExInfo findAccount(AccessPoint accesspoint, 
+	public static CombineInfo<UserInfo, UserExt> findAccount(AccessPoint accesspoint, 
 			Principal principal,
 			InfoId<Long> userId,
 			String account, String type) throws CoreException{
 		
-		UserExInfo uinfo = null;
+		CombineInfo<UserInfo, UserExt> uinfo = null;
 		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
@@ -254,14 +277,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static List<UserExInfo> findAccounts(AccessPoint accesspoint,
+	public static List<CombineInfo<UserInfo, UserExt>> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] types,
 			String[] states)throws CoreException{
 		
-		List<UserExInfo> result = null;
+		List<CombineInfo<UserInfo, UserExt>> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
@@ -295,14 +318,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static PageWrapper<UserExInfo> findAccounts(AccessPoint accesspoint,
+	public static PageWrapper<CombineInfo<UserInfo, UserExt>> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] type, 
 			PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<UserExInfo> result = null;
+		PageWrapper<CombineInfo<UserInfo, UserExt>> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			

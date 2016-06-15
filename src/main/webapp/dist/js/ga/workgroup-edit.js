@@ -175,6 +175,7 @@ var PageContext = (function ($, window, undefined){
 		wg_data.workgroupId = _self.$workgroup_id.val();
 		wg_data.state = _self.$workgroup_state.val();
 		wg_data.admin = _self.$workgroup_admin.val();
+		wg_data.manager = _self.$workgroup_manager.val();
 		wg_data.orgId = _self.$workgroup_org_id.val();
 		wg_data.description = _self.$workgroup_descr.val();
 		wg_data.storageId = _self.$workgroup_storage.val();

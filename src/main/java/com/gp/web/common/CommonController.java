@@ -28,15 +28,17 @@ import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
+import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.info.InstanceInfo;
 import com.gp.info.KVPair;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
-import com.gp.info.UserExInfo;
+import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
+import com.gp.svc.info.UserExt;
 import com.gp.util.CommonUtils;
 
 /**
@@ -177,20 +179,20 @@ public class CommonController extends BaseController{
 		ActionResult ars = new ActionResult();
 		Integer instanceId = null;
 		try{
-			List<UserExInfo> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
+			List<CombineInfo<UserInfo, UserExt>> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
 		
-			for(UserExInfo info: cresult){
+			for(CombineInfo<UserInfo, UserExt> info: cresult){
 				
 				Account ui = new Account();
-				ui.setSourceId(info.getSourceId());
-				ui.setUserId(info.getInfoId().getId());
-				ui.setAccount(info.getAccount());
-				ui.setEmail(info.getEmail());
-				ui.setMobile(info.getMobile());
-				ui.setType(info.getType());
-				ui.setName(info.getFullName());
-				ui.setState(info.getState());
-				ui.setSourceName(info.getInstanceName());
+				ui.setSourceId(info.getPrimary().getSourceId());
+				ui.setUserId(info.getPrimary().getInfoId().getId());
+				ui.setAccount(info.getPrimary().getAccount());
+				ui.setEmail(info.getPrimary().getEmail());
+				ui.setMobile(info.getPrimary().getMobile());
+				ui.setType(info.getPrimary().getType());
+				ui.setName(info.getPrimary().getFullName());
+				ui.setState(info.getPrimary().getState());
+				ui.setSourceName(info.getExtended().getInstanceName());
 				list.add(ui);
 			}			
 
@@ -290,20 +292,20 @@ public class CommonController extends BaseController{
 		
 		ModelAndView mav = super.getJsonModelView();
 		try{
-			PageWrapper<UserExInfo> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
-			List<UserExInfo> ulist = gresult.getRows();
-			for(UserExInfo info: ulist){
+			PageWrapper<CombineInfo<UserInfo, UserExt>> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
+			List<CombineInfo<UserInfo, UserExt>> ulist = gresult.getRows();
+			for(CombineInfo<UserInfo, UserExt> info: ulist){
 				
 				Account ui = new Account();
-				ui.setSourceId(info.getSourceId());
-				ui.setUserId(info.getInfoId().getId());
-				ui.setAccount(info.getAccount());
-				ui.setEmail(info.getEmail());
-				ui.setMobile(info.getMobile());
-				ui.setType(info.getType());
-				ui.setName(info.getFullName());
-				ui.setState(info.getState());
-				ui.setSourceName(info.getInstanceName());
+				ui.setSourceId(info.getPrimary().getSourceId());
+				ui.setUserId(info.getPrimary().getInfoId().getId());
+				ui.setAccount(info.getPrimary().getAccount());
+				ui.setEmail(info.getPrimary().getEmail());
+				ui.setMobile(info.getPrimary().getMobile());
+				ui.setType(info.getPrimary().getType());
+				ui.setName(info.getPrimary().getFullName());
+				ui.setState(info.getPrimary().getState());
+				ui.setSourceName(info.getExtended().getInstanceName());
 				list.add(ui);
 			}			
 

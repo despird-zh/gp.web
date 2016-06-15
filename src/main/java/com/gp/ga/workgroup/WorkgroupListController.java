@@ -15,7 +15,9 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.WorkgroupExInfo;
+import com.gp.info.CombineInfo;
+import com.gp.info.WorkgroupInfo;
+import com.gp.svc.info.WorkgroupExt;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -47,19 +49,19 @@ public class WorkgroupListController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
 		try{
-			List<WorkgroupExInfo> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
+			List<CombineInfo<WorkgroupInfo, WorkgroupExt>> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
 					wgroupname);
-			for(WorkgroupExInfo info: ulist){
+			for(CombineInfo<WorkgroupInfo, WorkgroupExt> info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(info.getInfoId().getId());
-				wgroup.setWorkgroupName(info.getWorkgroupName());
-				wgroup.setAdmin(info.getAdmin());
-				wgroup.setDescription(info.getDescription());
-				wgroup.setInstanceName(info.getInstanceName());
-				wgroup.setState(info.getState());
-				wgroup.setDescription(info.getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
+				wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
+				wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
+				wgroup.setAdmin(info.getPrimary().getAdmin());
+				wgroup.setDescription(info.getPrimary().getDescription());
+				wgroup.setInstanceName(info.getExtended().getInstanceName());
+				wgroup.setState(info.getPrimary().getState());
+				wgroup.setDescription(info.getPrimary().getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
 				
 				list.add(wgroup);
 			}
@@ -89,21 +91,21 @@ public class WorkgroupListController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
 		try{
-			List<WorkgroupExInfo> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
+			List<CombineInfo<WorkgroupInfo, WorkgroupExt>> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
 					wgroupname);
-			for(WorkgroupExInfo info: ulist){
+			for(CombineInfo<WorkgroupInfo, WorkgroupExt> info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(info.getInfoId().getId());
-				wgroup.setWorkgroupName(info.getWorkgroupName());
-				wgroup.setAdmin(info.getAdmin());
-				wgroup.setDescription(info.getDescription());
-				wgroup.setInstanceName(info.getInstanceName());
-				wgroup.setState(info.getState());
-				wgroup.setDescription(info.getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
-				wgroup.setEntityCode(info.getEntityCode());
-				wgroup.setNodeCode(info.getNodeCode());
+				wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
+				wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
+				wgroup.setAdmin(info.getPrimary().getAdmin());
+				wgroup.setDescription(info.getPrimary().getDescription());
+				wgroup.setInstanceName(info.getExtended().getInstanceName());
+				wgroup.setState(info.getPrimary().getState());
+				wgroup.setDescription(info.getPrimary().getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
+				wgroup.setEntityCode(info.getExtended().getEntityCode());
+				wgroup.setNodeCode(info.getExtended().getNodeCode());
 				list.add(wgroup);
 			}
 
