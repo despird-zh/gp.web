@@ -1,6 +1,5 @@
 package com.gp.core;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -28,14 +27,10 @@ import com.gp.info.StorageInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.storage.BinaryManager;
-import com.gp.storage.BufferManager;
-import com.gp.storage.ChunkBuffer;
 import com.gp.storage.ContentRange;
 import com.gp.svc.FileService;
 import com.gp.svc.CommonService;
 import com.gp.svc.StorageService;
-import com.gp.util.BufferInputStream;
-import com.gp.util.BufferOutputStream;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 
@@ -256,20 +251,13 @@ public class StorageFacade {
     		InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream) throws CoreException{
 		
     	boolean gresult = false;    	
-    	BufferManager bmgr = BufferManager.instance();
+    
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN_CHUNK)){
     	
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN_CHUNK);
-    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
+    		BinaryManager.instance().dumpBinary(binaryId, contentRange, outputStream);
 			
-    		BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
-			LOGGER.debug("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
-			
-			BufferInputStream bis = new BufferInputStream(cbuffer.getByteBuffer());
-			long count = bis.readToStream(outputStream);
-			bis.close();
-			LOGGER.debug("count : " + count);
 			gresult  =true;
-		}catch (StorageException | IOException e)  {
+		}catch (StorageException e)  {
 			
 			ContextHelper.stampContext(e, "excp.read.file.chunk");
 
@@ -309,75 +297,6 @@ public class StorageFacade {
     }
     
     /**
-     * Find the chunk of file binary and write it to stream directly
-     * 
-     * @param binaryId the id of binary
-     * @param contentRange the range of file content
-     * @param outputStream the output stream
-     * 
-     **/
-    public static ChunkBuffer fetchBinaryChunk(AccessPoint accesspoint, Principal principal,
-    		InfoId<Long> binaryId, ContentRange contentRange)throws CoreException{
-		
-    	ChunkBuffer gresult = null;    	
-    	BufferManager bmgr = BufferManager.instance();
-    	
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, 
-    			accesspoint,
-    			Operations.FETCH_BIN_CHUNK)){
-    		svcctx.setAuditObject(binaryId);
-			ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength());
-    		BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
-			LOGGER.debug("limit : " + cbuffer.getByteBuffer().limit() +"/pos : " + cbuffer.getByteBuffer().position());
-			gresult = cbuffer;
-		}catch (StorageException e)  {
-			
-			ContextHelper.stampContext(e, "excp.read.file.chunk");
-
-		}finally{
-			
-			ContextHelper.handleContext();
-		}
-    	return gresult;
-    	
-    }
-    
-    /**
-     * Find the binary stream of whole file and write it to stream directly
-     * @param binaryId the id of binary
-     * @param outputStream the output stream
-     * 
-     **/
-    public static ChunkBuffer fetchBinary(AccessPoint accesspoint, Principal principal, 
-    		InfoId<Long> binaryId)throws CoreException{
-		
-    	ChunkBuffer gresult = null;    	
-    	BufferManager bmgr = BufferManager.instance();
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
-			
-    		svcctx.setAuditObject(binaryId);
-    		BinaryInfo binfo = storageService.getBinary(svcctx, binaryId);
-    		if(null == binfo){
-    			throw new CoreException(principal.getLocale(), "excp.bin.not.exit");
-    		}
-    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(binfo.getSize(), 0, BufferManager.BUFFER_SIZE);
-    		if(cbuffer.getChunkLength() < binfo.getSize()){
-    			throw new CoreException(principal.getLocale(), "excp.buffer.overflow");
-    		}
-			BinaryManager.instance().dumpBinaryChunk(binaryId, cbuffer);
-
-		}catch (StorageException | ServiceException e)  {
-			
-			ContextHelper.stampContext(e, "excp.read.file");
-		}finally{
-			
-			ContextHelper.handleContext();
-		}
-    	return gresult;    	
-    	
-    }
-    
-    /**
      * Store the whole content of InputStream into binary content
      * 
      * @param binaryId the binary id
@@ -389,19 +308,13 @@ public class StorageFacade {
     		InfoId<Long> binaryId, ContentRange contentRange, InputStream inputStream)throws CoreException{
     	
     	Boolean gresult = false;    	
-    	BufferManager bmgr = BufferManager.instance();
-    	
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK);
-    		ChunkBuffer cbuffer = bmgr.acquireChunkBuffer(contentRange.getFileSize(), contentRange.getStartPos(), contentRange.getRangeLength())){
+
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
     		svcctx.setAuditObject(binaryId);			
-			// read the content of InputStream into buffer
-			BufferOutputStream bos = new BufferOutputStream(cbuffer.getByteBuffer());
-			long count = bos.writeFromStream(inputStream);
-			bos.close();			
-			LOGGER.debug("range : {}-{} / read count : {}",new Object[]{contentRange.getStartPos(), contentRange.getRangeLength(), count});
-    		BinaryManager.instance().fillBinaryChunk(binaryId, cbuffer);	
+			
+    		BinaryManager.instance().fillBinary(binaryId, contentRange, inputStream);	
     		gresult = true;
-		}catch (StorageException | IOException e)  {
+		}catch (StorageException e)  {
 			
 			ContextHelper.stampContext(e, "excp.write.file.chunk");
 
@@ -440,61 +353,6 @@ public class StorageFacade {
 	}
     
 
-    /**
-     * Store the binary chunk 
-     * 
-     * @param binaryId the file binary id
-     * @param contentRange the range of content
-     * @param chunkbuffer the chunk buffer provide the data
-     * 
-     **/
-    public static Boolean storeBinaryChunk(AccessPoint accesspoint, Principal principal, 
-    		InfoId<Long> binaryId,ContentRange contentRange, ChunkBuffer chunkbuffer)throws CoreException{
-		
-    	Boolean gresult = false;    	
-
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
-    		svcctx.setAuditObject(binaryId);
-
-    		BinaryManager.instance().fillBinaryChunk(binaryId, chunkbuffer);	
-   
-		}catch (StorageException e)  {
-			
-			ContextHelper.stampContext(e, "excp.write.file.chunk");
-		}finally{
-			
-			ContextHelper.handleContext();
-		}
-    	return gresult;
-	}
-    
-    /**
-     * Store the binary 
-     * 
-     * @param binaryId the file id
-     * @param chunkbuffer the chunk buffer provide the data
-     * 
-     **/
-    public static Boolean storeBinary(AccessPoint accesspoint, Principal principal, 
-    		InfoId<Long> binaryId, ChunkBuffer chunkbuffer)throws CoreException{
-    	
-    	Boolean gresult = false;    	
-
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
-    		svcctx.setAuditObject(binaryId);
-
-    		BinaryManager.instance().fillBinaryChunk(binaryId, chunkbuffer);	
-    
-		}catch (StorageException e)  {
-			
-			ContextHelper.stampContext(e, "excp.write.file.chunk");
-		}finally{
-			
-			ContextHelper.handleContext();
-		}
-    	return gresult;
-	}
-    
     public static InfoId<Long> newBinary(AccessPoint accesspoint, Principal principal, 
     		BinaryInfo binfo)throws CoreException{
     	
