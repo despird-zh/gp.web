@@ -28,6 +28,7 @@
 				/pages/** = anon
 				/plugins/** = anon
 				/test/** = anon
+				/dev/** = anon
 				/** = authc
 			</value>
 		</property>
