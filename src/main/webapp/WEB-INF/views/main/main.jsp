@@ -46,7 +46,7 @@
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right dashboard-nav" style="">
 						<li class=""><a data-toggle="tooltip" title="展现全部工作组并查询" href="../workgroup/all-grid.do" aria-expanded="false" ><i class="fa fa-lg fa-globe"></i></a></li>
-						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do" aria-expanded="false" ><i class="fa fa-lg fa-home"></i></a></li>
+						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/notifications.do" aria-expanded="false" ><i class="fa fa-lg fa-home"></i></a></li>
 					</ul>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>

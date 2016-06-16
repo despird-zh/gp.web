@@ -272,57 +272,6 @@
     padding: 0;
 }
 
-/* jstree customize */
-.jstree-default .jstree-clicked, .jstree-default .jstree-wholerow-clicked {
-    background: #e4e9ec none repeat scroll 0 0 !important;
-    box-shadow: none !important;
-}
-.jstree-default .jstree-hovered, .jstree-default .jstree-wholerow-hovered {
-    background: #f0f3f4 none repeat scroll 0 0 !important;
-    box-shadow: none !important;
-}
-.jstree-open > .jstree-anchor > .fa-folder::before {
-    color: #242a30;
-    content: "";
-}
-.jstree-default .jstree-checkbox {
-    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-}
-.jstree-default .jstree-checkbox::before {
-    background: #fff none repeat scroll 0 0;
-    border: 1px solid #b4b6b7;
-    bottom: 4px;
-    content: "";
-    display: block;
-    left: 4px;
-    position: absolute;
-    right: 4px;
-    top: 4px;
-}
-.jstree-default .jstree-anchor > .jstree-checkbox.jstree-undetermined::after {
-    background: #b4b6b7 none repeat scroll 0 0;
-    bottom: 7px;
-    content: "";
-    display: block;
-    left: 7px;
-    position: absolute;
-    right: 7px;
-    top: 7px;
-}
-.jstree-default .jstree-checked > .jstree-checkbox::after, .jstree-default.jstree-checkbox-selection .jstree-clicked > .jstree-checkbox::after {
-    bottom: 5px;
-    color: #242a30;
-    content: "";
-    display: block;
-    font-family: FontAwesome;
-    font-size: 12px;
-    font-style: initial;
-    left: 5px;
-    line-height: 16px;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-}
 /* filterbar */
 .filterbar{
     background-color: #f5f5f5;
@@ -1889,4 +1838,15 @@ Avartar cropper css
 }
 .avatar-btns .btn-group {
     margin-right: 5px;
+}
+
+/* notification message tasks */
+.nav > li > a.filter-nav{
+    padding: 1px 5px 1px; 
+    font-size: 12px; 
+    border-top-width: 0px;
+}
+
+.nav > li > a.filter-nav span.badge{
+    font-size: 8px; 
 }

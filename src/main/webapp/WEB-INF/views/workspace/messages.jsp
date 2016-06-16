@@ -2,78 +2,65 @@
 <%@include file="../common/taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="zh_CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Top Navigation</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-	<%@include file="../common/include.jsp" %>
-	<!-- Morris charts -->
+	<head>
+    	<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>AdminLTE 2 | Top Navigation</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
+		<%@include file="../common/include.jsp" %>
 	<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 	
 	
-  </head>
-  <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-  <body class="hold-transition skin-blue fixed layout-top-nav">
+	</head>
+	<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+	<body class="hold-transition skin-blue fixed layout-top-nav">
     <div class="wrapper">
-
-      <header class="main-header">
-        <%@include file="../common/header.jsp" %>
-      </header>
-      <!-- Full Width Column -->
-      <div class="content-wrapper">
-        <div class="container">
-
-          <section class="content-header">
-            <h1>
-              任务消息
-              <small>查看相关任务及消息</small>
-            </h1>
-			<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 10px; top: 15px;">
-				<li class=""><a  href="topics.do" aria-expanded="false"><i class="fa fa-commenting"></i></a></li>
-				<li class=""><a  href="netdisk.do" aria-expanded="true"><i class="fa fa-database"></i></a></li>
-				<li class=""><a  href="shares.do" aria-expanded="false"><i class="fa fa-share-alt"></i></a></li>        
-				<li class="active"><a  href="tasks.do" aria-expanded="false"><i class="fa fa-flag"></i></a></li>   				  
-                <li class="pull-right"><a class="text-muted" href="#"><i class="fa fa-th-list"></i></a></li>
-				<li class="pull-right"><a class="text-muted" href="#"><i class="fa fa-th"></i></a></li>
-            </ul>
-          </section>
+		<header class="main-header">
+        	<%@include file="../common/header.jsp" %>
+    	</header>
+    	<!-- Full Width Column -->
+    	<div class="content-wrapper">
+        	<div class="container bg-white">
+          	<section class="content-header">
+				<div class="row ">
+					<div class="col-sm-12">	
+						<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+						  任务消息
+						  <small>查看相关任务及消息</small>
+						</h1>
+						<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
+							<li><a data-toggle="tooltip" title="查看全部工作组空间" href="../workgroup/all-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+							<li><span class="v-separator"></span></li>	
+							<li><a data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
+							<li><a data-toggle="tooltip" title="查看个人网盘" href="netdisk.do?user_id=${wgroup_id}" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
+							<li><a data-toggle="tooltip" title="查看个人分享" href="share.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
+							<li><a data-toggle="tooltip" title="查看个人任务内容" href="tasks.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
+							<li><a data-toggle="tooltip" title="查看个人通知消息" href="notifications.do?user_id=${wgroup_id}" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
+						</ul>
+						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
+					</div>
+				 </div>
+          	</section>
 
           <!-- Main content -->
           <section class="content">
-
-			<div class="row">
-				<div class="col-lg-12">		
-				<div id="options" class="gallery-filter-container">	
-					<span>
-						<a href="tasks.do" class="btn btn-default btn-sm" data-option-value="*">
-						   任务
-						</a>
-						<a href="messages.do" class="btn btn-default btn-sm bg-yellow active" data-option-value="*">
-						   消息
-						</a>
-						<a href="notifications.do" class="btn btn-default btn-sm" data-option-value="*">
-						   通知
-						</a>
-					</span>					
-				  
-				  </div>
-				</div>
-			</div>
 		  <div class="row">
 			<div class="col-md-9">
 			  <div class="box box-widget">
-					<div class="box-header" style="">
-						<div class="folder-descr">
-							<span class="text">Design a nice theme Make the theme responsive 1Make the theme responsive 2Make the theme responsive</span>
-						</div>
+					<div class="box-header repo-header with-border" style="border-top: 1px solid #f4f4f4;">
+						<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
+						<ul class="nav nav-pills m-l-xxs">
+					    	<li><a href="tasks.do" class="filter-nav m-l-xs">任务 <span class="badge">100</span></a></li>
+					        <li class="active"><a href="messages.do" class="filter-nav m-l-xs">消息 <span class="badge badge-primary">50</span></a></li>
+					        <li><a href="notifications.do" class="filter-nav m-l-xs">通知 <span class="badge badge-warning">24</span></a></li>
+					    </ul>
 					</div><!-- /.box-header-->
-					<div class="box-body repo-list" style="padding:0px;">					
+					<div class="box-body repo-list">					
 						<ul class="list-group list-group-unbordered box-comments">
 							<li class="list-group-item clearfix " >
-								<div class="box-comment" style="padding:4px 6px;">
+								<div class="box-comment">
 									<!-- User image -->
 									<img alt="User Image" src="${path_image}/user3-128x128.jpg" class="img-circle img-sm">
 									<div class="comment-text">
@@ -364,8 +351,8 @@
 				</div><!-- /.box -->
 			</div>
 			<div class="col-md-3" >
-				<div class="box box-widget">
-				<div class="box-header with-border" style="padding-bottom: 9px; padding-top: 9px;">
+				<div class="box box-widget no-radius border-top">
+				<div class="box-header with-border ">
 					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
 						<span class="pull-left" title="Create New File" data-toggle="tooltip" data-placement="top">
 							<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#new-file-modal">
