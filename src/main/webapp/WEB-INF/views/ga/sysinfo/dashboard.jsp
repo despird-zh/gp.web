@@ -188,7 +188,6 @@
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.3.0
-		  <button class="btn btn-primary test-message"> test message <button>
         </div>
         <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
       </footer>

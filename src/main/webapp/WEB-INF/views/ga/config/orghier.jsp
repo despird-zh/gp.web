@@ -8,7 +8,6 @@
     <title>AdminLTE 2 | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<link rel="stylesheet" href="${path_plugins}/datatables/datatables.min.css" />
 	<link rel="stylesheet" href="${path_plugins}/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
 	<link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />

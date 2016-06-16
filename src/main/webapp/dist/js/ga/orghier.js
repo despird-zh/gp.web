@@ -39,7 +39,8 @@ var PageContext =(function ($, window, undefined){
 			_self.$orghier_tree.jstree({
 					'core': {
 						'themes': {
-							responsive: !1
+							responsive: !1,
+		                	'name': 'proton'
 						},
 						'data' : {
 							'url' : '../common/org-nodes.do',
@@ -61,11 +62,9 @@ var PageContext =(function ($, window, undefined){
 					// find the first node to be selected
 					var nid = OrgHierarchy.$orghier_tree.find("ul li:first-child").attr('id');
 					OrgHierarchy.$orghier_tree.jstree('select_node', nid);
-			  });
-			// bind the tree select event
-			_self.$orghier_tree.on("select_node.jstree", function(e, treenode) {					
-				OrgHierarchy.editOrgNode(treenode.node.original);
-			});			
+			  	}).on("select_node.jstree", function(e, treenode) {					
+					OrgHierarchy.editOrgNode(treenode.node.original);
+				});			
 			// bind save operation
 			_self.$node_save_btn.on('click', function(){
 				var nodedata = OrgHierarchy.getOrgNode();

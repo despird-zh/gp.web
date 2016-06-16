@@ -1,8 +1,6 @@
 package com.gp.web.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;

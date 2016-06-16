@@ -7,7 +7,7 @@
 
 3. [done]orghierfacade, remove member add coreexception message.
 
-4. make workgrou support manager feature dao update, new func not yet.
+4. [done]make workgrou support manager feature dao update, new func not yet.
 
 5. gp_group_mbrs.workgroup_id issue
 
@@ -24,3 +24,5 @@
 11. create folder not set classification
 
 12. update grid list next way ,make it use next.do only.
+
+13. clarify the classification level
