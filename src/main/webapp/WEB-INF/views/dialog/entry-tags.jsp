@@ -66,11 +66,12 @@ var EditTagContext = (function ($, window, undefined) {
 	 * collect the tag operations : { "tag1" : "attach", "tag2" : "detach"} 
      */
 	EntryTagsModal.checkTag = function(evt){
-		console.log(evt);
+		
 		var _self = EntryTagsModal;
 		// this is the elment of a
 		var $tag_check = $(evt.target).find('i');
 		var tagname = $(evt.target).attr('data-tag-name');
+		console.log(tagname);
 		if($tag_check.hasClass('fa-check-square-o')){
 			$tag_check.removeClass('fa-check-square-o').addClass('fa-square-o');
 			_self.edit_tags[tagname] = "detach";

@@ -75,9 +75,9 @@ public class AllWGroupListController extends BaseController{
 				wgroups.add(wgroup);
 			}
 			
-			PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
+			//PaginationInfo pginfo = gresult.getPagination();
+			hasMore = wgroups.size() == pquery.getPageSize();
+			nextPage = pquery.getPageNumber() + 1;
 		}catch(CoreException ce){
 			//
 		}
