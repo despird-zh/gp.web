@@ -35,7 +35,7 @@
 							<li><span class="v-separator"></span></li>	
 							<li><a data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
 							<li><a data-toggle="tooltip" title="查看个人网盘" href="netdisk.do?user_id=${wgroup_id}" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
-							<li><a data-toggle="tooltip" title="查看个人分享" href="share.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
+							<li><a data-toggle="tooltip" title="查看个人分享" href="shares.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
 							<li><a data-toggle="tooltip" title="查看个人任务内容" href="tasks.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
 							<li><a data-toggle="tooltip" title="查看个人通知消息" href="notifications.do?user_id=${wgroup_id}" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
 						</ul>
@@ -49,7 +49,7 @@
 		  <div class="row">
 			<div class="col-md-9">
 			  <div class="box box-widget">
-					<div class="box-header repo-header with-border" style="border-top: 1px solid #f4f4f4;">
+					<div class="box-header repo-header with-border">
 						<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 						<ul class="nav nav-pills m-l-xxs">
 					    	<li><a href="tasks.do" class="filter-nav m-l-xs">任务 <span class="badge">100</span></a></li>

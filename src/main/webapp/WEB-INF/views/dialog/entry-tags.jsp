@@ -29,7 +29,7 @@
 		<div class="col-md-10">
 			<p class="tags xsmall m-b-none">
 				{{#value}}
-				<a href="javascript:void(0)" class="tag-blue tag-point-{{tagColor}}" data-tag-name="{{tagName}}">
+				<a href="javascript:void(0)" onclick="EditTagContext.checkTag(this);" class="tag-blue tag-point-{{tagColor}}" data-tag-name="{{tagName}}">
 					<i class="fa fa{{#checked}}-check{{/checked}}-square-o"></i>&nbsp;{{tagName}}
 				</a>
 				{{/value}}
@@ -65,12 +65,12 @@ var EditTagContext = (function ($, window, undefined) {
 	/**
 	 * collect the tag operations : { "tag1" : "attach", "tag2" : "detach"} 
      */
-	EntryTagsModal.checkTag = function(evt){
+	EntryTagsModal.checkTag = function(el){
 		
 		var _self = EntryTagsModal;
 		// this is the elment of a
-		var $tag_check = $(evt.target).find('i');
-		var tagname = $(evt.target).attr('data-tag-name');
+		var $tag_check = $(el).find('i');
+		var tagname = $(el).attr('data-tag-name');
 		console.log(tagname);
 		if($tag_check.hasClass('fa-check-square-o')){
 			$tag_check.removeClass('fa-check-square-o').addClass('fa-square-o');
@@ -105,8 +105,8 @@ var EditTagContext = (function ($, window, undefined) {
 				var _self = EntryTagsModal;
 				var html_txt = Mustache.render(_self._tags_tmpl,response);
 				_self.$tags_container.html(html_txt);
-				_self.$tag_a = $('#entry-tags-modal p.tags > a');
-				_self.$tag_a.on('click', $.proxy(_self.checkTag, _self));
+				//_self.$tag_a = $('#entry-tags-modal p.tags > a');
+				//_self.$tag_a.on('click', $.proxy(_self.checkTag, _self));
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
@@ -152,6 +152,9 @@ var EditTagContext = (function ($, window, undefined) {
 	GPContext.editEntryTags = function(entryId, entryType){
 		EntryTagsModal.showEntryTagsEdit(entryId, entryType);
 	};
-
+	
+	return {
+		checkTag : EntryTagsModal.checkTag
+	};
 })(jQuery, window);
 </script>

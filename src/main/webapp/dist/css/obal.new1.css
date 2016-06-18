@@ -460,9 +460,9 @@ a.ellipsis, span.ellipsis, em.ellipsis {
 .repo-header{
 padding-top: 5px; 
 padding-bottom: 5px;
+border-top: 1px solid #f4f4f4;
 }
 .repo-header > .check-all{
-margin-top: 8px; 
 margin-right: 2px;
 }
 .repo-header .folder-descr{
