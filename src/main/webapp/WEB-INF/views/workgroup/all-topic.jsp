@@ -30,7 +30,7 @@
 					  <small> Topics issued in workgroup</small>
 					</h1>
 					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/workgroup-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
+						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/topics.do"><i class="fa fa-lg fa-home"></i></a></li>
 						<li ><span class="v-separator"></span></li>
 						<li class=""><a data-toggle="tooltip" title="查看全部公共话题" href="../workgroup/all-topic.do" class="bg-aqua-active"><i class="fa fa-map-signs"></i></a></li>
 						<li ><span class="v-separator"></span></li>

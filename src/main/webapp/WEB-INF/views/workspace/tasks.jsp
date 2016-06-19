@@ -30,11 +30,12 @@
 						<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
 							<li><a data-toggle="tooltip" title="查看全部工作组空间" href="../workgroup/all-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
 							<li><span class="v-separator"></span></li>	
-							<li><a data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
+							<li><a data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-map-signs"></i></a></li>    
 							<li><a data-toggle="tooltip" title="查看个人网盘" href="netdisk.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
 							<li><a data-toggle="tooltip" title="查看个人分享" href="shares.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
 							<li><a class="bg-aqua-active" data-toggle="tooltip" title="查看个人任务内容" href="tasks.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
-							<li><a data-toggle="tooltip" title="查看个人通知消息" href="notifications.do?user_id=${wgroup_id}" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
+							
+							<li><a data-toggle="tooltip" title="查看个人设置" href="profile.do?user_id=${wgroup_id}" aria-expanded="false"><i class="fa fa-fw fa-info-circle"></i></a></li>
 						</ul>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>

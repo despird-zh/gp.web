@@ -61,6 +61,7 @@ public class CommonController extends BaseController{
 		
 		PageQuery pquery = new PageQuery(10,1);
 		this.readRequestData(request, pquery);
+		pquery.setTotalCountEnable(true);
 		String namecond = this.readRequestParam("instance_name");
 		String alloption = this.readRequestParam("all_option");
 		
