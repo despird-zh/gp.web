@@ -225,10 +225,10 @@
 								<div class="col-md-12">
 									<form class="form-horizontal">		
 									<div class="form-group">
-									  <label class="col-sm-3 control-label">程序项目工作组</label>
+									  <label class="col-sm-3 control-label">人力资源</label>
 									  <div class="col-sm-4">
 										<label class="checkbox-inline">
-											<input type="checkbox" id="workgroup-p-121" gpid="topic-in-parent">  在父级显示讨论
+											<input type="checkbox" id="workgroup-p-121" gpid="topic-in-parent">  同组织公开
 										</label> 					
 									  </div>
 									</div>
@@ -244,7 +244,7 @@
 									  <label class="col-sm-3 control-label" >子项目工作组1</label>
 									  <div class="col-sm-4">
 											<label class="checkbox-inline">
-												<input type="checkbox" id="workgroup-c-122" gpid="topic-in-parent">  在父级显示讨论
+												<input type="checkbox" id="workgroup-c-122" gpid="topic-in-parent">  工作组内信息可见
 											</label> 						
 									  </div>
 									</div>
@@ -252,7 +252,7 @@
 									  <label class="col-sm-3 control-label" >子项目工作组2</label>
 									  <div class="col-sm-4">
 											<label class="checkbox-inline">
-												<input type="checkbox" id="wrokgroup-c-123" gpid="topic-in-parent">  在父级显示讨论
+												<input type="checkbox" id="wrokgroup-c-123" gpid="topic-in-parent">  工作组内信息可见
 											</label> 						
 									  </div>
 									</div>
