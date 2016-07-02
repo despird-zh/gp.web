@@ -52,7 +52,9 @@ public class AuthController extends BaseController{
 	public ModelAndView doAuth(HttpServletRequest request, HttpServletResponse response) throws WebException{
 		
 		AccessPoint ap = CustomWebUtils.getAccessPoint(request);
-		CustomWebUtils.dumpRequestAttributes(request);
+		if(LOGGER.isDebugEnabled())
+			CustomWebUtils.dumpRequestAttributes(request);
+		
 		String username = request.getParameter("account");
 		String password = request.getParameter("password");
 		AuthenToken atoken = new AuthenToken(username, password, ap);
@@ -74,23 +76,5 @@ public class AuthController extends BaseController{
 		mav.addAllObjects(result.asMap());
 		return mav;
 	}
-	
-	@RequestMapping("test")
-	public ModelAndView test(HttpServletRequest httpServletRequest, HttpServletResponse response){
-		
-		ModelAndView mav = this.getJsonModelView();
-		mav.addObject("a", "xxx");
-		
-		return mav;
-	}
-	
-//	 @RequestMapping("/config/sample.config")
-//	 public String getSampleConfig() {
-//		 return "SampleConfig.config";
-//	 }	 
-//	 
-//	 @RequestMapping("/swf/sample.swf")
-//	 public String getSampleSwf() {
-//		 return "SampleSwf.swf";
-//	 }
+
 }

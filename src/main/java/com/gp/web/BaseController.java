@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.UriUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
@@ -50,7 +51,9 @@ public abstract class BaseController extends MultiActionController implements Me
 	public static final String MODEL_KEY_MESSAGE = "message";
 	
 	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
-	
+	static{
+		JACKSON_MAPPER.setSerializationInclusion(Include.NON_NULL);
+	}
 	private MessageSource messageSource;
 	
 	public void setMessageSource(MessageSource messageSource) {
@@ -76,7 +79,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	 **/
 	public ModelAndView getJsonModelView(){
 		
-		return new ModelAndView(new MappingJackson2JsonView()); 		
+		return new ModelAndView(new MappingJackson2JsonView(JACKSON_MAPPER)); 		
 	}
 	
 	/**

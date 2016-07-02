@@ -120,6 +120,7 @@ public class AccountListController extends BaseController{
 				ui.setAccount(info.getPrimary().getAccount());
 				ui.setEmail(info.getPrimary().getEmail());
 				ui.setMobile(info.getPrimary().getMobile());
+				ui.setPhone(info.getPrimary().getPhone());
 				ui.setType(info.getPrimary().getType());
 				if(info.getPrimary().getCreateDate() != null)
 					ui.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));

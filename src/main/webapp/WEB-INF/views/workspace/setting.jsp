@@ -80,22 +80,22 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-account">账户</label>
+												<label class="col-md-4 control-label">账户</label>
 												<div class="col-md-8">
-													<p gpid="profile-account" class = "form-control-static"></p>
-													<input type="hidden" id="profile-uid">
+													<p gpid="setting-account" class = "form-control-static"></p>
+													<input type="hidden" id="setting-uid">
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-name">姓名</label>
+												<label class="col-md-4 control-label" for="setting-name">姓名</label>
 												<div class="col-md-5">
-												<input type="text" placeholder="name" value="dev1" id="profile-name" class="form-control">
+												<input type="text" placeholder="name" value="dev1" id="setting-name" class="form-control">
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-type">类型</label>
+												<label class="col-md-4 control-label" for="setting-type">类型</label>
 												<div class="col-md-5">
-													<select class="form-control select2" id="profile-type">
+													<select class="form-control select2" id="setting-type">
 													<option value="LDAP"> LDAP</option>
 													<option value="INLINE">IN-LINE</option>
 													<option value="EXTERN">EXTERN</option>
@@ -103,9 +103,9 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-state">状态</label>
+												<label class="col-md-4 control-label" for="setting-state">状态</label>
 												<div class="col-md-5">
-													<select class="form-control select2" id="profile-state">
+													<select class="form-control select2" id="setting-state">
 													<option value="ACTIVE">Active</option>
 													<option value="DEACTIVE">Deactive</option>
 													<option value="FROZEN">Frozen</option>
@@ -113,39 +113,39 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-email">邮件</label>
+												<label class="col-md-4 control-label" for="setting-email">邮件</label>
 												<div class="col-md-8">
-												<input type="text" placeholder="email" id="profile-email" value="dd@123.com" class="form-control">
+												<input type="text" placeholder="email" id="setting-email" value="dd@123.com" class="form-control">
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-mobile">手机</label>
+												<label class="col-md-4 control-label" for="setting-mobile">手机</label>
 												<div class="col-md-8">
-												<input type="text" placeholder="mobile" id="profile-mobile" value="13910076754" class="form-control">
+												<input type="text" placeholder="mobile" id="setting-mobile" value="13910076754" class="form-control">
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="profile-phone">电话</label>
+												<label class="col-md-4 control-label" for="setting-phone">电话</label>
 												<div class="col-md-8">
-												<input type="text" placeholder="phone" id="profile-phone" value="78653542" class="form-control">
+												<input type="text" placeholder="phone" id="setting-phone" value="78653542" class="form-control">
 												</div>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-											  <label class="col-md-4 control-label" for="profile-description">头像</label>
+											  <label class="col-md-4 control-label">头像</label>
 											  <div class="col-md-4">
 												<div class="avatar-view" title="Change the avatar">
-												  <img gpid="profile-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
+												  <img gpid="setting-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
 												</div>
 											  </div>									  
 											</div>
 										</div>
 									</div>
 										<div class="form-group">
-										  <label class="col-md-2 control-label" for="profile-signature">个人签名</label>
+										  <label class="col-md-2 control-label" for="setting-signature">个人签名</label>
 										  <div class="col-md-7">
-											<textarea placeholder="Enter ..." rows="3" id="profile-signature" class="form-control"></textarea>
+											<textarea placeholder="Enter ..." rows="3" id="setting-signature" class="form-control"></textarea>
 										  </div>
 										</div>
 									</form><!-- /.form-horizontal -->
@@ -199,7 +199,6 @@
 						<div id="tab_3" class="tab-pane">	
 							<div class="row">
 								<div class="col-md-12">
-									<hr class="m-t-sm m-b-sm">
 									<span>存储及其他设置</span> 
 									<hr class="m-t-sm m-b-sm">
 								</div>							
@@ -269,7 +268,6 @@
 						<div id="tab_4" class="tab-pane">	
 							<div class="row">
 								<div class="col-md-12">
-									<hr class="m-t-sm m-b-sm">
 									<span>密码设置</span> 
 									<hr class="m-t-sm m-b-sm">
 								</div>							
@@ -476,6 +474,6 @@
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js" type="text/javascript"></script>
 	
-	<script src="${path_script}/pages/workspace/profile.js" type="text/javascript"></script>
+	<script src="${path_script}/pages/workspace/setting.js" type="text/javascript"></script>
   </body>
 </html>
