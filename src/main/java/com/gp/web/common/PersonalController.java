@@ -40,39 +40,4 @@ public class PersonalController extends BaseController{
 		
 	}
 	
-	@RequestMapping("basic-setting")
-	public ModelAndView doBasicSettingSearch(HttpServletRequest request){
-		
-		ModelAndView mav = super.getJsonModelView();
-		ActionResult result = new ActionResult();
-		
-		Principal principal = super.getPrincipalFromShiro();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		
-		try {
-			UserInfo uinfo = PersonalFacade.findAccountBasic(accesspoint, principal, principal.getUserId());
-			Account ui = new Account();
-			ui.setSourceId(uinfo.getSourceId());
-			ui.setUserId(uinfo.getInfoId().getId());
-			ui.setAccount(uinfo.getAccount());
-			ui.setEmail(uinfo.getEmail());
-			ui.setMobile(uinfo.getMobile());
-			ui.setPhone(uinfo.getPhone());
-			ui.setType(uinfo.getType());
-
-			ui.setName(uinfo.getFullName());
-		
-			ui.setState(uinfo.getState());
-			result.setData(ui);
-			
-			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.find.account"));
-		} catch (CoreException e) {
-			result.setState(ActionResult.FAIL);
-			result.setMessage(e.getMessage());
-		}
-		
-		mav.addAllObjects(result.asMap());
-		return mav;
-	}
 }

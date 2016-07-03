@@ -700,35 +700,35 @@ function _init() {
  */
 GPContext = (function ($) {
 
-    'use strict';   
+    'use strict';
 
     var _context = {
-    
+
         initial : function(){
             /*
              * Set Global ajax setting to trap all the relogon cases.
              * Here take statuscode 444 as relogon signal.
              */
-            $.ajaxSetup({  
-                complete:function(XMLHttpRequest,textStatus){    
-                    // relogon  
-                    if(XMLHttpRequest.status == 511){  
+            $.ajaxSetup({
+                complete:function(XMLHttpRequest,textStatus){
+                    // relogon
+                    if(XMLHttpRequest.status == 511){
                         var relogon_modal = XMLHttpRequest.responseText;
                         if($('#relogon-modal').length == 0){
                             $('body').append(relogon_modal);
                             // bind the relogon event.
                             _context.relogon.initial();
                         }
-                        /* show the modal dialog */ 
-                        $("#relogon-modal").modal();                        
+                        /* show the modal dialog */
+                        $("#relogon-modal").modal();
                     }
-                }  
-            }); 
+                }
+            });
         }
     };
-    
+
     /*
-     * declare the relogon modal 
+     * declare the relogon modal
      */
     _context.relogon = {
         $relogon_btn : {},
@@ -746,13 +746,13 @@ GPContext = (function ($) {
             _self.$relogon_password = $('#relogon-modal input[gpid="relogon-password"]');
             _self.$relogon_msg = $('#relogon-modal label[gpid="relogon-msg"]');
             _self.$relogon_modal = $('#relogon-modal');
-            
+
             _self.$relogon_btn.bind('click', function(){
                 _context.relogon.logon();
             });
         }
     };
-    
+
     /*
      * relgon the system with password and account.
      */
@@ -763,11 +763,11 @@ GPContext = (function ($) {
         var $relogon_msg = _self.$relogon_msg;
 
         $.ajax({
-            contentType: "application/json", 
-            url: "../main/authenticate.do", 
-            data: {"account" : username, "password": password},      
-            dataType: 'json',               
-            success: function(result) { 
+            contentType: "application/json",
+            url: "../main/authenticate.do",
+            data: {"account" : username, "password": password},
+            dataType: 'json',
+            success: function(result) {
 
                 GPContext.Relogon.$relogon_msg.html(result.message);
                 if(result.state == 'success'){
@@ -776,31 +776,39 @@ GPContext = (function ($) {
             }
         });
     };
-    
+
     _context.initial();
-    
+
+	/**
+	 * Define the loading process dialog
+	 */
     var _loading = {
 
-        $loading_modal : $('#loading-dialog'),
-        $tip_message : $('#loading-dialog h1[gpid="tip-message"]'),
-
-        showLoading : function(shown, tipmsg){
-
+        $loading_modal : $($('#loading-dialog').html()),
+       
+		/* show the loading dialog */
+        showLoading : function(tipmsg){
             var _self = this;
-
+			var $tip_message = $('span[gpid="tip-message"]', _self.$loading_modal),
+				$modal = $('div.modal-dialog', _self.$loading_modal);
+			var browserHeight = window.innerHeight;
+			
+			$modal.css({'margin-top' : (browserHeight/2 - 60)});
+			
             if(tipmsg){
-                _self.$tip_message.html(tipmsg);
+                $tip_message.html(tipmsg);
             }else{
-                _self.$tip_message.html("Processing ...");
+                $tip_message.html("Processing ...");
             }
-
-            if(shown){
-                _self.loading_modal.modal('show');
-            }else{
-                _self.loading_modal.modal('hide');
-            }
-        }
-    }
+			_self.$loading_modal.modal('show');
+        },
+		/* hide the loading dialog */
+		hideLoading : function(){
+			
+			var _self = this;
+			_self.$loading_modal.modal('hide');
+		}
+    };
 
     /*
      * Generate a pseudo guid at browser side
@@ -814,10 +822,11 @@ GPContext = (function ($) {
 
         return (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
     };
-    
+
     return {
         Relogon : _context.relogon,
         GenerateUID : _generateUid,
-        ShowLoading : $.proxy(_loading.showLoading, _loading)
+        ShowLoading : $.proxy(_loading.showLoading, _loading),
+		HideLoading : $.proxy(_loading.hideLoading, _loading),
     };
 })(jQuery);

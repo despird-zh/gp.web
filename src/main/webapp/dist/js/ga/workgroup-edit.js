@@ -44,37 +44,37 @@ var PageContext = (function ($, window, undefined){
 				minimumResultsForSearch: -1, //hide the search box
 				width : '150px'
 			});
-		_self.$workgroup_storage.select2({
-		  ajax: {
-			url: "../common/storage-list.do",
-			dataType: 'json',
-			delay: 250,
-			data: function (params) {
-			  return {
-				storage_name: params.term, // search term
-				pageNumber: params.page,
-				pageSize : 10
-			  };
-			},
-			processResults: function (data, params) {
-			  params.page = params.page || 1;
-			   
-			   for(var i = 0; i < data.items.length; i++){
-				   data.items[i].id= data.items[i].key;
-				   data.items[i].text = data.items[i].value;
-			   }
-			  return {
-				results: data.items,
-				pagination: {
-				  more: (params.page * 10) < data.total_count
-				}
-			  };
-			},
-			cache: true
-		  },
-		  minimumInputLength: 0,
-		  placeholder: { id: "", text : "Select a storage"}		 
-		});
+			_self.$workgroup_storage.select2({
+			  ajax: {
+				url: "../common/storage-list.do",
+				dataType: 'json',
+				delay: 250,
+				data: function (params) {
+				  return {
+					storage_name: params.term, // search term
+					pageNumber: params.page,
+					pageSize : 10
+				  };
+				},
+				processResults: function (data, params) {
+				  params.page = params.page || 1;
+				   
+				   for(var i = 0; i < data.items.length; i++){
+					   data.items[i].id= data.items[i].key;
+					   data.items[i].text = data.items[i].value;
+				   }
+				  return {
+					results: data.items,
+					pagination: {
+					  more: (params.page * 10) < data.total_count
+					}
+				  };
+				},
+				cache: true
+			  },
+			  minimumInputLength: 0,
+			  placeholder: { id: "", text : "Select a storage"}		 
+			});
 			$('#tab_2 a[gpid="admin-sel-btn"]').on("click", function(){				
 				GPContext.showSelectUser(function(user){
 					WorkgroupBasic.$workgroup_admin.val(user.account);

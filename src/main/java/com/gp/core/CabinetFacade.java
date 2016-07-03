@@ -81,7 +81,7 @@ public class CabinetFacade {
 	/**
 	 * Find the Cabinets of an account. include public and private cabinet. 
 	 **/
-	public static List<CabinetInfo> findPersonCabinets(AccessPoint accesspoint,
+	public static List<CabinetInfo> findPersonalCabinets(AccessPoint accesspoint,
 			Principal principal,
 			String account) throws CoreException{
 		

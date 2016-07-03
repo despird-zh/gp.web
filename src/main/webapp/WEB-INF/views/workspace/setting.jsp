@@ -9,10 +9,6 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
-	<!-- Morris charts -->
-	<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
-	<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-	
 	
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
@@ -56,13 +52,13 @@
 				<div class="nav-tabs-custom no-radius" style="border-top: 1px solid #f4f4f4; margin-top:-1px;">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a class="tab-marker" data-toggle="tab" href="#tab_1">基本设置</a>
+							<a class="tab-marker" data-toggle="tab" href="#tab_1">基本信息</a>
 						</li>
 						<li>
 							<a class="tab-marker" data-toggle="tab" href="#tab_2">隶属信息</a>
 						</li>
 						<li>
-							<a class="tab-marker" data-toggle="tab" href="#tab_3">存储设置</a>
+							<a class="tab-marker" data-toggle="tab" href="#tab_3">存储及区域</a>
 						</li>
 						<li>
 							<a class="tab-marker" data-toggle="tab" href="#tab_4">密码设置</a>
@@ -158,137 +154,111 @@
 									<span>组织信息</span> 									
 									<hr class="m-t-sm m-b-sm">
 								</div>
-								<div class="col-md-12">
-									<form class="form-horizontal">		
-									<div class="form-group">
-									  	<label class="col-sm-3 control-label">人力资源</label>
-									  	<div class="col-sm-4">
-											<label class="checkbox-inline">
-												<input type="checkbox" id="workgroup-p-121" gpid="topic-in-parent">  同组织公开
-											</label> 					
-									  	</div>
-									</div>
-									</form>
+								<form class="form-horizontal">	
+								<div class="col-md-12" id="orghier-belongs">
+									
 								</div>
 								<div class="col-md-12">									
 									<span>工作组信息</span> 									
 									<hr class="m-t-sm m-b-sm">
 								</div>
-								<div class="col-md-12">
-									<form class="form-horizontal">		
-									<div class="form-group">
-									  	<label class="col-sm-3 control-label" >子项目工作组1</label>
-									  	<div class="col-sm-4">
-											<label class="checkbox-inline">
-												<input type="checkbox" id="workgroup-c-122" gpid="topic-in-parent">  工作组内信息可见
-											</label> 						
-									  	</div>
-									</div>
-									<div class="form-group">
-									  	<label class="col-sm-3 control-label" >子项目工作组2</label>
-									  	<div class="col-sm-4">
-											<label class="checkbox-inline">
-												<input type="checkbox" id="wrokgroup-c-123" gpid="topic-in-parent">  工作组内信息可见
-											</label> 						
-									  	</div>
-									</div>
-									</form>
+								<div class="col-md-12" id="workgroup-belongs">
+									
 								</div>
+								</form>
 							</div>
 						</div>
 						<div id="tab_3" class="tab-pane">	
 							<div class="row">
 								<div class="col-md-12">
-									<span>存储及其他设置</span> 
+									<span>存储设置</span> 
 									<hr class="m-t-sm m-b-sm">
-								</div>							
+								</div>				
+								<form class="form-horizontal">
 								<div class="col-md-12">
-									<form class="form-horizontal">		
-										<div class="form-group">
-										  	<label class="col-md-2 control-label" for="profile-storage-id">存储</label>
-										  	<div class="col-md-4">
-												<select class="form-control select2" id="profile-storage-id">												
-												</select>						
-										  	</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="setting-storage">存储</label>
+										<div class="col-md-4">
+											<select class="form-control select2" id="setting-storage">												
+											</select>						
 										</div>
-										<div class="form-group">
-										  	<label class="col-md-2 control-label" for="profile-publish-enable">发布库</label>
-										  	<div class="col-md-2">
-												<label class="checkbox-inline">
-											  		<input type="checkbox" id="profile-publish-enable"> 开启
-												</label>			
-										  	</div>
-										  	<label class="col-md-2 control-label" for="profile-publish-capacity">容量</label>
-										  	<div class="col-md-2">
-												<div class="input-group">
-													<input type="text" value="20" id="profile-publish-capacity" class="form-control">
-													<span class="input-group-addon">M</span>
-												</div>					
-										  	</div>						  
-										</div>
-										<div class="form-group">
-										  	<label class="col-md-2 control-label" for="profile-netdisk-enable">网盘库</label>
-										  	<div class="col-md-2">
-												<label class="checkbox-inline">
-											 		<input type="checkbox" id="profile-netdisk-enable"> 开启
-												</label>			
-										  	</div>
-										  	<label class="col-md-2 control-label" for="profile-netdisk-capacity">容量</label>
-										  	<div class="col-md-2">
-												<div class="input-group">
-													<input type="text" value="20" class="form-control" id="profile-netdisk-capacity">
-													<span class="input-group-addon">M</span>
-												</div>					
-											</div>						  
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label" for="profile-language">language</label>
-											<div class="col-md-3">
-												<select class="form-control select2" id="profile-language">
-													<option value="en_US">English</option>
-													<option value="zh_CN">Chinese</option>
-													<option value="fr_FR">France</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label" for="profile-timezone">time zone</label>
-											<div class="col-md-3">
-												<select class="form-control select2" id="profile-timezone">
-													<option value="GMT+08:00">GMT+08:00</option>
-													<option value="GMT+09:00">GMT+09:00</option>
-													<option value="GMT+10:00">GMT+10:00</option>
-												</select>
-											</div>
-										</div>
-									</form><!-- /.form-horizontal -->
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="setting-publish-capacity">发布库容量</label>
+										<div class="col-md-2">
+											<div class="input-group">
+												<input type="text" value="20" id="setting-publish-capacity" class="form-control">
+												<span class="input-group-addon">M</span>
+											</div>					
+										</div>						  
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="setting-netdisk-capacity">网盘库容量</label>
+										<div class="col-md-2">
+											<div class="input-group">
+												<input type="text" value="20" class="form-control" id="setting-netdisk-capacity">
+												<span class="input-group-addon">M</span>
+											</div>					
+										</div>						  
+									</div>
 								</div>
+								<div class="col-md-12">
+									<span>区域设置</span> 
+									<hr class="m-t-sm m-b-sm">
+								</div>		
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="setting-language">语言</label>
+										<div class="col-md-3">
+											<select class="form-control select2" id="setting-language">
+												<option value="en_US">English</option>
+												<option value="zh_CN">Chinese</option>
+												<option value="fr_FR">France</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="setting-timezone">时区</label>
+										<div class="col-md-3">
+											<select class="form-control select2" id="setting-timezone">
+												<option value="GMT+08:00">GMT+08:00</option>
+												<option value="GMT+09:00">GMT+09:00</option>
+												<option value="GMT+10:00">GMT+10:00</option>
+											</select>
+										</div>
+									</div>
+									
+								</div>
+								</form><!-- /.form-horizontal -->
 							</div>
 						</div>
 						<div id="tab_4" class="tab-pane">	
 							<div class="row">
 								<div class="col-md-12">
 									<span>密码设置</span> 
+									<a gpid="change-pwd-btn" class="btn btn-primary btn-xs pull-right">
+										<i class="fa fa-save"></i>
+									</a>
 									<hr class="m-t-sm m-b-sm">
 								</div>							
 								<div class="col-md-12">
 									<form class="form-horizontal">		
 										<div class="form-group">
-										  	<label class="col-md-2 control-label" for="profile-storage-id">新密码</label>
-										  	<div class="col-md-4">
-												<input type="text" value="20" class="form-control" id="profile-netdisk-capacity">
+										  	<label class="col-md-2 control-label" for="new-pwd">新密码</label>
+										  	<div class="col-md-3">
+												<input type="password" class="form-control" id="new-pwd">
 										  	</div>
 										</div>
 										<div class="form-group">
-										  	<label class="col-md-2 control-label" for="profile-storage-id">新密码确认</label>
-										  	<div class="col-md-4">
-												<input type="text" value="20" class="form-control" id="profile-netdisk-capacity">
+										  	<label class="col-md-2 control-label" for="confirm-pwd">密码确认</label>
+										  	<div class="col-md-3">
+												<input type="password" class="form-control" id="confirm-pwd">
 										  	</div>					  
 										</div>
 										<div class="form-group">
-										  	<label class="col-md-2 control-label" for="profile-storage-id">旧密码确认</label>
-										  	<div class="col-md-4">
-												<input type="text" value="20" class="form-control" id="profile-netdisk-capacity">
+										  	<label class="col-md-2 control-label" for="origin-pwd">旧密码</label>
+										  	<div class="col-md-3">
+												<input type="password" class="form-control" id="origin-pwd">
 										  	</div>					  
 										</div>
 									</form><!-- /.form-horizontal -->
@@ -454,7 +424,19 @@
         <%@include file="../common/footer.jsp" %>
       </footer>
     </div><!-- ./wrapper -->
-
+	<!-- define the belong -->
+	<script id="belongs-tmpl" type="x-tmpl-mustache">
+		{{#.}}
+		<div class="form-group">
+			<label class="col-md-3 control-label">{{name}}</label>
+			<div class="col-md-8">
+				<label class="checkbox-inline">
+					<input type="checkbox" gpid="post-accept" {{#postVisible}}checked="true"{{/postVisible}}>  发布到该用户群内
+				</label>
+			</div>
+		</div>
+		{{/.}}
+	</script><!-- /#belong -->
     <!-- jQuery 2.1.4 -->
     <script src="${path_plugins}/jQuery/jquery.min.js" type="text/javascript"></script>
     <!-- Bootstrap 3.3.5 -->

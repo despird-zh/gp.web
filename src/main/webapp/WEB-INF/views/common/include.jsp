@@ -6,8 +6,13 @@
     <link rel="stylesheet" href="${path_plugins}/ionicons/css/ionicons.min.css">
 	<!-- JStree style --> 
     <link rel="stylesheet" href="${path_plugins}/jstree/dist/themes/proton/style.min.css">   	
+	<!-- uniform style --> 
+	<link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />
+	<!-- cropper style --> 
+	<link rel="stylesheet" href="${path_plugins}/cropper/2.3.0/cropper.min.css">
 	<!-- Select2 -->
     <link rel="stylesheet" href="${path_plugins}/select2/select2.min.css">
+	<link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
     <!-- Theme style -->
 	<link rel="stylesheet" href="${path_css}/AdminLTE.new.css">	
 	

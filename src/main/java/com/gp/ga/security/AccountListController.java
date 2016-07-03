@@ -240,7 +240,7 @@ public class AccountListController extends BaseController{
 			ui.setTimezone(info.getPrimary().getTimeZone());
 			ui.setStorageName(info.getExtended().getStorageName());
 			
-			List<CabinetInfo> cabs = CabinetFacade.findPersonCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getPrimary().getAccount());
+			List<CabinetInfo> cabs = CabinetFacade.findPersonalCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getPrimary().getAccount());
 			for(CabinetInfo cinfo: cabs){
 				if(Cabinets.CabinetType.NETDISK.name().equals(cinfo.getCabinetType()))
 					ui.setPricapacity(cinfo.getCapacity());

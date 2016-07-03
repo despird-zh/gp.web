@@ -240,7 +240,7 @@
         </div><!-- /.navbar-custom-menu -->
     </div><!-- /.container-fluid -->
 </nav>
-    
+
 <script id="message-text-template" type="x-tmpl-mustache">
     {{#warning}}
          <li>
@@ -305,14 +305,27 @@
          <i class="fa fa-flag fa-fw m-r-sm"></i>{{messageText}}
     {{/info}}
 </script><!-- /.template:message-text -->
-
-<div id="loading-dialog" class="modal hide" data-backdrop="static" data-keyboard="false">
-    <div class="modal-header">
-        <h1 gpid="tip-message">Processing...</h1>
-    </div>
-    <div class="modal-body">
-        <div class="progress progress-striped active">
-            <div class="bar" style="width: 100%;"></div>
+<!-- define the loading-dialog -->
+<script id="loading-dialog" type="x-tmpl-mustache">
+<div class="modal fade" tabindex="-1"
+    role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span class="fa fa-spinner fa-spin m-r-sm">
+                    </span><span gpid="tip-message">Please Wait</span>
+                 </h4>
+            </div>
+            <div class="modal-body">
+                <div class="progress m-b-none">
+                    <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+                    style="width: 100%">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div><!-- /#loading-dialog -->
+</div>
+</script><!-- /#loading-dialog -->

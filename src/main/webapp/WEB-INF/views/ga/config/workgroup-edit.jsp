@@ -10,10 +10,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<link rel="stylesheet" href="${path_plugins}/datatables/datatables.min.css" />
 	<link rel="stylesheet" href="${path_plugins}/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
-	<link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />
-	<link rel="stylesheet" href="${path_plugins}/cropper/2.3.0/cropper.min.css">
 	<%@include file="../common/include.jsp" %>
-	<link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
 	
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">

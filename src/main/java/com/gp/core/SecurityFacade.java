@@ -51,7 +51,7 @@ public class SecurityFacade {
 	
 	static Logger LOGGER = LoggerFactory.getLogger(SecurityFacade.class);
 	
-	private static final String HASH_SALT = ConfigSettingUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
+	public static final String HASH_SALT = ConfigSettingUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 		
 	private static SecurityService securityservice;
 
@@ -190,6 +190,7 @@ public class SecurityFacade {
 				InfoId<Long> ukey = idservice.generateId( IdKey.USER, Long.class);
 				uinfo.setInfoId(ukey);
 			}
+			
 			// amend the operation information
 			svcctx.setAuditObject(uinfo.getInfoId());
 
@@ -430,9 +431,10 @@ public class SecurityFacade {
 		Boolean gresult = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.CHANGE_PWD)){
-
+			
+			String hashpwd = HashUtils.hashEncodeBase64(password, HASH_SALT);
 			// password match means logon success reset the retry_times
-			gresult = securityservice.changePassword(svcctx, account, password);
+			gresult = securityservice.changePassword(svcctx, account, hashpwd);
 			
 		} catch (ServiceException e) {
 			
