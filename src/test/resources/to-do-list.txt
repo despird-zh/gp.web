@@ -26,3 +26,5 @@
 12. update grid list next way ,make it use next.do only.
 
 13. clarify the classification level
+
+14. the work group gallery need update from gentelella-1.3.0/production/media_gallery.html
