@@ -271,91 +271,85 @@
 			<div class="col-md-3" >
 				<div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
-					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
-						<span class="pull-left" title="Create New File" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-file-o"></i>
-							</button>
-						</span>
-						<span class="pull-left" title="Create new folder" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-folder-o"></i>
-							</button>
-						</span>
-						<span class="pull-left" title="Workgroup Information" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-default btn-xs">
-							<i class="fa fa-info-circle"></i>
-							</button>
-						</span>
-					</div><!-- toolbar -->
+					
+						<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
+						<i class="fa fa-file-o"></i>
+						</button>
+						<button class="btn btn-default btn-xs" title="Create new folder" data-toggle="tooltip" data-placement="top">
+						<i class="fa fa-folder-o"></i>
+						</button>
+						<button class="btn btn-default btn-xs" title="Create new folder" data-toggle="tooltip" data-placement="top">
+						<i class="fa fa-info-circle"></i>
+						</button>
+					
                 </div>
                 <div class="box-body box-profile">
-
 					<div class="clearfix">
-						<div class="pull-left lite-info">
-						  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-						 
-						  <div >
-							<p class="text-muted text-center" >owned by <a>Gary </a></p>
-							<p class="text-muted text-center" >since 2015-6-7</p>
-						  </div>
+						<div class="pull-left lite-info p-xxs">
+							<img class="profile-user-img img-responsive" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
+							<div >
+								<p class="text-muted text-center">owned by <a>Gary </a></p>
+								<p class="text-muted text-center">since 2015-6-7</p>
+							</div>
 						</div>							
 						<ul class="stats-info list-group list-group-unbordered pull-right" >
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>任务</b> <a class="pull-right">1,322</a>
+							<li class="list-group-item p-xxs">
+							  <span>任务</span> <a class="pull-right">1,322</a>
 							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>共享</b> <a class="pull-right">543</a>
+							<li class="list-group-item p-xxs">
+							  <span>共享</span> <a class="pull-right">543</a>
 							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>文件</b> <a class="pull-right">13,287</a>
+							<li class="list-group-item p-xxs">
+							  <span>文件</span> <a class="pull-right">13,287</a>
 							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>讨论</b> <a class="pull-right">13,287</a>
+							<li class="list-group-item p-xxs">
+							  <span>讨论</span> <a class="pull-right">13,287</a>
 							</li>
 						 </ul>
 					</div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
               	<!-- About Me Box -->
-              	<div class="box box-widget no-radius border-top">
+              	<div class="box box-widget no-radius border-top collapsed-box">
 	                <div class="box-header with-border">
-	                  	<h3 class="box-title">About</h3>
+	                  	<h3 class="box-title">用户信息</h3>
+						<div class="box-tools">			  
+		                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-plus"></i></button>
+		                </div>
 	                </div><!-- /.box-header -->
-	                <div class="box-body">
-	                  	<strong><i class="fa fa-book margin-r-5"></i>  Description</strong>
+	                <div class="box-body"  style="display: none;">
+	                  	<div>
+							<i class="fa fa-book"></i>
+							<span class="m-l-xs">签名信息</span>
+						</div>
 	                  	<p class="text-muted">
-	                    	B.S. in Computer Science from the University of Tennessee at Knoxville
+	                    	不走寻常路
 	                  	</p>
-
-	                  	<hr style="margin-bottom: 5px; margin-top: 5px;">
-
-	                  	<strong><i class="fa fa-map-marker margin-r-5"></i> Organization</strong>
-	                  	<p class="text-muted">Branch 华东 co.</p>
-
-	                  	<hr style="margin-bottom: 5px; margin-top: 5px;">
-
-	                  	<strong><i class="fa fa-tags margin-r-5"></i> Tags</strong>
+	                  	<hr class="m-b-xs m-t-xs">
+	                  	<div>
+							<i class="fa fa-map-marker"></i>
+							<span class="m-l-xs">隶属组织</span>
+						</div>
+	                  	<p class="text-muted">信息部/开发组</p>
+	                  	<hr class="m-b-xs m-t-xs">
+	                  	<div>
+							<i class="fa fa-tags"></i>
+							<span class="m-l-xs">个人勋章</span>
+						</div>
 		                <p>
-		                    <span class="label label-danger">UI Design</span>
+		                    <span class="badge badge-danger">UI Design</span>
 		                    <span class="label label-success">Coding</span>
 		                    <span class="label label-info">Javascript</span>
 		                    <span class="label label-warning">PHP</span>
 		                    <span class="label label-primary">Node.js</span>
 		                </p>
-
-	                  	<hr style="margin-bottom: 5px; margin-top: 5px;">
-
-	                  	<strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-	                  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
 	                </div><!-- /.box-body -->
               	</div><!-- /.box -->
 				<div class="box box-widget no-radius border-top">
 					<div class="box-header with-border">
-					  	<h3 class="box-title">Clipboard Information </h3>
+					  	<h3 class="box-title">剪贴板<small class="badge badge-success">5</small></h3>
 						<div class="box-tools">    
-
-							<small class="label label-success">5</small>				  
+											  
 		                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
 		                    <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
 							<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
@@ -364,49 +358,44 @@
 					</div><!-- /.box-header -->
 					<div class="box-body">
                     	<!-- inner menu: contains the actual data -->
-	                    <ul class="list-group">
-		                    <li class="list-group-item"><!-- start message -->
+	                    <ul class="list-group list-group-unbordered m-b-none clipboard-info">
+		                    <li class="list-group-item p-xxs"><!-- start message -->
 		                        <a href="#">
 									<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
 		                            Support Team
 									</span>
-		                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
 		                        </a>
 								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
 		                    </li><!-- end message -->
-		                    <li class="list-group-item">
+		                    <li class="list-group-item p-xxs">
 		                        <a href="#">
 			                        <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
 			                            AdminLTE Design Team
 									</span>
-		                            <small><i class="fa fa-clock-o"></i> 2 hours</small>
 		                        </a>
 								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
 		                    </li>
-		                    <li class="list-group-item">
+		                    <li class="list-group-item p-xxs">
 		                        <a href="#">
 		                          	<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
 		                            Developers
-									</span>
-		                            <small><i class="fa fa-clock-o"></i> Today</small>                          
+									</span>                       
 		                        </a>
 								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
 		                    </li>
-		                    <li class="list-group-item">
+		                    <li class="list-group-item p-xxs">
 		                        <a href="#">
 		                          	<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
 		                            Sales Department
 									</span>
-		                            <small><i class="fa fa-clock-o "></i> Yesterday</small>
 		                        </a>
 								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
 		                    </li>
-		                    <li class="list-group-item">
+		                    <li class="list-group-item p-xxs">
 		                        <a href="#">
 		                           <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
 		                            Reviewers
 									</span>
-		                            <small><i class="fa fa-clock-o"></i> 2 days</small>
 		                        </a>
 								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
 		                    </li>

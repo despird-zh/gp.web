@@ -38,7 +38,7 @@
 
 .box-header {
     padding: 5px;
-	line-height : 25px;
+	line-height : 26px;
 }
 
 .nav-tabs-custom .nav > li > a {
@@ -202,6 +202,7 @@
 
 .profile-user-img {
     border: 2px solid #d2d6de;
+	border-radius:4px;
     padding: 0px;
     width: 70px;
 }
@@ -641,11 +642,17 @@ margin-bottom: 0px;
 }
 .stats-info{
 	font-size: 12px;
-	width: 50%;
+	width: 45%;
 	margin-bottom: 5px;
 }
 .stats-info li:first-child{
 	border-top: 0px;
+}
+.clipboard-info li:first-child {
+    border-top: 0 none;
+}
+.clipboard-info li:last-child {
+    border-bottom: 0 none;
 }
 /* ticket users */
 .user-list{
