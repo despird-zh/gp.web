@@ -442,10 +442,6 @@
       </footer>
     </div><!-- ./wrapper -->
 
-    <!-- jQuery 2.1.4 -->
-    <script src="${path_plugins}/jQuery/jquery.min.js" type="text/javascript"></script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="${path_bootstrap}/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- SlimScroll -->
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <!-- FastClick -->

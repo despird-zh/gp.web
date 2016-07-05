@@ -1,5 +1,6 @@
 package com.gp.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -284,4 +286,35 @@ public class OrgHierFacade {
 		return result;
 	}
 	
+	public static List<OrgHierInfo> findRouteOrgHiers(AccessPoint accesspoint,
+			Principal principal, 
+			InfoId<Long> orgid)throws CoreException{
+		
+		List<OrgHierInfo> result = null;
+		
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_ORGHIERS)){
+			
+			String routeIdStr = orghierservice.getOrgHierRoute(svcctx, orgid);
+			String[] oids = StringUtils.split(routeIdStr, '-');
+			List<InfoId<Long>> ids = new ArrayList<InfoId<Long>>();
+			
+			for(String idstr : oids){
+				Long id = NumberUtils.toLong(idstr);
+				if(id > 0){
+					ids.add(IdKey.ORG_HIER.getInfoId(id));
+				}
+			}
+			
+			result = orghierservice.getOrgHierNodes(svcctx, ids.toArray(new InfoId<?>[0]));
+			
+		} catch (ServiceException e) {
+			ContextHelper.stampContext(e, "excp.find.orghier");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return result;
+	}
 }

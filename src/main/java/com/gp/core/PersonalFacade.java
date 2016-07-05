@@ -19,6 +19,7 @@ import com.gp.info.MessageInfo;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.TaskInfo;
 import com.gp.info.UserInfo;
+import com.gp.info.UserSumInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.PersonalService;
@@ -104,6 +105,11 @@ public class PersonalFacade {
 		return uinfo;
 	}
 	
+	/**
+	 * find all the workgroups that the user joins
+	 * 
+	 * @param account the account of user
+	 **/
 	public static List<WorkgroupInfo> findAccountWorkgroups(AccessPoint accesspoint, 
 			Principal principal,
 			String account)throws CoreException{
@@ -138,6 +144,11 @@ public class PersonalFacade {
 		return result;
 	}
 	
+	/**
+	 * find all the organization hierarchy that account join
+	 * 
+	 * @param account the account information 
+	 **/
 	public static List<OrgHierInfo> findAccountOrgHierNodes(AccessPoint accesspoint, 
 			Principal principal,
 			String account)throws CoreException{
@@ -170,5 +181,27 @@ public class PersonalFacade {
 		}
 		
 		return result;
+	}
+	
+	public static UserSumInfo findUserSummary(AccessPoint accesspoint, 
+			Principal principal,
+			String account) throws CoreException{
+		
+		UserSumInfo result = null;
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_USER_SUM)){
+			
+			result = personalservice.getUserSummary(svcctx, account);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.find.user.sum");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return result;
+		
 	}
 }

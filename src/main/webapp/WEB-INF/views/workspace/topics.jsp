@@ -448,27 +448,26 @@
 					<div class="clearfix">
 						<div class="pull-left lite-info">
 						  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-						 
 						  <div >
 							<p class="text-muted text-center" >owned by <a>Gary </a></p>
 							<p class="text-muted text-center" >since 2015-6-7</p>
 						  </div>
-						</div>							
+						</div>			
 						<ul class="stats-info list-group list-group-unbordered pull-right" >
 							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>任务</b> <a class="pull-right">1,322</a>
+							  <b>任务</b> <a class="pull-right">0</a>
 							</li>
 							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>共享</b> <a class="pull-right">543</a>
+							  <b>共享</b> <a class="pull-right">0</a>
 							</li>
 							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>文件</b> <a class="pull-right">13,287</a>
+							  <b>文件</b> <a class="pull-right">0</a>
 							</li>
 							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>讨论</b> <a class="pull-right">13,287</a>
+							  <b>讨论</b> <a class="pull-right">0</a>
 							</li>
 							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>工作组</b> <a class="pull-right">13,287</a>
+							  <b>工作组</b> <a class="pull-right">0</a>
 							</li>
 						 </ul>
 					</div>
@@ -662,10 +661,7 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-    <!-- jQuery 2.1.4 -->
-    <script src="${path_plugins}/jQuery/jquery.min.js"></script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="${path_bootstrap}/js/bootstrap.min.js"></script>
+
     <!-- SlimScroll -->
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
 	    <!-- Select2 -->

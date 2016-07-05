@@ -55,4 +55,16 @@ public class MeasureFacade {
 		
 		return gresult;
 	}
+	
+	/**
+	 * Find the work group latest summary information: docs amount etc.
+	 * @param wid the work group id  
+	 **/
+	public static MeasureInfo findPersonalSummary(AccessPoint accesspoint,
+			Principal principal,
+			String account)throws CoreException{
+		
+		
+		return null;
+	}
 }

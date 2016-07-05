@@ -138,7 +138,6 @@ public class ContextHelper {
 	 * Extract audit data out of AuditServiceContext and transfer it to event engine<br>
 	 * !!! Important !!!<br>
 	 * this method fetch service context from thread local, and drop it post persistence.
-	 * it's used for buildServiceContext(?) method only
 	 **/
 	public static void handleContext(){
 		
@@ -157,10 +156,10 @@ public class ContextHelper {
 	}
 	
 	/**
-	 * Stamp the exception on service context<br>
-	 * !!! Important !!!<br>
-	 * this method fetch service context from thread local, and drop it post persistence.
-	 * it's used for buildServiceContext(?) method only
+	 * Stamp the exception on service context.
+	 * 
+	 * @param e the exception 
+	 * @param excpcode the code to fetch locale message
 	 **/
 	public static void stampContext(Exception e, String excpcode) throws CoreException{
 		

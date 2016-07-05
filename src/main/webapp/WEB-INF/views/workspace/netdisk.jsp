@@ -1110,11 +1110,7 @@
         </div>
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    
-    <!-- jQuery 2.1.4 -->
-    <script src="${path_plugins}/jQuery/jquery.min.js"></script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="${path_bootstrap}/js/bootstrap.min.js"></script>
+
     <!-- SlimScroll -->
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->

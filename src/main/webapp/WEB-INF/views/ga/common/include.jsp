@@ -27,6 +27,11 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="${path_css}/skins/_all-skins.min.css">
 
+    <!-- jQuery 2.1.4 -->
+    <script src="${path_plugins}/jQuery/jquery.min.js" type="text/javascript"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="${path_bootstrap}/js/bootstrap.min.js" type="text/javascript"></script>
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

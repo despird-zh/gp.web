@@ -84,10 +84,7 @@
         <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
       </footer>
     </div><!-- ./wrapper -->
-    <!-- jQuery 2.1.4 -->
-    <script src="${path_plugins}/jQuery/jquery.min.js"></script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="${path_bootstrap}/js/bootstrap.min.js"></script>
+
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
     <!-- SlimScroll 1.3.0 -->
