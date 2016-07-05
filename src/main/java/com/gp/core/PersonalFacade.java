@@ -149,7 +149,7 @@ public class PersonalFacade {
 	 * 
 	 * @param account the account information 
 	 **/
-	public static List<OrgHierInfo> findAccountOrgHierNodes(AccessPoint accesspoint, 
+	public static List<OrgHierInfo> findUserOrgHierNodes(AccessPoint accesspoint, 
 			Principal principal,
 			String account)throws CoreException{
 		

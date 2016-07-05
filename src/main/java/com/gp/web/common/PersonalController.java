@@ -25,6 +25,7 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
+import com.gp.web.model.TreeNode;
 import com.gp.web.model.UserMeta;
 
 @Controller("personal-ctlr")
@@ -72,9 +73,33 @@ public class PersonalController extends BaseController{
 			}
 			// find user information and extension data
 			CombineInfo<UserInfo, UserExt> cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
+			meta.setName(cmbinfo.getPrimary().getFullName());
+			meta.setSourceId(cmbinfo.getPrimary().getSourceId());
+			meta.setSourceName(cmbinfo.getExtended().getInstanceName());
+			meta.setSourceShort(cmbinfo.getExtended().getShortName());
 			
-			List<OrgHierInfo> orglist = OrgHierFacade.findOrgHiers(accesspoint, principal, orgNodeId);
+			List<OrgHierInfo> belongs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
 			
+			TreeNode[][] routes = new TreeNode[belongs.size()][];
+			int cnt = 0;
+			for(OrgHierInfo belong: belongs){
+				
+				List<OrgHierInfo> orglist = OrgHierFacade.findChildOrgHiers(accesspoint, principal, belong.getInfoId());
+				TreeNode[] nodes = new TreeNode[orglist.size()];
+				for(int i = 0 ; i<orglist.size(); i ++){
+					OrgHierInfo oinfo = orglist.get(i);
+					TreeNode node = new TreeNode();
+					node.setId(String.valueOf(oinfo.getInfoId().getId()));
+					node.setName(oinfo.getOrgName());
+					nodes[i] = node;
+				}
+				routes[cnt] = nodes;
+				cnt ++;
+			}
+			
+			meta.setTreeNodes(routes);
+			
+			result.setData(meta);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.find.user.meta"));
 			

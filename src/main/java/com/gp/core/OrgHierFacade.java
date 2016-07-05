@@ -54,7 +54,7 @@ public class OrgHierFacade {
 	 * @param principal the principal
 	 * @param orgNodeId the organization node id 
 	 **/
-	public static List<OrgHierInfo> findOrgHiers(AccessPoint accesspoint,
+	public static List<OrgHierInfo> findChildOrgHiers(AccessPoint accesspoint,
 			Principal principal, InfoId<Long> orgNodeId) throws CoreException{
 		
 		List<OrgHierInfo> gresult = null;

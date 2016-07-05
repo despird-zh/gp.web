@@ -223,7 +223,7 @@ public class CommonController extends BaseController{
 		
 		try{
 			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
-			List<OrgHierInfo> gresult = OrgHierFacade.findOrgHiers(accesspoint, principal, 
+			List<OrgHierInfo> gresult = OrgHierFacade.findChildOrgHiers(accesspoint, principal, 
 					oid);
 			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
 					oid);

@@ -110,7 +110,7 @@ public class SettingController  extends BaseController{
 		try{
 			Map<String, Object> data = new HashMap<String, Object>();
 			
-			List<OrgHierInfo> orgs = PersonalFacade.findAccountOrgHierNodes(accesspoint, principal, principal.getAccount());
+			List<OrgHierInfo> orgs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
 			List<UserBelonging> orgbelongs = new ArrayList<UserBelonging>();
 			for(OrgHierInfo oinfo: orgs){
 				UserBelonging ubelong = new UserBelonging();

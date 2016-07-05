@@ -14,7 +14,7 @@ public class UserMeta {
 	
 	private String signature;
 	
-	private TreeNode[] treeNodes; 
+	private TreeNode[][] treeNodes; 
 	
 	private int fileSum;
 	
@@ -114,11 +114,11 @@ public class UserMeta {
 		this.signature = signature;
 	}
 
-	public TreeNode[] getTreeNodes() {
+	public TreeNode[][] getTreeNodes() {
 		return treeNodes;
 	}
 
-	public void setTreeNodes(TreeNode[] treeNodes) {
+	public void setTreeNodes(TreeNode[][] treeNodes) {
 		this.treeNodes = treeNodes;
 	}
 
