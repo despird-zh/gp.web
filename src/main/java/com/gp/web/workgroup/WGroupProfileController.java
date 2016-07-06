@@ -30,12 +30,12 @@ import com.gp.exception.CoreException;
 import com.gp.info.ActLogInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.CombineInfo;
+import com.gp.info.GroupMemberInfo;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.WorkgroupInfo;
-import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.pagination.PaginationInfo;
@@ -168,9 +168,9 @@ public class WGroupProfileController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<WorkgroupMemberInfo> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
-			List<WorkgroupMemberInfo> ulist = gresult.getRows();
-			for(WorkgroupMemberInfo info: ulist){
+			PageWrapper<GroupMemberInfo> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, null, null,pquery);
+			List<GroupMemberInfo> ulist = gresult.getRows();
+			for(GroupMemberInfo info: ulist){
 				
 				WGroupMember wmember = new WGroupMember();
 				wmember.setAccount(info.getAccount());

@@ -29,6 +29,7 @@ import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.CombineInfo;
+import com.gp.info.GroupMemberInfo;
 import com.gp.info.InfoId;
 import com.gp.info.SourceInfo;
 import com.gp.info.KVPair;
@@ -36,7 +37,6 @@ import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupInfo;
-import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.info.UserExt;
@@ -345,12 +345,12 @@ public class CommonController extends BaseController{
 
 		ModelAndView mav = super.getJsonModelView();
 		try{
-			List<WorkgroupMemberInfo> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, account, null);
-			for(WorkgroupMemberInfo info: gresult){
+			List<GroupMemberInfo> gresult = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, wkey, account, null);
+			for(GroupMemberInfo info: gresult){
 				
 				Account ui = new Account();
 				ui.setSourceId(info.getSourceId());
-				ui.setUserId(info.getUserId().getId());
+				ui.setUserId(info.getUserId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());
 				ui.setType(info.getUserType());

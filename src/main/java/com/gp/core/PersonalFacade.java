@@ -14,6 +14,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
+import com.gp.info.GroupMemberInfo;
 import com.gp.info.InfoId;
 import com.gp.info.MessageInfo;
 import com.gp.info.OrgHierInfo;
@@ -25,7 +26,6 @@ import com.gp.pagination.PageWrapper;
 import com.gp.svc.PersonalService;
 import com.gp.svc.SecurityService;
 import com.gp.svc.TaskService;
-import com.gp.svc.info.GroupMemberInfo;
 
 @Component
 public class PersonalFacade {

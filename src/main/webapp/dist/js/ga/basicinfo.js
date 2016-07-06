@@ -9,11 +9,11 @@ var PageContext = (function ($, AdminLTE) {
 	"use strict";
 	var LocalInstance = {
 		
-		$instance_name : $('#instantce-name'),
+		$source_name : $('#source-name'),
 		$global_id : $('#global-id'),
 		$entity_code : $('#entity-code'),
 		$node_code : $('#node-code'),
-		$instance_abbr : $('#instance-abbr'),
+		$source_abbr : $('#source-abbr'),
 		$short_name : $('#short-name'),
 		$binary_url : $('#binary-url'),
 		$service_url : $('#service-url'),
@@ -21,23 +21,23 @@ var PageContext = (function ($, AdminLTE) {
 		$admin : $('#sys-admin'),
 		$email : $('#sys-email'),
 		
-		$save_btn : $('a[gpid=save-instance-btn]'),
-		$refresh_btn : $('a[gpid=refresh-instance-info]'),
+		$save_btn : $('a[gpid=save-source-btn]'),
+		$refresh_btn : $('a[gpid=refresh-source-info]'),
 		
 		initial : function(){
 			var _self = this;
 			$.ajax({
-				url: "../ga/instance-info.do",
+				url: "../ga/source-info.do",
 				dataType : "json",
-				data: { instanceid : -9999}, // local instance id
+				data: { "source_id" : -9999}, // local instance id
 				success: function(response)
 				{	
 					if(response.state == 'success'){
-						LocalInstance.$instance_name.val(response.data.name);
+						LocalInstance.$source_name.val(response.data.name);
 						LocalInstance.$global_id.val(response.data.globalId);
 						LocalInstance.$entity_code.val(response.data.entityCode);
 						LocalInstance.$node_code.val(response.data.nodeCode);
-						LocalInstance.$instance_abbr.val(response.data.abbr);
+						LocalInstance.$source_abbr.val(response.data.abbr);
 						LocalInstance.$short_name.val(response.data.shortName);
 						LocalInstance.$binary_url.val(response.data.binaryUrl);
 						LocalInstance.$service_url.val(response.data.serviceUrl);
@@ -66,12 +66,12 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 				
 		var instdata = {
-			instanceId : -9999,
-			name : _self.$instance_name.val(),
+			sourceId : -9999,
+			name : _self.$source_name.val(),
 			globalId : _self.$global_id.val(),
 			entityCode : _self.$entity_code.val(),
 			nodeCode : _self.$node_code.val(),
-			abbr : _self.$instance_abbr.val(),
+			abbr : _self.$source_abbr.val(),
 			shortName : _self.$short_name.val(),
 			binaryUrl : _self.$binary_url.val(),
 			serviceUrl : _self.$service_url.val(),
@@ -81,7 +81,7 @@ var PageContext = (function ($, AdminLTE) {
 		};
 		
 		$.ajax({
-			url: "../ga/instance-save.do",
+			url: "../ga/source-save.do",
 			dataType : "json",
 			method: "POST",
 			data: instdata, // local instance id
@@ -142,7 +142,7 @@ var PageContext = (function ($, AdminLTE) {
                     "first": "First"
                 }
             },
-            "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
+            "bStateSave": false, // save datatable state(pagination, sort, etc) in cookie.
 			"autoWidth" : false,
             "lengthMenu": [
                 [5, 10, 20, -1],
@@ -154,7 +154,6 @@ var PageContext = (function ($, AdminLTE) {
             "order": [
                 [1, "asc"]
             ], // set first column as a default sort by asc
-	
             "columnDefs": [
 				{"targets":[3] ,
 				 'searchable': false,
@@ -185,16 +184,12 @@ var PageContext = (function ($, AdminLTE) {
 					 css = full.state == 'FROZEN' ? 'disabled"' : '"';
 					 funcstr = full.state == 'FROZEN' ? ' onclick="javascript:;"' : ' onclick="javascript:PageContext.ChangeState(\''+ data +'\', \'FROZEN\');"';
 					 prefix += '<button class="btn btn-primary btn-xs '+ css + funcstr + '><i class="fa fa-unlock-alt"></i></button></div>';
-					 console.log(prefix);
+					
 					 return prefix;
 				 },
-				 "width": "70"
+				 "width": 70
 				}
             ],
-			"drawCallback" : function(settings){
-				
-				$('#tab_1 table[gpid="list_table"] input[type="checkbox"]').uniform();
-			},
 			"columns" : [
 				{data : 'entityCode'},
 				{data : 'nodeCode'},
@@ -203,31 +198,9 @@ var PageContext = (function ($, AdminLTE) {
 				{data : 'abbr'},
 				{data : 'shortName'},
 				{data : 'description'},
-				{data : 'instanceId'}
+				{data : 'sourceId'}
 			]
         });
-
-        _self.$table.find('.group-checkable').change(function () {
-            var set = $(this).attr("data-set");
-			
-            var checked = $(this).is(":checked");
-            $(set).each(function () {
-                if (checked) {
-                    $(this).prop("checked", true);
-                    $(this).parents('tr').addClass("active");
-                } else {
-                    $(this).prop("checked", false);
-                    $(this).parents('tr').removeClass("active");
-                }
-            });
-
-            $.uniform.update(set);
-        });
-
-        _self.$table.on('change', 'tbody tr .checkboxes', function () {
-            $(this).parents('tr').toggleClass("active");
-        });
-
 	};
 	/*
 	 * search the instance list 
@@ -236,11 +209,11 @@ var PageContext = (function ($, AdminLTE) {
 	InstanceList.search = function(){
 		var _self = this;
 		$.ajax({
-			url: "../ga/instance-search.do",
+			url: "../ga/source-search.do",
 			dataType : "json",
 			async: false,
 			data: { 
-					instanceName : _self.$search_ename.val()
+					source_name : _self.$search_ename.val()
 				},
 			success: function(response)
 			{
@@ -253,12 +226,12 @@ var PageContext = (function ($, AdminLTE) {
 	InstanceList.changeState = function(id, state){
 		var _self = this;
 		$.ajax({
-			url: "../ga/instance-change-state.do",
+			url: "../ga/source-change-state.do",
 			dataType : "json",
 			async: false,
 			data: { 
-					instance_id : id,
-					instance_state : state
+					source_id : id,
+					source_state : state
 				},
 			success: function(response)
 			{	

@@ -20,10 +20,10 @@ import com.gp.common.Principal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.GroupInfo;
+import com.gp.info.GroupMemberInfo;
 import com.gp.info.InfoId;
 import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupInfo;
-import com.gp.info.WorkgroupMemberInfo;
 import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -135,9 +135,9 @@ public class WorkgroupAddController extends BaseController{
 		List<WGroupMember> list = new ArrayList<WGroupMember>();
 		try{
 			
-			List<WorkgroupMemberInfo> ulist = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, 
+			List<GroupMemberInfo> ulist = WorkgroupFacade.findWorkgroupMembers(accesspoint, principal, 
 					wkey, account, entityId);
-			for(WorkgroupMemberInfo info: ulist){
+			for(GroupMemberInfo info: ulist){
 				
 				WGroupMember wmember = new WGroupMember();
 				wmember.setAccount(info.getAccount());

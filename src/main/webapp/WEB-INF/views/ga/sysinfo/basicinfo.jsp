@@ -55,9 +55,9 @@
 									<form class="form-horizontal">
 										<div class="box-body p-none">
 											<div class="form-group">
-												<label class="col-sm-2 control-label" for="instantce-name">Instance Name</label>
+												<label class="col-sm-2 control-label" for="source-name">Instance Name</label>
 												<div class="col-sm-4">
-													<input type="text" placeholder="instance name" id="instantce-name" class="form-control">
+													<input type="text" placeholder="instance name" id="source-name" class="form-control">
 												</div>
 											</div>
 											<div class="form-group">
@@ -79,9 +79,9 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-sm-2 control-label" for="instance-abbr">Abbr</label>
+												<label class="col-sm-2 control-label" for="source-abbr">Abbr</label>
 												<div class="col-sm-2">
-													<input type="text" placeholder="abbr" id="instance-abbr" class="form-control">
+													<input type="text" placeholder="abbr" id="source-abbr" class="form-control">
 												</div>
 											</div>
 											<div class="form-group">
@@ -122,8 +122,8 @@
 											</div>
 										</div><!-- /.box-body -->
 										<div class="box-footer">
-											<a gpid="refresh-instance-info" class="btn btn-warning" >Refresh</a>
-											<a gpid="save-instance-btn" class="btn btn-info pull-right" >Save</a>
+											<a gpid="refresh-source-info" class="btn btn-warning" >Refresh</a>
+											<a gpid="save-source-btn" class="btn btn-info pull-right" >Save</a>
 										</div><!-- /.box-footer -->				  
 									</form>
 								</div><!-- /.tab-pane -->

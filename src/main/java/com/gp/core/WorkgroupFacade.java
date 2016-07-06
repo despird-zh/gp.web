@@ -23,12 +23,12 @@ import com.gp.exception.ServiceException;
 import com.gp.info.ActLogInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.GroupInfo;
+import com.gp.info.GroupMemberInfo;
 import com.gp.info.GroupUserInfo;
 import com.gp.info.InfoId;
 import com.gp.info.TagInfo;
 import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupInfo;
-import com.gp.info.WorkgroupMemberInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.ActLogService;
@@ -204,12 +204,12 @@ public class WorkgroupFacade {
 	/**
 	 * Find all the workgroup members 
 	 **/
-	public static List<WorkgroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
+	public static List<GroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wkey, String uname,
 			InfoId<Integer> entityid)throws CoreException{
 		
-		List<WorkgroupMemberInfo> gresult = null;
+		List<GroupMemberInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP_USERS)){
 			
@@ -232,12 +232,12 @@ public class WorkgroupFacade {
 	/**
 	 * find all the workgroup members support paging on server-side 
 	 **/
-	public static PageWrapper<WorkgroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
+	public static PageWrapper<GroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wkey, String uname, 
 			InfoId<Integer> entityid, PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<WorkgroupMemberInfo> gresult = null;
+		PageWrapper<GroupMemberInfo> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP_USERS)){
 

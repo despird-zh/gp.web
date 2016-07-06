@@ -207,7 +207,7 @@ public class BasicInfoController extends BaseController{
 		
 		if(LOGGER.isDebugEnabled())
 			CustomWebUtils.dumpRequestAttributes(request);
-		String name = request.getParameter("source_gname");
+		String name = request.getParameter("source_name");
 
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
