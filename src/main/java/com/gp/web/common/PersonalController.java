@@ -21,10 +21,8 @@ import com.gp.info.OrgHierInfo;
 import com.gp.info.UserInfo;
 import com.gp.info.UserSumInfo;
 import com.gp.svc.info.UserExt;
-import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.model.Account;
 import com.gp.web.model.TreeNode;
 import com.gp.web.model.UserMeta;
 
@@ -84,12 +82,13 @@ public class PersonalController extends BaseController{
 			int cnt = 0;
 			for(OrgHierInfo belong: belongs){
 				
-				List<OrgHierInfo> orglist = OrgHierFacade.findChildOrgHiers(accesspoint, principal, belong.getInfoId());
+				List<OrgHierInfo> orglist = OrgHierFacade.findRouteOrgHiers(accesspoint, principal, belong.getInfoId());
 				TreeNode[] nodes = new TreeNode[orglist.size()];
 				for(int i = 0 ; i<orglist.size(); i ++){
 					OrgHierInfo oinfo = orglist.get(i);
 					TreeNode node = new TreeNode();
 					node.setId(String.valueOf(oinfo.getInfoId().getId()));
+					node.setPid(String.valueOf(oinfo.getParentOrg()));
 					node.setName(oinfo.getOrgName());
 					nodes[i] = node;
 				}
