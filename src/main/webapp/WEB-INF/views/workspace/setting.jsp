@@ -282,21 +282,9 @@
 						</button>
 	                </div>
 	                <div class="box-body box-profile">
-						<%@include file="meta-summary.jsp" %>
+						<%@include file="meta-sum-info.jsp" %>
 	                </div><!-- /.box-body -->
 	            </div><!-- /.box -->
-              	<!-- About Me Box -->
-              	<div class="box box-widget no-radius border-top collapsed-box">
-	                <div class="box-header with-border">
-	                  	<h3 class="box-title">用户信息</h3>
-						<div class="box-tools">			  
-		                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-plus"></i></button>
-		                </div>
-	                </div><!-- /.box-header -->
-	                <div class="box-body"  style="display: none;">
-	                	<%@include file="meta-info.jsp" %>
-	                </div><!-- /.box-body -->
-              	</div><!-- /.box -->
 				<div class="box box-widget no-radius border-top">
 					<div class="box-header with-border">
 					  	<h3 class="box-title">剪贴板<small class="badge badge-success">5</small></h3>
