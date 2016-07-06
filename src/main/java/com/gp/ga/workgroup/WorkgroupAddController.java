@@ -142,7 +142,7 @@ public class WorkgroupAddController extends BaseController{
 				WGroupMember wmember = new WGroupMember();
 				wmember.setAccount(info.getAccount());
 				wmember.setEmail(info.getEmail());
-				wmember.setInstanceName(info.getInstanceName());
+				wmember.setSourceName(info.getSourceName());
 				wmember.setRole(info.getRole());
 				wmember.setType(info.getUserType());
 				wmember.setUname(info.getUserName());

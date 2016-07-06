@@ -127,7 +127,7 @@ public class AccountListController extends BaseController{
 				
 				ui.setStorageName(info.getExtended().getStorageName());
 				ui.setName(info.getPrimary().getFullName());
-				ui.setSourceName(info.getExtended().getInstanceName());
+				ui.setSourceName(info.getExtended().getSourceName());
 				ui.setState(info.getPrimary().getState());
 	
 				list.add(ui);

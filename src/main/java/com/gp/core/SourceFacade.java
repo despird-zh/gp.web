@@ -29,22 +29,22 @@ import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 
 @Component
-public class InstanceFacade {
+public class SourceFacade {
 
-	static Logger LOGGER = LoggerFactory.getLogger(InstanceFacade.class);
+	static Logger LOGGER = LoggerFactory.getLogger(SourceFacade.class);
 	
 	private static SourceService instanceservice;
 	
 	@Autowired
-	private InstanceFacade(SourceService instanceservice){
-		InstanceFacade.instanceservice = instanceservice;
+	private SourceFacade(SourceService instanceservice){
+		SourceFacade.instanceservice = instanceservice;
 	}
 	
 
 	/**
 	 * Get the local instance information 
 	 **/
-	public static SourceInfo findInstance(AccessPoint accesspoint,
+	public static SourceInfo findSource(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Integer> instanceid) throws CoreException{
 
@@ -70,7 +70,7 @@ public class InstanceFacade {
 		return rst;
 	}
 	
-	public static Boolean changeInstanceState(AccessPoint accesspoint,
+	public static Boolean changeSourceState(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Integer> instance, State state)throws CoreException{
 		
@@ -92,7 +92,7 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static Boolean saveInstance(AccessPoint accesspoint,
+	public static Boolean saveSource(AccessPoint accesspoint,
 			Principal principal,
 			SourceInfo instance)throws CoreException{
 		
@@ -124,7 +124,7 @@ public class InstanceFacade {
 		return result;
 	}
 
-	public static Boolean saveExtInstance(AccessPoint accesspoint,
+	public static Boolean saveExtSource(AccessPoint accesspoint,
 			Principal principal,
 			SourceInfo instance)throws CoreException{
 		
@@ -156,7 +156,7 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static List<SourceInfo> findInstances(AccessPoint accesspoint,
+	public static List<SourceInfo> findSources(AccessPoint accesspoint,
 			Principal principal,
 			String instancename)throws CoreException{
 		
@@ -182,7 +182,7 @@ public class InstanceFacade {
 	}
 	
 	
-	public static PageWrapper<SourceInfo> findInstances(AccessPoint accesspoint,
+	public static PageWrapper<SourceInfo> findSources(AccessPoint accesspoint,
 			Principal principal,
 			String instancename, PageQuery pquery)throws CoreException{
 		
@@ -208,7 +208,7 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static Map<String,SourceInfo> findInstances(AccessPoint accesspoint,
+	public static Map<String,SourceInfo> findSources(AccessPoint accesspoint,
 			Principal principal,
 			List<String> accounts)throws CoreException{
 		

@@ -63,7 +63,7 @@ public class MetaController extends BaseController{
 			CombineInfo<UserInfo, UserExt> cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
 			meta.setName(cmbinfo.getPrimary().getFullName());
 			meta.setSourceId(cmbinfo.getPrimary().getSourceId());
-			meta.setSourceName(cmbinfo.getExtended().getInstanceName());
+			meta.setSourceName(cmbinfo.getExtended().getSourceName());
 			meta.setSourceShort(cmbinfo.getExtended().getShortName());
 			
 			List<OrgHierInfo> belongs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());

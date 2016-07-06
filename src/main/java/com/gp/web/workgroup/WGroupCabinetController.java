@@ -22,7 +22,7 @@ import com.gp.common.IdKey;
 import com.gp.common.Sources;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
-import com.gp.core.InstanceFacade;
+import com.gp.core.SourceFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.CabEntryInfo;
@@ -167,7 +167,7 @@ public class WGroupCabinetController extends BaseController{
 		// decorate favorite summary
 		Map<InfoId<Long>, Integer> favmap = CabinetFacade.findCabEntriesFavSummary(accesspoint,
 				principal, ids);
-		Map<String, SourceInfo> srcmap = InstanceFacade.findInstances(accesspoint,
+		Map<String, SourceInfo> srcmap = SourceFacade.findSources(accesspoint,
 				principal, accounts);
 		// set tags
 		for(int i = 0; i< ids.size() ; i++){
@@ -198,7 +198,7 @@ public class WGroupCabinetController extends BaseController{
 				citem.setExternalOwned(!Sources.LOCAL_INST_ID.equals(instinfo.getInfoId()));
 				ItemStat srcstat = new ItemStat();
 				srcstat.setStatText("Owned Externally");
-				srcstat.setStatTooltip("owned by " + accounts.get(i) + " from " + instinfo.getInstanceName());
+				srcstat.setStatTooltip("owned by " + accounts.get(i) + " from " + instinfo.getSourceName());
 				
 				citem.setSourceStat(srcstat);
 			}

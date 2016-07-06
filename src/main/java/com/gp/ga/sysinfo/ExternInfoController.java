@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.Principal;
-import com.gp.core.InstanceFacade;
+import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
-import com.gp.web.model.Instance;
+import com.gp.web.model.Source;
 
 @Controller("ga-extern-ctlr")
 @RequestMapping("/ga")
@@ -29,25 +29,25 @@ public class ExternInfoController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(ExternInfoController.class);
 
-	@RequestMapping("ext-instance-search")
+	@RequestMapping("ext-source-search")
 	public ModelAndView doExternInstanceSearch(HttpServletRequest request){
 
 		if(LOGGER.isDebugEnabled())
 			CustomWebUtils.dumpRequestAttributes(request);
-		String name = request.getParameter("instanceName");
+		String name = request.getParameter("source-name");
 		PageQuery pq = new PageQuery(5,1);
 		// read paging parameter
 		readRequestData(request, pq);
 		ActionResult result = new ActionResult();	
-		List<Instance> list = new ArrayList<Instance>();
+		List<Source> list = new ArrayList<Source>();
 		Principal principal = super.getPrincipalFromShiro();
 
 		try{
-			List<SourceInfo> instances = InstanceFacade.findInstances(getAccessPoint(request), principal, name);
+			List<SourceInfo> instances = SourceFacade.findSources(getAccessPoint(request), principal, name);
 			//
 			int cnt = 0;
 			for(SourceInfo instinfo: instances){
-				Instance data = new Instance();
+				Source data = new Source();
 				data.setAbbr(instinfo.getAbbr());
 				data.setAdmin(instinfo.getAdmin());
 				data.setBinaryUrl(instinfo.getBinaryUrl());
@@ -57,8 +57,8 @@ public class ExternInfoController extends BaseController{
 				data.setEntityCode(instinfo.getEntityCode());
 				data.setNodeCode(instinfo.getNodeCode());
 				data.setShortName(instinfo.getShortName());
-				data.setName(instinfo.getInstanceName());
-				data.setInstanceId(instinfo.getInfoId().getId());
+				data.setName(instinfo.getSourceName());
+				data.setSourceId(instinfo.getInfoId().getId());
 				data.setGlobalId("qwert"+cnt);
 				cnt++;
 				list.add(data);
@@ -78,8 +78,8 @@ public class ExternInfoController extends BaseController{
 		return mav;		
 	}
 	
-	@RequestMapping("ext-instance-info")
-	public ModelAndView doGetExternInstance(HttpServletRequest request){
+	@RequestMapping("ext-source-info")
+	public ModelAndView doGetExternSource(HttpServletRequest request){
 		
 		if(LOGGER.isDebugEnabled())
 			CustomWebUtils.dumpRequestAttributes(request);
@@ -87,7 +87,7 @@ public class ExternInfoController extends BaseController{
 		String globalId = request.getParameter("globalId");
 		ActionResult rst = new ActionResult();
 		
-		Instance data = new Instance();
+		Source data = new Source();
 		data.setAbbr("ABB1");
 		data.setAdmin("admin1");
 		data.setBinaryUrl("http://sdlfkj:8090/s");

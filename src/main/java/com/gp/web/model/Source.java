@@ -1,8 +1,8 @@
 package com.gp.web.model;
 
-public class Instance {
+public class Source {
 	
-	private Integer instanceId;
+	private Integer sourceId;
 	
 	private String globalId;
 	
@@ -28,12 +28,12 @@ public class Instance {
 
 	private String state;
 	
-	public Integer getInstanceId() {
-		return instanceId;
+	public Integer getSourceId() {
+		return sourceId;
 	}
 
-	public void setInstanceId(Integer instanceId) {
-		this.instanceId = instanceId;
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
 	}
 
 	public String getEntityCode() {

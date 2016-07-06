@@ -85,7 +85,7 @@ public class WorkgroupEditController extends BaseController{
 			wgroup.setManager(info.getPrimary().getManager());
 			wgroup.setManagerName(info.getExtended().getManagerName());
 			wgroup.setDescription(info.getPrimary().getDescription());
-			wgroup.setInstanceName(info.getExtended().getInstanceName());
+			wgroup.setSourceName(info.getExtended().getSourceName());
 			wgroup.setState(info.getPrimary().getState());
 			wgroup.setDescription(info.getPrimary().getDescription());
 			wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));

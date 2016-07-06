@@ -46,7 +46,7 @@ public class Workgroup {
 	
 	private float taskWeight;
 
-	private String instanceName;
+	private String sourceName;
 	
 	private String createDate;
 	
@@ -186,12 +186,12 @@ public class Workgroup {
 		this.taskWeight = taskWeight;
 	}
 
-	public String getInstanceName() {
-		return instanceName;
+	public String getSourceName() {
+		return sourceName;
 	}
 
-	public void setInstanceName(String instanceName) {
-		this.instanceName = instanceName;
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}
 
 	public String getCreateDate() {

@@ -8,7 +8,7 @@ public class WGroupMember {
 	
 	private String type;
 	
-	private String instanceName;
+	private String sourceName;
 	
 	private String role;	
 	
@@ -38,12 +38,12 @@ public class WGroupMember {
 		this.type = type;
 	}
 
-	public String getInstanceName() {
-		return instanceName;
+	public String getSourceName() {
+		return sourceName;
 	}
 
-	public void setInstanceName(String instanceName) {
-		this.instanceName = instanceName;
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}
 
 	public String getRole() {

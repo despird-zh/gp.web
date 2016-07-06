@@ -21,7 +21,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
-import com.gp.core.InstanceFacade;
+import com.gp.core.SourceFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.core.StorageFacade;
@@ -75,10 +75,10 @@ public class CommonController extends BaseController{
 		int totalcnt = -1;
 		
 		try{
-			gresult = InstanceFacade.findInstances(accesspoint, principal, namecond, pquery);
+			gresult = SourceFacade.findSources(accesspoint, principal, namecond, pquery);
 			for(SourceInfo einfo : gresult.getRows()){
 				Integer id = einfo.getInfoId().getId();
-				KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id), einfo.getInstanceName());
+				KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id), einfo.getSourceName());
 				enlist.add(kv);
 			}
 			totalcnt = gresult.getPagination().getTotalRows();
@@ -179,7 +179,7 @@ public class CommonController extends BaseController{
 				ui.setType(info.getPrimary().getType());
 				ui.setName(info.getPrimary().getFullName());
 				ui.setState(info.getPrimary().getState());
-				ui.setSourceName(info.getExtended().getInstanceName());
+				ui.setSourceName(info.getExtended().getSourceName());
 				list.add(ui);
 			}			
 
@@ -292,7 +292,7 @@ public class CommonController extends BaseController{
 				ui.setType(info.getPrimary().getType());
 				ui.setName(info.getPrimary().getFullName());
 				ui.setState(info.getPrimary().getState());
-				ui.setSourceName(info.getExtended().getInstanceName());
+				ui.setSourceName(info.getExtended().getSourceName());
 				list.add(ui);
 			}			
 
@@ -349,7 +349,7 @@ public class CommonController extends BaseController{
 			for(WorkgroupMemberInfo info: gresult){
 				
 				Account ui = new Account();
-				ui.setSourceId(info.getInstanceId());
+				ui.setSourceId(info.getSourceId());
 				ui.setUserId(info.getUserId().getId());
 				ui.setAccount(info.getAccount());
 				ui.setEmail(info.getEmail());

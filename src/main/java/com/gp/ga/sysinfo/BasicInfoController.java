@@ -14,7 +14,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Sources.State;
 import com.gp.common.Principal;
-import com.gp.core.InstanceFacade;
+import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.SourceInfo;
@@ -22,7 +22,7 @@ import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
-import com.gp.web.model.Instance;
+import com.gp.web.model.Source;
 
 @Controller("ga-base-ctlr")
 @RequestMapping("/ga")
@@ -36,13 +36,13 @@ public class BasicInfoController extends BaseController{
 		return getJspModelView("ga/sysinfo/basicinfo");
 	}
 	
-	@RequestMapping("instance-info")
+	@RequestMapping("source-info")
 	public ModelAndView doGetInstance(HttpServletRequest request){
 		
 		if(LOGGER.isDebugEnabled())
 			CustomWebUtils.dumpRequestAttributes(request);
 		
-		String instanceId = request.getParameter("instanceid");
+		String instanceId = request.getParameter("source_id");
 		
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult rst = new ActionResult();
@@ -62,8 +62,8 @@ public class BasicInfoController extends BaseController{
 			
 			
 			try{
-				SourceInfo instinfo  = InstanceFacade.findInstance(ap, principal, id);
-				Instance data = new Instance();
+				SourceInfo instinfo  = SourceFacade.findSource(ap, principal, id);
+				Source data = new Source();
 				
 				data.setAbbr(instinfo.getAbbr());
 				data.setAdmin(instinfo.getAdmin());
@@ -74,8 +74,8 @@ public class BasicInfoController extends BaseController{
 				data.setEntityCode(instinfo.getEntityCode());
 				data.setNodeCode(instinfo.getNodeCode());
 				data.setShortName(instinfo.getShortName());
-				data.setName(instinfo.getInstanceName());
-				data.setInstanceId(instinfo.getInfoId().getId());
+				data.setName(instinfo.getSourceName());
+				data.setSourceId(instinfo.getInfoId().getId());
 				data.setGlobalId(instinfo.getHashKey());
 				
 				rst.setData(data);
@@ -90,12 +90,12 @@ public class BasicInfoController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping("instance-change-state")
-	public ModelAndView doChangeInstanceState(HttpServletRequest request){
+	@RequestMapping("source-change-state")
+	public ModelAndView doChangeSourceState(HttpServletRequest request){
 
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult rst = new ActionResult();
-		String instanceIdStr = request.getParameter("instance_id");
+		String instanceIdStr = request.getParameter("source_id");
 		String stateStr = request.getParameter("instance_state");
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
 		InfoId<Integer> id = IdKey.SOURCE.getInfoId(instanceId);
@@ -104,7 +104,7 @@ public class BasicInfoController extends BaseController{
 		AccessPoint ap = super.getAccessPoint(request);
 
 		try{
-			InstanceFacade.changeInstanceState(ap, princ, id, State.valueOf(stateStr));
+			SourceFacade.changeSourceState(ap, princ, id, State.valueOf(stateStr));
 			rst.setState(ActionResult.SUCCESS);
 			rst.setMessage(getMessage("mesg.change.instance.state"));
 			
@@ -119,10 +119,10 @@ public class BasicInfoController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping("ext-instance-save")
+	@RequestMapping("ext-source-save")
 	public ModelAndView doSaveExtInstance(HttpServletRequest request){
 
-		Instance data = new Instance();
+		Source data = new Source();
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult rst = new ActionResult();
 		// read request parameters
@@ -141,11 +141,11 @@ public class BasicInfoController extends BaseController{
 		instinfo.setEntityCode(data.getEntityCode());
 		instinfo.setNodeCode(data.getNodeCode());
 		instinfo.setShortName(data.getShortName());
-		instinfo.setInstanceName(data.getName());
+		instinfo.setSourceName(data.getName());
 		instinfo.setHashKey(data.getGlobalId());
 
 		try{
-			InstanceFacade.saveExtInstance(ap, princ, instinfo);
+			SourceFacade.saveExtSource(ap, princ, instinfo);
 			rst.setState(ActionResult.SUCCESS);
 			rst.setMessage(getMessage("mesg.save.instance.ext"));
 		}catch(CoreException ce){
@@ -158,16 +158,16 @@ public class BasicInfoController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping("instance-save")
+	@RequestMapping("source-save")
 	public ModelAndView doSaveInstance(HttpServletRequest request){
 
-		Instance data = new Instance();
+		Source data = new Source();
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult rst = new ActionResult();
 		// read request parameters
 		super.readRequestData(request, data);
 
-		InfoId<Integer> id = IdKey.SOURCE.getInfoId(data.getInstanceId());
+		InfoId<Integer> id = IdKey.SOURCE.getInfoId(data.getSourceId());
 		
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
@@ -183,11 +183,11 @@ public class BasicInfoController extends BaseController{
 		instinfo.setEntityCode(data.getEntityCode());
 		instinfo.setNodeCode(data.getNodeCode());
 		instinfo.setShortName(data.getShortName());
-		instinfo.setInstanceName(data.getName());
+		instinfo.setSourceName(data.getName());
 		instinfo.setHashKey(data.getGlobalId());
 
 		try{
-			InstanceFacade.saveInstance(ap, princ, instinfo);
+			SourceFacade.saveSource(ap, princ, instinfo);
 			rst.setState(ActionResult.SUCCESS);
 			rst.setMessage(getMessage("mesg.save.instance"));
 			
@@ -202,22 +202,22 @@ public class BasicInfoController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping("instance-search")
+	@RequestMapping("source-search")
 	ModelAndView doSearchInstance(HttpServletRequest request){
 		
 		if(LOGGER.isDebugEnabled())
 			CustomWebUtils.dumpRequestAttributes(request);
-		String name = request.getParameter("instanceName");
+		String name = request.getParameter("source_gname");
 
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
-		List<Instance> list = new ArrayList<Instance>();
+		List<Source> list = new ArrayList<Source>();
 		ActionResult rst = new ActionResult();
 		try{
 			
-			List<SourceInfo> instances = InstanceFacade.findInstances(ap, princ, name);
+			List<SourceInfo> instances = SourceFacade.findSources(ap, princ, name);
 			for(SourceInfo instinfo: instances){
-				Instance data = new Instance();
+				Source data = new Source();
 				data.setAbbr(instinfo.getAbbr());
 				data.setAdmin(instinfo.getAdmin());
 				data.setBinaryUrl(instinfo.getBinaryUrl());
@@ -227,8 +227,8 @@ public class BasicInfoController extends BaseController{
 				data.setEntityCode(instinfo.getEntityCode());
 				data.setNodeCode(instinfo.getNodeCode());
 				data.setShortName(instinfo.getShortName());
-				data.setName(instinfo.getInstanceName());
-				data.setInstanceId(instinfo.getInfoId().getId());
+				data.setName(instinfo.getSourceName());
+				data.setSourceId(instinfo.getInfoId().getId());
 				data.setGlobalId(instinfo.getHashKey());
 				data.setState(instinfo.getState());
 				list.add(data);
