@@ -28,13 +28,13 @@ import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
-import com.gp.info.InstanceInfo;
+import com.gp.info.SourceInfo;
 import com.gp.info.KVPair;
 import com.gp.info.UserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
-import com.gp.svc.InstanceService;
+import com.gp.svc.SourceService;
 import com.gp.svc.SecurityService;
 import com.gp.svc.info.UserExt;
 import com.gp.util.ConfigSettingUtils;
@@ -55,12 +55,12 @@ public class SecurityFacade {
 		
 	private static SecurityService securityservice;
 
-	private static InstanceService masterservice;
+	private static SourceService masterservice;
 	
 	private static CommonService idservice;
 	
 	@Autowired
-	private SecurityFacade(SecurityService securityservice, CommonService idservice,InstanceService masterservice){
+	private SecurityFacade(SecurityService securityservice, CommonService idservice,SourceService masterservice){
 		
 		SecurityFacade.securityservice = securityservice;
 		SecurityFacade.idservice = idservice;
@@ -175,7 +175,7 @@ public class SecurityFacade {
 			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
 			uinfo.setPassword(hashpwd);
 			// set local entity id
-			uinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
+			uinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 			// check the validation of user information
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), uinfo);
 			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
@@ -231,7 +231,7 @@ public class SecurityFacade {
 
 			// check the validation of user information
 			Set<ValidateMessage> vmsg = new HashSet<ValidateMessage>();
-			InstanceInfo instance = masterservice.getInstnace(svcctx, entity, node);
+			SourceInfo instance = masterservice.getSource(svcctx, entity, node);
 			if(instance != null){
 				
 				uinfo.setSourceId(instance.getInfoId().getId());

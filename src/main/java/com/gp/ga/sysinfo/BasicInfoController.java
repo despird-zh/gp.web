@@ -12,12 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
-import com.gp.common.Instances.State;
+import com.gp.common.Sources.State;
 import com.gp.common.Principal;
 import com.gp.core.InstanceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
-import com.gp.info.InstanceInfo;
+import com.gp.info.SourceInfo;
 import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -58,11 +58,11 @@ public class BasicInfoController extends BaseController{
 			Principal principal = super.getPrincipalFromShiro();
 			AccessPoint ap = super.getAccessPoint(request);
 			
-			InfoId<Integer> id = IdKey.INSTANCE.getInfoId(Integer.valueOf(instanceId));
+			InfoId<Integer> id = IdKey.SOURCE.getInfoId(Integer.valueOf(instanceId));
 			
 			
 			try{
-				InstanceInfo instinfo  = InstanceFacade.findInstance(ap, principal, id);
+				SourceInfo instinfo  = InstanceFacade.findInstance(ap, principal, id);
 				Instance data = new Instance();
 				
 				data.setAbbr(instinfo.getAbbr());
@@ -98,7 +98,7 @@ public class BasicInfoController extends BaseController{
 		String instanceIdStr = request.getParameter("instance_id");
 		String stateStr = request.getParameter("instance_state");
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
-		InfoId<Integer> id = IdKey.INSTANCE.getInfoId(instanceId);
+		InfoId<Integer> id = IdKey.SOURCE.getInfoId(instanceId);
 		
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
@@ -131,7 +131,7 @@ public class BasicInfoController extends BaseController{
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
 		
-		InstanceInfo instinfo = new InstanceInfo();
+		SourceInfo instinfo = new SourceInfo();
 		instinfo.setAbbr(data.getAbbr());
 		instinfo.setAdmin(data.getAdmin());
 		instinfo.setBinaryUrl(data.getBinaryUrl());
@@ -167,12 +167,12 @@ public class BasicInfoController extends BaseController{
 		// read request parameters
 		super.readRequestData(request, data);
 
-		InfoId<Integer> id = IdKey.INSTANCE.getInfoId(data.getInstanceId());
+		InfoId<Integer> id = IdKey.SOURCE.getInfoId(data.getInstanceId());
 		
 		Principal princ = super.getPrincipalFromShiro();
 		AccessPoint ap = super.getAccessPoint(request);
 		
-		InstanceInfo instinfo = new InstanceInfo();
+		SourceInfo instinfo = new SourceInfo();
 		instinfo.setInfoId(id);
 		instinfo.setAbbr(data.getAbbr());
 		instinfo.setAdmin(data.getAdmin());
@@ -215,8 +215,8 @@ public class BasicInfoController extends BaseController{
 		ActionResult rst = new ActionResult();
 		try{
 			
-			List<InstanceInfo> instances = InstanceFacade.findInstances(ap, princ, name);
-			for(InstanceInfo instinfo: instances){
+			List<SourceInfo> instances = InstanceFacade.findInstances(ap, princ, name);
+			for(SourceInfo instinfo: instances){
 				Instance data = new Instance();
 				data.setAbbr(instinfo.getAbbr());
 				data.setAdmin(instinfo.getAdmin());

@@ -17,14 +17,14 @@ import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
-import com.gp.common.Instances.State;
+import com.gp.common.Sources.State;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.InstanceInfo;
+import com.gp.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.InstanceService;
+import com.gp.svc.SourceService;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 
@@ -33,10 +33,10 @@ public class InstanceFacade {
 
 	static Logger LOGGER = LoggerFactory.getLogger(InstanceFacade.class);
 	
-	private static InstanceService instanceservice;
+	private static SourceService instanceservice;
 	
 	@Autowired
-	private InstanceFacade(InstanceService instanceservice){
+	private InstanceFacade(SourceService instanceservice){
 		InstanceFacade.instanceservice = instanceservice;
 	}
 	
@@ -44,11 +44,11 @@ public class InstanceFacade {
 	/**
 	 * Get the local instance information 
 	 **/
-	public static InstanceInfo findInstance(AccessPoint accesspoint,
+	public static SourceInfo findInstance(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Integer> instanceid) throws CoreException{
 
-		InstanceInfo rst = null;
+		SourceInfo rst = null;
 		
 		if(!InfoId.isValid(instanceid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
@@ -57,11 +57,11 @@ public class InstanceFacade {
 		}
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_INSTANCE)){
+				Operations.FIND_SOURCE)){
 			
 			svcctx.setAuditObject(instanceid);
 			
-			rst = instanceservice.getInstnaceInfo(svcctx, instanceid);
+			rst = instanceservice.getSource(svcctx, instanceid);
 		} catch (ServiceException e)  {
 			ContextHelper.stampContext(e, "excp.find.instance");
 		}finally{
@@ -76,12 +76,12 @@ public class InstanceFacade {
 		
 		Boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.UPDATE_INSTANCE)){
+				Operations.UPDATE_SOURCE)){
 			
 			svcctx.setAuditObject(instance);
 			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
 			
-			result =  instanceservice.changeInstanceState(svcctx, instance, state);
+			result =  instanceservice.changeSourceState(svcctx, instance, state);
 
 		} catch (ServiceException e)  {
 			ContextHelper.stampContext(e, "excp.update.instance");
@@ -94,7 +94,7 @@ public class InstanceFacade {
 	
 	public static Boolean saveInstance(AccessPoint accesspoint,
 			Principal principal,
-			InstanceInfo instance)throws CoreException{
+			SourceInfo instance)throws CoreException{
 		
 		Boolean result = false;
 		if(!InfoId.isValid(instance.getInfoId())){
@@ -104,7 +104,7 @@ public class InstanceFacade {
 		}
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.UPDATE_INSTANCE)){
+				Operations.UPDATE_SOURCE)){
 			
 			svcctx.setAuditObject(instance.getInfoId());
 			svcctx.addAuditPredicates(instance);
@@ -115,7 +115,7 @@ public class InstanceFacade {
 				cexcp.addValidateMessages(vmsg);
 				throw cexcp;
 			}
-			result =  instanceservice.saveInstnace(svcctx, instance);
+			result =  instanceservice.saveSource(svcctx, instance);
 		} catch (ServiceException e)  {
 			ContextHelper.stampContext(e , "excp.save.instance");
 		}finally{
@@ -126,14 +126,14 @@ public class InstanceFacade {
 
 	public static Boolean saveExtInstance(AccessPoint accesspoint,
 			Principal principal,
-			InstanceInfo instance)throws CoreException{
+			SourceInfo instance)throws CoreException{
 		
 		Boolean result = false;
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.NEW_EXT_INSTANCE)){
+				Operations.NEW_EXT_SOURCE)){
 			
-			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.INSTANCE, Integer.class);
+			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.SOURCE, Integer.class);
 			
 			svcctx.setAuditObject(instanceId);
 			svcctx.addAuditPredicates(instance);
@@ -145,7 +145,7 @@ public class InstanceFacade {
 				throw cexcp;
 			}
 			instance.setInfoId(instanceId);
-			result =  instanceservice.addExtInstnace(svcctx, instance);
+			result =  instanceservice.addExtSource(svcctx, instance);
 			
 		} catch (ServiceException e)  {
 			ContextHelper.stampContext(e, "excp.save.instance");
@@ -156,14 +156,14 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static List<InstanceInfo> findInstances(AccessPoint accesspoint,
+	public static List<SourceInfo> findInstances(AccessPoint accesspoint,
 			Principal principal,
 			String instancename)throws CoreException{
 		
-		List<InstanceInfo> result = null;
+		List<SourceInfo> result = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_INSTANCES)){
+				Operations.FIND_SOURCES)){
 			
 			String[][] parms = new String[][]{
 				{"instancename",instancename}};				
@@ -171,7 +171,7 @@ public class InstanceFacade {
 			svcctx.addAuditPredicates(parmap);
 						
 			// query accounts information
-			result = instanceservice.getInstances(svcctx, instancename);
+			result = instanceservice.getSources(svcctx, instancename);
 			
 		} catch (Exception e) {
 			ContextHelper.stampContext(e,"excp.find.instance");
@@ -182,14 +182,14 @@ public class InstanceFacade {
 	}
 	
 	
-	public static PageWrapper<InstanceInfo> findInstances(AccessPoint accesspoint,
+	public static PageWrapper<SourceInfo> findInstances(AccessPoint accesspoint,
 			Principal principal,
 			String instancename, PageQuery pquery)throws CoreException{
 		
-		PageWrapper<InstanceInfo> result = null;
+		PageWrapper<SourceInfo> result = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_INSTANCES)){
+				Operations.FIND_SOURCES)){
 			
 			String[][] parms = new String[][]{
 				{"instancename",instancename}};				
@@ -197,7 +197,7 @@ public class InstanceFacade {
 			svcctx.addAuditPredicates(parmap);
 						
 			// query accounts information
-			result = instanceservice.getInstances(svcctx, instancename, pquery);
+			result = instanceservice.getSources(svcctx, instancename, pquery);
 			
 		} catch (Exception e) {
 			ContextHelper.stampContext(e,"excp.find.instance");
@@ -208,18 +208,18 @@ public class InstanceFacade {
 		return result;
 	}
 	
-	public static Map<String,InstanceInfo> findInstances(AccessPoint accesspoint,
+	public static Map<String,SourceInfo> findInstances(AccessPoint accesspoint,
 			Principal principal,
 			List<String> accounts)throws CoreException{
 		
-		Map<String,InstanceInfo> result = null;
+		Map<String,SourceInfo> result = null;
 		
 		if(CollectionUtils.isEmpty(accounts)){
 			throw new CoreException(principal.getLocale(),"mesg.account.miss");
 		}
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_INSTANCES)){
+				Operations.FIND_SOURCES)){
 						
 			// query accounts information
 			result = instanceservice.getAccountSources(svcctx, accounts);

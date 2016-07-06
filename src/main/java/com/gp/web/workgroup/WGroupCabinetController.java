@@ -19,7 +19,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Instances;
+import com.gp.common.Sources;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.InstanceFacade;
@@ -29,7 +29,7 @@ import com.gp.info.CabEntryInfo;
 import com.gp.info.CabFileInfo;
 import com.gp.info.CabFolderInfo;
 import com.gp.info.InfoId;
-import com.gp.info.InstanceInfo;
+import com.gp.info.SourceInfo;
 import com.gp.info.TagInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
@@ -167,7 +167,7 @@ public class WGroupCabinetController extends BaseController{
 		// decorate favorite summary
 		Map<InfoId<Long>, Integer> favmap = CabinetFacade.findCabEntriesFavSummary(accesspoint,
 				principal, ids);
-		Map<String, InstanceInfo> srcmap = InstanceFacade.findInstances(accesspoint,
+		Map<String, SourceInfo> srcmap = InstanceFacade.findInstances(accesspoint,
 				principal, accounts);
 		// set tags
 		for(int i = 0; i< ids.size() ; i++){
@@ -193,9 +193,9 @@ public class WGroupCabinetController extends BaseController{
 			stat.setStatTooltip(favsum + " People favorite");
 			citem.setFavoriteStat(stat);
 			
-			InstanceInfo instinfo = srcmap.get(accounts.get(i));
+			SourceInfo instinfo = srcmap.get(accounts.get(i));
 			if(null != instinfo){
-				citem.setExternalOwned(!Instances.LOCAL_INST_ID.equals(instinfo.getInfoId()));
+				citem.setExternalOwned(!Sources.LOCAL_INST_ID.equals(instinfo.getInfoId()));
 				ItemStat srcstat = new ItemStat();
 				srcstat.setStatText("Owned Externally");
 				srcstat.setStatTooltip("owned by " + accounts.get(i) + " from " + instinfo.getInstanceName());

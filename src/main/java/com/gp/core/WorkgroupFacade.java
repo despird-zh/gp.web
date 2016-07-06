@@ -98,7 +98,7 @@ public class WorkgroupFacade {
 
 			// append the capacity setting to context and send to service
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
-			winfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
+			winfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 			gresult = workgroupservice.newWorkgroup(svcctx, winfo, pubcapacity, pricapacity);
 	
 		}catch(ServiceException e){

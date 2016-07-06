@@ -154,7 +154,7 @@ public class WorkgroupEditController extends BaseController{
 		
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(group.getWorkgroupId());
 		info.setInfoId(wgroupId);
-		info.setSourceId(GeneralConstants.LOCAL_INSTANCE);// set local workgroup id
+		info.setSourceId(GeneralConstants.LOCAL_SOURCE);// set local workgroup id
 		info.setWorkgroupName(group.getWorkgroupName());
 		info.setDescription(group.getDescription());
 		info.setState(group.getState());

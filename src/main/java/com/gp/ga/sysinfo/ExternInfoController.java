@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.Principal;
 import com.gp.core.InstanceFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.InstanceInfo;
+import com.gp.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -43,10 +43,10 @@ public class ExternInfoController extends BaseController{
 		Principal principal = super.getPrincipalFromShiro();
 
 		try{
-			List<InstanceInfo> instances = InstanceFacade.findInstances(getAccessPoint(request), principal, name);
+			List<SourceInfo> instances = InstanceFacade.findInstances(getAccessPoint(request), principal, name);
 			//
 			int cnt = 0;
-			for(InstanceInfo instinfo: instances){
+			for(SourceInfo instinfo: instances){
 				Instance data = new Instance();
 				data.setAbbr(instinfo.getAbbr());
 				data.setAdmin(instinfo.getAdmin());

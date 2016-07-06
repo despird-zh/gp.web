@@ -13,7 +13,9 @@ import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.MeasureInfo;
+import com.gp.info.UserSumInfo;
 import com.gp.svc.MeasureService;
+import com.gp.svc.PersonalService;
 
 @Component
 public class MeasureFacade {
@@ -22,9 +24,14 @@ public class MeasureFacade {
 	
 	private static MeasureService measuresvc;
 	
+	private static PersonalService personalservice;
+	
+	
 	@Autowired
-	private MeasureFacade(MeasureService measuresvc){
+	private MeasureFacade(MeasureService measuresvc,
+			PersonalService personalservice){
 		MeasureFacade.measuresvc = measuresvc;
+		MeasureFacade.personalservice = personalservice;
 	}
 	
 	/**
@@ -60,11 +67,25 @@ public class MeasureFacade {
 	 * Find the work group latest summary information: docs amount etc.
 	 * @param wid the work group id  
 	 **/
-	public static MeasureInfo findPersonalSummary(AccessPoint accesspoint,
+	public static UserSumInfo findPersonalSummary(AccessPoint accesspoint, 
 			Principal principal,
-			String account)throws CoreException{
+			String account) throws CoreException{
 		
+		UserSumInfo result = null;
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_USER_SUM)){
+			
+			result = personalservice.getUserSummary(svcctx, account);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.find.user.sum");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
 		
-		return null;
+		return result;
+		
 	}
 }

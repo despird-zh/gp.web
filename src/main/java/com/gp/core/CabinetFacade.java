@@ -115,7 +115,7 @@ public class CabinetFacade {
 			
 			InfoId<Long> fkey = idservice.generateId(IdKey.CAB_FOLDER, Long.class);
 			folderinfo.setInfoId(fkey);
-			folderinfo.setSourceId(GeneralConstants.LOCAL_INSTANCE);
+			folderinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 			folderinfo.setCreateDate(DateTimeUtils.now());
 			folderinfo.setCreator(principal.getAccount());
 			InfoId<Long> parentkey  = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());

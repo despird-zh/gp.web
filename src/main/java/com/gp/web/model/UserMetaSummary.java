@@ -1,6 +1,6 @@
 package com.gp.web.model;
 
-public class UserMeta {
+public class UserMetaSummary {
 
 	private String name;
 	

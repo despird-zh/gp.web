@@ -34,3 +34,5 @@
 16. meta personal information presentation.
 
 17. 2016-7-5 move jquery link in jsp to the include.jsp
+
+18. result.setMessage(getMessage("mesg.find.user.meta"));

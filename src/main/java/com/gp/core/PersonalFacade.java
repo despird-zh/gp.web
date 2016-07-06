@@ -54,7 +54,6 @@ public class PersonalFacade {
 	 **/
 	public PageWrapper<MessageInfo> findMessages(ServiceContext svcctx, String account){
 		return null;
-		
 	}
 	
 	/**
@@ -183,25 +182,4 @@ public class PersonalFacade {
 		return result;
 	}
 	
-	public static UserSumInfo findUserSummary(AccessPoint accesspoint, 
-			Principal principal,
-			String account) throws CoreException{
-		
-		UserSumInfo result = null;
-		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_USER_SUM)){
-			
-			result = personalservice.getUserSummary(svcctx, account);
-			
-		}catch (ServiceException e) {
-			
-			ContextHelper.stampContext(e, "excp.find.user.sum");
-		}finally{
-			
-			ContextHelper.handleContext();
-		}
-		
-		return result;
-		
-	}
 }

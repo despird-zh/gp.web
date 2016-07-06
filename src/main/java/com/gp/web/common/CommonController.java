@@ -30,7 +30,7 @@ import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
-import com.gp.info.InstanceInfo;
+import com.gp.info.SourceInfo;
 import com.gp.info.KVPair;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
@@ -57,7 +57,7 @@ public class CommonController extends BaseController{
 	@RequestMapping("entity-list")
 	public ModelAndView doGetEntityNodeList(HttpServletRequest request) throws WebException {
 		
-		PageWrapper<InstanceInfo> gresult = null;
+		PageWrapper<SourceInfo> gresult = null;
 		
 		PageQuery pquery = new PageQuery(10,1);
 		this.readRequestData(request, pquery);
@@ -76,7 +76,7 @@ public class CommonController extends BaseController{
 		
 		try{
 			gresult = InstanceFacade.findInstances(accesspoint, principal, namecond, pquery);
-			for(InstanceInfo einfo : gresult.getRows()){
+			for(SourceInfo einfo : gresult.getRows()){
 				Integer id = einfo.getInfoId().getId();
 				KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id), einfo.getInstanceName());
 				enlist.add(kv);

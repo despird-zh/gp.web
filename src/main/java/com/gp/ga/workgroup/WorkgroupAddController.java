@@ -62,7 +62,7 @@ public class WorkgroupAddController extends BaseController{
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();
 		
-		info.setSourceId(GeneralConstants.LOCAL_INSTANCE);// set local workgroup id
+		info.setSourceId(GeneralConstants.LOCAL_SOURCE);// set local workgroup id
 		info.setWorkgroupName(group.getWorkgroupName());
 		info.setDescription(group.getDescription());
 		info.setState(group.getState());
@@ -122,7 +122,7 @@ public class WorkgroupAddController extends BaseController{
 		InfoId<Integer> entityId = null;
 		if(StringUtils.isNotBlank(enode) && CommonUtils.isNumeric(enode)){
 			
-			entityId = IdKey.INSTANCE.getInfoId(Integer.valueOf(enode));
+			entityId = IdKey.SOURCE.getInfoId(Integer.valueOf(enode));
 		}
 		
 		InfoId<Long> wkey = null;
