@@ -50,7 +50,7 @@ var PageContext =(function ($, window, undefined){
             ],
             // set the initial value
             "pageLength": 5,            
-            "pagingType": "bootstrap_full_number",
+            //"pagingType": "bootstrap_full_number",
             "order": [
                 [0, "asc"]
             ], // set first column as a default sort by asc

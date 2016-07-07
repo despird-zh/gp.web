@@ -1,4 +1,4 @@
-<%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
+
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="${path_bootstrap}/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -7,18 +7,11 @@
     <link rel="stylesheet" href="${path_plugins}/ionicons/css/ionicons.min.css">
 	<!-- JStree style --> 
     <link rel="stylesheet" href="${path_plugins}/jstree/dist/themes/proton/style.min.css"> 
-    <!-- Morris chart 
-    <link rel="stylesheet" href="${path_plugins}/morris/morris.css">-->
-    <!-- jvectormap -->
-    <link rel="stylesheet" href="${path_plugins}/jvectormap/jquery-jvectormap-1.2.2.css">
-    <!-- Date Picker -->
-    <link rel="stylesheet" href="${path_plugins}/datepicker/datepicker3.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="${path_plugins}/daterangepicker/daterangepicker-bs3.css">
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link rel="stylesheet" href="${path_plugins}/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- uniform style --> 
+    <link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />
 	<!-- Select2 -->
     <link rel="stylesheet" href="${path_plugins}/select2/select2.min.css">
+    <link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
     <!-- Theme style -->
 	<link rel="stylesheet" href="${path_css}/AdminLTE.new.css">
 

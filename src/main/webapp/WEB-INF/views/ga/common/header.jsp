@@ -1,4 +1,4 @@
-<%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 		<!-- Logo -->
         <a href="../main/mainpage.do" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
