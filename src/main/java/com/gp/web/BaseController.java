@@ -51,8 +51,11 @@ public abstract class BaseController extends MultiActionController implements Me
 	public static final String MODEL_KEY_MESSAGE = "message";
 	
 	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
+	
+	public static ObjectMapper JACKSON_MAPPER_NON_NULL = new ObjectMapper();
+	
 	static{
-		JACKSON_MAPPER.setSerializationInclusion(Include.NON_NULL);
+		JACKSON_MAPPER_NON_NULL.setSerializationInclusion(Include.NON_NULL);
 	}
 	private MessageSource messageSource;
 	
@@ -79,9 +82,21 @@ public abstract class BaseController extends MultiActionController implements Me
 	 **/
 	public ModelAndView getJsonModelView(){
 		
-		return new ModelAndView(new MappingJackson2JsonView(JACKSON_MAPPER)); 		
+		return getJsonModelView(true); 		
 	}
 	
+	/**
+	 * Get model view for json data, the model and view will accept multiple key-values.
+	 * @param includeNull true:ignore null in json; otherwize include null in json
+	 **/
+	public ModelAndView getJsonModelView(boolean includeNull){
+		
+		if(includeNull)
+			return new ModelAndView(new MappingJackson2JsonView(JACKSON_MAPPER)); 	
+		else
+			return new ModelAndView(new MappingJackson2JsonView(JACKSON_MAPPER_NON_NULL)); 	
+	}
+
 	/**
 	 * Get model view for json data, the attributeValue is the only data to be written.
 	 **/

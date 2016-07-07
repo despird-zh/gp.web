@@ -319,7 +319,6 @@ var PageContext = (function ($, AdminLTE) {
             ],
             // set the initial value
             "pageLength": 5,            
-            "pagingType": "bootstrap_full_number",
             "order": [
                 [1, "asc"]
             ], // set first column as a default sort by asc
@@ -344,7 +343,7 @@ var PageContext = (function ($, AdminLTE) {
 				$('#tab_2 table[gpid="extern_list_table"] input[type="checkbox"]').uniform();
 			},
 			"columns" : [
-				{data : 'instanceId'},
+				{data : 'sourceId'},
 				{data : 'entityCode'},
 				{data : 'nodeCode'},
 				{data : 'email'},
@@ -357,7 +356,7 @@ var PageContext = (function ($, AdminLTE) {
 	ExtInstances.search = function(pageindex){
 		var _self = this;
 		$.ajax({
-			url: "../ga/ext-instance-search.do",
+			url: "../ga/ext-source-search.do",
 			dataType : "json",
 			async: false,
 			data: { 
@@ -381,10 +380,10 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 		var global_id = $(evt).attr('data-global-id');
 		$.ajax({
-			url: "../ga/ext-instance-info.do",
+			url: "../ga/ext-source-info.do",
 			dataType : "json",
 			data: { 
-					globalId : global_id
+					"global_id" : global_id
 				},
 			method : "POST",
 			success: function(response)
@@ -403,7 +402,7 @@ var PageContext = (function ($, AdminLTE) {
 	ExtInstances.saveExternInstance = function(){
 		var _self = this;
 		$.ajax({
-			url: "../ga/ext-instance-save.do",
+			url: "../ga/ext-source-save.do",
 			dataType : "json",
 			data: { 
 					globalId : _self.$global_id.val(),

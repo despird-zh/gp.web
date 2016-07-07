@@ -36,3 +36,5 @@
 17. 2016-7-5 move jquery link in jsp to the include.jsp
 
 18. result.setMessage(getMessage("mesg.find.user.meta"));
+
+19. identifier gp_instances - > gp_sources

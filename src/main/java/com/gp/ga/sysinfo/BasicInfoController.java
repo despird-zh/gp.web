@@ -96,7 +96,7 @@ public class BasicInfoController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult rst = new ActionResult();
 		String instanceIdStr = request.getParameter("source_id");
-		String stateStr = request.getParameter("instance_state");
+		String stateStr = request.getParameter("source_state");
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
 		InfoId<Integer> id = IdKey.SOURCE.getInfoId(instanceId);
 		
@@ -110,45 +110,6 @@ public class BasicInfoController extends BaseController{
 			
 		}catch(CoreException ce){
 			
-			rst.setState(ActionResult.ERROR);
-			rst.setMessage(ce.getMessage());
-			rst.setDetailmsgs(ce.getValidateMessages());
-		}
-		
-		mav.addAllObjects(rst.asMap());
-		return mav;
-	}
-	
-	@RequestMapping("ext-source-save")
-	public ModelAndView doSaveExtInstance(HttpServletRequest request){
-
-		Source data = new Source();
-		ModelAndView mav = super.getJsonModelView();
-		ActionResult rst = new ActionResult();
-		// read request parameters
-		super.readRequestData(request, data);
-
-		Principal princ = super.getPrincipalFromShiro();
-		AccessPoint ap = super.getAccessPoint(request);
-		
-		SourceInfo instinfo = new SourceInfo();
-		instinfo.setAbbr(data.getAbbr());
-		instinfo.setAdmin(data.getAdmin());
-		instinfo.setBinaryUrl(data.getBinaryUrl());
-		instinfo.setServiceUrl(data.getServiceUrl());
-		instinfo.setDescription(data.getDescription());
-		instinfo.setEmail(data.getEmail());
-		instinfo.setEntityCode(data.getEntityCode());
-		instinfo.setNodeCode(data.getNodeCode());
-		instinfo.setShortName(data.getShortName());
-		instinfo.setSourceName(data.getName());
-		instinfo.setHashKey(data.getGlobalId());
-
-		try{
-			SourceFacade.saveExtSource(ap, princ, instinfo);
-			rst.setState(ActionResult.SUCCESS);
-			rst.setMessage(getMessage("mesg.save.instance.ext"));
-		}catch(CoreException ce){
 			rst.setState(ActionResult.ERROR);
 			rst.setMessage(ce.getMessage());
 			rst.setDetailmsgs(ce.getValidateMessages());
