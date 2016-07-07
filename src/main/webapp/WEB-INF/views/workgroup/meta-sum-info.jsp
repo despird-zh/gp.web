@@ -3,6 +3,7 @@
 
 <div class="clearfix">
     <div class="pull-left lite-info">
+		<input id="meta-wgroup-id" type="hidden" value="${wgroup_id}" />
       <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
       <h4 class="profile-username text-center" >${hasMore}</h4>
       <div >

@@ -5,16 +5,17 @@ var WorkgroupMetaContext = (function ($, window, undefined){
 	"use strict";
 	
 	var WorkgroupMetaLet = {
-		$wgroup_admin : $('')
+		$wgroup_id : $('#meta-wgroup-id')
 	};
 	
 	WorkgroupMetaLet.loadMetaSum = function(){
+		var _self = this;
         $.ajax({
             url: "../workgroup/meta-sum.do",
             dataType : "json",
             type: 'POST',
             data: { 
-                    "wgroup_id" : "${wgroup_id}"
+                    "wgroup_id" : _self.$wgroup_id.val()
                 },
             success: function(response)
             {   

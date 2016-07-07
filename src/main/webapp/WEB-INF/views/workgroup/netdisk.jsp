@@ -114,7 +114,7 @@
 			<div class="hidden">
 				<input id="cabinet-id" type="hidden" value="${cabinet_id}" />
 				<input id="folder-id" type="hidden" value="${folder_id}" />
-				<input id="workgroup-id" type="hidden" value="${wgroup_id}" />
+				<input id="wgroup-id" type="hidden" value="${wgroup_id}" />
 			</div>
 		  </div>
           </section><!-- /.content -->

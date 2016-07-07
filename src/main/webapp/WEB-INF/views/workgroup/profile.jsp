@@ -279,7 +279,51 @@
 				</div><!-- end box -->
 			</div>
 			<div class="col-md-3">
-				<%@include file="./meta.jsp" %>
+				<div class="box box-widget no-radius border-top">
+					<div class="box-header with-border">
+						<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
+							<span class="pull-left" title="Create New Doc" data-toggle="tooltip" data-placement="top">
+								<button gpid="new-file-btn" class="btn btn-warning btn-xs " >
+								<i class="fa fa-fw fa-file-o"></i>
+								</button>
+							</span>
+							<span class="pull-left" title="Create new folder" data-toggle="tooltip" data-placement="top">
+								<button gpid="new-folder-btn" class="btn btn-default btn-xs" >
+								<i class="fa fa-fw fa-folder-o"></i>
+								</button>
+							</span>
+							<span class="pull-left" title="Show clipboard content" data-toggle="tooltip" data-placement="top">
+								<button class="btn btn-default btn-xs" >
+								<i class="fa fa-fw fa-clipboard"></i>
+								</button>
+							</span>
+						</div><!-- toolbar -->
+					</div>
+					<div class="box-body box-profile">
+						<%@include file="meta-sum-info.jsp" %>
+					</div><!-- /.box-body -->
+				</div><!-- /.box -->
+				<div class="box box-widget border-top">
+					<div class="box-header with-border">
+						<h3 class="box-title">Clipboard</h3>
+						<div class="box-tools">    
+							<small class="label label-success">5</small>				  
+							<button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
+							<button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
+							<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
+							<button class="btn btn-box-tool" type="button"><i class="fa fa-trash-o"></i></button>
+						</div>
+					</div><!-- /.box-header -->
+					<div class="box-body p-none">
+						<!-- inner menu: contains the actual data -->
+						<ul gpid="clipboard-container" class="list-group list-group-unbordered m-b-xs m-r-sm m-l-sm">
+						  
+						</ul>
+					</div><!-- /.box-body -->
+				</div><!-- /.box -->
+			</div>
+			<div class="hidden">
+				<input id="wgroup-id" type="hidden" value="${wgroup_id}" />
 			</div>
 		  </div>
           </section><!-- /.content -->
@@ -310,5 +354,6 @@
 	<script src="${path_script}/message.js"></script>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/profile.js"></script>
+	<script src="${path_script}/pages/workgroup/meta.js"></script>
   </body>
 </html>
