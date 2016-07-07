@@ -18,7 +18,6 @@ import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.info.UserInfo;
-import com.gp.validate.ValidateMessage;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
