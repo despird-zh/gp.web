@@ -8,11 +8,9 @@
     <title>AdminLTE 2 | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<link rel="stylesheet" href="${path_plugins}/datatables/datatables.min.css" />
-	<link rel="stylesheet" href="${path_plugins}/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
-	<link rel="stylesheet" href="${path_plugins}/uniform/themes/default/css/uniform.default.min.css" />
+
 	<%@include file="../common/include.jsp" %>
-	<link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
+	<link rel="stylesheet" href="${path_plugins}/datatables/css/dataTables.bootstrap.css" />
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">
     <div class="wrapper">
@@ -194,9 +192,9 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- mustache -->
     <script src="${path_plugins}/mustache/mustache.min.js"></script>
-    <script src="${path_plugins}/datatables/datatables.min.js" type="text/javascript"></script>
-    <script src="${path_plugins}/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-	<script src="${path_plugins}/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="${path_plugins}/datatables/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="${path_plugins}/datatables/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="${path_plugins}/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <!-- Select2 -->
     <script src="${path_plugins}/select2/select2.full.min.js"></script>
 	<!-- JStree -->

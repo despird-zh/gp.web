@@ -131,7 +131,7 @@ var SelectWorkgroupMemberContext = (function ($, window, undefined){
 			"autoWidth" : false,
             // set the initial value
             "pageLength": 8,
-            "pagingType": "bootstrap_full_number",
+            
             "order": [
                 [1, "asc"]
             ], // set first column as a default sort by asc
