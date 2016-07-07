@@ -38,7 +38,6 @@ import com.gp.info.StorageInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.pagination.PaginationInfo;
 import com.gp.svc.info.WorkgroupExt;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
@@ -47,7 +46,6 @@ import com.gp.web.BaseController;
 import com.gp.web.model.ActivityLog;
 import com.gp.web.model.WGroupMember;
 import com.gp.web.model.Workgroup;
-
 
 @Controller("wg-profile-ctrl")
 @RequestMapping("/workgroup")
@@ -88,7 +86,7 @@ public class WGroupProfileController extends BaseController{
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
 		
 		try{
-			CombineInfo<WorkgroupInfo,WorkgroupExt> info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
+			CombineInfo<WorkgroupInfo,WorkgroupExt> info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
 			Workgroup wgroup = new Workgroup();
 			
 			wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());

@@ -41,42 +41,9 @@ var PageContext = (function ($, window, undefined) {
 			_self.$new_folder.bind('click', function(){
 				GPContext.showNewFolder(function(){},Netdisk.$cabinet_id.val(),-98);
 			});
-			
-			_self.loadWorkgroupMeta();
-			
+
 			_self.loadContent();
 		}
-	};
-
-	Netdisk.loadWorkgroupMeta = function(){
-		
-		var _self = this;
-		$.ajax({
-			url: "../workgroup/meta-info.do",
-			dataType : "json",
-			type: 'POST',
-			data: { 
-					"wgroup_id" : _self.$wgroup_id.val()
-				},
-			success: function(response)
-			{	
-				console.log(response);
-				GPContext.AppendResult(response, (response.state == "success") ? false : true);
-			}
-		});
-		$.ajax({
-			url: "../workgroup/meta-summary.do",
-			dataType : "json",
-			type: 'POST',
-			data: { 
-					"wgroup_id" : _self.$wgroup_id.val()
-				},
-			success: function(response)
-			{	
-				console.log(response);
-				GPContext.AppendResult(response, (response.state == "success") ? false : true);
-			}
-		});
 	};
 
 	Netdisk.loadContent = function(){

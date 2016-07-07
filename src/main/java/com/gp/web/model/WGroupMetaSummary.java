@@ -1,7 +1,8 @@
 package com.gp.web.model;
 
+import java.util.List;
+
 public class WGroupMetaSummary {
-	
 	
 	private Long workgroupId;
 	
@@ -16,34 +17,8 @@ public class WGroupMetaSummary {
 	private String managerName;
 	
 	private String adminName;
-	
-	private Long orgId;
-	
-	private String orgName;
-	
+
 	private String description;
-	
-	private Integer storageId;
-	
-	private String storageName;
-	
-	private boolean publishOn;
-	
-	private boolean netdiskOn;
-	
-	private Integer publishCapacity;
-	
-	private Integer netdiskCapacity;
-	
-	private boolean topicOn;
-	
-	private boolean shareOn;
-	
-	private boolean linkOn;
-	
-	private boolean taskOn;
-	
-	private float taskWeight;
 
 	private String sinceDate;
 
@@ -59,6 +34,10 @@ public class WGroupMetaSummary {
 	
 	private int extMemberSum;
 
+	private int taskSum;
+	
+	private List<Tag> tags ;
+	
 	public int getFileSum() {
 		return fileSum;
 	}
@@ -97,6 +76,102 @@ public class WGroupMetaSummary {
 
 	public void setExtMemberSum(int extMemberSum) {
 		this.extMemberSum = extMemberSum;
+	}
+
+	public Long getWorkgroupId() {
+		return workgroupId;
+	}
+
+	public void setWorkgroupId(Long workgroupId) {
+		this.workgroupId = workgroupId;
+	}
+
+	public String getWorkgroupName() {
+		return workgroupName;
+	}
+
+	public void setWorkgroupName(String workgroupName) {
+		this.workgroupName = workgroupName;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+
+	public String getManagerName() {
+		return managerName;
+	}
+
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
+	}
+
+	public String getAdminName() {
+		return adminName;
+	}
+
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
+	}
+
+	public String getSinceDate() {
+		return sinceDate;
+	}
+
+	public void setSinceDate(String sinceDate) {
+		this.sinceDate = sinceDate;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getTaskSum() {
+		return taskSum;
+	}
+
+	public void setTaskSum(int taskSum) {
+		this.taskSum = taskSum;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
 	}
 
 	

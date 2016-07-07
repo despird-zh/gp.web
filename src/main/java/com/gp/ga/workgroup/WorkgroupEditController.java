@@ -75,7 +75,7 @@ public class WorkgroupEditController extends BaseController{
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
 		
 		try{
-			CombineInfo<WorkgroupInfo, WorkgroupExt> info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
+			CombineInfo<WorkgroupInfo, WorkgroupExt> info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
 			Workgroup wgroup = new Workgroup();
 			
 			wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());

@@ -24,6 +24,8 @@ public class UserMetaSummary {
 	
 	private int shareSum;
 	
+	private String imagePath;
+	
 	private String sinceDate;
 
 	public String getSinceDate() {
@@ -120,6 +122,14 @@ public class UserMetaSummary {
 
 	public void setTreeNodes(TreeNode[][] treeNodes) {
 		this.treeNodes = treeNodes;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 }

@@ -14,8 +14,10 @@ import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
 import com.gp.info.MeasureInfo;
 import com.gp.info.UserSumInfo;
+import com.gp.info.WorkgroupSumInfo;
 import com.gp.svc.MeasureService;
 import com.gp.svc.PersonalService;
+import com.gp.svc.WorkgroupService;
 
 @Component
 public class MeasureFacade {
@@ -26,23 +28,27 @@ public class MeasureFacade {
 	
 	private static PersonalService personalservice;
 	
+	private static WorkgroupService workgroupsvc;
 	
 	@Autowired
 	private MeasureFacade(MeasureService measuresvc,
-			PersonalService personalservice){
+			PersonalService personalservice,
+			WorkgroupService workgroupsvc){
+		
 		MeasureFacade.measuresvc = measuresvc;
 		MeasureFacade.personalservice = personalservice;
+		MeasureFacade.workgroupsvc = workgroupsvc;
 	}
 	
 	/**
 	 * Find the work group latest summary information: docs amount etc.
 	 * @param wid the work group id  
 	 **/
-	public static MeasureInfo findWorkgroupSummary(AccessPoint accesspoint,
+	public static WorkgroupSumInfo findWorkgroupSummary(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wid)throws CoreException{
 		
-		MeasureInfo gresult = null;
+		WorkgroupSumInfo gresult = null;
 		
 		if(!InfoId.isValid(wid)){
 			throw new CoreException(principal.getLocale(), "mesg.prop.miss");
@@ -53,7 +59,7 @@ public class MeasureFacade {
 			
 			svcctx.setAuditObject(wid);
 			
-			gresult = measuresvc.getWorkgroupLatestSummary(wid);
+			gresult = workgroupsvc.getWorkgroupSummary(svcctx, wid);
 		}catch (ServiceException e)  {
 			ContextHelper.stampContext(e,"excp.find.wgroup.stat");
 		}finally{

@@ -23,7 +23,7 @@
 		</li>
 	</ul>
 </div>
-<div >
+<div>
 	<div>
 		<span class="text-muted">More <i class="fa fa-angle-double-right"></i></span>
 	</div>

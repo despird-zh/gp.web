@@ -177,7 +177,7 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static CombineInfo<WorkgroupInfo,WorkgroupExt> findWorkgroupEx(AccessPoint accesspoint,
+	public static CombineInfo<WorkgroupInfo,WorkgroupExt> findWorkgroupExt(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wkey)throws CoreException{
 		

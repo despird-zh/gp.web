@@ -1,6 +1,8 @@
 package com.gp.web.workgroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
-import com.gp.common.Measures;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
@@ -30,13 +31,12 @@ import com.gp.info.CabinetInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.ImageInfo;
 import com.gp.info.InfoId;
-import com.gp.info.MeasureInfo;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.StorageInfo;
 import com.gp.info.TagInfo;
 import com.gp.info.WorkgroupInfo;
+import com.gp.info.WorkgroupSumInfo;
 import com.gp.svc.info.WorkgroupExt;
-import com.gp.svc.info.WorkgroupLite;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -50,7 +50,9 @@ public class WGroupMetaController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(WGroupMetaController.class);
 	
-	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+	static String ImagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+	
+	static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * Retrieve the work group summary information. these information will be the latest measure record
@@ -60,34 +62,79 @@ public class WGroupMetaController extends BaseController{
 	public ModelAndView doMetaSummarySearch(HttpServletRequest request){
 		
 		ModelAndView mav = getJsonModelView();
-		ActionResult actrst = new ActionResult();
+		ActionResult result = new ActionResult();
 		String widstr = super.readRequestParam("wgroup_id");
-		Long wid = Long.valueOf(widstr);
+		
 		Principal principal = super.getPrincipalFromShiro();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 	
 		WGroupMetaSummary wsum = new WGroupMetaSummary();
 		try{
 			
-			MeasureInfo minfo = MeasureFacade.findWorkgroupSummary(accesspoint, principal, 
-					IdKey.WORKGROUP.getInfoId(wid));
-			if(null != minfo){
+			if(StringUtils.isBlank(widstr)){
+				result.setState(ActionResult.FAIL);
+				result.setMessage(getMessage("mesg.prop.miss"));
 				
+				mav.addAllObjects(result.asMap());
+				return mav;
 			}
-			actrst.setState(ActionResult.SUCCESS);
-			actrst.setMessage(getMessage("mesg.find.wgroup.sum"));
+			InfoId<Long> wid = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(widstr));
+			CombineInfo<WorkgroupInfo,WorkgroupExt> cmbinfo = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wid);
+			wsum.setWorkgroupId(cmbinfo.getPrimary().getInfoId().getId());
+			wsum.setWorkgroupName(cmbinfo.getPrimary().getWorkgroupName());
+			wsum.setAdmin(cmbinfo.getPrimary().getAdmin());
+			wsum.setAdminName(cmbinfo.getExtended().getAdminName());
+			wsum.setManager(cmbinfo.getPrimary().getManager());
+			wsum.setManagerName(cmbinfo.getExtended().getManagerName());
+			wsum.setDescription(cmbinfo.getPrimary().getDescription());
+			// find image path
+			Long avatarId = cmbinfo.getPrimary().getAvatarId();
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
+			if(null != avatar){
+				wsum.setImagePath("../" + ImagePath + "/" + avatar.getFileName());
+			}
+			wsum.setState(cmbinfo.getPrimary().getState());
+			Date since = cmbinfo.getPrimary().getCreateDate();
+			if(null != since){
+				wsum.setSinceDate(DATE_FORMAT.format(since));
+			}
+			// find the work group summary information
+			WorkgroupSumInfo minfo = MeasureFacade.findWorkgroupSummary(accesspoint, principal, wid);
+			if(null != minfo){
+				wsum.setMemberSum(minfo.getMemberSummary());
+				wsum.setFileSum(minfo.getFileSummary());
+				wsum.setPostSum(minfo.getPostSummary());
+				wsum.setTaskSum(minfo.getTaskSummary());
+			}
+			// find the work group tag list
+			List<Tag> tags = new ArrayList<Tag>();
+			List<TagInfo> tinfos = WorkgroupFacade.findWorkgroupTags(accesspoint, principal, wid);
+			for(TagInfo tinfo: tinfos){
+				Tag t = new Tag();
+				t.setTagColor(tinfo.getTagColor());
+				t.setTagName(tinfo.getTagName());
+				t.setCategory(tinfo.getCategory());
+				
+				tags.add(t);
+			}
+			wsum.setTags(tags);
+			result.setData(wsum);
+			
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.find.wgroup.sum"));
 		}catch(CoreException ce){
 			
-			actrst.setState(ActionResult.FAIL);
-			actrst.setMessage(ce.getMessage());
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
 		}
 		
-		actrst.setData(wsum);
-		mav.addAllObjects(actrst.asMap());
+		result.setData(wsum);
+		mav.addAllObjects(result.asMap());
 		return mav;
 	}
 
 	@RequestMapping("meta-info")
+	@Deprecated
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
@@ -107,7 +154,7 @@ public class WGroupMetaController extends BaseController{
 		Workgroup wgroup = new Workgroup();
 		
 		try{
-			CombineInfo<WorkgroupInfo,WorkgroupExt> info = WorkgroupFacade.findWorkgroupEx(accesspoint, principal, wgroupId);
+			CombineInfo<WorkgroupInfo,WorkgroupExt> info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
 			
 			wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
 			wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
@@ -140,7 +187,7 @@ public class WGroupMetaController extends BaseController{
 			Long avatarId = info.getPrimary().getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
-				wgroup.setImagePath("../" + imagePath + "/" + avatar.getFileName());
+				wgroup.setImagePath("../" + ImagePath + "/" + avatar.getFileName());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPrimary().getPublishCabinet();

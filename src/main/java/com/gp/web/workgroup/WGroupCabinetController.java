@@ -83,7 +83,7 @@ public class WGroupCabinetController extends BaseController{
 		mav.addObject("folder_id",  GeneralConstants.FOLDER_ROOT);
 		mav.addObject("cabinet_id",  gresult.getNetdiskCabinet());
 		return mav;
-	}	
+	}
 	
 	@RequestMapping("netdisk-next")
 	public ModelAndView doNetdiskContentNext(HttpServletRequest request) throws CoreException{
