@@ -91,7 +91,7 @@
 				 'orderable': false,
 				 'render': function (data, type, full, meta){
 					 return '<div class="btn-group">' +
-					 '<button data-user-id="'+data+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.LoadAccountExt(this);"><i class="fa fa-edit"></i></button>'+
+					 '<button data-user-id="'+data+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.loadAccountExt(this);"><i class="fa fa-edit"></i></button>'+
 					 '</div>';
 				 },
 				 'width' : 30
@@ -166,6 +166,6 @@
 	AccountExt.initial();
 		
 	return {
-
+		loadAccountExt : $.proxy(AccountExt.loadAccountExt,AccountExt)
 	};
 })(jQuery, window);

@@ -39,11 +39,10 @@ var PageContext =(function ($, window, undefined){
 					  };
 					},
 					cache: true
-				  },
-			   placeholder: { id: "", text : "Select a entity node"}
+				},
+			    placeholder: { id: "", text : "Select a Option Group"},
+			    width : 170
 			});			
-			// fix the select2 in tab panel width auto shrink.
-			_self.$group_select.next().css("min-width","170px");
 			// bind search button
 			_self.$search_btn.bind('click', function(){
 			
@@ -90,7 +89,6 @@ var PageContext =(function ($, window, undefined){
             ],
             // set the initial value
             "pageLength": 5,            
-            "pagingType": "bootstrap_full_number",
             "order": [
                 [0, "asc"]
             ], // set first column as a default sort by asc

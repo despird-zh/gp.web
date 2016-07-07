@@ -78,7 +78,7 @@ var PageContext = (function ($, AdminLTE) {
             ],
 
 			"columns" : [
-				{ data : 'instanceName'},
+				{ data : 'sourceName'},
 				{ data : 'workgroupName'},
 				{ data : 'state'},
 				{ data : 'admin'},
@@ -209,7 +209,7 @@ var PageContext = (function ($, AdminLTE) {
 
 			"columns" : [
 				{ data : 'nodeCode'},
-				{ data : 'instanceName'},
+				{ data : 'sourceName'},
 				{ data : 'workgroupName'},
 				{ data : 'state'},
 				{ data : 'admin'},
