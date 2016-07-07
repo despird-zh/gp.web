@@ -380,7 +380,7 @@ var PageContext = (function ($, window, undefined){
 
 			"columns" : [
 				{ data : 'uname'},
-				{ data : 'instanceName'},
+				{ data : 'sourceName'},
 				{ data : 'email'},
 				{ data : 'role'},
 				{ data : 'type'},
@@ -397,7 +397,7 @@ var PageContext = (function ($, window, undefined){
 		_self.$member_account.val(mbr_data.account);
 		_self.$member_name.val(mbr_data.uname);
 		_self.$member_email.val(mbr_data.email);
-		_self.$member_entity.val(mbr_data.instanceName);			
+		_self.$member_entity.val(mbr_data.sourceName);			
 		_self.$member_role.val(mbr_data.role).trigger("change");
 		$('#account-finder').addClass('hidden');
 		
