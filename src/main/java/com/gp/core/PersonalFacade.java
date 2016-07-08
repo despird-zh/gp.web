@@ -16,7 +16,7 @@ import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.GroupMemberInfo;
 import com.gp.info.InfoId;
-import com.gp.info.MessageInfo;
+import com.gp.info.ChatMessageInfo;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.TaskInfo;
 import com.gp.info.UserInfo;
@@ -52,7 +52,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the messages
 	 * 
 	 **/
-	public PageWrapper<MessageInfo> findMessages(ServiceContext svcctx, String account){
+	public PageWrapper<ChatMessageInfo> findMessages(ServiceContext svcctx, String account){
 		return null;
 	}
 	
@@ -62,7 +62,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the notifications
 	 * 
 	 **/
-	public PageWrapper<MessageInfo> findNotifications(ServiceContext svcctx, String account){
+	public PageWrapper<ChatMessageInfo> findNotifications(ServiceContext svcctx, String account){
 		return null;
 		
 	}

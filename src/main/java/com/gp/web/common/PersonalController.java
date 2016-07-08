@@ -36,7 +36,6 @@ public class PersonalController extends BaseController{
 	public ModelAndView doMessagesSearch(){
 		
 		return null;
-		
 	}
 	
 	public ModelAndView doNotificationsSearch(){
