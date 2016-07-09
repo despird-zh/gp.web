@@ -249,7 +249,7 @@ public class WorkgroupAddController extends BaseController{
 
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			ginfo.setWorkgroupId(Long.valueOf(wgroupid));
+			ginfo.setManageId(Long.valueOf(wgroupid));
 		}
 		ginfo.setDescription(description);
 		ginfo.setGroupName(group);
@@ -298,7 +298,7 @@ public class WorkgroupAddController extends BaseController{
 				ug.setGroupId(info.getInfoId().getId());
 				ug.setDescription(info.getDescription());
 				ug.setGroup(info.getGroupName());
-				ug.setWorkgroupId(info.getWorkgroupId());
+				ug.setWorkgroupId(info.getManageId());
 				list.add(ug);
 			}
 

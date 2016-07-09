@@ -118,7 +118,7 @@ public class PersonalFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 			
-			List<GroupMemberInfo> mbrs = personalservice.getGroupMembers(svcctx, account, GroupUsers.GroupType.WORKGROUP_MBR.toString());
+			List<GroupMemberInfo> mbrs = personalservice.getWorkgroupMembers(svcctx, account);
 			InfoId<?>[] ids = new InfoId[mbrs.size()];
 			int count = 0;
 			for(GroupMemberInfo mbr : mbrs){
@@ -157,7 +157,7 @@ public class PersonalFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIERS)){
 			
-			List<GroupMemberInfo> mbrs = personalservice.getGroupMembers(svcctx, account, GroupUsers.GroupType.ORG_HIER_MBR.toString());
+			List<GroupMemberInfo> mbrs = personalservice.getOrgHierMembers(svcctx, account);
 			InfoId<?>[] ids = new InfoId[mbrs.size()];
 			int count = 0;
 			for(GroupMemberInfo mbr : mbrs){
