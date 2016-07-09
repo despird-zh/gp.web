@@ -6,13 +6,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("ws-profile-ctrl")
+@Controller("ws-notif-ctrl")
 @RequestMapping("/workspace")
-public class ProfileController extends BaseController{
+public class WSpaceNotificationsController extends BaseController{
 
-	@RequestMapping("profile")
+	private static final long serialVersionUID = 1L;
+
+	@RequestMapping("notifications")
 	public ModelAndView doInitial(){
 		
-		return getJspModelView("workspace/profile");
+		return getJspModelView("workspace/notifications");
 	}
 }

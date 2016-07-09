@@ -31,9 +31,9 @@ import com.gp.web.model.UserMetaSummary;
 
 @Controller("ws-meta-ctrl")
 @RequestMapping("/workspace")
-public class MetaController extends BaseController{
+public class WSpaceMetaController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(MetaController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(WSpaceMetaController.class);
 	
 	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	

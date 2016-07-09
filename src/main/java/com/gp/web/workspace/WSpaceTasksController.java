@@ -6,15 +6,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("ws-notif-ctrl")
+@Controller("ws-task-ctrl")
 @RequestMapping("/workspace")
-public class NotificationsController extends BaseController{
+public class WSpaceTasksController extends BaseController{
 
 	private static final long serialVersionUID = 1L;
 
-	@RequestMapping("notifications")
+	@RequestMapping("tasks")
 	public ModelAndView doInitial(){
 		
-		return getJspModelView("workspace/notifications");
+		return getJspModelView("workspace/tasks");
 	}
 }

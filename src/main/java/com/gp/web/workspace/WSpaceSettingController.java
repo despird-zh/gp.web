@@ -34,7 +34,7 @@ import com.gp.web.model.UserBelonging;
 
 @Controller("ws-setting-ctrl")
 @RequestMapping("/workspace")
-public class SettingController  extends BaseController{
+public class WSpaceSettingController  extends BaseController{
 	
 	@RequestMapping("setting")
 	public ModelAndView doInitial(){

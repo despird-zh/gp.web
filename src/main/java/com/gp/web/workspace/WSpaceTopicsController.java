@@ -8,7 +8,7 @@ import com.gp.web.BaseController;
 
 @Controller("ws-topic-ctrl")
 @RequestMapping("/workspace")
-public class TopicsController extends BaseController{
+public class WSpaceTopicsController extends BaseController{
 
 	@RequestMapping("topics")
 	public ModelAndView doInitial(){

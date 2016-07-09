@@ -8,7 +8,7 @@ import com.gp.web.BaseController;
 
 @Controller("ws-cabinet-ctrl")
 @RequestMapping("/workspace")
-public class CabinetController extends BaseController{
+public class WSpaceCabinetController extends BaseController{
 
 	@RequestMapping("netdisk")
 	public ModelAndView doInitial(){

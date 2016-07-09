@@ -6,15 +6,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("ws-task-ctrl")
+@Controller("ws-message-ctrl")
 @RequestMapping("/workspace")
-public class TasksController extends BaseController{
+public class WSpaceMessagesController extends BaseController{
 
-	private static final long serialVersionUID = 1L;
-
-	@RequestMapping("tasks")
+	@RequestMapping("messages")
 	public ModelAndView doInitial(){
 		
-		return getJspModelView("workspace/tasks");
+		return getJspModelView("workspace/messages");
 	}
 }

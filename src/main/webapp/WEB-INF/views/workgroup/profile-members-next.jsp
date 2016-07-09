@@ -28,7 +28,7 @@
 				  <li class="">
 					来自
 					<a class="hoverlight profile_link">
-					  ${member.instanceName}
+					  ${member.sourceName}
 					</a>
 				  </li>
 				  <li class="item-stat" data-toggle="tooltip" title="" data-original-title="12 Group 300,000 topics">
