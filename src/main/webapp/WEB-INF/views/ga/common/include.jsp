@@ -12,6 +12,8 @@
 	<!-- Select2 -->
     <link rel="stylesheet" href="${path_plugins}/select2/select2.min.css">
     <link rel="stylesheet" href="${path_plugins}/select2/select2-bootstrap.css" />
+	<!-- cropper -->
+	<link rel="stylesheet" href="${path_plugins}/cropper/2.3.0/cropper.min.css">
     <!-- Theme style -->
 	<link rel="stylesheet" href="${path_css}/AdminLTE.new.css">
 

@@ -19,7 +19,7 @@ var PageContext = (function ($, window, undefined){
 		$workgroup_org_name : $('#workgroup-org-name'),
 		$workgroup_descr : $('#workgroup-description'),
 		$workgroup_storage : $('#workgroup-storage-id'),
-		$workgroup_image : $('img[gpid="workgroup-avatar"]'),
+		$workgroup_image : $('#workgroup-avatar'),
 		
 		$workgroup_publish : $('#workgroup-publish-enable'),
 		$workgroup_publish_capacity : $('#workgroup-publish-capacity'),
@@ -188,7 +188,7 @@ var PageContext = (function ($, window, undefined){
 		wg_data.linkOn = _self.$workgroup_link.prop("checked");
 		wg_data.taskOn = _self.$workgroup_task.prop("checked");
 		wg_data.taskWeight = _self.$workgroup_weight.val();
-		wg_data.imagePath = _self.$workgroup_image[0].src;
+		wg_data.imagePath = _self.$workgroup_image.src;
 		
 		return wg_data;
 	};

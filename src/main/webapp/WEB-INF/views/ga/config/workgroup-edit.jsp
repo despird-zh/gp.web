@@ -114,7 +114,7 @@
 									  <label class="col-sm-3 control-label" for="workgroup-description">头像</label>
 									  <div class="col-sm-2">
 										<div class="avatar-view" title="Change the avatar">
-										  <img gpid="workgroup-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
+										  <img id="workgroup-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
 										</div>
 									  </div>									  
 									</div>

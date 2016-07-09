@@ -10,7 +10,7 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
 	<link rel="stylesheet" href="${path_plugins}/datatables/css/dataTables.bootstrap.css" />
-	<link rel="stylesheet" href="${path_plugins}/cropper/2.3.0/cropper.min.css">
+
 	<style type="text/css">
 		.table-condensed > tbody > tr > td.avatar-cell{
 			padding-top : 0;
