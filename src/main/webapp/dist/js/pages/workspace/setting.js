@@ -16,7 +16,7 @@ var PersonSettingContext = (function ($, window, undefined){
 		$setting_email : $('#setting-email'),
 		$setting_mobile : $('#setting-mobile'),
 		$setting_phone : $('#setting-phone'),
-		$setting_image : $('img[gpid="setting-avatar"]'),
+		$setting_avatar: $('#setting-avatar'),
 		$setting_signature : $('#setting-signature'),
 
 		initial : function(){
@@ -30,7 +30,9 @@ var PersonSettingContext = (function ($, window, undefined){
 				minimumResultsForSearch: -1, //hide the search box
 				width : '150px'
 			});
-			
+			_self.$setting_avatar.on('click', function(){
+				GPContext.showChangeAvatar($(this));
+			});
 			// load the personal information into page
 			_self.loadBasic();
 		}

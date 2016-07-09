@@ -170,7 +170,6 @@
 											  <input type="hidden" name="oper_flag" value="new">
 											  <input type="file" class="avatar-input" title="Select file to upload" id="avatarInput" name="avatar_file">
 											</div>
-
 											<!-- Crop and preview -->
 											<div class="row">
 											  <div class="col-md-9 p-xxs">
@@ -195,7 +194,6 @@
 													<button type="button" class="btn btn-primary" data-method="rotate" data-option="30">+30</button>
 													<button type="button" class="btn btn-primary" data-method="rotate" data-option="15">+15</button>
 													<button type="button" class="btn btn-primary" data-method="rotate" data-option="90" title="Rotate 90 degrees"><i class="fa fa-rotate-right"></i></button>
-												  
 												</div>
 											  </div>
 											  <div class="col-md-3">											 

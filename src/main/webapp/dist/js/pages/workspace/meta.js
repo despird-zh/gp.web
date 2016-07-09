@@ -46,7 +46,7 @@ var WorkspaceMetaContext = (function ($, window, undefined){
         });
     };
 
-    WorkgroupMetaLet.loadMetaSum();
+    WorkspaceMetaLet.loadMetaSum();
 
 	return {
 		

@@ -132,7 +132,7 @@
 											  <label class="col-md-4 control-label">头像</label>
 											  <div class="col-md-4">
 												<div class="avatar-view" title="Change the avatar">
-												  <img gpid="setting-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
+												  <img id="setting-avatar" src="../img_cache/57-20160416-233518.png" alt="Avatar">
 												</div>
 											  </div>									  
 											</div>
@@ -376,11 +376,14 @@
     <script src="${path_plugins}/mustache/mustache.min.js" type="text/javascript"></script>
 	<!-- uniform -->
 	<script src="${path_plugins}/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+	<script src="${path_plugins}/cropper/2.3.0/cropper.min.js"></script>	
+	<script src="${path_plugins}/bootstrap-fileinput/bootstrap.file-input.js"></script>	
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js" type="text/javascript"></script>
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js" type="text/javascript"></script>
-	
+	<%@include file="../dialog/avatar-cropper.jsp" %>
 	<script src="${path_script}/pages/workspace/setting.js" type="text/javascript"></script>
+	<script src="${path_script}/pages/workspace/meta.js" type="text/javascript"></script>
   </body>
 </html>
