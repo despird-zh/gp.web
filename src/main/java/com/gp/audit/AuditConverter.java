@@ -44,7 +44,7 @@ public class AuditConverter {
 	 * convert the AuditData to json
 	 * @param auditdata the AuditData object
 	 **/
-	public static MutableObject auditToJson(AuditData auditdata)throws IOException{
+	public static MutableObject auditToJson(AuditEventLoad auditdata)throws IOException{
 		
 		ByteArrayOutputStream byteAryStream = new ByteArrayOutputStream();		
 		JsonGenerator jsonGen = jsonFactory.createGenerator(byteAryStream);
@@ -75,9 +75,9 @@ public class AuditConverter {
 	 * @param auditjson the json string
 	 *  
 	 **/
-	public static AuditData jsonToAudit(MutableObject auditjson) throws IOException{
+	public static AuditEventLoad jsonToAudit(MutableObject auditjson) throws IOException{
 		
-		AuditData audit = new AuditData();
+		AuditEventLoad audit = new AuditEventLoad();
 		JsonParser jsonParser = jsonFactory.createParser((String)auditjson.getValue());
 		while(jsonParser.nextToken() != JsonToken.END_OBJECT){
 			

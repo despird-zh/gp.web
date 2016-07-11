@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
-import com.gp.audit.AuditServiceContext;
 import com.gp.common.GeneralContext.ExecState;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
@@ -72,7 +71,7 @@ public class ContextHelper {
 		ServiceContext svcctx = null;
 		if(auditenable){
 			
-			svcctx = new AuditServiceContext(principal, accesspoint);
+			svcctx = new CoreServiceContext(principal, accesspoint);
 
 		}else{
 			
@@ -97,7 +96,7 @@ public class ContextHelper {
 		
 		ServiceContext svcctx = buildServiceContext(principal, accesspoint);
 		// if auditable then begin operation with blind object and predicates
-		svcctx.beginAudit(verb, null, null);
+		svcctx.beginOperation(verb, null, null);
 		
 		return svcctx;
 	}
@@ -115,7 +114,7 @@ public class ContextHelper {
 		
 		ServiceContext svcctx = buildServiceContext(principal, accesspoint);
 		// if auditable then begin operation with blind object and predicates
-		svcctx.beginAudit(operation.name(), null, null);
+		svcctx.beginOperation(operation.name(), null, null);
 		
 		return svcctx;
 	}
@@ -146,8 +145,8 @@ public class ContextHelper {
 		dropContext();
 		// if valid ServiceContext continue work.
 		if(null != svcctx){
-			svcctx.endAudit(ExecState.SUCCESS, "Process success");
-			svcctx.persistAuditData();
+			svcctx.endOperation(ExecState.SUCCESS, "Process success");
+			svcctx.handleOperationData();
 		}
 	}
 	
@@ -170,10 +169,10 @@ public class ContextHelper {
 			// fail persist audit data in ServiceContext.close();
 			if(e.getSuppressed() != null){
 				// means error occurs in both close() and try-with closure.
-				svcctx.endAudit(ExecState.EXCEP, "error during persist audit data");
+				svcctx.endOperation(ExecState.EXCEP, "error during persist audit data");
 			}else{
 				
-				svcctx.endAudit(ExecState.EXCEP, e.getMessage());
+				svcctx.endOperation(ExecState.EXCEP, e.getMessage());
 			}
 		}
 

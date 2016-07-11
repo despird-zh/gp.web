@@ -59,7 +59,7 @@ public class SourceFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_SOURCE)){
 			
-			svcctx.setAuditObject(instanceid);
+			svcctx.setOperationObject(instanceid);
 			
 			rst = instanceservice.getSource(svcctx, instanceid);
 		} catch (ServiceException e)  {
@@ -78,8 +78,8 @@ public class SourceFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_SOURCE)){
 			
-			svcctx.setAuditObject(instance);
-			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
+			svcctx.setOperationObject(instance);
+			svcctx.addOperationPredicates(new DefaultKeyValue("state", state.name()));
 			
 			result =  instanceservice.changeSourceState(svcctx, instance, state);
 
@@ -106,8 +106,8 @@ public class SourceFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_SOURCE)){
 			
-			svcctx.setAuditObject(instance.getInfoId());
-			svcctx.addAuditPredicates(instance);
+			svcctx.setOperationObject(instance.getInfoId());
+			svcctx.addOperationPredicates(instance);
 			// check the validation of user information
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), instance);
 			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
@@ -135,8 +135,8 @@ public class SourceFacade {
 			
 			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.SOURCE, Integer.class);
 			
-			svcctx.setAuditObject(instanceId);
-			svcctx.addAuditPredicates(instance);
+			svcctx.setOperationObject(instanceId);
+			svcctx.addOperationPredicates(instance);
 			// check the validation of user information
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), instance);
 			if(null != vmsg && vmsg.size() > 0){ // fail pass validation
@@ -168,7 +168,7 @@ public class SourceFacade {
 			String[][] parms = new String[][]{
 				{"instancename",instancename}};				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 						
 			// query accounts information
 			result = instanceservice.getSources(svcctx, instancename);
@@ -194,7 +194,7 @@ public class SourceFacade {
 			String[][] parms = new String[][]{
 				{"instancename",instancename}};				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 						
 			// query accounts information
 			result = instanceservice.getSources(svcctx, instancename, pquery);

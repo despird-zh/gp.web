@@ -116,8 +116,8 @@ public class OrgHierFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ORGHIER)){
 			
-			svcctx.setAuditObject(orghier.getInfoId());
-			svcctx.addAuditPredicates(orghier);
+			svcctx.setOperationObject(orghier.getInfoId());
+			svcctx.addOperationPredicates(orghier);
 
 			result = orghierservice.newOrgHierNode(svcctx, orghier);
 	
@@ -152,8 +152,8 @@ public class OrgHierFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_ORGHIER)){
 			
-			svcctx.setAuditObject(orghier.getInfoId());
-			svcctx.addAuditPredicates(orghier);
+			svcctx.setOperationObject(orghier.getInfoId());
+			svcctx.addOperationPredicates(orghier);
 
 			result =  orghierservice.saveOrgHierNode(svcctx, orghier);
 			
@@ -180,7 +180,7 @@ public class OrgHierFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER)){
 			
-			svcctx.setAuditObject(orgid);
+			svcctx.setOperationObject(orgid);
 			rst = orghierservice.getOrgHierNode(svcctx, orgid);
 		} catch (ServiceException e)  {
 			ContextHelper.stampContext(e, "excp.find.orghier");
@@ -208,7 +208,7 @@ public class OrgHierFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ADD_ORGHIER_MEMBER)){
 			
-			svcctx.setAuditObject(orgid);
+			svcctx.setOperationObject(orgid);
 			
 			orghierservice.addOrgHierMember(svcctx, orgid, accounts);
 			rst = true;
@@ -239,7 +239,7 @@ public class OrgHierFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_ORGHIER_MEMBER)){
 			
-			svcctx.setAuditObject(orgid);
+			svcctx.setOperationObject(orgid);
 			Map<String, Object> vals = commonservice.query(orgid, new FlatColLocator[]{
 				FlatColumns.ADMIN, FlatColumns.MANAGER
 			});
@@ -272,7 +272,7 @@ public class OrgHierFacade {
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
-			svcctx.setAuditObject(orgid);
+			svcctx.setOperationObject(orgid);
 			// query accounts information
 			result = orghierservice.getOrgHierMembers(svcctx, orgid);
 

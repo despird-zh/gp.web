@@ -15,7 +15,7 @@ import com.gp.exception.RingEventException;
  * @author gary diao
  * @version 0.1 2015-12-8
  **/
-public class CoreHooker extends EventHooker<CoreEvent<?>>{
+public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
 
 	static Logger LOGGER = LoggerFactory.getLogger(CoreHooker.class);
 	

@@ -33,19 +33,28 @@ import com.gp.exception.CoreException;
 import com.gp.exception.RingEventException;
 import com.gp.info.AuditInfo;
 
-public class AuditHooker extends EventHooker<AuditData>{
+/**
+ * Hooker class digest all the audit event and persist it to storage(local, remote)
+ *  
+ * @author gary diao
+ * @version 0.1 2015-12-12
+ **/
+public class AuditHooker extends EventHooker<AuditEventLoad>{
 
 	static Logger LOGGER = LoggerFactory.getLogger(AuditHooker.class);
 	
+	/**
+	 * Default constructor, set event type :AUDIT.
+	 **/
 	public AuditHooker() {
 		super(EventType.AUDIT);
 	}
 	
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException {
-		// if config setting is local
+		// if configuration setting is local
 		persistLocal(payload);
-		// else config setting is remote
+		// else configuration setting is remote
 		persistRemote(payload);
 	}
 	
@@ -57,10 +66,10 @@ public class AuditHooker extends EventHooker<AuditData>{
 	}
 	
 	/**
-	 * persist the audit data locally to database directly. 
+	 * Persist the audit data locally to database directly. 
 	 **/
 	private void persistLocal(EventPayload payload) throws RingEventException {
-		AuditData auditdata = (AuditData)payload;
+		AuditEventLoad auditdata = (AuditEventLoad)payload;
 		// prepare access point
 		AccessPoint apt = auditdata.getAccessPoint();
 
@@ -102,4 +111,5 @@ public class AuditHooker extends EventHooker<AuditData>{
 			throw new RingEventException("Fail to persist audit to database.",e);
 		}
 	}
+	
 }

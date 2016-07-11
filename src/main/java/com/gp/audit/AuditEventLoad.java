@@ -29,7 +29,7 @@ import com.gp.info.InfoId;
  * @author despird
  * @version 0.1 2014-3-2
  **/
-public class AuditData implements EventPayload{
+public class AuditEventLoad implements EventPayload{
 	
 	private EventType eventType;
 	
@@ -51,7 +51,7 @@ public class AuditData implements EventPayload{
 	/** the execute flag */
 	private String state = ExecState.SUCCESS.toString();
 	
-	protected AuditData(){
+	public AuditEventLoad(){
 		
 		this.eventType = EventType.AUDIT;
 	}	
@@ -65,7 +65,7 @@ public class AuditData implements EventPayload{
 	/**
 	 * Constructor with operation 
 	 **/
-	public AuditData(String subject, String verb, InfoId<?> object) {
+	public AuditEventLoad(String subject, String verb, InfoId<?> object) {
 		this.subject = subject;
 		this.auditVerb = new AuditVerb(verb, object);
 	}

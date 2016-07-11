@@ -75,7 +75,7 @@ public class SecurityFacade {
 		UserInfo uinfo = null;
 		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
-			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
+			svcctx.beginOperation(Operations.FIND_ACCOUNT.name(),  null, 
 					new KVPair<String, String>("account",account));
 			
 			uinfo = securityservice.getAccountLite(svcctx, userId, account, type);
@@ -103,7 +103,7 @@ public class SecurityFacade {
 		CombineInfo<UserInfo, UserExt> uinfo = null;
 		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
-			svcctx.beginAudit(Operations.FIND_ACCOUNT.name(),  null, 
+			svcctx.beginOperation(Operations.FIND_ACCOUNT.name(),  null, 
 					new KVPair<String, String>("account",account));
 			
 			uinfo = securityservice.getAccountFull(svcctx, userId, account, type);
@@ -134,14 +134,14 @@ public class SecurityFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_ACCOUNT)){
 			
-			svcctx.addAuditPredicates(uinfo);
+			svcctx.addOperationPredicates(uinfo);
 			// encrypt the password
 			if(StringUtils.isNotBlank(uinfo.getPassword())){
 				String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
 				uinfo.setPassword(hashpwd);
 			}
 			// amend the operation information
-			svcctx.setAuditObject(uinfo.getInfoId());
+			svcctx.setOperationObject(uinfo.getInfoId());
 
 			result = securityservice.updateAccount(svcctx, uinfo, pubcapacity, pricapacity) > 0;
 			
@@ -170,7 +170,7 @@ public class SecurityFacade {
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
-			svcctx.addAuditPredicates(uinfo);
+			svcctx.addOperationPredicates(uinfo);
 			// encrypt the password
 			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
 			uinfo.setPassword(hashpwd);
@@ -192,7 +192,7 @@ public class SecurityFacade {
 			}
 			
 			// amend the operation information
-			svcctx.setAuditObject(uinfo.getInfoId());
+			svcctx.setOperationObject(uinfo.getInfoId());
 
 			securityservice.newAccount(svcctx, uinfo, pubcapacity, pricapacity);
 			result = uinfo.getInfoId();
@@ -224,7 +224,7 @@ public class SecurityFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
 			
-			svcctx.addAuditPredicates(uinfo);
+			svcctx.addOperationPredicates(uinfo);
 			// encrypt the password
 			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
 			uinfo.setPassword(hashpwd);
@@ -253,7 +253,7 @@ public class SecurityFacade {
 				
 			}
 			// amend the operation information
-			svcctx.setAuditObject(uinfo.getInfoId());
+			svcctx.setOperationObject(uinfo.getInfoId());
 
 			securityservice.newAccountExt(svcctx, uinfo);
 			
@@ -296,7 +296,7 @@ public class SecurityFacade {
 				{"state",ArrayUtils.toString(states)}};
 				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 
 			// query accounts information
 			result = securityservice.getAccounts(svcctx, accountname, instanceId, types,states);
@@ -336,7 +336,7 @@ public class SecurityFacade {
 				{"types",ArrayUtils.toString(type)}};
 				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 
 			// query accounts information
 			result = securityservice.getAccounts(svcctx, accountname, instanceId, type, pagequery);
@@ -357,7 +357,7 @@ public class SecurityFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.AUTHENTICATE)){
 			
-			svcctx.addAuditPredicates(new DefaultKeyValue("password", password));
+			svcctx.addOperationPredicates(new DefaultKeyValue("password", password));
 			byte[] pwdbytes;
 			try {
 				pwdbytes = Base64.decode(principal.getPassword());
@@ -384,7 +384,7 @@ public class SecurityFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(GroupUsers.PSEUDO_USER, accesspoint,
 				Operations.CHANGE_ACCOUNT_STATE)){
 			
-			svcctx.addAuditPredicates(new DefaultKeyValue("state", state.name()));
+			svcctx.addOperationPredicates(new DefaultKeyValue("state", state.name()));
 			
 			// password match means logon success reset the retry_times
 			securityservice.changeAccountState(svcctx, principal.getUserId(), state);			
@@ -407,7 +407,7 @@ public class SecurityFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_ACCOUNT)){
 			
-			svcctx.addAuditPredicates(new KVPair<String,String>("account", account));
+			svcctx.addOperationPredicates(new KVPair<String,String>("account", account));
 			
 			// password match means logon success reset the retry_times
 			gresult = securityservice.removeAccount(svcctx, userId, account);

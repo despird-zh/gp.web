@@ -253,7 +253,7 @@ public class CabinetFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_CABINET)){
 			
-			svcctx.setAuditObject(cabinetId);
+			svcctx.setOperationObject(cabinetId);
 			gresult = cabinetservice.getCabinet(svcctx, cabinetId);
 
 		} catch (ServiceException e)  {
@@ -293,8 +293,8 @@ public class CabinetFacade {
 				CabinetInfo cinfo = cabinetservice.getCabinet(svcctx, IdKey.CABINET.getInfoId(fileinfo.getCabinetId()));
 				fileinfo.setSourceId(cinfo.getSourceId());
 			}
-			svcctx.setAuditObject(fileid);
-			svcctx.addAuditPredicates(fileinfo);
+			svcctx.setOperationObject(fileid);
+			svcctx.addOperationPredicates(fileinfo);
 			Acl acl =  Cabinets.getDefaultAcl();
 			InfoId<Long> tempid = idservice.generateId(IdKey.CAB_ACL, Long.class);
 			acl.setAclId(tempid);
@@ -327,7 +327,7 @@ public class CabinetFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FOLDER)){
 			
-			svcctx.setAuditObject(fileid);
+			svcctx.setOperationObject(fileid);
 			
 			gresult = folderservice.getFolder(svcctx, fileid);
 		
@@ -355,7 +355,7 @@ public class CabinetFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_FILE)){
 			
-			svcctx.setAuditObject(fileid);
+			svcctx.setOperationObject(fileid);
 			
 			gresult = fileservice.getFile(svcctx, fileid);
 
@@ -452,7 +452,7 @@ public class CabinetFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_TAGS)){
 
-			svcctx.setAuditObject(entryid);
+			svcctx.setOperationObject(entryid);
 			gresult = tagservice.getTags(svcctx, null, entryid);
 		} catch (ServiceException e)  {
 			

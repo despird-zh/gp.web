@@ -93,8 +93,8 @@ public class WorkgroupFacade {
 			}
 
 			// amend the operation information
-			svcctx.setAuditObject(winfo.getInfoId());
-			svcctx.addAuditPredicates(winfo);
+			svcctx.setOperationObject(winfo.getInfoId());
+			svcctx.addOperationPredicates(winfo);
 
 			// append the capacity setting to context and send to service
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
@@ -137,8 +137,8 @@ public class WorkgroupFacade {
 				Operations.UPDATE_WORKGROUP)){
 			
 			// amend the operation information
-			svcctx.setAuditObject(winfo.getInfoId());
-			svcctx.addAuditPredicates(winfo);
+			svcctx.setOperationObject(winfo.getInfoId());
+			svcctx.addOperationPredicates(winfo);
 
 			// append the capacity setting to context and send to service
 			svcctx.putContextData(WorkgroupService.CTX_KEY_IMAGE_PATH, imagePath);
@@ -164,7 +164,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUP)){
 
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			
 			gresult = workgroupservice.getWorkgroup(svcctx, wkey);
 		}catch(ServiceException e){
@@ -186,7 +186,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUP)){
 			
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			
 			gresult = workgroupservice.getWorkgroupEx(svcctx, wkey);
 						
@@ -214,7 +214,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUP_USERS)){
 			
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			
 			gresult = workgroupservice.getWorkgroupMembers(svcctx, wkey, uname, entityid);
 
@@ -242,7 +242,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUP_USERS)){
 
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			
 			gresult = workgroupservice.getWorkgroupMembers(svcctx, wkey, uname, entityid, pagequery);
 
@@ -266,8 +266,8 @@ public class WorkgroupFacade {
 				Operations.REMOVE_WORKGROUP_USER)){
 
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
-			svcctx.addAuditPredicates(new DefaultKeyValue("member",account));
+			svcctx.setOperationObject(wkey);
+			svcctx.addOperationPredicates(new DefaultKeyValue("member",account));
 			gresult = workgroupservice.removeWorkgroupMember(svcctx, wkey, account);
 
 		}catch(ServiceException e){
@@ -290,8 +290,8 @@ public class WorkgroupFacade {
 				Operations.ADD_WORKGROUP_USER)){
 
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
-			svcctx.addAuditPredicates(new DefaultKeyValue("member",account));
+			svcctx.setOperationObject(wkey);
+			svcctx.addOperationPredicates(new DefaultKeyValue("member",account));
 
 			GroupUserInfo wuinfo = new GroupUserInfo();
 			wuinfo.setAccount(account);
@@ -326,7 +326,7 @@ public class WorkgroupFacade {
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			// query accounts information
 			result = workgroupservice.getAvailableUsers(svcctx, wkey, uname);
 
@@ -350,7 +350,7 @@ public class WorkgroupFacade {
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			// query accounts information
 			result = workgroupservice.getAvailableUsers(svcctx, wkey, uname, pagequery);
 			
@@ -389,8 +389,8 @@ public class WorkgroupFacade {
 				ginfo.setInfoId(gid);
 			}
 			
-			svcctx.setAuditObject(ginfo.getInfoId());
-			svcctx.addAuditPredicates(ginfo);
+			svcctx.setOperationObject(ginfo.getInfoId());
+			svcctx.addOperationPredicates(ginfo);
 			// query accounts information
 			gresult  = workgroupservice.addWorkgroupGroup(svcctx, ginfo);
 
@@ -416,7 +416,7 @@ public class WorkgroupFacade {
 				Operations.FIND_GROUPS)){
 			
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
+			svcctx.setOperationObject(wkey);
 			
 			gresult = workgroupservice.getWorkgroupGroups(svcctx, wkey, gname);
 		}catch(ServiceException e){
@@ -438,8 +438,8 @@ public class WorkgroupFacade {
 				Operations.REMOVE_GROUP)){
 
 			// amend the operation information
-			svcctx.setAuditObject(wkey);
-			svcctx.addAuditPredicates(new DefaultKeyValue("group",group));
+			svcctx.setOperationObject(wkey);
+			svcctx.addOperationPredicates(new DefaultKeyValue("group",group));
 			gresult = workgroupservice.removeWorkgroupGroup(svcctx, wkey, group);
 
 		}catch(ServiceException e){
@@ -461,7 +461,7 @@ public class WorkgroupFacade {
 				Operations.REMOVE_GROUP)){
 
 			// amend the operation information
-			svcctx.setAuditObject(groupid);
+			svcctx.setOperationObject(groupid);
 
 			gresult = workgroupservice.removeWorkgroupGroup(svcctx,  groupid);
 
@@ -485,7 +485,7 @@ public class WorkgroupFacade {
 				Operations.ADD_GROUP_USER)){
 
 			// amend the operation information
-			svcctx.setAuditObject(groupid);
+			svcctx.setOperationObject(groupid);
 
 			gresult = workgroupservice.addWorkgroupGroupMember(svcctx, groupid, accounts);
 		}catch(ServiceException e){
@@ -506,7 +506,7 @@ public class WorkgroupFacade {
 				Operations.FIND_GROUP_USERS)){
 
 			// amend the operation information
-			svcctx.setAuditObject(groupid);
+			svcctx.setOperationObject(groupid);
 
 			gresult = workgroupservice.getWorkgroupGroupMembers(svcctx, groupid);
 
@@ -529,7 +529,7 @@ public class WorkgroupFacade {
 				Operations.REMOVE_GROUP_USER)){
 
 			// amend the operation information
-			svcctx.setAuditObject(groupid);
+			svcctx.setOperationObject(groupid);
 
 			gresult = workgroupservice.removeWorkgroupGroupMember(svcctx, groupid, account);
 
@@ -551,7 +551,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
-			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
+			svcctx.addOperationPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
 			gresult = workgroupservice.getLocalWorkgroups(svcctx, wgroupname);
 		}catch(ServiceException e){
 			ContextHelper.stampContext(e, "excp.find.wgroups");
@@ -575,7 +575,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
-			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
+			svcctx.addOperationPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
 			gresult = workgroupservice.getLocalWorkgroups(svcctx, wgroupname, tags, pagequery);
 			
 		}catch(ServiceException e){
@@ -595,7 +595,7 @@ public class WorkgroupFacade {
 				Operations.FIND_WORKGROUPS)){
 
 			// amend the operation information
-			svcctx.addAuditPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
+			svcctx.addOperationPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
 			gresult = workgroupservice.getMirrorWorkgroups(svcctx, wgroupname);
 
 		}catch(ServiceException e){
@@ -625,7 +625,7 @@ public class WorkgroupFacade {
 				Operations.FIND_ACT_LOGS)){
 
 			// amend the operation information
-			svcctx.setAuditObject(wid);
+			svcctx.setOperationObject(wid);
 			gresult = actlogservice.getWorkgroupActivityLogs(svcctx, wid, pquery);
 
 		}catch(ServiceException e){

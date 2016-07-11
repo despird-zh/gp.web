@@ -100,7 +100,7 @@ public class ImageFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGE)){
 
-			svcctx.setAuditObject(imageId);
+			svcctx.setOperationObject(imageId);
 			gresult = imageservice.getImage(svcctx, imageId, "");
 			
 		} catch (ServiceException e)  {
@@ -161,7 +161,7 @@ public class ImageFacade {
 				image.setFormat(FilenameUtils.getExtension(filename)); // get format
 			}
 			image.setInfoId(IdKey.IMAGE.getInfoId(imageId));
-			svcctx.setAuditObject(image.getInfoId());// set audit data
+			svcctx.setOperationObject(image.getInfoId());// set audit data
 			gresult = imageservice.updateImage(svcctx, image);
 
 		} catch (ServiceException e)  {
@@ -184,7 +184,7 @@ public class ImageFacade {
 				Operations.REMOVE_IMAGE)){
 			
 			InfoId<Long> imgid = IdKey.IMAGE.getInfoId(imageId);
-			svcctx.setAuditObject(imgid);
+			svcctx.setOperationObject(imgid);
 			gresult = imageservice.removeImage(svcctx, imgid);			
 			
 		} catch (ServiceException e)  {

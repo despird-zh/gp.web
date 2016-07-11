@@ -42,8 +42,8 @@ public class MasterFacade {
 				Operations.UPDATE_SYSOPTION)){
 			
 			SysOptionInfo sinfo = systemservice.getOption(svcctx, optionKey);
-			svcctx.setAuditObject(sinfo.getInfoId());
-			svcctx.addAuditPredicates(new DefaultKeyValue("value", optionValue));
+			svcctx.setOperationObject(sinfo.getInfoId());
+			svcctx.addOperationPredicates(new DefaultKeyValue("value", optionValue));
 
 			result =  systemservice.updateOption(svcctx, optionKey, optionValue);
 		} catch (ServiceException e)  {
@@ -66,7 +66,7 @@ public class MasterFacade {
 			String[][] parms = new String[][]{
 				{"groupkey",groupKey}};				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 
 			// query accounts information
 			result = systemservice.getOptions(svcctx, groupKey);

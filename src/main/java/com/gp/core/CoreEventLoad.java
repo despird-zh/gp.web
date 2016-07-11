@@ -12,27 +12,40 @@ import com.gp.info.InfoId;
  * @version 0.1 2015-12-10
  * 
  **/
-public class CoreEvent<T> implements EventPayload{
+public class CoreEventLoad<T> implements EventPayload{
 
 	private EventType eventType;
 	
 	private InfoId<?> objectId;
 	
-	private T payload;
+	private T data;
 	
 	private String operation;
 	
-	public CoreEvent(String operation) {
+	/**
+	 * The constructor 
+	 * 
+	 * @param operation the operation  
+	 **/
+	public CoreEventLoad(String operation) {
 		this.eventType = EventType.CORE;
 		this.setOperation(operation);
 	}
 
-	public CoreEvent(EventType eventType, T payload) {
+	/**
+	 * The constructor
+	 * @param eventType the event type
+	 * @param payload the payload of event 
+	 **/
+	public CoreEventLoad(EventType eventType, T data) {
 		
-		this.payload = payload;
+		this.data = data;
 		this.eventType = eventType;		
 	}
 	
+	/**
+	 * the object id
+	 **/
 	public InfoId<?> getObjectId() {
 		return objectId;
 	}
@@ -43,12 +56,12 @@ public class CoreEvent<T> implements EventPayload{
 
 	public T getData(){
 		
-		return this.payload;
+		return this.data;
 	}
 	
 	public void setData( T data){
 		
-		this.payload = data;
+		this.data = data;
 	}
 	
 	@Override

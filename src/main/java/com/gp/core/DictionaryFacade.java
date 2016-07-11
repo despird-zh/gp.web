@@ -80,8 +80,8 @@ public class DictionaryFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_DICT)){
 			
-			svcctx.setAuditObject(dictinfo.getInfoId());
-			svcctx.addAuditPredicates(dictinfo);
+			svcctx.setOperationObject(dictinfo.getInfoId());
+			svcctx.addOperationPredicates(dictinfo);
 			
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), dictinfo);
 			if(null != vmsg && vmsg.size() > 0){ // fail pass validation

@@ -57,7 +57,7 @@ public class MeasureFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_MEASURE)){
 			
-			svcctx.setAuditObject(wid);
+			svcctx.setOperationObject(wid);
 			
 			gresult = workgroupsvc.getWorkgroupSummary(svcctx, wid);
 		}catch (ServiceException e)  {

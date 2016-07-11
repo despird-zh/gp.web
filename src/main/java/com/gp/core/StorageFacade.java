@@ -66,7 +66,7 @@ public class StorageFacade {
 			String[][] parms = new String[][]{
 				{"storagename",storagename}};				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 			
 			result = storageService.getStorages(svcctx, storagename, pagequery);
 
@@ -93,7 +93,7 @@ public class StorageFacade {
 			String[][] parms = new String[][]{
 				{"storagename",storagename}};				
 			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addAuditPredicates(parmap);
+			svcctx.addOperationPredicates(parmap);
 			
 			result = storageService.getStorages(svcctx, storagename, types, states);	
 			
@@ -129,14 +129,14 @@ public class StorageFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_STORAGE)){
 
-			svcctx.addAuditPredicates(storage);
+			svcctx.addOperationPredicates(storage);
 			if(!InfoId.isValid(storage.getInfoId())){
 				result = idService.generateId(IdKey.STORAGE, Integer.class);
 				storage.setInfoId(result);				
-				svcctx.setAuditObject(result);
+				svcctx.setOperationObject(result);
 			}else{
 				result = storage.getInfoId();		
-				svcctx.setAuditObject(storage.getInfoId());
+				svcctx.setOperationObject(storage.getInfoId());
 			}
 			
 			storageService.newStorage(svcctx, storage);
@@ -170,7 +170,7 @@ public class StorageFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_STORAGE)){
 			
-			svcctx.setAuditObject(storageid);
+			svcctx.setOperationObject(storageid);
 			
 			gresult = storageService.getStorage(svcctx, storageid);
 		} catch (ServiceException e)  {
@@ -197,8 +197,8 @@ public class StorageFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_STORAGE)){
 			
-			svcctx.setAuditObject(storage.getInfoId());
-			svcctx.addAuditPredicates(storage);
+			svcctx.setOperationObject(storage.getInfoId());
+			svcctx.addOperationPredicates(storage);
 			storageService.updateStorage(svcctx, storage);
 			gresult = true;
 		} catch (ServiceException e)  {
@@ -225,7 +225,7 @@ public class StorageFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_STORAGE)){
 			
-			svcctx.setAuditObject(storageid);
+			svcctx.setOperationObject(storageid);
 			gresult = storageService.removeStorage(svcctx, storageid);
 			
 		} catch (ServiceException e)  {
@@ -282,7 +282,7 @@ public class StorageFacade {
 
     	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.FETCH_BIN)){
 			
-    		svcctx.setAuditObject(binaryId);
+    		svcctx.setOperationObject(binaryId);
 			BinaryManager.instance().dumpBinary(binaryId, outputStream);
 	
 		}catch (StorageException e)  {
@@ -310,7 +310,7 @@ public class StorageFacade {
     	Boolean gresult = false;    	
 
     	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,Operations.STORE_BIN_CHUNK)){
-    		svcctx.setAuditObject(binaryId);			
+    		svcctx.setOperationObject(binaryId);			
 			
     		BinaryManager.instance().fillBinary(binaryId, contentRange, inputStream);	
     		gresult = true;
@@ -361,7 +361,7 @@ public class StorageFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_BIN)){
 
-			svcctx.addAuditPredicates(binfo);
+			svcctx.addOperationPredicates(binfo);
 			// check the validation of user information
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), binfo);
 			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
@@ -373,10 +373,10 @@ public class StorageFacade {
 			if(!InfoId.isValid(binfo.getInfoId())){
 				result = idService.generateId(IdKey.BINARY, Long.class);
 				binfo.setInfoId(result);				
-				svcctx.setAuditObject(result);
+				svcctx.setOperationObject(result);
 			}else{
 				result = binfo.getInfoId();
-				svcctx.setAuditObject(binfo.getInfoId());
+				svcctx.setOperationObject(binfo.getInfoId());
 			}
 			
 			storageService.newBinary(svcctx, binfo);

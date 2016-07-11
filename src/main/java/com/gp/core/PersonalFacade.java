@@ -90,7 +90,7 @@ public class PersonalFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNT)){
 			
-			svcctx.setAuditObject(userId);
+			svcctx.setOperationObject(userId);
 			
 			uinfo = securityservice.getAccountLite(svcctx, userId, null, null);
 			
