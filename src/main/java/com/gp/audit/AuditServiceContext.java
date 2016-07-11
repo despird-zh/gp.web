@@ -112,7 +112,7 @@ public class AuditServiceContext extends ServiceContext{
 	}
 
 	/**
-	 * Set the workgroupKey of current context
+	 * Set the work group key of current context
 	 **/
 	public void setWorkgroupId(InfoId<Long> workgroupId){
 		
@@ -121,7 +121,7 @@ public class AuditServiceContext extends ServiceContext{
 	}
 	
 	/**
-	 * Get the workgroup key of current context.
+	 * Get the work group key of current context.
 	 **/
 	public InfoId<Long> getWorkgroupId(){
 		
