@@ -16,12 +16,14 @@ import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.GroupMemberInfo;
 import com.gp.info.InfoId;
+import com.gp.info.NotificationInfo;
 import com.gp.info.ChatMessageInfo;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.TaskInfo;
 import com.gp.info.UserInfo;
 import com.gp.info.UserSumInfo;
 import com.gp.info.WorkgroupInfo;
+import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.PersonalService;
 import com.gp.svc.SecurityService;
@@ -52,7 +54,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the messages
 	 * 
 	 **/
-	public PageWrapper<ChatMessageInfo> findMessages(ServiceContext svcctx, String account){
+	public PageWrapper<ChatMessageInfo> findMessages(ServiceContext svcctx, String account, PageQuery pquery){
 		return null;
 	}
 	
@@ -62,7 +64,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the notifications
 	 * 
 	 **/
-	public PageWrapper<ChatMessageInfo> findNotifications(ServiceContext svcctx, String account){
+	public PageWrapper<NotificationInfo> findNotifications(ServiceContext svcctx, String account, PageQuery pquery){
 		return null;
 		
 	}
@@ -73,7 +75,7 @@ public class PersonalFacade {
 	 * @param account the account to receive the tasks
 	 * 
 	 **/
-	public PageWrapper<TaskInfo> findTasks(ServiceContext svcctx, String account){
+	public PageWrapper<TaskInfo> findTasks(ServiceContext svcctx, String account, PageQuery pquery){
 		return null;
 		
 	}
@@ -117,21 +119,9 @@ public class PersonalFacade {
 		 
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
-			
-			List<GroupMemberInfo> mbrs = personalservice.getWorkgroupMembers(svcctx, account);
-			InfoId<?>[] ids = new InfoId[mbrs.size()];
-			int count = 0;
-			for(GroupMemberInfo mbr : mbrs){
-				
-				ids[count] = IdKey.WORKGROUP.getInfoId(mbr.getManageId());
-				count++;
-			}
-			
-			if(ids.length > 0){
-				result = personalservice.getWorkgroups(svcctx, ids);
-			}else{
-				result = new ArrayList<WorkgroupInfo>();
-			}
+		
+			result = personalservice.getWorkgroups(svcctx, account);
+		
 		}catch (ServiceException e) {
 			
 			ContextHelper.stampContext(e, "excp.find.belongs");
@@ -157,20 +147,8 @@ public class PersonalFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIERS)){
 			
-			List<GroupMemberInfo> mbrs = personalservice.getOrgHierMembers(svcctx, account);
-			InfoId<?>[] ids = new InfoId[mbrs.size()];
-			int count = 0;
-			for(GroupMemberInfo mbr : mbrs){
-				
-				ids[count] = IdKey.ORG_HIER.getInfoId(mbr.getManageId());
-				
-				count++;
-			}
-			if(ids.length > 0){
-				result = personalservice.getOrgHierNodes(svcctx, ids);
-			}else{
-				result = new ArrayList<OrgHierInfo>();
-			}
+			result = personalservice.getOrgHierNodes(svcctx, account);
+
 		}catch (ServiceException e) {
 			
 			ContextHelper.stampContext(e, "excp.find.belongs");
