@@ -151,7 +151,10 @@ public class CoreEngine{
 			// register audit event hooker
 			AuditHooker auditHooker = new AuditHooker();
 			EventDispatcher.getInstance().regEventHooker(auditHooker);
-
+			// register the core event hooker
+			CoreHooker coreHooker = new CoreHooker();
+			EventDispatcher.getInstance().regEventHooker(coreHooker);
+			
 			this.state = LifeState.INITIAL;
 		}
 		

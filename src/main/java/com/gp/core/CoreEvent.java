@@ -4,6 +4,14 @@ import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
 import com.gp.info.InfoId;
 
+/**
+ * This class wrap all the event fired during Core Running, 
+ * usually the event is fired by audit event hooker, the root of event is service context 
+ * 
+ * @author gary diao
+ * @version 0.1 2015-12-10
+ * 
+ **/
 public class CoreEvent<T> implements EventPayload{
 
 	private EventType eventType;
