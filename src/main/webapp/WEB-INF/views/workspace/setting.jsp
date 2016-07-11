@@ -68,7 +68,10 @@
 						<div id="tab_1" class="tab-pane active">
 							<div class="row">
 								<div class="col-md-12">								
-									<span>基础设置</span> 							
+									<span>基础设置</span> 		
+									<a gpid="save-basic-btn" class="btn btn-primary btn-xs pull-right">
+										<i class="fa fa-save"></i>
+									</a>									
 									<hr class="m-t-sm m-b-sm">
 								</div>
 								<div class="col-md-12">

@@ -18,7 +18,8 @@ var PersonSettingContext = (function ($, window, undefined){
 		$setting_phone : $('#setting-phone'),
 		$setting_avatar: $('#setting-avatar'),
 		$setting_signature : $('#setting-signature'),
-
+		$setting_save_btn : $('#tab_1 a[gpid="save-basic-btn"]'),
+		
 		initial : function(){
 			var _self = this;
 			_self.$tab.find('input[type="checkbox"]').uniform();
@@ -35,6 +36,7 @@ var PersonSettingContext = (function ($, window, undefined){
 			});
 			// load the personal information into page
 			_self.loadBasic();
+			_self.$setting_save_btn.on('click', $.proxy(_self.saveBasic, _self));
 		}
 	};
 	
@@ -67,7 +69,10 @@ var PersonSettingContext = (function ($, window, undefined){
 			}
 		});
 	};
-	
+	BasicTab.saveBasic = function(){
+		var _self = this;
+		
+	};
 	BasicTab.initial();
 	
 	var BelongTab = {
