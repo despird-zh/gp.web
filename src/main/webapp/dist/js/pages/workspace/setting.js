@@ -61,7 +61,7 @@ var PersonSettingContext = (function ($, window, undefined){
 					_self.$setting_email.val(response.data.email);
 					_self.$setting_mobile.val(response.data.mobile);
 					_self.$setting_phone.val(response.data.phone);
-					_self.$setting_signature.val(response.data.description);
+					_self.$setting_signature.val(response.data.signature);
 				}
 				GPContext.HideLoading();
 				// load the storage information			
@@ -71,7 +71,28 @@ var PersonSettingContext = (function ($, window, undefined){
 	};
 	BasicTab.saveBasic = function(){
 		var _self = this;
-		
+		GPContext.ShowLoading();
+		$.ajax({
+			url: "../workspace/save-basic-setting.do",
+			dataType : "json",
+			data : {
+				"userId" : _self.$setting_uid.val(),
+				"name" : _self.$setting_name.val(),
+				"type" : _self.$setting_type.val(),
+				"state" : _self.$setting_state.val(),
+				"email" : _self.$setting_email.val(),
+				"mobile" : _self.$setting_mobile.val(),
+				"phone" : _self.$setting_phone.val(),
+				"signature" : _self.$setting_signature.val(),
+				"imagePath" : _self.$setting_avatar.attr('src')
+			},
+			type: 'POST',
+			success: function(response)
+			{	
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				GPContext.HideLoading();
+			}
+		});
 	};
 	BasicTab.initial();
 	

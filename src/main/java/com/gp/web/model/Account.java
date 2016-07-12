@@ -38,6 +38,10 @@ public class Account {
 	
 	private String storageName;
 	
+	private String signature;
+	
+	private String imagePath;
+	
 	public String getAccount() {
 		return account;
 	}
@@ -181,6 +185,22 @@ public class Account {
 
 	public void setStorageName(String storageName) {
 		this.storageName = storageName;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 }

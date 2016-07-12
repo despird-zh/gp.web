@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
+import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
@@ -37,7 +38,7 @@ import com.gp.web.model.UserBelonging;
 public class WSpaceSettingController  extends BaseController{
 	
 	@RequestMapping("setting")
-	public ModelAndView doInitial(){
+	public ModelAndView doViewInitial(){
 		
 		return getJspModelView("workspace/setting");
 		
@@ -84,7 +85,7 @@ public class WSpaceSettingController  extends BaseController{
 			}
 			ui.setLanguage(uinfo.getLanguage());
 			ui.setTimezone(uinfo.getTimeZone());
-			
+			ui.setSignature(uinfo.getSignature());
 			result.setData(ui);
 			
 			result.setState(ActionResult.SUCCESS);
@@ -184,5 +185,43 @@ public class WSpaceSettingController  extends BaseController{
 		
 		mav.addAllObjects(result.asMap());
 		return mav;
+	}
+	
+	@RequestMapping("save-basic-setting")
+	public ModelAndView doBasicSettingSave(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		Account setting = new Account();
+		super.readRequestData(setting);
+		if(setting.getUserId() <= 0 && setting.getUserId() != GroupUsers.ADMIN_USER.getUserId().getId()){
+			result.setState(ActionResult.FAIL);
+			result.setMessage("missing the user id");
+			mav.addAllObjects(result.asMap());
+			return mav;
+		}
+		UserInfo uinfo = new UserInfo();
+		try{
+			uinfo.setInfoId(IdKey.USER.getInfoId(setting.getUserId()));
+			uinfo.setType(setting.getType());
+			uinfo.setEmail(setting.getEmail());
+			uinfo.setMobile(setting.getMobile());
+			uinfo.setSignature(setting.getSignature());
+			uinfo.setFullName(setting.getName());
+			uinfo.setPhone(setting.getPhone());
+			
+			PersonalFacade.saveBasicSetting(accesspoint, principal, uinfo);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.change.pwd"));
+		}catch(CoreException ce){
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+		}
+		
+		mav.addAllObjects(result.asMap());
+		return mav;
+
 	}
 }

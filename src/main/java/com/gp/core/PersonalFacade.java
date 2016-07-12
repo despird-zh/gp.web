@@ -160,4 +160,11 @@ public class PersonalFacade {
 		return result;
 	}
 	
+	public static boolean saveBasicSetting(AccessPoint accesspoint, 
+			Principal principal,
+			UserInfo uinfo)throws CoreException{
+				return false;
+		
+		
+	}
 }
