@@ -1,27 +1,22 @@
 package com.gp.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.GroupUsers;
-import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.GroupMemberInfo;
 import com.gp.info.InfoId;
 import com.gp.info.NotificationInfo;
 import com.gp.info.ChatMessageInfo;
 import com.gp.info.OrgHierInfo;
 import com.gp.info.TaskInfo;
 import com.gp.info.UserInfo;
-import com.gp.info.UserSumInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
@@ -162,12 +157,21 @@ public class PersonalFacade {
 	
 	public static boolean saveBasicSetting(AccessPoint accesspoint, 
 			Principal principal,
-			UserInfo uinfo)throws CoreException{
+			UserInfo uinfo, String imagePath)throws CoreException{
 		
-		
-		
-		return false;
-		
-		
+		boolean result = false;
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.UPDATE_ACCOUNT)){
+			
+			result = personalservice.updateBasicSetting(svcctx, uinfo, imagePath);
+
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.update.account");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return result;
 	}
 }

@@ -7,16 +7,21 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
+import com.gp.common.GeneralConfig;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
+import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
 import com.gp.core.PersonalFacade;
 import com.gp.core.SecurityFacade;
@@ -36,6 +41,10 @@ import com.gp.web.model.UserBelonging;
 @Controller("ws-setting-ctrl")
 @RequestMapping("/workspace")
 public class WSpaceSettingController  extends BaseController{
+	
+	static Logger LOGGER = LoggerFactory.getLogger(WSpaceSettingController.class);
+	
+	public static String CACHE_PATH = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	
 	@RequestMapping("setting")
 	public ModelAndView doViewInitial(){
@@ -211,8 +220,12 @@ public class WSpaceSettingController  extends BaseController{
 			uinfo.setSignature(setting.getSignature());
 			uinfo.setFullName(setting.getName());
 			uinfo.setPhone(setting.getPhone());
-			
-			PersonalFacade.saveBasicSetting(accesspoint, principal, uinfo);
+			uinfo.setState(setting.getState());
+			String imgfile = FilenameUtils.getName(setting.getImagePath());
+			String imagePath = request.getServletContext().getRealPath("/" + CACHE_PATH) +'/' + imgfile;
+			LOGGER.debug("image file path : {}", imagePath);
+
+			PersonalFacade.saveBasicSetting(accesspoint, principal, uinfo, imagePath);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.change.pwd"));
 		}catch(CoreException ce){
