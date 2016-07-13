@@ -10,6 +10,9 @@ import org.springframework.core.env.Environment;
 
 import com.gp.core.AppContextListener;
 
+/**
+ *
+ */
 @Configuration
 @PropertySource("classpath:/gpress-context.properties")
 @ImportResource({

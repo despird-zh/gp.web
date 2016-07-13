@@ -22,7 +22,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-
+/**
+ * This is the start point of whole web application initialization.
+ * Here load the database and mvc etc. spring setting.
+ *
+ * @author gary diao
+ * @version 0.1 2015-12-10
+ **/
 public class AppInitializer implements WebApplicationInitializer {
 
     @Override
