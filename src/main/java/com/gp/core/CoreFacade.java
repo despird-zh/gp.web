@@ -2,6 +2,9 @@ package com.gp.core;
 
 import com.gp.dao.info.OperLogInfo;
 import com.gp.svc.OperLogService;
+
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,11 +81,22 @@ public class CoreFacade {
 	 * Handle the core event payload
 	 * @param  coreload the payload of event
 	 **/
-	public static void handleUpdateAccount(CoreEventLoad coreload)throws CoreException{
+	public static void handleUpdateAccount(CoreEventLoad<?> coreload)throws CoreException{
 
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
 			OperLogInfo operinfo = new OperLogInfo();
+			InfoId<Long> operid = idService.generateId(IdKey.OPER_LOG, Long.class);
+			operinfo.setInfoId(operid);
+			operinfo.setAccount(coreload.getOperator());
+			operinfo.setOperation(coreload.getOperation());
+			
+			if(InfoId.isValid(coreload.getObjectId()))
+				operinfo.setObjectId(coreload.getObjectId().toString());
+			
+			operinfo.setOperationTime(new Date(System.currentTimeMillis()));
+			
+			svcctx.setTraceInfo(operinfo);
 			operlogservice.addOperLog(svcctx, operinfo);
 
 		}catch (ServiceException e) {

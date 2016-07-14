@@ -31,7 +31,7 @@ public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
 		if(!(payload instanceof CoreEventLoad)){
 			return;
 		}
-		CoreEventLoad coreload = (CoreEventLoad) payload;
+		CoreEventLoad<?> coreload = (CoreEventLoad<?>) payload;
 
 		Operations operation = Operations.valueOf(coreload.getOperation());
 		try {
