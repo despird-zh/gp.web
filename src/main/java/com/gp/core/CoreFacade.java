@@ -9,7 +9,7 @@ import com.gp.common.IdKey;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.AuditInfo;
+import com.gp.dao.info.AuditInfo;
 import com.gp.info.InfoId;
 import com.gp.svc.AuditService;
 import com.gp.svc.CommonService;

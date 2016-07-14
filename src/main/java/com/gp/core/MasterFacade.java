@@ -16,7 +16,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.SysOptionInfo;
+import com.gp.dao.info.SysOptionInfo;
 import com.gp.svc.SystemService;
 
 @Component

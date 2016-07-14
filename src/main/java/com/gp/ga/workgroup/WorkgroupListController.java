@@ -16,7 +16,7 @@ import com.gp.common.Principal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
-import com.gp.info.WorkgroupInfo;
+import com.gp.dao.info.WorkgroupInfo;
 import com.gp.svc.info.WorkgroupExt;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;

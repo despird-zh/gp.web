@@ -1,7 +1,5 @@
 package gp.web.audit;
 
-import java.util.Date;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -11,7 +9,6 @@ import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.dao.AuditDAO;
-import com.gp.info.AuditInfo;
 import com.gp.info.InfoId;
 import com.gp.svc.CommonService;
 

@@ -10,7 +10,7 @@ import com.gp.common.Principal;
 import com.gp.common.GroupUsers;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.UserInfo;
+import com.gp.dao.info.UserInfo;
 import com.gp.svc.SystemService;
 
 @ContextConfiguration(locations = "/mysql-test.xml")

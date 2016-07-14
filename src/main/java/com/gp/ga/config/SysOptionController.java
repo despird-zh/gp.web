@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ import com.gp.common.Principal;
 import com.gp.core.MasterFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.KVPair;
-import com.gp.info.SysOptionInfo;
+import com.gp.dao.info.SysOptionInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.SysOption;

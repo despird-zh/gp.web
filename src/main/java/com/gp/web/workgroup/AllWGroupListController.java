@@ -23,7 +23,7 @@ import com.gp.common.SystemOptions;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
-import com.gp.info.WorkgroupInfo;
+import com.gp.dao.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.pagination.PaginationInfo;

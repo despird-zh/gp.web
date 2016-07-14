@@ -25,7 +25,7 @@ import com.gp.common.Storages.StoreSetting;
 import com.gp.core.StorageFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
-import com.gp.info.StorageInfo;
+import com.gp.dao.info.StorageInfo;
 import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;

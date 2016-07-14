@@ -21,7 +21,7 @@ import com.gp.common.Sources.State;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.SourceInfo;
+import com.gp.dao.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.SourceService;

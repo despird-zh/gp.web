@@ -34,7 +34,7 @@ import com.gp.common.GroupUsers;
 import com.gp.common.GroupUsers.UserState;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.UserInfo;
+import com.gp.dao.info.UserInfo;
 
 /**
  * @author despird 2014-02-01

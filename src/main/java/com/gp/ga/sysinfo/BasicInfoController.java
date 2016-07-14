@@ -17,7 +17,7 @@ import com.gp.common.Principal;
 import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
-import com.gp.info.SourceInfo;
+import com.gp.dao.info.SourceInfo;
 import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;

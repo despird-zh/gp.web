@@ -31,7 +31,7 @@ import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
 import com.gp.exception.CoreException;
 import com.gp.exception.RingEventException;
-import com.gp.info.AuditInfo;
+import com.gp.dao.info.AuditInfo;
 
 /**
  * Hooker class digest all the audit event and persist it to storage(local, remote)

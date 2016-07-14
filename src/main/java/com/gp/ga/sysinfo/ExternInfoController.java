@@ -1,9 +1,7 @@
 package com.gp.ga.sysinfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,7 +16,7 @@ import com.gp.common.Principal;
 import com.gp.common.Sources;
 import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.SourceInfo;
+import com.gp.dao.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;

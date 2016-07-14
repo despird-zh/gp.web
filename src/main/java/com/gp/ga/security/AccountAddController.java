@@ -20,7 +20,7 @@ import com.gp.common.GroupUsers;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
-import com.gp.info.UserInfo;
+import com.gp.dao.info.UserInfo;
 
 @Controller("ga-account-new-ctlr")
 @RequestMapping("/ga")

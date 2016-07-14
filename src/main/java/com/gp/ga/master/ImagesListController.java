@@ -23,7 +23,7 @@ import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.ImageInfo;
+import com.gp.dao.info.ImageInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Image;

@@ -19,7 +19,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.ImageInfo;
+import com.gp.dao.info.ImageInfo;
 import com.gp.info.InfoId;
 import com.gp.svc.ImageService;
 

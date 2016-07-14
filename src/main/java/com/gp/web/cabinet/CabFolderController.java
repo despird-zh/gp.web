@@ -11,7 +11,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.CabFolderInfo;
+import com.gp.dao.info.CabFolderInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.CustomWebUtils;
