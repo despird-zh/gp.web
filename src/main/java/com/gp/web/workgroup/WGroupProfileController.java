@@ -27,7 +27,7 @@ import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.OperationLogInfo;
+import com.gp.info.OperLogInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.GroupMemberInfo;
@@ -219,7 +219,7 @@ public class WGroupProfileController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<OperationLogInfo> gresult = WorkgroupFacade.findWorkgroupActivityLogs(accesspoint, principal, wkey, pquery);
+			PageWrapper<OperLogInfo> gresult = WorkgroupFacade.findWorkgroupOperLogs(accesspoint, principal, wkey, pquery);
 			try {
 				taildt = StringUtils.isBlank(tailDateStr) ? SDF_DATE.parse("9999-12-31"):
 					SDF_DATE.parse(tailDateStr);
@@ -227,8 +227,8 @@ public class WGroupProfileController extends BaseController{
 				LOGGER.error("Fail parse the date",e);
 			}
 			
-			List<OperationLogInfo> ulist = gresult.getRows();
-			for(OperationLogInfo info: ulist){
+			List<OperLogInfo> ulist = gresult.getRows();
+			for(OperLogInfo info: ulist){
 				
 				ActivityLog log = new ActivityLog();
 				if(!DateUtils.isSameDay(taildt, info.getOperationTime())){

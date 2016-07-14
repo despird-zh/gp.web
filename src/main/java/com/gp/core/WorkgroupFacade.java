@@ -20,7 +20,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.OperationLogInfo;
+import com.gp.info.OperLogInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.GroupInfo;
 import com.gp.info.GroupMemberInfo;
@@ -31,7 +31,7 @@ import com.gp.info.UserInfo;
 import com.gp.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.ActLogService;
+import com.gp.svc.OperLogService;
 import com.gp.svc.CommonService;
 import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
@@ -51,14 +51,14 @@ public class WorkgroupFacade {
 	
 	private static CommonService idservice;
 	
-	private static ActLogService actlogservice;
+	private static OperLogService actlogservice;
 	
 	private static TagService tagservice;
 	
 	@Autowired
 	private WorkgroupFacade(WorkgroupService workgroupservice,
 			CommonService idservice,
-			ActLogService actlogservice,
+			OperLogService actlogservice,
 			TagService tagservice){
 		WorkgroupFacade.workgroupservice = workgroupservice;
 		WorkgroupFacade.idservice = idservice;
@@ -615,18 +615,18 @@ public class WorkgroupFacade {
 	 * @param pquery the page query
 	 *  
 	 **/
-	public static PageWrapper<OperationLogInfo> findWorkgroupActivityLogs(AccessPoint accesspoint,
-																		  Principal principal,
-																		  InfoId<Long> wid, PageQuery pquery)throws CoreException{
+	public static PageWrapper<OperLogInfo> findWorkgroupOperLogs(AccessPoint accesspoint,
+																 Principal principal,
+																 InfoId<Long> wid, PageQuery pquery)throws CoreException{
 		
-		PageWrapper<OperationLogInfo> gresult = null;
+		PageWrapper<OperLogInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACT_LOGS)){
 
 			// amend the operation information
 			svcctx.setOperationObject(wid);
-			gresult = actlogservice.getWorkgroupActivityLogs(svcctx, wid, pquery);
+			gresult = actlogservice.getWorkgroupOperLogs(svcctx, wid, pquery);
 
 		}catch(ServiceException e){
 
