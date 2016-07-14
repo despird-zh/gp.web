@@ -227,10 +227,12 @@ public class WSpaceSettingController  extends BaseController{
 
 			PersonalFacade.saveBasicSetting(accesspoint, principal, uinfo, imagePath);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.change.pwd"));
+			result.setMessage(getMessage("mesg.update.basic"));
+
 		}catch(CoreException ce){
 			result.setState(ActionResult.FAIL);
 			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		mav.addAllObjects(result.asMap());
