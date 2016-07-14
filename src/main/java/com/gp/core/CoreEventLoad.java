@@ -44,21 +44,32 @@ public class CoreEventLoad<T> implements EventPayload{
 	}
 	
 	/**
-	 * the object id
+	 * Get the object id that identify the target of operation
 	 **/
 	public InfoId<?> getObjectId() {
+
 		return objectId;
 	}
 
+	/**
+	 * Set the object id of operation target data
+	 **/
 	public void setObjectId(InfoId<?> objectId) {
+
 		this.objectId = objectId;
 	}
 
+	/**
+	 * Get the data of operation
+	 **/
 	public T getData(){
 		
 		return this.data;
 	}
-	
+
+	/**
+	 * Set the data of operation
+	 **/
 	public void setData( T data){
 		
 		this.data = data;
@@ -70,11 +81,21 @@ public class CoreEventLoad<T> implements EventPayload{
 		return eventType;
 	}
 
+	/**
+	 * Get the operation name
+	 * @return String the operation name
+	 **/
 	public String getOperation() {
+
 		return operation;
 	}
 
+	/**
+	 * Set the operation name
+	 * @param  operation the name of operation
+	 **/
 	public void setOperation(String operation) {
+
 		this.operation = operation;
 	}
 }
