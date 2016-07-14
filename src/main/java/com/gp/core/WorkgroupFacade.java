@@ -20,7 +20,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.ActLogInfo;
+import com.gp.info.OperationLogInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.GroupInfo;
 import com.gp.info.GroupMemberInfo;
@@ -615,11 +615,11 @@ public class WorkgroupFacade {
 	 * @param pquery the page query
 	 *  
 	 **/
-	public static PageWrapper<ActLogInfo> findWorkgroupActivityLogs(AccessPoint accesspoint,
-			Principal principal,
-			InfoId<Long> wid, PageQuery pquery)throws CoreException{
+	public static PageWrapper<OperationLogInfo> findWorkgroupActivityLogs(AccessPoint accesspoint,
+																		  Principal principal,
+																		  InfoId<Long> wid, PageQuery pquery)throws CoreException{
 		
-		PageWrapper<ActLogInfo> gresult = null;
+		PageWrapper<OperationLogInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACT_LOGS)){

@@ -27,7 +27,7 @@ import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
-import com.gp.info.ActLogInfo;
+import com.gp.info.OperationLogInfo;
 import com.gp.info.CabinetInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.GroupMemberInfo;
@@ -219,7 +219,7 @@ public class WGroupProfileController extends BaseController{
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<ActLogInfo> gresult = WorkgroupFacade.findWorkgroupActivityLogs(accesspoint, principal, wkey, pquery);			
+			PageWrapper<OperationLogInfo> gresult = WorkgroupFacade.findWorkgroupActivityLogs(accesspoint, principal, wkey, pquery);
 			try {
 				taildt = StringUtils.isBlank(tailDateStr) ? SDF_DATE.parse("9999-12-31"):
 					SDF_DATE.parse(tailDateStr);
@@ -227,22 +227,22 @@ public class WGroupProfileController extends BaseController{
 				LOGGER.error("Fail parse the date",e);
 			}
 			
-			List<ActLogInfo> ulist = gresult.getRows();
-			for(ActLogInfo info: ulist){
+			List<OperationLogInfo> ulist = gresult.getRows();
+			for(OperationLogInfo info: ulist){
 				
 				ActivityLog log = new ActivityLog();
-				if(!DateUtils.isSameDay(taildt, info.getActivityDate())){
+				if(!DateUtils.isSameDay(taildt, info.getOperationTime())){
 				// current row log at different day.
-					if(DateUtils.isSameDay(info.getActivityDate(), new Date())){
+					if(DateUtils.isSameDay(info.getOperationTime(), new Date())){
 						log.setTimeLabel("Today");
 					}
 					else{
-						log.setTimeLabel(SDF_DATE.format(info.getActivityDate()));
+						log.setTimeLabel(SDF_DATE.format(info.getOperationTime()));
 					}
 				}
 				log.setAccount(info.getAccount());
-				log.setActivity(info.getActivity());
-				log.setActivityTime(SDF_TIME.format(info.getActivityDate()));
+				log.setActivity(info.getOperation());
+				log.setActivityTime(SDF_TIME.format(info.getOperationTime()));
 				log.setAuditId(info.getAuditId());
 				log.setObjectId(info.getObjectId());
 				log.setObjectExcerpt(info.getObjectExcerpt());
@@ -250,7 +250,7 @@ public class WGroupProfileController extends BaseController{
 				log.setPredicateExcerpt(info.getPredicateExcerpt());
 				log.setUserName(info.getUserName());
 				log.setWorkgroupId(info.getWorkgroupId());
-				taildt = info.getActivityDate();
+				taildt = info.getOperationTime();
 				list.add(log);
 			}
 			//PaginationInfo pginfo = gresult.getPagination();
