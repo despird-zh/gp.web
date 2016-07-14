@@ -137,9 +137,10 @@ public class CoreServiceContext extends ServiceContext{
 			EventDispatcher.getInstance().sendPayload(auditload);
 		
 		// trigger the core event with core load
-		CoreEventLoad<Map<String,String>> coreload = new CoreEventLoad<Map<String,String>>(auditload.getAuditVerb().getVerb());
-		coreload.setObjectId(auditload.getAuditVerb().getObject());
-		coreload.setData(auditload.getAuditVerb().getPredicateMap());
+		AuditVerb verb = auditload.getAuditVerb();
+		CoreEventLoad<Map<String,String>> coreload = new CoreEventLoad<Map<String,String>>(verb.getVerb());
+		coreload.setObjectId(verb.getObject());
+		coreload.setData(verb.getPredicateMap());
 		
 		EventDispatcher.getInstance().sendPayload(coreload);
 	}
