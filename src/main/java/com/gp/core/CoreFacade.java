@@ -66,5 +66,9 @@ public class CoreFacade {
 			throw new CoreException("fail to get admin principal",e );
 		}
 	}
-	
+
+	public static void handleUpdateAccount(CoreEventLoad coreload){
+
+
+	}
 }

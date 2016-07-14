@@ -36,15 +36,11 @@ public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
 
 		switch (operation){
 			case  UPDATE_BASIC_SETTING :
-				handleUpdateAccount(coreload);
+				CoreFacade.handleUpdateAccount(coreload);
 				break;
 			default :
 				break;
 		}
 	}
 
-	private void handleUpdateAccount(CoreEventLoad coreload){
-
-
-	}
 }
