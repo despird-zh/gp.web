@@ -1,7 +1,11 @@
 package com.gp.core;
 
 import java.util.List;
+import java.util.Set;
 
+import com.gp.validate.ValidateMessage;
+import com.gp.validate.ValidateUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -154,7 +158,13 @@ public class PersonalFacade {
 		
 		return result;
 	}
-	
+
+	/**
+	 * Save the account basic setting
+	 *
+	 * @param uinfo the user information object
+	 * @param imagePath the avatar image path
+	 **/
 	public static boolean saveBasicSetting(AccessPoint accesspoint, 
 			Principal principal,
 			UserInfo uinfo, String imagePath)throws CoreException{
@@ -163,7 +173,15 @@ public class PersonalFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
 				Operations.UPDATE_ACCOUNT)){
-			
+
+			Set<ValidateMessage> vmsg = ValidateUtils.validateProperty(principal.getLocale(), uinfo,
+					"state","type","phone","mobile","email","name");
+			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
+				CoreException coreexcp = new CoreException(svcctx.getPrincipal().getLocale(), "excp.validate");
+				coreexcp.addValidateMessages(vmsg);
+				throw coreexcp;
+			}
+
 			result = personalservice.updateBasicSetting(svcctx, uinfo, imagePath);
 
 		}catch (ServiceException e) {
