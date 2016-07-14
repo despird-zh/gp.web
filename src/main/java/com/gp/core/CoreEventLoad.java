@@ -21,7 +21,9 @@ public class CoreEventLoad<T> implements EventPayload{
 	private T data;
 	
 	private String operation;
-	
+
+	private String operator;
+
 	/**
 	 * The constructor 
 	 * 
@@ -97,5 +99,19 @@ public class CoreEventLoad<T> implements EventPayload{
 	public void setOperation(String operation) {
 
 		this.operation = operation;
+	}
+
+	/**
+	 * Get the operator
+	 **/
+	public String getOperator() {
+		return operator;
+	}
+
+	/**
+	 * Set the operator
+	 **/
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 }

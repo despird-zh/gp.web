@@ -141,7 +141,9 @@ public class CoreServiceContext extends ServiceContext{
 		CoreEventLoad<Map<String,String>> coreload = new CoreEventLoad<Map<String,String>>(verb.getVerb());
 		coreload.setObjectId(verb.getObject());
 		coreload.setData(verb.getPredicateMap());
-		
+		coreload.setOperator(auditload.getSubject());
+		coreload.setObjectId(verb.getObject());
+
 		EventDispatcher.getInstance().sendPayload(coreload);
 	}
 	

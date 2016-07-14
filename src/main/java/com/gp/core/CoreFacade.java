@@ -1,5 +1,7 @@
 package com.gp.core;
 
+import com.gp.dao.info.OperLogInfo;
+import com.gp.svc.OperLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,17 @@ public class CoreFacade {
 	private static AuditService auditservice;
 
 	private static CommonService idService;
-	
+
+	private static OperLogService operlogservice;
+
 	@Autowired
-	private CoreFacade(AuditService auditservice, CommonService idService){
+	private CoreFacade(AuditService auditservice,
+					   OperLogService operlogservice,
+					   CommonService idService){
 		
 		CoreFacade.auditservice = auditservice;
 		CoreFacade.idService = idService;
+		CoreFacade.operlogservice = operlogservice;
 	}
 	
 	/**
@@ -67,8 +74,20 @@ public class CoreFacade {
 		}
 	}
 
-	public static void handleUpdateAccount(CoreEventLoad coreload){
+	/**
+	 * Handle the core event payload
+	 * @param  coreload the payload of event
+	 **/
+	public static void handleUpdateAccount(CoreEventLoad coreload)throws CoreException{
 
 
+		try {
+			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
+			OperLogInfo operinfo = new OperLogInfo();
+			operlogservice.addOperLog(svcctx, operinfo);
+
+		}catch (ServiceException e) {
+			throw new CoreException("fail to handle the core event payload",e );
+		}
 	}
 }

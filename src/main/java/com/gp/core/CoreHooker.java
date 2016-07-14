@@ -1,6 +1,7 @@
 package com.gp.core;
 
 import com.gp.common.Operations;
+import com.gp.exception.CoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,13 +34,17 @@ public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
 		CoreEventLoad coreload = (CoreEventLoad) payload;
 
 		Operations operation = Operations.valueOf(coreload.getOperation());
+		try {
+			switch (operation) {
+				case UPDATE_BASIC_SETTING:
+					CoreFacade.handleUpdateAccount(coreload);
+					break;
+				default:
+					break;
+			}
+		}catch(CoreException ce){
 
-		switch (operation){
-			case  UPDATE_BASIC_SETTING :
-				CoreFacade.handleUpdateAccount(coreload);
-				break;
-			default :
-				break;
+			throw new RingEventException("Fail handle core event payload", ce);
 		}
 	}
 
