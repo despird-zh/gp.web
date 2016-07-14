@@ -80,7 +80,6 @@ public class CoreFacade {
 	 **/
 	public static void handleUpdateAccount(CoreEventLoad coreload)throws CoreException{
 
-
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
 			OperLogInfo operinfo = new OperLogInfo();
