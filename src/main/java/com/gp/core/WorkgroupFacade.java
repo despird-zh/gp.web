@@ -622,7 +622,7 @@ public class WorkgroupFacade {
 		PageWrapper<OperLogInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_ACT_LOGS)){
+				Operations.FIND_OPER_LOGS)){
 
 			// amend the operation information
 			svcctx.setOperationObject(wid);
