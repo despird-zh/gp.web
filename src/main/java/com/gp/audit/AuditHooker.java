@@ -80,7 +80,7 @@ public class AuditHooker extends EventHooker<AuditEventLoad>{
 		if(null != pverb.getObject())
 			operaudit.setTarget(pverb.getObject().toString());
 		
-		operaudit.setVerb(pverb.getVerb());
+		operaudit.setOperation(pverb.getVerb());
 		MutableObject pjson;
 		try {
 			pjson = AuditConverter.mapToJson(pverb.getPredicateMap());
