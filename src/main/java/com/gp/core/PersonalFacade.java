@@ -170,17 +170,23 @@ public class PersonalFacade {
 			UserInfo uinfo, String imagePath)throws CoreException{
 		
 		boolean result = false;
+		// validate the basic setting properties and value
+		Set<ValidateMessage> vmsg = ValidateUtils.validateProperty(
+				principal.getLocale(),
+				uinfo,
+				"state","type","phone","mobile","email","name");
+
+		if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
+			CoreException coreexcp = new CoreException(principal.getLocale(), "excp.validate");
+			coreexcp.addValidateMessages(vmsg);
+			throw coreexcp;
+		}
+
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
-				Operations.UPDATE_ACCOUNT)){
+				Operations.UPDATE_BASIC_SETTING)){
 
-			Set<ValidateMessage> vmsg = ValidateUtils.validateProperty(principal.getLocale(), uinfo,
-					"state","type","phone","mobile","email","name");
-			if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
-				CoreException coreexcp = new CoreException(svcctx.getPrincipal().getLocale(), "excp.validate");
-				coreexcp.addValidateMessages(vmsg);
-				throw coreexcp;
-			}
+			svcctx.setOperationObject(uinfo.getInfoId());
 
 			result = personalservice.updateBasicSetting(svcctx, uinfo, imagePath);
 

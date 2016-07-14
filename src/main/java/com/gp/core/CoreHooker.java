@@ -1,5 +1,6 @@
 package com.gp.core;
 
+import com.gp.common.Operations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,24 @@ public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
 
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException {
+
+		if(!(payload instanceof CoreEventLoad)){
+			return;
+		}
+		CoreEventLoad coreload = (CoreEventLoad) payload;
+
+		Operations operation = Operations.valueOf(coreload.getOperation());
+
+		switch (operation){
+			case  UPDATE_BASIC_SETTING :
+				handleUpdateAccount(coreload);
+				break;
+			default :
+				break;
+		}
+	}
+
+	private void handleUpdateAccount(CoreEventLoad coreload){
 
 	}
 }
