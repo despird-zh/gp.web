@@ -25,7 +25,7 @@ import org.apache.commons.lang.mutable.MutableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gp.core.AuditFacade;
+import com.gp.core.CoreFacade;
 import com.gp.disruptor.EventHooker;
 import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
@@ -104,7 +104,7 @@ public class AuditHooker extends EventHooker<AuditEventLoad>{
 		
 		try {
 			// store data to database.
-			AuditFacade.auditOperation(operaudit);
+			CoreFacade.auditOperation(operaudit);
 		} catch (CoreException e) {
 			
 			LOGGER.error("Fail to persist audit to database.",e);

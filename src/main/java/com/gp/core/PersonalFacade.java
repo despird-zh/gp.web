@@ -175,7 +175,7 @@ public class PersonalFacade {
 				principal.getLocale(),
 				uinfo,
 				"state","type","phone","mobile","email","name");
-
+		// prepare the core exception and throw it out
 		if(!CollectionUtils.isEmpty(vmsg)){ // fail pass validation
 			CoreException coreexcp = new CoreException(principal.getLocale(), "excp.validate");
 			coreexcp.addValidateMessages(vmsg);
