@@ -160,7 +160,8 @@ public class PersonalFacade {
 			UserInfo uinfo, String imagePath)throws CoreException{
 		
 		boolean result = false;
-		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
+				accesspoint,
 				Operations.UPDATE_ACCOUNT)){
 			
 			result = personalservice.updateBasicSetting(svcctx, uinfo, imagePath);
