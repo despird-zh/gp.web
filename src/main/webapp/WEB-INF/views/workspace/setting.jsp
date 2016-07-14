@@ -36,7 +36,7 @@
 							</li>
 							<li>
 								<a data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${wgroup_id}">
-									<i class="fa fa-fw fa-home"></i>
+									<i class="fa fa-lg fa-home"></i>
 								</a>
 							</li>    
 						</ul>

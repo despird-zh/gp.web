@@ -42,6 +42,7 @@ var WorkspaceMetaContext = (function ($, window, undefined){
 				_self.$wspace_signature.html(data.signature);
 				_self.$wspace_badges.html(data.badges);
 				_self.$wspace_org_route.html(data.treeNodes);
+				_self.$wspace_avatar.attr('src', data.imagePath);
             }
         });
     };

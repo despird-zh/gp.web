@@ -1,5 +1,6 @@
 package com.gp.web.workspace;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +13,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
+import com.gp.common.IdKey;
+import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
+import com.gp.core.ImageFacade;
 import com.gp.core.MeasureFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.PersonalFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
+import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.UserSumInfo;
@@ -35,8 +40,9 @@ public class WSpaceMetaController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(WSpaceMetaController.class);
 	
-	static String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
-	
+	static String ImagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+
+	static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@RequestMapping("meta-sum")
 	public ModelAndView doMetaSummarySearch(HttpServletRequest request){
@@ -59,13 +65,20 @@ public class WSpaceMetaController extends BaseController{
 				meta.setTaskSum(usum.getTaskSummary());
 				
 			}
+			
 			// find user information and extension data
 			CombineInfo<UserInfo, UserExt> cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
 			meta.setName(cmbinfo.getPrimary().getFullName());
 			meta.setSourceId(cmbinfo.getPrimary().getSourceId());
 			meta.setSourceName(cmbinfo.getExtended().getSourceName());
 			meta.setSourceShort(cmbinfo.getExtended().getShortName());
+			meta.setSinceDate(DATE_FORMAT.format(cmbinfo.getPrimary().getCreateDate()));
 			
+			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(cmbinfo.getPrimary().getAvatarId()));
+			String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
+					imginfo.getTouchTime(), imginfo.getInfoId().getId(), imginfo.getExtension());
+			
+			meta.setImagePath(imagePath);
 			List<OrgHierInfo> belongs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
 			
 			TreeNode[][] routes = new TreeNode[belongs.size()][];
