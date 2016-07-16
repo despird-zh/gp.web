@@ -74,6 +74,7 @@ public class WSpaceMetaController extends BaseController{
 			meta.setSourceShort(cmbinfo.getExtended().getShortName());
 			meta.setSinceDate(DATE_FORMAT.format(cmbinfo.getPrimary().getCreateDate()));
 			
+			meta.setSignature(cmbinfo.getPrimary().getSignature());
 			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(cmbinfo.getPrimary().getAvatarId()));
 			String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
 					imginfo.getTouchTime(), imginfo.getInfoId().getId(), imginfo.getExtension());
@@ -87,12 +88,15 @@ public class WSpaceMetaController extends BaseController{
 				
 				List<OrgHierInfo> orglist = OrgHierFacade.findRouteOrgHiers(accesspoint, principal, belong.getInfoId());
 				TreeNode[] nodes = new TreeNode[orglist.size()];
-				for(int i = 0 ; i<orglist.size(); i ++){
+				for(int i = 0 ; i<orglist.size(); i++){
 					OrgHierInfo oinfo = orglist.get(i);
 					TreeNode node = new TreeNode();
 					node.setId(String.valueOf(oinfo.getInfoId().getId()));
 					node.setPid(String.valueOf(oinfo.getParentOrg()));
 					node.setName(oinfo.getOrgName());
+					if(i == orglist.size() -1){
+						node.setChildren(false);
+					}
 					nodes[i] = node;
 				}
 				routes[cnt] = nodes;

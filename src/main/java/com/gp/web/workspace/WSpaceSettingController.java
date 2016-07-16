@@ -1,5 +1,6 @@
 package com.gp.web.workspace;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConfig;
@@ -238,5 +243,45 @@ public class WSpaceSettingController  extends BaseController{
 		mav.addAllObjects(result.asMap());
 		return mav;
 
+	}
+	
+	@RequestMapping("save-org-setting")
+	public ModelAndView doOrgBelongSettingSave(HttpServletRequest request){
+		
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		String setting_json = request.getParameter("setting_json");
+		List<UserBelonging> settings = null;
+		try {
+			settings = JACKSON_MAPPER.readValue(setting_json, new TypeReference<List<UserBelonging>>(){});
+		} catch (IOException e) {
+			LOGGER.error("Fail save org belong setting", e);
+			result.setMessage(getMessage("mesg.invalid.param"));
+			result.setState(ActionResult.FAIL);
+			return mav.addAllObjects(result.asMap());
+		}
+		
+		if(CollectionUtils.isEmpty(settings)){
+			result.setMessage(getMessage("mesg.invalid.param"));
+			result.setState(ActionResult.FAIL);
+			return mav.addAllObjects(result.asMap());
+		}
+		for(UserBelonging setting: settings){
+			try{
+				PersonalFacade.saveBelongSetting(accesspoint, principal,
+					IdKey.ORG_HIER.getInfoId(setting.getBelongId()), 
+					principal.getAccount(),
+					setting.getPostVisible());
+			}catch(CoreException ce){
+				//ignore
+			}
+		}
+		result.setMessage(getMessage("mesg.save.belong.setting"));
+		result.setState(ActionResult.SUCCESS);
+		return mav.addAllObjects(result.asMap());
 	}
 }

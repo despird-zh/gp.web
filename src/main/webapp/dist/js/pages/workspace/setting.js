@@ -102,13 +102,45 @@ var PersonSettingContext = (function ($, window, undefined){
 		$belongs_tmpl : $('#belongs-tmpl'),
 		$orghier_belongs : $('#orghier-belongs'),
 		$wgroup_belongs : $('#workgroup-belongs'),
+		$save_org_belongs : $('#tab_2 a[gpid="save-org-belongs-btn"]'),
+		$save_wgroup_belongs : $('#tab_2 a[gpid="save-wgroup-belongs-btn"]'),
 		
 		initial: function(){
 			var _self = this;
 			Mustache.parse(_self.$belongs_tmpl.html());
 			_self.loadBelongs();
-			
+			_self.$save_org_belongs.on('click', $.proxy(_self.saveOrgBelongs, _self));
+			_self.$save_wgroup_belongs.on('click', $.proxy(_self.saveWGrpBelongs, _self));
 		}
+	};
+	// save org node notify setting
+	BelongTab.saveOrgBelongs = function(){
+		
+		var _self = this;
+		var $orgs = $('input:checkbox[data-belong-type="org"]',_self.$tab);
+		var org_setting = new Array();
+		$.each($orgs, function(index, curr){
+			console.log();
+			org_setting.push({
+				"belongId" : $(curr).attr('data-belong-id'),
+				"postVisible" : $(curr).is("checked")
+			});
+		});
+		$.ajax({
+			url: "../workspace/save-org-setting.do",
+			dataType : "json",
+			type : 'POST',
+			data : {"setting_json" : JSON.stringify(org_setting)},
+			success: function(response)
+			{	
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+		
+	};
+	// save work group notify setting
+	BelongTab.saveWGrpBelongs = function(){
+		
 	};
 	
 	BelongTab.loadBelongs = function(){

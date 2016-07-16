@@ -199,4 +199,27 @@ public class PersonalFacade {
 		}
 		return result;
 	}
+	
+	public static boolean saveBelongSetting(AccessPoint accesspoint, 
+			Principal principal,InfoId<Long> manageId, String account,
+			boolean postVisible)throws CoreException{
+		boolean result = false;
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
+				accesspoint,
+				Operations.UPDATE_BASIC_SETTING)){
+
+			svcctx.setOperationObject(manageId);
+
+			result = personalservice.updateBelongSetting(svcctx, manageId, account, postVisible);
+
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.save.belong.setting");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return result;
+		
+	}
 }

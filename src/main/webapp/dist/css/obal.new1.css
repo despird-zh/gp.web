@@ -201,10 +201,10 @@
 }
 
 .profile-user-img {
-    border: 2px solid #d2d6de;
+    border: 1px solid #d2d6de;
 	border-radius:4px;
     padding: 0px;
-    width: 70px;
+    width: 60px;
 }
 
 .navibar-page{
@@ -353,6 +353,9 @@ a.ellipsis, span.ellipsis, em.ellipsis {
     background-image: url("../img/workflow_32.png");
 }
 
+p.meta-info{
+	margin-bottom : 5px;
+}
 .media .bd {
 	color: #777;
     display: table-cell;
@@ -631,7 +634,6 @@ margin-top:5px;
 /* right lite and statistics information */
 .lite-info{
 	width: 50%; 
-	margin-left: -10px;
 }
 .lite-info > h4{
 	margin-top: 5px; 
@@ -645,8 +647,8 @@ margin-bottom: 0px;
 	width: 45%;
 	margin-bottom: 5px;
 }
-.stats-info li:first-child{
-	border-top: 0px;
+.stats-info li{
+	border: 0px;
 }
 .clipboard-info li:first-child {
     border-top: 0 none;

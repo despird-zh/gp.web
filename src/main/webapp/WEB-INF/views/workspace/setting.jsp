@@ -154,7 +154,10 @@
 						<div id="tab_2" class="tab-pane">	
 							<div class="row">
 								<div class="col-md-12">									
-									<span>组织信息</span> 									
+									<span>组织信息</span> 	
+									<a gpid="save-org-belongs-btn" class="btn btn-primary btn-xs pull-right">
+										<i class="fa fa-save"></i>
+									</a>										
 									<hr class="m-t-sm m-b-sm">
 								</div>
 								<form class="form-horizontal">	
@@ -162,7 +165,10 @@
 									
 								</div>
 								<div class="col-md-12">									
-									<span>工作组信息</span> 									
+									<span>工作组信息</span> 	
+									<a gpid="save-wgroup-belongs-btn" class="btn btn-primary btn-xs pull-right">
+										<i class="fa fa-save"></i>
+									</a>										
 									<hr class="m-t-sm m-b-sm">
 								</div>
 								<div class="col-md-12" id="workgroup-belongs">
@@ -175,6 +181,9 @@
 							<div class="row">
 								<div class="col-md-12">
 									<span>存储设置</span> 
+									<a gpid="save-storage-btn" class="btn btn-primary btn-xs pull-right">
+										<i class="fa fa-save"></i>
+									</a>	
 									<hr class="m-t-sm m-b-sm">
 								</div>				
 								<form class="form-horizontal">
@@ -207,6 +216,9 @@
 								</div>
 								<div class="col-md-12">
 									<span>区域设置</span> 
+									<a gpid="save-region-btn" class="btn btn-primary btn-xs pull-right">
+										<i class="fa fa-save"></i>
+									</a>	
 									<hr class="m-t-sm m-b-sm">
 								</div>		
 								<div class="col-md-12">
@@ -363,7 +375,7 @@
 			<label class="col-md-3 control-label">{{name}}</label>
 			<div class="col-md-8">
 				<label class="checkbox-inline">
-					<input type="checkbox" gpid="post-accept" {{#postVisible}}checked="true"{{/postVisible}}>  发布到该用户群内
+					<input type="checkbox" gpid="post-accept" data-belong-type="{{type}}" data-belong-id="{{belongId}}" {{#postVisible}}checked="true"{{/postVisible}}>  发布到该用户群内
 				</label>
 			</div>
 		</div>
