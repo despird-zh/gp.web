@@ -123,7 +123,7 @@ var PersonSettingContext = (function ($, window, undefined){
 			console.log();
 			org_setting.push({
 				"belongId" : $(curr).attr('data-belong-id'),
-				"postVisible" : $(curr).is("checked")
+				"postVisible" : $(curr).prop("checked")
 			});
 		});
 		$.ajax({
