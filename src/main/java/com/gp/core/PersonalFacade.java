@@ -1,6 +1,7 @@
 package com.gp.core;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.gp.validate.ValidateMessage;
@@ -10,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.FlatColumns;
+import com.gp.common.IdKey;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
+import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.dao.info.NotificationInfo;
 import com.gp.dao.info.ChatMessageInfo;
@@ -110,11 +114,11 @@ public class PersonalFacade {
 	 * 
 	 * @param account the account of user
 	 **/
-	public static List<WorkgroupInfo> findAccountWorkgroups(AccessPoint accesspoint, 
+	public static List<CombineInfo<WorkgroupInfo, Boolean>> findAccountWorkgroups(AccessPoint accesspoint, 
 			Principal principal,
 			String account)throws CoreException{
 		
-		List<WorkgroupInfo> result = null;
+		List<CombineInfo<WorkgroupInfo, Boolean>> result = null;
 		 
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
@@ -137,11 +141,11 @@ public class PersonalFacade {
 	 * 
 	 * @param account the account information 
 	 **/
-	public static List<OrgHierInfo> findUserOrgHierNodes(AccessPoint accesspoint, 
+	public static List<CombineInfo<OrgHierInfo, Boolean>> findUserOrgHierNodes(AccessPoint accesspoint, 
 			Principal principal,
 			String account)throws CoreException{
 		
-		List<OrgHierInfo> result = null;
+		List<CombineInfo<OrgHierInfo, Boolean>> result = null;
 		
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIERS)){
@@ -200,17 +204,20 @@ public class PersonalFacade {
 		return result;
 	}
 	
+	/**
+	 * Update accounts belong setting 
+	 **/
 	public static boolean saveBelongSetting(AccessPoint accesspoint, 
-			Principal principal,InfoId<Long> manageId, String account,
-			boolean postVisible)throws CoreException{
+			Principal principal, String account,Map<InfoId<Long>, Boolean> settings)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
 				Operations.UPDATE_BASIC_SETTING)){
 
-			svcctx.setOperationObject(manageId);
-
-			result = personalservice.updateBelongSetting(svcctx, manageId, account, postVisible);
+			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
+			svcctx.addOperationPredicates(settings);
+			
+			result = personalservice.updateBelongSetting(svcctx, account, settings);
 
 		}catch (ServiceException e) {
 			

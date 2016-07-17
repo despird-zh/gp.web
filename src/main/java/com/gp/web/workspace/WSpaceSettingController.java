@@ -32,6 +32,8 @@ import com.gp.core.PersonalFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.core.StorageFacade;
 import com.gp.exception.CoreException;
+import com.gp.info.CombineInfo;
+import com.gp.info.InfoId;
 import com.gp.dao.info.CabinetInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.StorageInfo;
@@ -125,27 +127,27 @@ public class WSpaceSettingController  extends BaseController{
 		try{
 			Map<String, Object> data = new HashMap<String, Object>();
 			
-			List<OrgHierInfo> orgs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
+			List<CombineInfo<OrgHierInfo, Boolean>> orgs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
 			List<UserBelonging> orgbelongs = new ArrayList<UserBelonging>();
-			for(OrgHierInfo oinfo: orgs){
+			for(CombineInfo<OrgHierInfo, Boolean> oinfo: orgs){
 				UserBelonging ubelong = new UserBelonging();
-				ubelong.setBelongId(oinfo.getInfoId().getId());
-				ubelong.setName(oinfo.getOrgName());
+				ubelong.setBelongId(oinfo.getPrimary().getInfoId().getId());
+				ubelong.setName(oinfo.getPrimary().getOrgName());
 				ubelong.setType("org");
-				ubelong.setPostVisible(true);
+				ubelong.setPostVisible(oinfo.getExtended());
 				
 				orgbelongs.add(ubelong);
 			}
 			data.put("orghiers", orgbelongs);
 			
-			List<WorkgroupInfo> grps = PersonalFacade.findAccountWorkgroups(accesspoint, principal, principal.getAccount());
+			List<CombineInfo<WorkgroupInfo, Boolean>> grps = PersonalFacade.findAccountWorkgroups(accesspoint, principal, principal.getAccount());
 			List<UserBelonging> wgroups = new ArrayList<UserBelonging>();
-			for(WorkgroupInfo winfo: grps){
+			for(CombineInfo<WorkgroupInfo, Boolean> winfo: grps){
 				UserBelonging ubelong = new UserBelonging();
-				ubelong.setBelongId(winfo.getInfoId().getId());
-				ubelong.setName(winfo.getWorkgroupName());
+				ubelong.setBelongId(winfo.getPrimary().getInfoId().getId());
+				ubelong.setName(winfo.getPrimary().getWorkgroupName());
 				ubelong.setType("wgroup");
-				ubelong.setPostVisible(true);
+				ubelong.setPostVisible(winfo.getExtended());
 				
 				wgroups.add(ubelong);
 			}
@@ -245,7 +247,7 @@ public class WSpaceSettingController  extends BaseController{
 
 	}
 	
-	@RequestMapping("save-org-setting")
+	@RequestMapping("save-belong-setting")
 	public ModelAndView doOrgBelongSettingSave(HttpServletRequest request){
 		
 		ModelAndView mav = super.getJsonModelView();
@@ -255,6 +257,7 @@ public class WSpaceSettingController  extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String setting_json = request.getParameter("setting_json");
+		String belong_type = request.getParameter("belong_type");
 		List<UserBelonging> settings = null;
 		try {
 			settings = JACKSON_MAPPER.readValue(setting_json, new TypeReference<List<UserBelonging>>(){});
@@ -265,23 +268,31 @@ public class WSpaceSettingController  extends BaseController{
 			return mav.addAllObjects(result.asMap());
 		}
 		
-		if(CollectionUtils.isEmpty(settings)){
+		if(CollectionUtils.isEmpty(settings) || StringUtils.isBlank(belong_type)){
 			result.setMessage(getMessage("mesg.invalid.param"));
 			result.setState(ActionResult.FAIL);
 			return mav.addAllObjects(result.asMap());
 		}
+		
+		Map<InfoId<Long>,Boolean> settingmap = new HashMap<InfoId<Long>,Boolean>();
 		for(UserBelonging setting: settings){
-			try{
-				PersonalFacade.saveBelongSetting(accesspoint, principal,
-					IdKey.ORG_HIER.getInfoId(setting.getBelongId()), 
-					principal.getAccount(),
-					setting.getPostVisible());
-			}catch(CoreException ce){
-				//ignore
-			}
+			if("org".equals(belong_type))
+				settingmap.put(IdKey.ORG_HIER.getInfoId(setting.getBelongId()), setting.getPostVisible());
+			else
+				settingmap.put(IdKey.WORKGROUP.getInfoId(setting.getBelongId()), setting.getPostVisible());
 		}
-		result.setMessage(getMessage("mesg.save.belong.setting"));
-		result.setState(ActionResult.SUCCESS);
+		try{
+			
+			PersonalFacade.saveBelongSetting(accesspoint, principal,
+				principal.getAccount(),
+				settingmap);
+			result.setMessage(getMessage("mesg.save.belong.setting"));
+			result.setState(ActionResult.SUCCESS);
+		}catch(CoreException ce){
+			result.setMessage(getMessage("excp.save.belong.setting"));
+			result.setState(ActionResult.FAIL);
+		}
+		
 		return mav.addAllObjects(result.asMap());
 	}
 }

@@ -127,14 +127,6 @@ public class AuditVerb {
 		
 		this.timestamp = timestamp;
 	}
-	
-	/**
-	 * Add predicate to map 
-	 **/
-	public void addPredicate(Predicate predicate) {
-
-		predicateMap.put(predicate.getName(), predicate.getValue());
-	}
 
 	/**
 	 * Add predicate to map 

@@ -28,6 +28,7 @@ import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.UserSumInfo;
+import com.gp.dao.info.WorkgroupInfo;
 import com.gp.svc.info.UserExt;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -80,13 +81,13 @@ public class WSpaceMetaController extends BaseController{
 					imginfo.getTouchTime(), imginfo.getInfoId().getId(), imginfo.getExtension());
 			
 			meta.setImagePath(imagePath);
-			List<OrgHierInfo> belongs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
+			List<CombineInfo<OrgHierInfo, Boolean>> belongs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());
 			
 			TreeNode[][] routes = new TreeNode[belongs.size()][];
 			int cnt = 0;
-			for(OrgHierInfo belong: belongs){
+			for(CombineInfo<OrgHierInfo, Boolean> belong: belongs){
 				
-				List<OrgHierInfo> orglist = OrgHierFacade.findRouteOrgHiers(accesspoint, principal, belong.getInfoId());
+				List<OrgHierInfo> orglist = OrgHierFacade.findRouteOrgHiers(accesspoint, principal, belong.getPrimary().getInfoId());
 				TreeNode[] nodes = new TreeNode[orglist.size()];
 				for(int i = 0 ; i<orglist.size(); i++){
 					OrgHierInfo oinfo = orglist.get(i);

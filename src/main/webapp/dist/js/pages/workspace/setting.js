@@ -127,10 +127,10 @@ var PersonSettingContext = (function ($, window, undefined){
 			});
 		});
 		$.ajax({
-			url: "../workspace/save-org-setting.do",
+			url: "../workspace/save-belong-setting.do",
 			dataType : "json",
 			type : 'POST',
-			data : {"setting_json" : JSON.stringify(org_setting)},
+			data : {"setting_json" : JSON.stringify(org_setting),"belong_type" : "org"},
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
@@ -140,6 +140,27 @@ var PersonSettingContext = (function ($, window, undefined){
 	};
 	// save work group notify setting
 	BelongTab.saveWGrpBelongs = function(){
+		
+		var _self = this;
+		var $orgs = $('input:checkbox[data-belong-type="wgroup"]',_self.$tab);
+		var org_setting = new Array();
+		$.each($orgs, function(index, curr){
+			console.log();
+			org_setting.push({
+				"belongId" : $(curr).attr('data-belong-id'),
+				"postVisible" : $(curr).prop("checked")
+			});
+		});
+		$.ajax({
+			url: "../workspace/save-belong-setting.do",
+			dataType : "json",
+			type : 'POST',
+			data : {"setting_json" : JSON.stringify(org_setting),"belong_type" : "wgroup"},
+			success: function(response)
+			{	
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
 		
 	};
 	
