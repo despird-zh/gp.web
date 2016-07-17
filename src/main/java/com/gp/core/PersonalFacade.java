@@ -216,9 +216,9 @@ public class PersonalFacade {
 
 			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
 
-			result = personalservice.updateBelongSetting(svcctx, account, settings);
-			// the internal will change the settings content
 			svcctx.addOperationPredicates(settings);
+			result = personalservice.updateBelongSetting(svcctx, account, settings);
+			
 		}catch (ServiceException e) {
 			
 			ContextHelper.stampContext(e, "excp.save.belong.setting");
