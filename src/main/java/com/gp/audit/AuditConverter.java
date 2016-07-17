@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.TransformerUtils;
+import org.apache.commons.collections.map.TransformedMap;
 import org.apache.commons.lang.mutable.MutableObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -213,8 +214,9 @@ public class AuditConverter {
         }          
         Map<String, String> map = null;
         if(beanObj instanceof Map){
-        	
-        	map = (Map<String, String>)MapUtils.transformedMap((Map<?,?>)beanObj, TransformerUtils.stringValueTransformer(), TransformerUtils.stringValueTransformer());
+        	map = new HashMap<String, String>();
+        	map = TransformedMap.decorate(map, TransformerUtils.stringValueTransformer(), TransformerUtils.stringValueTransformer());
+        	map.putAll((Map)beanObj);
         	return map;
         }
         

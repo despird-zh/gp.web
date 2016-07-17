@@ -1,5 +1,6 @@
 package com.gp.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -73,6 +74,19 @@ public class CoreServiceContext extends ServiceContext{
 		operVerb.addPredicates(predicates);
 		// set operation primary verb
 		auditload.setAuditVerb(operVerb);
+	}
+	
+	@Override
+	public void addOperationPredicate(String predicateKey, Object predicate){
+		Map<String,String> predicates = null;
+		if(null == auditload.getAuditVerb().getPredicateMap()){
+			predicates = new HashMap<String,String>();
+			auditload.addAuditVerbPredicates(predicates);
+		}else{
+			predicates = auditload.getAuditVerb().getPredicateMap();
+		}
+		// set operation primary verb predicates
+		predicates.put(predicateKey, predicate.toString());
 	}
 	
 	@Override

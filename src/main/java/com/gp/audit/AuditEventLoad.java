@@ -113,7 +113,6 @@ public class AuditEventLoad implements EventPayload{
 		this.accessPoint = accessPoint;
 	}
 
-
 	public String getMessage() {
 		return message;
 	}
