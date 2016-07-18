@@ -295,4 +295,19 @@ public class WSpaceSettingController  extends BaseController{
 		
 		return mav.addAllObjects(result.asMap());
 	}
+	
+	@RequestMapping("save-storage-setting")
+	public ModelAndView doStorageSettingSave(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		String publishcap = request.getParameter("publish_cap");
+		String netdiskcap = request.getParameter("netdisk_cap");
+		String storageid = request.getParameter("storage_id");
+		
+		return mav;
+	}
 }

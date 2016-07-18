@@ -39,7 +39,9 @@ var PersonSettingContext = (function ($, window, undefined){
 			_self.$setting_save_btn.on('click', $.proxy(_self.saveBasic, _self));
 		}
 	};
-	
+	/*
+	 * load the user basic setting
+	 */
 	BasicTab.loadBasic = function(){
 		var _self = this;
 		
@@ -69,6 +71,9 @@ var PersonSettingContext = (function ($, window, undefined){
 			}
 		});
 	};
+	/*
+	 * save the user basic setting
+	 */
 	BasicTab.saveBasic = function(){
 		var _self = this;
 		GPContext.ShowLoading();
@@ -163,7 +168,9 @@ var PersonSettingContext = (function ($, window, undefined){
 		});
 		
 	};
-	
+	/*
+	 * load the belongings 
+	 */
 	BelongTab.loadBelongs = function(){
 		var _self = this;
 		$.ajax({
@@ -192,6 +199,8 @@ var PersonSettingContext = (function ($, window, undefined){
 		$netdisk_capacity : $('#setting-netdisk-capacity'),
 		$language : $('#setting-language'),
 		$timezone : $('#setting-timezone'),
+		$save_storage_btn : $('#tab_3 a[gpid="save-storage-btn"]'),
+		$save_region_btn : $('#tab_3 a[gpid="save-region-btn"]')
 		
 		initial : function(){
 			var _self = this;
@@ -238,10 +247,35 @@ var PersonSettingContext = (function ($, window, undefined){
 				minimumResultsForSearch: -1, //hide the search box
 				width : 150
 			});
-
+			
+			_self.$save_storage_btn.on('click', $.proxy(_self.saveStorage, _self));
+			
+			_self.$save_region_btn.on('click', $.proxy(_self.saveRegion, _self));
 		}
 	};
 	
+	StorageTab.saveStorage = function(){
+		var _self = this;
+		GPContext.ShowLoading();
+		$.ajax({
+			url: "../workspace/save-storage-setting.do",
+			dataType : "json",
+			type: 'POST',
+			data : {
+				"storage_id" : _self.$storage.val(),
+				"publish_cap" : _self.$publish_capacity.val(),
+				"netdisk_cap" : _self.$netdisk_capacity.val()
+			},
+			success: function(response)
+			{	
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				GPContext.HideLoading();
+			}
+		});
+	};
+	StorageTab.saveRegion = function(){
+		
+	};
 	StorageTab.loadStorage = function(){
 		var _self = this;
 		var dft_opt = '<option value="' + accountData.storageId + '" selected>' + accountData.storageName + '</option>';
@@ -291,6 +325,7 @@ var PersonSettingContext = (function ($, window, undefined){
 			}
 		});
 	};
+	
 	ChangePwdTab.initial();
 	
 	return {

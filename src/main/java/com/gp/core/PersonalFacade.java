@@ -229,4 +229,52 @@ public class PersonalFacade {
 		return result;
 		
 	}
+	
+	@Deprecated
+	public static boolean saveStorageSetting(AccessPoint accesspoint, 
+			Principal principal, String account,Map<InfoId<Long>, Boolean> settings)throws CoreException{
+		boolean result = false;
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
+				accesspoint,
+				Operations.UPDATE_BASIC_SETTING)){
+
+			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
+
+			svcctx.addOperationPredicates(settings);
+			result = personalservice.updateBelongSetting(svcctx, account, settings);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.save.belong.setting");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return result;
+		
+	}
+	
+	@Deprecated
+	public static boolean saveRegionSetting(AccessPoint accesspoint, 
+			Principal principal, String account,Map<InfoId<Long>, Boolean> settings)throws CoreException{
+		boolean result = false;
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
+				accesspoint,
+				Operations.UPDATE_BASIC_SETTING)){
+
+			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
+
+			svcctx.addOperationPredicates(settings);
+			result = personalservice.updateBelongSetting(svcctx, account, settings);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.save.belong.setting");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return result;
+		
+	}
 }
