@@ -10,6 +10,7 @@ import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.common.SystemOptions;
+import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.util.ConfigSettingUtils;
 
@@ -151,6 +152,7 @@ public class ContextHelper {
 	}
 	
 	public static void stampContext(Exception e) throws CoreException{
+		
 		stampContext(e, "excp.unknown");
 	}
 	
@@ -160,7 +162,7 @@ public class ContextHelper {
 	 * @param e the exception 
 	 * @param excpcode the code to fetch locale message
 	 **/
-	public static void stampContext(Exception e, String excpcode) throws CoreException{
+	public static void stampContext(Exception e, String msgcode) throws CoreException{
 		
 		ServiceContext svcctx = getContext();
 		
@@ -175,7 +177,13 @@ public class ContextHelper {
 				svcctx.endOperation(ExecState.EXCEP, e.getMessage());
 			}
 		}
-
+		
+		// message processing
+		String excpcode = msgcode;
+		if(e instanceof BaseException && !((BaseException)e).matched()){
+			// matched the getCode return the message, otherwise return error code directly
+			excpcode = ((BaseException)e).getCode();
+		}
 		if(e instanceof CoreException){
 			if(LOGGER.isDebugEnabled())
 				LOGGER.debug("Audit collector stamp on the exception", e);

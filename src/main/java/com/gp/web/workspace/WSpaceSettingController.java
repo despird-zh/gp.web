@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -284,7 +285,6 @@ public class WSpaceSettingController  extends BaseController{
 		try{
 			
 			PersonalFacade.saveBelongSetting(accesspoint, principal,
-				principal.getAccount(),
 				settingmap);
 			result.setMessage(getMessage("mesg.save.belong.setting"));
 			result.setState(ActionResult.SUCCESS);
@@ -308,6 +308,16 @@ public class WSpaceSettingController  extends BaseController{
 		String netdiskcap = request.getParameter("netdisk_cap");
 		String storageid = request.getParameter("storage_id");
 		
-		return mav;
+		try{
+			PersonalFacade.saveStorageSetting(accesspoint, principal, 
+					NumberUtils.toLong(storageid), 
+					NumberUtils.toLong(publishcap), 
+					NumberUtils.toLong(netdiskcap));
+		}catch(CoreException ce){
+			
+			result.setMessage(ce.getMessage());
+			result.setState(ActionResult.FAIL);
+		}
+		return mav.addAllObjects(result.asMap());
 	}
 }

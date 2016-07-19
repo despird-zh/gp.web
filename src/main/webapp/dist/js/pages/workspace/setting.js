@@ -200,7 +200,7 @@ var PersonSettingContext = (function ($, window, undefined){
 		$language : $('#setting-language'),
 		$timezone : $('#setting-timezone'),
 		$save_storage_btn : $('#tab_3 a[gpid="save-storage-btn"]'),
-		$save_region_btn : $('#tab_3 a[gpid="save-region-btn"]')
+		$save_region_btn : $('#tab_3 a[gpid="save-region-btn"]'),
 		
 		initial : function(){
 			var _self = this;

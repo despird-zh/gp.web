@@ -208,16 +208,16 @@ public class PersonalFacade {
 	 * Update accounts belong setting 
 	 **/
 	public static boolean saveBelongSetting(AccessPoint accesspoint, 
-			Principal principal, String account,Map<InfoId<Long>, Boolean> settings)throws CoreException{
+			Principal principal, Map<InfoId<Long>, Boolean> settings)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
 				Operations.UPDATE_BASIC_SETTING)){
 
-			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
+			svcctx.setOperationObject(principal.getUserId());
 
 			svcctx.addOperationPredicates(settings);
-			result = personalservice.updateBelongSetting(svcctx, account, settings);
+			result = personalservice.updateBelongSetting(svcctx, principal.getAccount(), settings);
 			
 		}catch (ServiceException e) {
 			
@@ -230,22 +230,24 @@ public class PersonalFacade {
 		
 	}
 	
-	@Deprecated
 	public static boolean saveStorageSetting(AccessPoint accesspoint, 
-			Principal principal, String account,Map<InfoId<Long>, Boolean> settings)throws CoreException{
+			Principal principal, Long storageId, Long publishcap, Long netdiskcap)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
-				Operations.UPDATE_BASIC_SETTING)){
+				Operations.UPDATE_STORAGE_SETTING)){
 
-			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
+			svcctx.setOperationObject(principal.getUserId());
 
-			svcctx.addOperationPredicates(settings);
-			result = personalservice.updateBelongSetting(svcctx, account, settings);
+			svcctx.addOperationPredicate("id",storageId);
+			svcctx.addOperationPredicate("publish_cab",publishcap);
+			svcctx.addOperationPredicate("netdisk_cab",netdiskcap);
+			
+			result = personalservice.updateStorageSetting(svcctx, principal.getUserId(), storageId, publishcap, netdiskcap);
 			
 		}catch (ServiceException e) {
 			
-			ContextHelper.stampContext(e, "excp.save.belong.setting");
+			ContextHelper.stampContext(e);
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -260,7 +262,7 @@ public class PersonalFacade {
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
-				Operations.UPDATE_BASIC_SETTING)){
+				Operations.UPDATE_REGION_SETTING)){
 
 			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
 
