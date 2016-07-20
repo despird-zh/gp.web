@@ -231,7 +231,10 @@ public class PersonalFacade {
 	}
 	
 	public static boolean saveStorageSetting(AccessPoint accesspoint, 
-			Principal principal, Long storageId, Long publishcap, Long netdiskcap)throws CoreException{
+			Principal principal, 
+			Long storageId, 
+			Long publishcap,
+			Long netdiskcap)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
@@ -247,7 +250,7 @@ public class PersonalFacade {
 			
 		}catch (ServiceException e) {
 			
-			ContextHelper.stampContext(e);
+			ContextHelper.stampContext(e,"excp.save.storage.setting");
 		}finally{
 			
 			ContextHelper.handleContext();
@@ -256,22 +259,23 @@ public class PersonalFacade {
 		
 	}
 	
-	@Deprecated
 	public static boolean saveRegionSetting(AccessPoint accesspoint, 
-			Principal principal, String account,Map<InfoId<Long>, Boolean> settings)throws CoreException{
+			Principal principal, String timezone, String language)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
 				Operations.UPDATE_REGION_SETTING)){
 
-			svcctx.setOperationObject(new InfoId<String>(IdKey.USER.getSchema(),FlatColumns.ACCOUNT.getColumn(),account ));
+			svcctx.setOperationObject(principal.getUserId());
 
-			svcctx.addOperationPredicates(settings);
-			result = personalservice.updateBelongSetting(svcctx, account, settings);
+			svcctx.addOperationPredicate("timezone",timezone);
+			svcctx.addOperationPredicate("language",language);
+			
+			result = personalservice.updateRegionSetting(svcctx, principal.getUserId(), timezone, language);
 			
 		}catch (ServiceException e) {
 			
-			ContextHelper.stampContext(e, "excp.save.belong.setting");
+			ContextHelper.stampContext(e, "excp.save.region.setting");
 		}finally{
 			
 			ContextHelper.handleContext();

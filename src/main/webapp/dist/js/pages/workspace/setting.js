@@ -62,6 +62,7 @@ var PersonSettingContext = (function ($, window, undefined){
 					_self.$setting_state.val(response.data.state);
 					_self.$setting_email.val(response.data.email);
 					_self.$setting_mobile.val(response.data.mobile);
+					_self.$setting_avatar.attr('src', response.data.imagePath);
 					_self.$setting_phone.val(response.data.phone);
 					_self.$setting_signature.val(response.data.signature);
 				}
@@ -274,8 +275,24 @@ var PersonSettingContext = (function ($, window, undefined){
 		});
 	};
 	StorageTab.saveRegion = function(){
-		
+		var _self = this;
+		GPContext.ShowLoading();
+		$.ajax({
+			url: "../workspace/save-region-setting.do",
+			dataType : "json",
+			type: 'POST',
+			data : {
+				"timezone" : _self.$timezone.val(),
+				"language" : _self.$language.val()
+			},
+			success: function(response)
+			{	
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				GPContext.HideLoading();
+			}
+		});
 	};
+	
 	StorageTab.loadStorage = function(){
 		var _self = this;
 		var dft_opt = '<option value="' + accountData.storageId + '" selected>' + accountData.storageName + '</option>';

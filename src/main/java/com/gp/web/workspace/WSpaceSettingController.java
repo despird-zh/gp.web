@@ -26,9 +26,11 @@ import com.gp.common.Cabinets;
 import com.gp.common.GeneralConfig;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
+import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
+import com.gp.core.ImageFacade;
 import com.gp.core.PersonalFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.core.StorageFacade;
@@ -36,6 +38,7 @@ import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.dao.info.CabinetInfo;
+import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.StorageInfo;
 import com.gp.dao.info.UserInfo;
@@ -53,6 +56,8 @@ public class WSpaceSettingController  extends BaseController{
 	static Logger LOGGER = LoggerFactory.getLogger(WSpaceSettingController.class);
 	
 	public static String CACHE_PATH = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+	
+	static String ImagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	
 	@RequestMapping("setting")
 	public ModelAndView doViewInitial(){
@@ -87,7 +92,7 @@ public class WSpaceSettingController  extends BaseController{
 			Integer storageId = uinfo.getStorageId();
 			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, 
 					IdKey.STORAGE.getInfoId(storageId));
-			ui.setSourceId(storageId);
+			ui.setStorageId(storageId);
 			ui.setStorageName(storage.getStorageName());
 			
 			List<CabinetInfo> cabs = CabinetFacade.findPersonalCabinets(accesspoint, principal, 
@@ -100,6 +105,11 @@ public class WSpaceSettingController  extends BaseController{
 					ui.setPricapacity(cinfo.getCapacity());
 				}
 			}
+			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(uinfo.getAvatarId()));
+			String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
+					imginfo.getTouchTime(), imginfo.getInfoId().getId(), imginfo.getExtension());
+			ui.setImagePath(imagePath);
+			
 			ui.setLanguage(uinfo.getLanguage());
 			ui.setTimezone(uinfo.getTimeZone());
 			ui.setSignature(uinfo.getSignature());
@@ -313,6 +323,36 @@ public class WSpaceSettingController  extends BaseController{
 					NumberUtils.toLong(storageid), 
 					NumberUtils.toLong(publishcap), 
 					NumberUtils.toLong(netdiskcap));
+			
+			result.setMessage(getMessage("mesg.save.storage.setting"));
+			result.setState(ActionResult.SUCCESS);
+			
+		}catch(CoreException ce){
+			
+			result.setMessage(ce.getMessage());
+			result.setState(ActionResult.FAIL);
+		}
+		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping("save-region-setting")
+	public ModelAndView doRegionSettingSave(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		Principal principal = super.getPrincipalFromShiro();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		String timezone = request.getParameter("timezone");
+		String language = request.getParameter("language");
+		
+		try{
+			PersonalFacade.saveRegionSetting(accesspoint, principal, 
+					timezone, language);
+			
+			result.setMessage(getMessage("mesg.save.region.setting"));
+			result.setState(ActionResult.SUCCESS);
+			
 		}catch(CoreException ce){
 			
 			result.setMessage(ce.getMessage());
