@@ -71,7 +71,7 @@ public class WGroupProfileController extends BaseController{
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -152,7 +152,7 @@ public class WGroupProfileController extends BaseController{
 		String wgroupid = super.readRequestParam("wgroup_id");
 		mav.addObject("wgroup_id",  wgroupid);
 		// initial group members, prepare the inifinite setting		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		PageQuery pquery = new PageQuery(12,1);
 		this.readRequestData(request, pquery);
@@ -205,7 +205,7 @@ public class WGroupProfileController extends BaseController{
 		String tailDateStr = request.getParameter("tailDate");
 		Date taildt = null;
 		// initial activity logs, prepare the infinite setting		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		PageQuery pquery = new PageQuery(5,1);
 		this.readRequestData(request, pquery);

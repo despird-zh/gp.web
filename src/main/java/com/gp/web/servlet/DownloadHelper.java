@@ -53,7 +53,7 @@ public class DownloadHelper {
 		String sourceId = requestedFile.substring(1,requestedFile.indexOf('.'));
 		String fid = requestedFile.substring(requestedFile.indexOf('.') + 1, requestedFile.lastIndexOf('.'));
 		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(Long.valueOf(fid));
-		Principal principal = BaseController.getPrincipalFromShiro();
+		Principal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
 		CabFileInfo cabfile = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);

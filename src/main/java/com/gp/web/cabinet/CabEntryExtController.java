@@ -50,7 +50,7 @@ public class CabEntryExtController extends BaseController{
 		
 		ActionResult actrst = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		List<TagInfo> alltags = null;
 		List<TagInfo> usedtags = null;
@@ -114,7 +114,7 @@ public class CabEntryExtController extends BaseController{
 		
 		ActionResult actrst = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		InfoId<Long> fid = null;
 		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
@@ -166,7 +166,7 @@ public class CabEntryExtController extends BaseController{
 		Long entryid = NumberUtils.toLong(readRequestParam("entry_id"));
 		String entryType = readRequestParam("entry_type");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, Object> propmap = null;
 		String propstr = null;
@@ -196,7 +196,7 @@ public class CabEntryExtController extends BaseController{
 		ModelAndView  mav = super.getJspModelView("dialog/file-versions");
 		
 		ActionResult aresult = new ActionResult();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Long fid = NumberUtils.toLong(readRequestParam("file_id"));
 		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(fid);

@@ -48,7 +48,7 @@ public class AllWGroupTopticsController extends BaseController{
 		PageQuery pquery = new PageQuery(12,1);
 		this.readRequestData(request, pquery);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		
@@ -107,7 +107,7 @@ public class AllWGroupTopticsController extends BaseController{
 		String[] tags = request.getParameterValues("tags");
 		List<String> taglist = (null == tags) ? null : Arrays.asList(tags);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		

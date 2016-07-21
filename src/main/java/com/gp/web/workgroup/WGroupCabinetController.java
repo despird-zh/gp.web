@@ -51,7 +51,7 @@ public class WGroupCabinetController extends BaseController{
 		
 		ModelAndView mav = getJspModelView("workgroup/publish");
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		WorkgroupInfo gresult = null;
@@ -73,7 +73,7 @@ public class WGroupCabinetController extends BaseController{
 		ModelAndView mav = getJspModelView("workgroup/netdisk");
 		String wgid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
@@ -98,7 +98,7 @@ public class WGroupCabinetController extends BaseController{
 		InfoId<Long> cabid = IdKey.CABINET.getInfoId(NumberUtils.toLong(cabinetId));
 		InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(NumberUtils.toLong(folderId));
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		PageWrapper<CabEntryInfo> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 

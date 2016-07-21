@@ -47,7 +47,7 @@ public class AccountAddController extends BaseController{
 		Account account = new Account();
 		super.readRequestData(request, account);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();		
 		ModelAndView mav = getJsonModelView();		

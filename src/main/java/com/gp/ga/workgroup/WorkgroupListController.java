@@ -43,7 +43,7 @@ public class WorkgroupListController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		
 		String wgroupname = super.readRequestParam("wgroup_name");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		ModelAndView mav = getJsonModelView();
@@ -85,7 +85,7 @@ public class WorkgroupListController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		
 		String wgroupname = super.readRequestParam("wgroup_name");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = getJsonModelView();

@@ -67,7 +67,7 @@ public class CommonController extends BaseController{
 		
 		boolean allsupport = StringUtils.isBlank(alloption)? false:(Boolean.valueOf(alloption));
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = getJsonModelView();		
@@ -117,7 +117,7 @@ public class CommonController extends BaseController{
 		
 		boolean allsupport = StringUtils.isBlank(alloption)? false:(Boolean.valueOf(alloption));
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = super.getJsonModelView();
@@ -161,7 +161,7 @@ public class CommonController extends BaseController{
 	public ModelAndView doGetUserList(HttpServletRequest request){
 
 		List<Account> list = new ArrayList<Account>();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		String uname = request.getParameter("user_name");
 		ActionResult ars = new ActionResult();
 		Integer instanceId = null;
@@ -218,7 +218,7 @@ public class CommonController extends BaseController{
 			return mav;
 		}		
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{
@@ -267,7 +267,7 @@ public class CommonController extends BaseController{
 		super.readRequestData(request, pq);
 		
 		List<Account> list = new ArrayList<Account>();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
@@ -334,7 +334,7 @@ public class CommonController extends BaseController{
 		String account = super.readRequestParam("user_name");
 		ActionResult ars = new ActionResult();
 		List<Account> list = new ArrayList<Account>();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
@@ -382,7 +382,7 @@ public class CommonController extends BaseController{
 		PageQuery pq = new PageQuery(8,1);
 		super.readRequestData(request, pq);// read pageNumber
 		ModelAndView mav = super.getJsonModelView();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		boolean hasMore = false;
 		List<KVPair<String, String>> enlist = new ArrayList<KVPair<String, String>>();

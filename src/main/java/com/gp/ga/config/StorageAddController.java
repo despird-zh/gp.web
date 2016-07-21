@@ -48,7 +48,7 @@ public class StorageAddController extends BaseController{
 		Storage storage = new Storage();
 		super.readRequestData(request, storage);
 		// read trace information
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// prepare result
 		ActionResult aresult = new ActionResult();

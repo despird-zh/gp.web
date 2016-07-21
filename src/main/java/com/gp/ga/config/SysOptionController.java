@@ -37,7 +37,7 @@ public class SysOptionController extends BaseController{
 		
 		ActionResult ars = new ActionResult();
 		List<KVPair<?,?>> groups = new ArrayList<KVPair<?,?>>();
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 
 		try{
@@ -65,7 +65,7 @@ public class SysOptionController extends BaseController{
 	public ModelAndView doGetSystemOptions(HttpServletRequest request){
 		
 		List<SysOption> rows = new ArrayList<SysOption>();
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		ActionResult ars = new ActionResult();
 		String optgroup = this.readRequestParam("opt_group");
@@ -101,7 +101,7 @@ public class SysOptionController extends BaseController{
 	@RequestMapping("sys-option-save")
 	public ModelAndView doSaveSystemOption(HttpServletRequest request){
 		
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		ActionResult ars = new ActionResult();
 		String optkey = this.readRequestParam("option_key");

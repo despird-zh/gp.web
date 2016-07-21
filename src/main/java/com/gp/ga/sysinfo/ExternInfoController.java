@@ -40,7 +40,7 @@ public class ExternInfoController extends BaseController{
 		readRequestData(request, pq);
 		ActionResult result = new ActionResult();	
 		List<Source> list = new ArrayList<Source>();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 
 		try{
 			List<SourceInfo> instances = SourceFacade.findSources(getAccessPoint(request), principal, name);
@@ -88,7 +88,7 @@ public class ExternInfoController extends BaseController{
 		// read request parameters
 		super.readRequestData(request, data);
 
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		
 		SourceInfo instinfo = new SourceInfo();

@@ -120,7 +120,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	/**
 	 * Get the principal from shiro  
 	 **/
-	public static Principal getPrincipalFromShiro() {		
+	public static Principal getPrincipal() {
 		
 		return (Principal) SecurityUtils.getSubject().getPrincipal();
 	}
@@ -263,7 +263,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	 **/
 	public String getMessage(String code, Object[] args){
 		
-		Principal principal = getPrincipalFromShiro();
+		Principal principal = getPrincipal();
 		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, args, locale);
 	}
@@ -274,7 +274,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	 * @param locale the locale 
 	 **/
 	public String getMessage(String code){
-		Principal principal = getPrincipalFromShiro();
+		Principal principal = getPrincipal();
 		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, new String[0], locale);
 	}

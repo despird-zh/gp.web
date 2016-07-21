@@ -1,7 +1,5 @@
 package com.gp.web.test;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -23,7 +21,7 @@ public class TestController extends BaseController{
 	
 	@RequestMapping("test")
 	public ModelAndView test(){
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		ModelAndView mav = super.getJspModelView("test/test");
 		String msg = getMessage("excp.demo");
 		mav.addObject("test", msg);

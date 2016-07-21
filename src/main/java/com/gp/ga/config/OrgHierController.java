@@ -68,7 +68,7 @@ public class OrgHierController extends BaseController{
 		orghier.setManager(params.getManager());
 		orghier.setOrgName(params.getText());
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try{
 			OrgHierFacade.newOrgHier(accesspoint, principal, orghier);
@@ -93,7 +93,7 @@ public class OrgHierController extends BaseController{
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		OrgNode params = new OrgNode();		
@@ -153,7 +153,7 @@ public class OrgHierController extends BaseController{
 			accounts[count] = a.getAccount();
 			count++;
 		}
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		try{
@@ -185,7 +185,7 @@ public class OrgHierController extends BaseController{
 			nodeId = IdKey.ORG_HIER.getInfoId( nid);
 		}
 		String account = super.readRequestParam("account");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		
@@ -218,7 +218,7 @@ public class OrgHierController extends BaseController{
 			nodeId = IdKey.ORG_HIER.getInfoId( nid);
 		}
 
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();

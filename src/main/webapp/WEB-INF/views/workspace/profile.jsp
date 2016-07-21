@@ -1,4 +1,4 @@
-<%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../common/taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="zh_CN">
@@ -12,8 +12,6 @@
 	<!-- Morris charts -->
 	<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 	<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-	
-	
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
@@ -32,21 +30,13 @@
 						  个人信息
 						  <small>查看个人的设置信息</small>
 						</h1>
-						<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-							<li><a data-toggle="tooltip" title="查看全部工作组空间" href="../workgroup/all-grid.do"><i class="fa fa-lg fa-home"></i></a></li>
-							<li><span class="v-separator"></span></li>	
-							<li><a data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-map-signs"></i></a></li>    
-							<li><a data-toggle="tooltip" title="查看个人网盘" href="netdisk.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-suitcase"></i></a></li>
-							<li><a data-toggle="tooltip" title="查看个人分享" href="shares.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
-							<li><a data-toggle="tooltip" title="查看个人任务内容" href="tasks.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
-							<li><a data-toggle="tooltip" title="查看个人消息" href="messages.do?user_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-comments"></i></a></li>
-							<li><a class="bg-aqua-active" data-toggle="tooltip" title="查看个人设置" href="profile.do?user_id=${wgroup_id}" aria-expanded="false"><i class="fa fa-fw fa-info-circle"></i></a></li>
-						</ul>
+						<jsp:include page="../workspace/page-navs.jsp" flush="true">
+							<jsp:param name="currPage" value="profile"/>
+						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>
 				</div>
 			</section>
-
           <!-- Main content -->
           <section class="content">
 		  <div class="row">
@@ -276,85 +266,21 @@
 			<div class="col-md-3" >
 				<div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
-					<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
-						<span class="pull-left" title="Create New File" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-file-o"></i>
-							</button>
-						</span>
-						<span class="pull-left" title="Create new folder" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
-							<i class="fa fa-folder-o"></i>
-							</button>
-						</span>
-						<span class="pull-left" title="Workgroup Information" data-toggle="tooltip" data-placement="top">
-							<button class="btn btn-default btn-xs">
-							<i class="fa fa-info-circle"></i>
-							</button>
-						</span>
-					</div><!-- toolbar -->
+					<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
+						<i class="fa fa-file-o"></i>
+					</button>
+					<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
+						<i class="fa fa-folder-o"></i>
+					</button>
+					<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create About">
+						<i class="fa fa-info-circle"></i>
+					</button>
                 </div>
                 <div class="box-body box-profile">
-
-					<div class="clearfix">
-						<div class="pull-left lite-info">
-						  <img class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-						 
-						  <div >
-							<p class="text-muted text-center" >owned by <a>Gary </a></p>
-							<p class="text-muted text-center" >since 2015-6-7</p>
-						  </div>
-						</div>							
-						<ul class="stats-info list-group list-group-unbordered pull-right" >
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>任务</b> <a class="pull-right">1,322</a>
-							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>共享</b> <a class="pull-right">543</a>
-							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>文件</b> <a class="pull-right">13,287</a>
-							</li>
-							<li class="list-group-item" style="padding-top:5px;padding-bottom:5px;">
-							  <b>讨论</b> <a class="pull-right">13,287</a>
-							</li>
-						 </ul>
-					</div>
+					<%@include file="meta-sum-info.jsp" %>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
-              <!-- About Me Box -->
-              <div class="box box-widget no-radius border-top">
-                <div class="box-header with-border">
-                  <h3 class="box-title">About</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <strong><i class="fa fa-book margin-r-5"></i>  Description</strong>
-                  <p class="text-muted">
-                    B.S. in Computer Science from the University of Tennessee at Knoxville
-                  </p>
 
-                  <hr style="margin-bottom: 5px; margin-top: 5px;">
-
-                  <strong><i class="fa fa-map-marker margin-r-5"></i> Organization</strong>
-                  <p class="text-muted">Branch 华东 co.</p>
-
-                  <hr style="margin-bottom: 5px; margin-top: 5px;">
-
-                  <strong><i class="fa fa-tags margin-r-5"></i> Tags</strong>
-                  <p>
-                    <span class="label label-danger">UI Design</span>
-                    <span class="label label-success">Coding</span>
-                    <span class="label label-info">Javascript</span>
-                    <span class="label label-warning">PHP</span>
-                    <span class="label label-primary">Node.js</span>
-                  </p>
-
-                  <hr style="margin-bottom: 5px; margin-top: 5px;">
-
-                  <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
 			  <div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
 				  <h3 class="box-title">Clipboard Information </h3>
@@ -407,14 +333,11 @@
                             Sales Department
 							</span>
                             <small><i class="fa fa-clock-o "></i> Yesterday</small>
-                        
-                          
                         </a>
 						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
                       </li>
                       <li>
                         <a href="#">
-                            
                            <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
 						
                             Reviewers
@@ -458,5 +381,6 @@
 	<script src="${path_script}/message.js" type="text/javascript"></script>
 	
 	<script src="${path_script}/pages/workspace/profile.js" type="text/javascript"></script>
+	<script src="${path_script}/pages/workspace/meta.js" type="text/javascript"></script>
   </body>
 </html>

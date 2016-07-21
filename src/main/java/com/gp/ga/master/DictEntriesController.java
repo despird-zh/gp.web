@@ -37,7 +37,7 @@ public class DictEntriesController  extends BaseController{
 	public ModelAndView doEntriesSearch(HttpServletRequest request){
 		
 		ModelAndView mav = super.getJsonModelView();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult ars = new ActionResult();
 		List<DictEntry> list = new ArrayList<DictEntry>();
@@ -75,7 +75,7 @@ public class DictEntriesController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		DictEntry dentry = new DictEntry();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		super.readRequestData(dentry);// read request data.
 		

@@ -65,7 +65,7 @@ public class WGroupMetaController extends BaseController{
 		ActionResult result = new ActionResult();
 		String widstr = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 	
 		WGroupMetaSummary wsum = new WGroupMetaSummary();
@@ -138,7 +138,7 @@ public class WGroupMetaController extends BaseController{
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();

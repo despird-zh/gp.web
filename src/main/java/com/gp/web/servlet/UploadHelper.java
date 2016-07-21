@@ -145,7 +145,7 @@ class UploadHelper {
 	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart,
 			HttpServletRequest request) throws CoreException{
 		
-		Principal principal = BaseController.getPrincipalFromShiro();
+		Principal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
@@ -194,7 +194,7 @@ class UploadHelper {
 	 **/
 	public static void saveBinary(InfoId<Long> binaryId, InputStream inputStream, HttpServletRequest request)throws CoreException{
 		
-		Principal principal = BaseController.getPrincipalFromShiro();
+		Principal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		StorageFacade.storeBinary(accesspoint, principal, binaryId, inputStream);		
 	}
@@ -209,7 +209,7 @@ class UploadHelper {
 	 **/
 	public static void saveBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange,  InputStream inputStream,	HttpServletRequest request)throws CoreException{
 		
-		Principal principal = BaseController.getPrincipalFromShiro();
+		Principal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 
 		StorageFacade.storeBinaryChunk(accesspoint, principal, binaryId, contentRange, inputStream);

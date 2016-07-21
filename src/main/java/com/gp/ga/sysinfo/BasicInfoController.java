@@ -55,7 +55,7 @@ public class BasicInfoController extends BaseController{
 			rst.setState(ActionResult.ERROR);
 			rst.setMessage("parameter [instanceid] must be number.");
 		}else{
-			Principal principal = super.getPrincipalFromShiro();
+			Principal principal = super.getPrincipal();
 			AccessPoint ap = super.getAccessPoint(request);
 			
 			InfoId<Integer> id = IdKey.SOURCE.getInfoId(Integer.valueOf(instanceId));
@@ -100,7 +100,7 @@ public class BasicInfoController extends BaseController{
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
 		InfoId<Integer> id = IdKey.SOURCE.getInfoId(instanceId);
 		
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 
 		try{
@@ -130,7 +130,7 @@ public class BasicInfoController extends BaseController{
 
 		InfoId<Integer> id = IdKey.SOURCE.getInfoId(data.getSourceId());
 		
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		
 		SourceInfo instinfo = new SourceInfo();
@@ -170,7 +170,7 @@ public class BasicInfoController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		String name = request.getParameter("source_name");
 
-		Principal princ = super.getPrincipalFromShiro();
+		Principal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		List<Source> list = new ArrayList<Source>();
 		ActionResult rst = new ActionResult();

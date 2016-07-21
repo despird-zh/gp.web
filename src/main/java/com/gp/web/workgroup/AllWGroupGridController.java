@@ -47,7 +47,7 @@ public class AllWGroupGridController extends BaseController{
 		PageQuery pquery = new PageQuery(12,1);
 		this.readRequestData(request, pquery);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		
@@ -108,7 +108,7 @@ public class AllWGroupGridController extends BaseController{
 		String[] tags = request.getParameterValues("tags");
 		List<String> taglist = (null == tags) ? null : Arrays.asList(tags);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		List<Workgroup> wgroups = new ArrayList<Workgroup>();

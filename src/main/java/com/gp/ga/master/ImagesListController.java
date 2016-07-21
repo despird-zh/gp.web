@@ -47,7 +47,7 @@ public class ImagesListController  extends BaseController{
 		
 		String format = super.readRequestParam("format");
 		ModelAndView mav = super.getJsonModelView();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult ars = new ActionResult();
 		try{
@@ -97,7 +97,7 @@ public class ImagesListController  extends BaseController{
 		LOGGER.debug(relativeUri);
 		// new operation 
         ActionResult rmsg = new ActionResult();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try {
 			ImageFacade.saveImage(accesspoint, principal, realPath, srcFileName);
@@ -139,7 +139,7 @@ public class ImagesListController  extends BaseController{
 		
 		LOGGER.debug("the real path : {}", realPath);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try {
 			ImageFacade.updateImage(accesspoint, principal,Long.valueOf(imgId), imgName, realPath);
@@ -167,7 +167,7 @@ public class ImagesListController  extends BaseController{
 		ActionResult rmsg = new ActionResult();
     	String imgId = super.readRequestParam("image_id");// the id of original 
 		
-    	Principal principal = super.getPrincipalFromShiro();
+    	Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try{
 			ImageFacade.removeImage(accesspoint, principal,Long.valueOf(imgId));

@@ -18,9 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConfig;
@@ -72,7 +70,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try {
@@ -132,7 +130,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{
@@ -180,7 +178,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		String newpwd = request.getParameter("new-password");
 		String cfmpwd = request.getParameter("confirm-password");
@@ -219,7 +217,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Account setting = new Account();
 		super.readRequestData(setting);
@@ -264,7 +262,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String setting_json = request.getParameter("setting_json");
@@ -311,7 +309,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String publishcap = request.getParameter("publish_cap");
@@ -340,7 +338,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String timezone = request.getParameter("timezone");

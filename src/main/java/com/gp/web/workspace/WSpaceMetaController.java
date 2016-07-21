@@ -28,7 +28,6 @@ import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.UserSumInfo;
-import com.gp.dao.info.WorkgroupInfo;
 import com.gp.svc.info.UserExt;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -51,7 +50,7 @@ public class WSpaceMetaController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{

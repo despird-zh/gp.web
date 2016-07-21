@@ -83,7 +83,7 @@ public class ImageFilter implements Filter{
 	 **/
 	public void loadImageToCache(HttpServletRequest request, String parent, String fileName){
 		
-		Principal principal = BaseController.getPrincipalFromShiro();
+		Principal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		
 		try {

@@ -43,7 +43,7 @@ public class CabFolderController extends BaseController{
 		
 		ActionResult aresult = new ActionResult();
 		ModelAndView jmav = super.getJsonModelView();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{

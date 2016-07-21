@@ -60,7 +60,7 @@ public class WorkgroupEditController extends BaseController{
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -147,7 +147,7 @@ public class WorkgroupEditController extends BaseController{
 		Workgroup group = new Workgroup();
 		readRequestData(request, group);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();

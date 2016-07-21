@@ -83,7 +83,7 @@ public class StorageListController extends BaseController{
 		}else{
 			states = new String[]{state};
 		}
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = super.getJsonModelView();
@@ -138,7 +138,7 @@ public class StorageListController extends BaseController{
 		Storage storage = new Storage();
 		super.readRequestData(request, storage);
 		// read trace information
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// prepare result
 		ActionResult aresult = new ActionResult();
@@ -182,7 +182,7 @@ public class StorageListController extends BaseController{
 	public ModelAndView doRemoveStorage(HttpServletRequest request){
 		
 		String storageId = super.readRequestParam("storage_id");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult aresult = new ActionResult();
@@ -214,7 +214,7 @@ public class StorageListController extends BaseController{
 		String storageId = super.readRequestParam("storage_id");
 		Storage storage = new Storage();
 		// read trace information
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult aresult = new ActionResult();

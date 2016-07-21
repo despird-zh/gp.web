@@ -87,7 +87,7 @@ public class AccountExtController extends BaseController{
 		AccountExt account = new AccountExt();
 		super.readRequestData(request, account);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		

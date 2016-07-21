@@ -75,7 +75,7 @@ public class AccountListController extends BaseController{
 				
 		List<Account> list = new ArrayList<Account>();
 
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 
 		String uname = request.getParameter("uname");
 		String instanceStr = request.getParameter("instance_id");
@@ -157,7 +157,7 @@ public class AccountListController extends BaseController{
 		Account account = new Account();
 		super.readRequestData(request, account);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
@@ -212,7 +212,7 @@ public class AccountListController extends BaseController{
 		String uidStr = request.getParameter("user_id");
 
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		Long userId = null;
 
 		InfoId<Long> userkey = null;
@@ -270,7 +270,7 @@ public class AccountListController extends BaseController{
 		String uid = request.getParameter("user_id");
 		ModelAndView mav = getJsonModelView();	
 		ActionResult result = new ActionResult();
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Long userId = null;
 		InfoId<Long> userkey = null;

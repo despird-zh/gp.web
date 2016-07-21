@@ -57,7 +57,7 @@ public class WorkgroupAddController extends BaseController{
 		Workgroup group = new Workgroup();
 		readRequestData(request, group);
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();
@@ -116,7 +116,7 @@ public class WorkgroupAddController extends BaseController{
 		String enode = super.readRequestParam("enode_id");
 		String wgroupid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		InfoId<Integer> entityId = null;
@@ -171,7 +171,7 @@ public class WorkgroupAddController extends BaseController{
 		String account = super.readRequestParam("account");
 		String wgroupid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
@@ -207,7 +207,7 @@ public class WorkgroupAddController extends BaseController{
 		String wgroupid = super.readRequestParam("wgroup_id");
 		String role = super.readRequestParam("role");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
@@ -242,7 +242,7 @@ public class WorkgroupAddController extends BaseController{
 		String wgroupid = super.readRequestParam("wgroup_id");
 		String description = super.readRequestParam("description");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		GroupInfo ginfo = new GroupInfo();
@@ -280,7 +280,7 @@ public class WorkgroupAddController extends BaseController{
 		String group = super.readRequestParam("group");
 		String wgroupid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
@@ -323,7 +323,7 @@ public class WorkgroupAddController extends BaseController{
 		
 		String groupid = super.readRequestParam("group_id");
 
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> gid = null;
@@ -356,7 +356,7 @@ public class WorkgroupAddController extends BaseController{
 		
 		String groupid = super.readRequestParam("group_id");
 
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> gid = null;
@@ -395,7 +395,7 @@ public class WorkgroupAddController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		
 		String groupid = super.readRequestParam("group_id");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		InfoId<Long> gid = null;
@@ -439,7 +439,7 @@ public class WorkgroupAddController extends BaseController{
 		
 		String groupid = super.readRequestParam("group_id");
 		String account = super.readRequestParam("account");
-		Principal principal = super.getPrincipalFromShiro();
+		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> gid = null;
