@@ -1,5 +1,6 @@
 package com.gp.web.workspace;
 
+import com.gp.common.Principal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +15,11 @@ public class WSpaceSharesController extends BaseController{
 
 	@RequestMapping("shares")
 	public ModelAndView doInitial(){
-		
-		return getJspModelView("workspace/shares");
+		Principal principal = super.getPrincipal();
+
+		ModelAndView mav = getJspModelView("workspace/shares");
+		mav.addObject("user_id", principal.getUserId().getId());
+		return mav;
+
 	}
 }
