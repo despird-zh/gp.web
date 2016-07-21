@@ -15,24 +15,39 @@ public class WebException extends BaseException{
 
 	private static Map<Locale, ResourceBundle> web_bundles = new HashMap<Locale, ResourceBundle>();
 
+	/**
+	 * Constructor with error code and parameters
+	 **/
 	public WebException(String errorcode,Object ...param){
 		this(Locale.getDefault(),errorcode, param);
 	}
-	
+
+	/**
+	 * Constructor with error code, cause and parameters
+	 **/
     public WebException(String errorcode, Throwable cause,Object ...param) {
         this(Locale.getDefault(), errorcode, cause, param);
     }
-    
+
+	/**
+	 * Constructor with error code and parameters
+	 **/
 	public WebException(Locale locale, String errorcode, Object... param) {
 		super(errorcode, param);
 		this.message = findMessage(locale, errorcode, param);
 	}
-	
+
+	/**
+	 * Constructor with error code, cause and parameters
+	 **/
     public WebException(Locale locale, String errorcode, Throwable cause,Object ...param) {
         super(errorcode, cause);
         this.message = findMessage(locale,errorcode, param);
     }
-    
+
+	/**
+	 * Constructor with cause
+	 **/
     public WebException(Throwable cause) {
         super(cause);
     }
@@ -45,10 +60,15 @@ public class WebException extends BaseException{
 			rb = loadResourceBundle(locale, WebException.class);
 			web_bundles.put(locale, rb);
 		}
-		String messagePattern =  (rb == null || !rb.containsKey(errorcode)) ? errorcode :  rb.getString(errorcode);
-		if(StringUtils.equals(messagePattern, errorcode)){
+		String messagePattern = null;
+		if(rb == null || !rb.containsKey(errorcode)) {
+			matched = false;
 			return super.findMessage(locale, errorcode, param);
+		} else{
+			matched = true;
+			messagePattern = rb.getString(errorcode);
 		}
+
 		return MessageFormat.format(messagePattern, param);
 	}
 

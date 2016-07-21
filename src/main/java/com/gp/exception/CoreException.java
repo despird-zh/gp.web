@@ -24,23 +24,38 @@ public class CoreException extends BaseException{
 	private static final long serialVersionUID = 6149095030747094149L;
 	
 	private Set<ValidateMessage> messageSet = null;
-	
+
+	/**
+	 * Constructor with error code and parameters
+	 **/
 	public CoreException(String errorcode,Object ...param){
 		this(Locale.getDefault(),errorcode, param);
 	}
-	
+
+	/**
+	 * Constructor with error code, cause and parameters
+	 **/
     public CoreException(String errorcode, Throwable cause,Object ...param) {
         this(Locale.getDefault(), errorcode, cause, param);
     }
-    
+
+	/**
+	 * Constructor with error code and parameters
+	 **/
 	public CoreException(Locale locale, String errorcode, Object... param) {
 		super(locale, errorcode, param);
 	}
-	
+
+	/**
+	 * Constructor with error code, cause and parameters
+	 **/
     public CoreException(Locale locale, String errorcode, Throwable cause,Object ...param) {
         super(locale, errorcode, cause, param);
     }
-    
+
+	/**
+	 * Constructor with cause
+	 **/
     public CoreException(Throwable cause) {
         super(cause);
         this.locale = Locale.getDefault();
@@ -117,7 +132,10 @@ public class CoreException extends BaseException{
     	}
     	this.messageSet.add(vmesg);
     }
-    
+
+	/**
+	 * Get the validate message set
+	 **/
     public Set<ValidateMessage> getValidateMessages(){
     	
     	return this.messageSet;
