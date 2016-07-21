@@ -39,7 +39,7 @@
           <section class="content">
 		  <div class="row">
 			<div class="col-md-9">
-			  <div class="box box-widget">
+			  <div class="box box-widget no-radius border-top">
 				<div class="box-header repo-header with-border">
 					<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 					<ul class="nav nav-pills m-l-xxs">
@@ -49,13 +49,13 @@
 						<li><a href="notifications.do" class="filter-nav m-l-xs">设计小组 <span class="badge badge-warning">24</span></a></li>
 					</ul>
 				</div>
-				<div class="box-body repo-list">
+				<div class="box-body">
 				<ul class="list-group list-group-unbordered">
-				   <li class="list-group-item">
+				   <li class="list-group-item" style="border-top: none;">
 				   <div  class="ticket">
 						<div class="pull-left avatar-info">
 							<a >
-								<img class="img-circle img-bordered-sm" src="${path_image}/user1-128x128.jpg" alt="user image">
+								<img class="img-bordered-sm" src="${path_image}/user1-128x128.jpg" alt="user image">
 							</a>
 							<div class="thumbs-info" >
 								<div><a style="cursor:pointer;"><i class="fa fa-thumbs-o-up"></i></a></div>
@@ -434,11 +434,11 @@
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 
-			  <div class="box box-widget">
+			  <div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
-				  <h3 class="box-title">Clipboard Information </h3>
+				  <h3 class="box-title">Clipboard <small class="label label-success">5</small></h3>
 				  <div class="box-tools">    
-					<small class="label label-success">5</small>				  
+								  
                     <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
 					<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
