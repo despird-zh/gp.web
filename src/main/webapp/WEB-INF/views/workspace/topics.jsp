@@ -76,9 +76,7 @@
 							</div><!-- /.user-block -->
 							<div class="clearfix">
 							<div class="inline-docs pull-right" >
-								<!--<ul class="doc-list">
-								  <li>
-									 inner menu: contains the actual data -->
+								
 									<ul class="doc-items show-scrollbar">
 									  <li><!-- start message -->
 										<a href="#">
@@ -122,8 +120,6 @@
 										<small class="pull-right"><i class="fa fa-clock-o"></i> 2 days</small>
 									  </li>
 									</ul>
-								  <!--/li>
-								</ul-->
 							</div>
 							评论区有人问为什么这么说……是这样的，iOS中回到主屏后App就被冻结，除音乐播放之类的进程之外不允许常驻后台，那么怎么在手机关屏后推送消息呢？是开发者在服务器上把消息先推送给苹果的服务器，然后苹果把该用户的微信、QQ、Facebook、淘宝等各种消息统一推送给用户，这样就做到了不影响消息推送的情况下、同时减少后台个数，熄屏几乎不耗。
 							
