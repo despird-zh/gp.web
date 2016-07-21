@@ -286,15 +286,17 @@
 			<div class="col-md-3" >
 				<div class="box box-widget no-radius border-top">
 					<div class="box-header with-border">
-						<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
-							<i class="fa fa-file-o"></i>
-						</button>
-						<button class="btn btn-default btn-xs" title="Create new folder" data-toggle="tooltip" data-placement="top">
-							<i class="fa fa-folder-o"></i>
-						</button>
-						<button class="btn btn-default btn-xs" title="Create new folder" data-toggle="tooltip" data-placement="top">
-							<i class="fa fa-info-circle"></i>
-						</button>
+						<div class="view-toolbar">
+							<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
+								<i class="fa fa-file-o"></i>
+							</button>
+							<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
+								<i class="fa fa-folder-o"></i>
+							</button>
+							<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create About">
+								<i class="fa fa-info-circle"></i>
+							</button>
+						</div>
 	                </div>
 	                <div class="box-body box-profile">
 						<%@include file="meta-sum-info.jsp" %>

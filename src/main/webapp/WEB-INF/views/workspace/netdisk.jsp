@@ -629,23 +629,17 @@
             <div class="col-md-3">
             <div class="box box-widget no-radius border-top">
                 <div class="box-header with-border">
-                    <div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
-                        <span class="pull-left" title="Create New File" data-toggle="tooltip" data-placement="top">
-                            <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#new-file-modal">
+                    <div class="view-toolbar">
+                        <button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
                             <i class="fa fa-file-o"></i>
-                            </button>
-                        </span>
-                        <span class="pull-left" title="Create new folder" data-toggle="tooltip" data-placement="top">
-                            <button class="btn btn-default btn-xs" data-toggle="modal" data-target="#new-file-modal">
+                        </button>
+                        <button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
                             <i class="fa fa-folder-o"></i>
-                            </button>
-                        </span>
-                        <span class="pull-left" title="Workgroup Information" data-toggle="tooltip" data-placement="top">
-                            <button class="btn btn-default btn-xs">
+                        </button>
+                        <button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create About">
                             <i class="fa fa-info-circle"></i>
-                            </button>
-                        </span>
-                    </div><!-- toolbar -->
+                        </button>
+                    </div>
                 </div>
                 <div class="box-body box-profile">
                     <%@include file="meta-sum-info.jsp" %>
@@ -1049,6 +1043,8 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
+    <!-- mustache -->
+    <script src="${path_plugins}/mustache/mustache.min.js" type="text/javascript"></script>
     <!-- jstree -->
     <script src="${path_plugins}/jstree/dist/jstree.min.js"></script>
     <!-- AdminLTE App -->

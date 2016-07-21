@@ -29,7 +29,7 @@
 						  <small>查看相关任务及消息</small>
 						</h1>
 						<jsp:include page="../workspace/page-navs.jsp" flush="true">
-							<jsp:param name="currPage" value="shares"/>
+							<jsp:param name="currPage" value="messages"/>
 						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>
@@ -458,6 +458,8 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
+	<!-- mustache -->
+	<script src="${path_plugins}/mustache/mustache.min.js" type="text/javascript"></script>
 	<!-- Sparkline -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 	<script src="${path_plugins}/morris/morris.min.js"></script>
