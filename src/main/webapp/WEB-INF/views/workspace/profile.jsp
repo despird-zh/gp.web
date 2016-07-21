@@ -266,15 +266,17 @@
 			<div class="col-md-3" >
 				<div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
-					<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
-						<i class="fa fa-file-o"></i>
-					</button>
-					<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
-						<i class="fa fa-folder-o"></i>
-					</button>
-					<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create About">
-						<i class="fa fa-info-circle"></i>
-					</button>
+					<div class="view-toolbar">
+						<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
+							<i class="fa fa-file-o"></i>
+						</button>
+						<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
+							<i class="fa fa-folder-o"></i>
+						</button>
+						<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create About">
+							<i class="fa fa-info-circle"></i>
+						</button>
+					</div>
                 </div>
                 <div class="box-body box-profile">
 					<%@include file="meta-sum-info.jsp" %>
@@ -284,8 +286,7 @@
 			  <div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
 				  <h3 class="box-title">Clipboard Information </h3>
-				  <div class="box-tools">    
-
+				  <div class="box-tools">
 					<small class="label label-success">5</small>				  
                     <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>

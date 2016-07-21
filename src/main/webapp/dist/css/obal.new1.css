@@ -247,12 +247,15 @@
 
 /* view toolbar and view path */
 .view-toolbar{
-	margin-bottom:8px;	
+	margin-bottom:0px;	
+    vertical-align: middle;
+    line-height : normal;
+    padding: 0px 1px 1px;
 }
 
-.view-toolbar > span > button{
-	margin-right:3px;
-	font-size:14px;
+.view-toolbar > button{
+	width: 24px; 
+    height: 24px;
 }
 
 .view-toolbar .btn-separator:after {

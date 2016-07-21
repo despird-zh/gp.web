@@ -29,7 +29,7 @@
 						  <small>查看相关任务及消息</small>
 						</h1>
 						<jsp:include page="../workspace/page-navs.jsp" flush="true">
-							<jsp:param name="currPage" value="shares"/>
+							<jsp:param name="currPage" value="messages"/>
 						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>
