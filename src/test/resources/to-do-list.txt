@@ -42,3 +42,5 @@
 20. intant message and other resource delete post reading
 
 21. field name change : audit table change verb into operation
+
+https://jsoup.org/cookbook/input/parse-body-fragment
