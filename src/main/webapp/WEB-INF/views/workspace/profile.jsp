@@ -30,8 +30,9 @@
 						  个人信息
 						  <small>查看个人的设置信息</small>
 						</h1>
-						<jsp:include page="../workspace/page-navs.jsp" flush="true">
-							<jsp:param name="currPage" value="profile"/>
+						<jsp:include page="../common/page-navs.jsp" flush="true">
+							<jsp:param name="page" value="profile"/>
+							<jsp:param name="module" value="workspace"/>
 						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>

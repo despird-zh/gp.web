@@ -17,15 +17,7 @@
 	  margin-left: 10px;
 	  line-height:20px;
 	}
-	.dashboard-nav{
-		position: absolute; 
-		right: 15px; 
-		top: 0px; 
-		margin-bottom: 0px; 
-		border-bottom-width: 1px;
-		border-color: #eee ; 
-		margin-top: 6px;
-	}
+
 	</style>
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
@@ -44,10 +36,9 @@
 					  Groupress
 					  <small>Documents Cooperation Work System.</small>
 					</h1>
-					<ul class="nav nav-tabs navibar-page pull-right dashboard-nav" style="">
-						<li class=""><a data-toggle="tooltip" title="展现全部工作组并查询" href="../workgroup/all-grid.do" aria-expanded="false" ><i class="fa fa-lg fa-globe"></i></a></li>
-						<li class=""><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/notifications.do" aria-expanded="false" ><i class="fa fa-lg fa-home"></i></a></li>
-					</ul>
+					<jsp:include page="../common/page-navs.jsp" flush="true">
+						<jsp:param name="module" value="dashboard"/>
+					</jsp:include>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
 			 </div>

@@ -27,8 +27,9 @@
 						  讨论信息
 						  <small>查看个人相关讨论</small>
 						</h1>
-						<jsp:include page="../workspace/page-navs.jsp" flush="true">
-							<jsp:param name="currPage" value="topics"/>
+						<jsp:include page="../common/page-navs.jsp" flush="true">
+							<jsp:param name="page" value="topics"/>
+							<jsp:param name="module" value="workspace"/>
 						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>

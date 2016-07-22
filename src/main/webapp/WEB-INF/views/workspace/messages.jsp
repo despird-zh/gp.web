@@ -28,8 +28,9 @@
 						  任务消息
 						  <small>查看相关任务及消息</small>
 						</h1>
-						<jsp:include page="../workspace/page-navs.jsp" flush="true">
-							<jsp:param name="currPage" value="messages"/>
+						<jsp:include page="../common/page-navs.jsp" flush="true">
+							<jsp:param name="page" value="messages"/>
+							<jsp:param name="module" value="workspace"/>
 						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>

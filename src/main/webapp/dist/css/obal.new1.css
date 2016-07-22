@@ -1578,3 +1578,13 @@ Avartar cropper css
     font-size: 8px; 
 	margin-bottom: 3px;
 }
+
+.page-nav{
+    position: absolute;
+    right: 15px;
+    top: 0px;
+    margin-bottom: 0px;
+    border-bottom-width: 1px;
+    border-color: #eee ;
+    margin-top: 6px;
+}

@@ -30,8 +30,9 @@
 						  分享资源
 						  <small>查看相关分享资源</small>
 						</h1>
-						<jsp:include page="../workspace/page-navs.jsp" flush="true">
-							<jsp:param name="currPage" value="notifications"/>
+						<jsp:include page="../common/page-navs.jsp" flush="true">
+							<jsp:param name="page" value="notifications"/>
+							<jsp:param name="module" value="workspace"/>
 						</jsp:include>
 						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>
