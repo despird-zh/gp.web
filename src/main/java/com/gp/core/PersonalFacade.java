@@ -205,7 +205,10 @@ public class PersonalFacade {
 	}
 	
 	/**
-	 * Update accounts belong setting 
+	 * Save accounts belong setting
+	 *
+	 * @param setting setting map key is the blonging id, value is the setting of belonging
+	 *
 	 **/
 	public static boolean saveBelongSetting(AccessPoint accesspoint, 
 			Principal principal, Map<InfoId<Long>, Boolean> settings)throws CoreException{
@@ -229,7 +232,14 @@ public class PersonalFacade {
 		return result;
 		
 	}
-	
+
+	/**
+	 * Save the personal's storage setting
+	 *
+	 * @param storageId the id of storage
+	 * @param publishcap the capacity of publish cabinet
+	 * @param netdiskcap the capacity of netdisk cabinet
+	 **/
 	public static boolean saveStorageSetting(AccessPoint accesspoint, 
 			Principal principal, 
 			Long storageId, 
@@ -258,7 +268,13 @@ public class PersonalFacade {
 		return result;
 		
 	}
-	
+
+	/**
+	 * Save the personal's Region setting, this method use principal to locate the user
+	 *
+	 * @param timezone the time zone
+	 * @param language the language setting of user
+	 **/
 	public static boolean saveRegionSetting(AccessPoint accesspoint, 
 			Principal principal, String timezone, String language)throws CoreException{
 		boolean result = false;
