@@ -1,15 +1,14 @@
 package com.gp.core;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import com.gp.audit.AuditEventLoad;
+import com.gp.audit.AuditVerb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
 import com.gp.audit.AuditConverter;
-import com.gp.audit.AuditEventLoad;
-import com.gp.audit.AuditVerb;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.disruptor.EventDispatcher;
@@ -29,7 +28,7 @@ public class CoreServiceContext extends ServiceContext{
 	/**
 	 * audit data holder 
 	 **/
-	private AuditEventLoad auditload = null;
+	private CoreEventLoad coreload = null;
 
 	/**
 	 * AuditState
@@ -43,7 +42,7 @@ public class CoreServiceContext extends ServiceContext{
 		
 		super(principal);
 		setAuditable(true);
-		auditload = new AuditEventLoad();
+		coreload = new CoreEventLoad();
 	}
 	
 	/**
@@ -52,7 +51,7 @@ public class CoreServiceContext extends ServiceContext{
 	public CoreServiceContext(Principal principal, AccessPoint accesspoint){
 		
 		this(principal);
-		this.auditload.setAccessPoint(accesspoint);
+		this.coreload.setAccessPoint(accesspoint);
 	}
 	
 	/**
@@ -61,32 +60,26 @@ public class CoreServiceContext extends ServiceContext{
 	@Override
 	public void setAccessPoint(String client, String host, String app, String version){
 		
-		this.auditload.setAccessPoint(new AccessPoint(client, host, app, version));
+		this.coreload.setAccessPoint(new AccessPoint(client, host, app, version));
 	}
 	
 	@Override
-	public void beginOperation(String subject,String verb, InfoId<?> object, Object predicate){
+	public void beginOperation(String subject,String operation, InfoId<?> object, Object predicate){
 
-		auditload.setSubject(subject);
-		AuditVerb operVerb = new AuditVerb(verb, object);
+		coreload.setOperator(subject);
+		coreload.setOperation(operation);
+		coreload.setObjectId(object);
+
 		// convert object to map object so as to save as json
 		Map<String,String> predicates = AuditConverter.beanToMap(predicate);		
-		operVerb.addPredicates(predicates);
-		// set operation primary verb
-		auditload.setAuditVerb(operVerb);
+		coreload.addPredicates(predicates);
+
 	}
 	
 	@Override
 	public void addOperationPredicate(String predicateKey, Object predicate){
-		Map<String,String> predicates = null;
-		if(null == auditload.getAuditVerb().getPredicateMap()){
-			predicates = new HashMap<String,String>();
-			auditload.addAuditVerbPredicates(predicates);
-		}else{
-			predicates = auditload.getAuditVerb().getPredicateMap();
-		}
-		// set operation primary verb predicates
-		predicates.put(predicateKey, predicate.toString());
+
+		coreload.addPredicate(predicateKey, predicate.toString());
 	}
 	
 	@Override
@@ -94,16 +87,13 @@ public class CoreServiceContext extends ServiceContext{
 
 		Map<String,String> predicates = AuditConverter.beanToMap(predicate);
 		// set operation primary verb predicates
-		auditload.addAuditVerbPredicates(predicates);
+		coreload.addPredicates(predicates);
 	}
 	
 	@Override 
-	public void setOperationObject(InfoId<?> object){
+	public void setOperationObject(InfoId<?> objectId){
 		
-		AuditVerb av = auditload.getAuditVerb();
-		if(null != av){
-			av.setObject(object);
-		}
+		coreload.setObjectId(objectId);
 	}
 	
 	/**
@@ -111,13 +101,16 @@ public class CoreServiceContext extends ServiceContext{
 	 **/
 	@Override
 	public void endOperation(ExecState state, String message){
-		
+
 		// already be set to other non-success state, don't change it to success.
 		if(execstate != ExecState.UNKNOWN && state == ExecState.SUCCESS)
 			return ;
 		
 		execstate = state;
-		auditload.endAuditVerb(state.name(), message);
+		coreload.setState(state.name());
+		coreload.setStarted(false);
+		coreload.setMessage(message);
+
 	}
 
 	/**
@@ -126,7 +119,7 @@ public class CoreServiceContext extends ServiceContext{
 	public void setWorkgroupId(InfoId<Long> workgroupId){
 		
 		super.setWorkgroupId(workgroupId);
-		auditload.setWorkgroupId(workgroupId);
+		coreload.setWorkgroupId(workgroupId);
 	}
 	
 	/**
@@ -141,23 +134,29 @@ public class CoreServiceContext extends ServiceContext{
 	@Override
 	public <A> A getOperationData(Class<A> clazz){
 
-		return (A)auditload;
+		return (A)coreload;
 	}
 	
 	@Override 
 	public void handleOperationData(){
 		// trigger the audit event with audit load
-		if(this.isAuditable())
-			EventDispatcher.getInstance().sendPayload(auditload);
-		
-		// trigger the core event with core load
-		AuditVerb verb = auditload.getAuditVerb();
-		CoreEventLoad<Map<String,String>> coreload = new CoreEventLoad<Map<String,String>>(verb.getVerb());
-		coreload.setObjectId(verb.getObject());
-		coreload.setData(verb.getPredicateMap());
-		coreload.setOperator(auditload.getSubject());
-		coreload.setObjectId(verb.getObject());
+		if(this.isAuditable()) {
+			AuditEventLoad auditload = new AuditEventLoad();
+			auditload.setState(coreload.getState());
+			auditload.setMessage(coreload.getMessage());
+			auditload.setAccessPoint(coreload.getAccessPoint());
+			auditload.setSubject(coreload.getOperator());
+			auditload.setWorkgroupId(this.getWorkgroupId());
 
+			AuditVerb verb = new AuditVerb();
+			verb.setObjectId(coreload.getObjectId());
+			verb.setElapsedTime(coreload.getElapsedTime());
+			verb.setTimestamp(coreload.getTimestamp());
+			verb.setVerb(coreload.getOperation());
+			auditload.setAuditVerb(verb);
+
+			EventDispatcher.getInstance().sendPayload(auditload);
+		}
 		EventDispatcher.getInstance().sendPayload(coreload);
 	}
 	

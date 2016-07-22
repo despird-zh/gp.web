@@ -16,16 +16,15 @@ public class AuditVerb {
 	private Long timestamp;	
 	/** operation time consuming */
 	private Long elapse = 0L;	
-	/** start flag */
-	private boolean started = false;
+
 	/** the verb */
 	private String verb = null;
 	/** the target data EntryKey */
-	private InfoId<?> object = null;
+	private InfoId<?> objectId = null;
 	/** predicateMap */
 	private Map<String, String> predicateMap = null;
 
-	protected AuditVerb(){		
+	public AuditVerb(){
 		this.timestamp = System.currentTimeMillis();
 		predicateMap = new HashMap<String, String>();
 	}
@@ -41,23 +40,23 @@ public class AuditVerb {
 	/**
 	 * Constructor with verb and target 
 	 **/
-	public AuditVerb(String verb, InfoId<?> object){
+	public AuditVerb(String verb, InfoId<?> objectId){
 		this(verb);
-		this.object = object;
+		this.objectId = objectId;
 	}
 	
 	/**
 	 * Get target data 
 	 **/
-	public InfoId<?> getObject() {
-		return object;
+	public InfoId<?> getObjectId() {
+		return objectId;
 	}
 
 	/**
 	 * Set target 
 	 **/
-	public void setObject(InfoId<?> object) {
-		this.object = object;
+	public void setObjectId(InfoId<?> objectId) {
+		this.objectId = objectId;
 	}
 	
 	/**
@@ -76,48 +75,19 @@ public class AuditVerb {
 	}
 	
 	/**
-	 * Set state on/off
-	 * @param start true:begin; false:end 
-	 **/
-	public void setStarted(boolean started){
-		
-		if(started){
-			timestamp = System.currentTimeMillis();// reset start point
-		}else{
-
-			elapse = System.currentTimeMillis() - timestamp;
-		}
-		this.started = started;		
-	}
-	
-	/**
 	 * Get elapse time 
 	 **/
-	public long getElapse(){
-		
-		if(!started){
-			
-			return elapse;
-		}else{
-			
-			long tempelapse = System.currentTimeMillis() - timestamp;
-			return tempelapse;
-		}
+	public long getElapsedTime(){
+
+		return elapse;
+
 	}
 	
-	public void setElapse(Long elapse){
+	public void setElapsedTime(Long elapse){
 		
 		this.elapse = elapse;
 	}
-	/**
-	 * Audit state check
-	 * @return true:audit on; false :audit off 
-	 **/
-	public boolean isStarted(){
-		
-		return this.started;
-	}
-	
+
 	public Long getTimestamp(){
 		
 		return this.timestamp;
@@ -158,7 +128,7 @@ public class AuditVerb {
 	/**
 	 * Get predicate map 
 	 **/
-	public Map<String, String> getPredicateMap() {
+	public Map<String, String> getPredicates() {
 		return predicateMap;
 	}
 
@@ -169,7 +139,7 @@ public class AuditVerb {
 		
 	}
 	
-	public void clearPredicated(){
+	public void clearPredicates(){
 		if(predicateMap == null)
 			return;
 		this.predicateMap.clear();

@@ -70,19 +70,14 @@ public class AuditEventLoad implements EventPayload{
 		this.auditVerb = new AuditVerb(verb, object);
 	}
 
-	public void beginAuditVerb(Map<String, String> predicatemap){
-		this.auditVerb.setStarted(true);
-		this.auditVerb.addPredicates(predicatemap);
-	}
-	
-	public void addAuditVerbPredicates(Map<String, String> predicatemap){
+	public void addPredicates(Map<String, String> predicatemap){
 		this.auditVerb.addPredicates(predicatemap);
 	}
 	
 	public void endAuditVerb(String state, String message){
 		this.state = state;
 		this.message = message;
-		this.auditVerb.setStarted(false);
+
 	}
 
 	/**

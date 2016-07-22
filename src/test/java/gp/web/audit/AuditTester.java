@@ -30,7 +30,7 @@ public class AuditTester extends TestCase{
 		operpredicates.put("operk2", "ov2");
 		operpredicates.put("operk3", "ov3");
 		operpredicates.put("operk4", "ov4");
-		ad.addAuditVerbPredicates(operpredicates);
+		ad.addPredicates(operpredicates);
 
 		ad.endAuditVerb(ExecState.SUCCESS.toString(), "demo operat message str.");
 		

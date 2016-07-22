@@ -81,7 +81,7 @@ public class CoreFacade {
 	 * Handle the core event payload
 	 * @param  coreload the payload of event
 	 **/
-	public static void handleUpdateAccount(CoreEventLoad<?> coreload)throws CoreException{
+	public static void handleUpdateAccount(CoreEventLoad coreload)throws CoreException{
 
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();

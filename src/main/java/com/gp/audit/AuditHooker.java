@@ -77,13 +77,13 @@ public class AuditHooker extends EventHooker<AuditEventLoad>{
 		AuditInfo operaudit = new AuditInfo();	
 		operaudit.setSubject(auditdata.getSubject());
 		AuditVerb pverb = auditdata.getAuditVerb();
-		if(null != pverb.getObject())
-			operaudit.setTarget(pverb.getObject().toString());
+		if(null != pverb.getObjectId())
+			operaudit.setTarget(pverb.getObjectId().toString());
 		
 		operaudit.setOperation(pverb.getVerb());
 		MutableObject pjson;
 		try {
-			pjson = AuditConverter.mapToJson(pverb.getPredicateMap());
+			pjson = AuditConverter.mapToJson(pverb.getPredicates());
 			operaudit.setPredicates((String)pjson.getValue());
 		} catch (IOException e) {
 			LOGGER.error("error to convert predicate map");
@@ -100,7 +100,7 @@ public class AuditHooker extends EventHooker<AuditEventLoad>{
 		operaudit.setState(auditdata.getState());
 		operaudit.setMessage(auditdata.getMessage());
 		operaudit.setAuditDate(new Date(pverb.getTimestamp()));
-		operaudit.setElapseTime(pverb.getElapse());
+		operaudit.setElapseTime(pverb.getElapsedTime());
 		
 		try {
 			// store data to database.

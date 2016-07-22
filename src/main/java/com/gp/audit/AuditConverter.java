@@ -140,13 +140,13 @@ public class AuditConverter {
 					
 		jsonGen.writeStartObject();	
 		jsonGen.writeStringField("verb", auditverb.getVerb());
-		jsonGen.writeStringField("object", auditverb.getObject().toString());
+		jsonGen.writeStringField("object", auditverb.getObjectId().toString());
 		jsonGen.writeNumberField("start", auditverb.getTimestamp());	
-		jsonGen.writeNumberField("elapse", auditverb.getElapse());	
+		jsonGen.writeNumberField("elapse", auditverb.getElapsedTime());
 		// write predicates map
 		jsonGen.writeFieldName("predicates"); 
 			jsonGen.writeStartObject();
-			for(Map.Entry<String, String> entry:auditverb.getPredicateMap().entrySet())
+			for(Map.Entry<String, String> entry:auditverb.getPredicates().entrySet())
 				jsonGen.writeStringField(entry.getKey(), entry.getValue());
 			
 			jsonGen.writeEndObject();
@@ -179,7 +179,7 @@ public class AuditConverter {
 					Identifier idfier = IdKey.valueOfIgnoreCase(type);
 					infoid = new InfoId<String>(idfier, id);
 				}
-				auditverb.setObject(infoid);
+				auditverb.setObjectId(infoid);
 			}
 			else if("predicates".equals(name)){
 				jsonParser.nextToken();
@@ -198,7 +198,7 @@ public class AuditConverter {
 			}
 			else if("elapse".equals(name)){
 				jsonParser.nextToken();
-				auditverb.setElapse(jsonParser.getValueAsLong());
+				auditverb.setElapsedTime(jsonParser.getValueAsLong());
 			}
 			
 		}

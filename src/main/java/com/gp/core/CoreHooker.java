@@ -17,7 +17,7 @@ import com.gp.exception.RingEventException;
  * @author gary diao
  * @version 0.1 2015-12-8
  **/
-public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
+public class CoreHooker extends EventHooker<CoreEventLoad>{
 
 	static Logger LOGGER = LoggerFactory.getLogger(CoreHooker.class);
 	
@@ -31,7 +31,8 @@ public class CoreHooker extends EventHooker<CoreEventLoad<?>>{
 		if(!(payload instanceof CoreEventLoad)){
 			return;
 		}
-		CoreEventLoad<?> coreload = (CoreEventLoad<?>) payload;
+
+		CoreEventLoad coreload = (CoreEventLoad) payload;
 
 		Operations operation = Operations.valueOf(coreload.getOperation());
 		try {

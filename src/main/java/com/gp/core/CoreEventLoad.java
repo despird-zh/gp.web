@@ -1,48 +1,68 @@
 package com.gp.core;
 
+import com.gp.audit.AccessPoint;
+import com.gp.common.GeneralContext;
 import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
 import com.gp.info.InfoId;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * This class wrap all the event fired during Core Running, 
- * usually the event is fired by audit event hooker, the root of event is service context 
+ * This class wrap all the event fired during Core Running,
  * 
  * @author gary diao
  * @version 0.1 2015-12-10
  * 
  **/
-public class CoreEventLoad<T> implements EventPayload{
+public class CoreEventLoad implements EventPayload{
 
+	/** the event type */
 	private EventType eventType;
-	
+
+	/** the object id */
 	private InfoId<?> objectId;
-	
-	private T data;
-	
+
+	/** the time stamp */
+	private Long timestamp;
+
+	/** operation time consuming */
+	private Long elapse = 0L;
+
+	/** start flag */
+	private boolean started = false;
+
+	/** the operation predicates */
+	private Map<String, String> predicates = null;
+
+	/** the execute message */
+	private String message = null;
+
+	/** access point */
+	private AccessPoint accessPoint;
+
+	/** the operation */
 	private String operation;
 
+	/** the operator of action */
 	private String operator;
 
-	/**
-	 * The constructor 
-	 * 
-	 * @param operation the operation  
-	 **/
-	public CoreEventLoad(String operation) {
-		this.eventType = EventType.CORE;
-		this.setOperation(operation);
-	}
+	/** workgroup id */
+	private InfoId<Long> workgroupId = null;
+
+	/** the execute flag */
+	private String state = GeneralContext.ExecState.SUCCESS.toString();
 
 	/**
 	 * The constructor
-	 * @param eventType the event type
-	 * @param payload the payload of event 
+	 *
+	 * @param operation the operation
 	 **/
-	public CoreEventLoad(EventType eventType, T data) {
-		
-		this.data = data;
-		this.eventType = eventType;		
+	public CoreEventLoad() {
+		this.timestamp = System.currentTimeMillis();
+		this.predicates = new HashMap<>();
+		this.eventType = EventType.CORE;
 	}
 	
 	/**
@@ -59,22 +79,6 @@ public class CoreEventLoad<T> implements EventPayload{
 	public void setObjectId(InfoId<?> objectId) {
 
 		this.objectId = objectId;
-	}
-
-	/**
-	 * Get the data of operation
-	 **/
-	public T getData(){
-		
-		return this.data;
-	}
-
-	/**
-	 * Set the data of operation
-	 **/
-	public void setData( T data){
-		
-		this.data = data;
 	}
 	
 	@Override
@@ -114,4 +118,147 @@ public class CoreEventLoad<T> implements EventPayload{
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
+
+	/**
+	 * Set state on/off
+	 * @param start true:begin; false:end
+	 **/
+	public void setStarted(boolean started){
+
+		if(started){
+			timestamp = System.currentTimeMillis();// reset start point
+		}else{
+
+			elapse = System.currentTimeMillis() - timestamp;
+		}
+		this.started = started;
+	}
+
+	/**
+	 * Get elapse time
+	 **/
+	public long getElapsedTime(){
+
+		if(!started){
+
+			return elapse;
+		}else{
+
+			long tempelapse = System.currentTimeMillis() - timestamp;
+			return tempelapse;
+		}
+	}
+
+	public void setElapsedTime(Long elapse){
+
+		this.elapse = elapse;
+	}
+
+	/**
+	 * state check
+	 * @return true:audit on; false :audit off
+	 **/
+	public boolean isStarted(){
+
+		return this.started;
+	}
+
+	/**
+	 * Get the start timestamp
+	 **/
+	public Long getTimestamp(){
+
+		return this.timestamp;
+	}
+
+	/**
+	 * Set the end timestamp
+	 **/
+	public void setTimestamp(Long timestamp){
+
+		this.timestamp = timestamp;
+	}
+
+	/**
+	 * Add predicate to map
+	 **/
+	public void addPredicate(String predicateKey, String predicateValue) {
+
+		predicates.put(predicateKey, predicateValue);
+	}
+
+	/**
+	 * Add predicate to map
+	 **/
+	public void addPredicate(String predicateKey, Object predicateValue) {
+
+		if(predicateValue == null)
+			predicates.put(predicateKey, null);
+		else
+			predicates.put(predicateKey, predicateValue.toString());
+	}
+
+	/**
+	 * Remove predicate via verb name
+	 **/
+	public void removePredicate(String predicateKey) {
+
+		predicates.remove(predicateKey);
+	}
+
+	/**
+	 * Get predicate map
+	 **/
+	public Map<String, String> getPredicates() {
+		return predicates;
+	}
+
+	public void addPredicates(Map<String, String> predicates) {
+
+		if(predicates != null)
+			this.predicates.putAll(predicates);
+
+	}
+
+	public void clearPredicates(){
+		if(predicates == null)
+			return;
+		this.predicates.clear();
+	}
+
+	public AccessPoint getAccessPoint() {
+		return accessPoint;
+	}
+
+	public void setAccessPoint(AccessPoint accessPoint) {
+		this.accessPoint = accessPoint;
+	}
+
+
+	public InfoId<Long> getWorkgroupId() {
+		return workgroupId;
+	}
+
+	public void setWorkgroupId(InfoId<Long> workgroupId) {
+		this.workgroupId = workgroupId;
+	}
+
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
 }
