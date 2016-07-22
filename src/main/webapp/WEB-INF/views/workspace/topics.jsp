@@ -39,7 +39,7 @@
           <section class="content">
 		  <div class="row">
 			<div class="col-md-9">
-			  <div class="box box-widget">
+			  <div class="box box-widget no-radius border-top">
 				<div class="box-header repo-header with-border">
 					<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 					<ul class="nav nav-pills m-l-xxs">
@@ -49,13 +49,13 @@
 						<li><a href="notifications.do" class="filter-nav m-l-xs">设计小组 <span class="badge badge-warning">24</span></a></li>
 					</ul>
 				</div>
-				<div class="box-body repo-list">
+				<div class="box-body">
 				<ul class="list-group list-group-unbordered">
-				   <li class="list-group-item">
+				   <li class="list-group-item" style="border-top: none;">
 				   <div  class="ticket">
 						<div class="pull-left avatar-info">
 							<a >
-								<img class="img-circle img-bordered-sm" src="${path_image}/user1-128x128.jpg" alt="user image">
+								<img class="img-bordered-sm" src="${path_image}/user1-128x128.jpg" alt="user image">
 							</a>
 							<div class="thumbs-info" >
 								<div><a style="cursor:pointer;"><i class="fa fa-thumbs-o-up"></i></a></div>
@@ -76,9 +76,7 @@
 							</div><!-- /.user-block -->
 							<div class="clearfix">
 							<div class="inline-docs pull-right" >
-								<!--<ul class="doc-list">
-								  <li>
-									 inner menu: contains the actual data -->
+								
 									<ul class="doc-items show-scrollbar">
 									  <li><!-- start message -->
 										<a href="#">
@@ -122,8 +120,6 @@
 										<small class="pull-right"><i class="fa fa-clock-o"></i> 2 days</small>
 									  </li>
 									</ul>
-								  <!--/li>
-								</ul-->
 							</div>
 							评论区有人问为什么这么说……是这样的，iOS中回到主屏后App就被冻结，除音乐播放之类的进程之外不允许常驻后台，那么怎么在手机关屏后推送消息呢？是开发者在服务器上把消息先推送给苹果的服务器，然后苹果把该用户的微信、QQ、Facebook、淘宝等各种消息统一推送给用户，这样就做到了不影响消息推送的情况下、同时减少后台个数，熄屏几乎不耗。
 							
@@ -434,11 +430,11 @@
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 
-			  <div class="box box-widget">
+			  <div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
-				  <h3 class="box-title">Clipboard Information </h3>
+				  <h3 class="box-title">Clipboard <small class="label label-success">5</small></h3>
 				  <div class="box-tools">    
-					<small class="label label-success">5</small>				  
+								  
                     <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
 					<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
