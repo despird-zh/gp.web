@@ -9,11 +9,11 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <%@include file="../common/include.jsp" %>
+	<link rel="stylesheet" href="${path_plugins}/summernote/summernote.css">
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
     <div class="wrapper">
-
       <header class="main-header">
         <%@include file="../common/header.jsp" %>
       </header>
