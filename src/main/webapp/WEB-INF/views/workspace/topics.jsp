@@ -415,7 +415,7 @@
               <div class="box box-widget no-radius border-top">
 				<div class="box-header with-border">
 					<div class="view-toolbar">
-						<button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Create New File">
+						<button class="btn btn-warning btn-xs" gpid="new-post-btn" data-toggle="tooltip" data-placement="top" title="Create New Post">
 							<i class="fa fa-file-o"></i>
 						</button>
 						<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
@@ -509,97 +509,23 @@
         <%@include file="../common/footer.jsp" %>
       </footer>
     </div><!-- ./wrapper -->
-<!-- Modal -->
-  <!-- remove [tabindex="-1"] otherwise select2 not work-->
-  <div class="modal fade" id="new-ticket-modal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Create new Ticket</h4>
-        </div>
-        <div class="modal-body">
-			<div class=" box-form form-horizontal">
-				<div class="form-group">
-				  <label class="col-sm-2 control-label" for="doc-name">Subject</label>
-				  <div class="col-sm-10">
-					<input type="text" placeholder="subject" id="doc-name" class="form-control">
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label class="col-sm-2 control-label" for="doc-owner">Content</label>
-				  <div class="col-sm-10">
-					<textarea style="resize:none;" placeholder="context" id="doc-owner" class="form-control" rows="3"></textarea>
-				  </div>
-				</div>	
-				<div class="form-group">
-					<label class="col-sm-2 control-label" >Attendee</label>
-					<div class="col-sm-10">
-					<select class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width:100%">
-					  <option>Alabama</option>
-					  <option>Alaska</option>
-					  <option>California</option>
-					  <option>Delaware</option>
-					  <option>Tennessee</option>
-					  <option>Texas</option>
-					  <option>Washington</option>
-					</select>
-					</div>
-                </div><!-- /.form-group -->
-				<div class="form-group">
-                        <label class="col-sm-2 control-label">                         
-                          scope
-                        </label>
-						<div class="col-sm-10">
-						<select class="form-control select2" style="width: 40%;">
-                      <option selected="selected">Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
-                      <option>Delaware</option>
-                      <option>Tennessee</option>
-                      <option>Texas</option>
-                      <option>Washington</option>
-                    </select>
-					  </div>
-                </div>
-				<div class="form-group">
-                    <label class="col-sm-2 control-label">                         
-                      comment
-                    </label>
-					<div class="col-sm-10">
-						<div class="checkbox" >                  
-                     
-						<label>
-                          <input type="checkbox">
-                          member only
-                        </label>
-						 </div>
-					</div>
-                </div>
-			</div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-sm btn-primary">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
     <!-- SlimScroll -->
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
 	    <!-- Select2 -->
     <script src="${path_plugins}/select2/select2.full.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
+	<!-- mustache -->
+    <script src="${path_plugins}/mustache/mustache.min.js"></script>
 	<!-- jstree -->
 	<script src="${path_plugins}/jstree/dist/jstree.min.js"></script>
     <!-- AdminLTE App -->
 	<script src="${path_script}/app.ctx.js" type="text/javascript"></script>
 	<!-- GPress Err Message -->
 	<script src="${path_script}/message.js" type="text/javascript"></script>
-
-	<script src="${path_script}/pages/personspace2.js"></script>
+	<%@include file="../dialog/new-post.jsp" %>
+	
+	<script src="${path_script}/pages/workspace/topics.js"></script>
     <!-- AdminLTE for demo purposes -->
 	<script src="${path_script}/pages/workspace/meta.js" type="text/javascript"></script>
 
