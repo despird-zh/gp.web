@@ -12,12 +12,13 @@
 		<!-- Tell the browser to be responsive to screen width -->
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
 		<%@include file="../common/include.jsp" %>
+		<link rel="stylesheet" href="${path_plugins}/summernote/summernote.css">
 		<!-- Morris charts -->
 		<link rel="stylesheet" href="${path_plugins}/x-editable/bootstrap3-editable/css/bootstrap-editable.css" />
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-		<link href="${path_plugins}/bootstrap-wysiwyg/index.css" rel="stylesheet">
+
 	</head>
 	<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 	<body class="hold-transition skin-blue fixed layout-top-nav">
@@ -38,106 +39,39 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-6">
-						<h1>AJAX demo</h1>
+						<h4>AJAX demo</h4>
 						<div id="ajax" class="demo"></div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-3">
 						<a href="#" id="username">superuser</a>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-8">
-						<div >
-							<h1>Type something to see events</h1>
-
-							    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
-								  <div class="btn-group">
-									<a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
-									  <ul class="dropdown-menu">
-									  </ul>
-									</div>
-								  <div class="btn-group">
-									<a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
-									  <ul class="dropdown-menu">
-									  <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
-									  <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-									  <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
-									  </ul>
-								  </div>
-								  <div class="btn-group">
-									<a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
-									<a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
-									<a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
-									<a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
-								  </div>
-								  <div class="btn-group">
-									<a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
-									<a class="btn" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
-									<a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
-									<a class="btn" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
-								  </div>
-								  <div class="btn-group">
-									<a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
-									<a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
-									<a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
-									<a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
-								  </div>
-								  <div class="btn-group">
-									  <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
-										<div class="dropdown-menu input-append">
-											<input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
-											<button class="btn" type="button">Add</button>
-									</div>
-									<a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
-
-								  </div>
-								  
-								  <div class="btn-group">
-									<a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
-									<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
-								  </div>
-								  <div class="btn-group">
-									<a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
-									<a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
-								  </div>
-								  <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
-								</div>
-
-								<div id="editor">
-								  Go ahead&hellip;
-								</div>
-						</div>
+					<div class="col-sm-3">
+						<a class="btn btn-primary btn-sm" id="show-post">show modal</a>
 					</div>
 				</div>
+
 			</div>
 			<!-- /.container -->
 		</div>
-		<!-- /.content-wrapper -->
-		<footer class="main-footer">
-			<%@include file="../common/footer.jsp" %>
-		</footer>
+
 	</div>
 	<!-- ./wrapper -->
 
 	<!-- SlimScroll -->	
-	<script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script> 
+	<script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- Select2 -->
+	<script src="${path_plugins}/select2/select2.full.min.js"></script>
 	<!-- FastClick -->	
 	<script src="${path_plugins}/fastclick/fastclick.min.js"></script> 
 	<script src="${path_plugins}/jstree/dist/jstree.min.js"></script>
 	<script src="${path_plugins}/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
-	<script src="${path_plugins}/bootstrap-wysiwyg/bootstrap-wysiwyg.js"></script>
-	<script src="${path_plugins}/bootstrap-wysiwyg/external/jquery.hotkeys.js"></script>
 	<!-- Sparkline -->	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> 
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
-
+	<%@include file="../dialog/new-post.jsp" %>
     <script type="text/javascript">
         $(document).ready(function() {
-        	$('#editor').wysiwyg().on('change', function()
-			{
-
-			});
 			
 			$(".dropdown-menu > input").click(function (e) {
         		e.stopPropagation();
@@ -198,6 +132,10 @@
 					tree.delete_node(data.node.children);
 					tree._model.data[data.node.id].state.loaded = false;
 				//$('#'+data.node.a_attr.id).find('i').removeClass('fa-folder-open-o').addClass('fa-folder-o');
+			});
+
+			$('#show-post').on('click', function(){
+				$('#new-post-modal').modal('show');
 			});
         });		  
 		 

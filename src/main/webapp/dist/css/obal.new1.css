@@ -76,9 +76,7 @@
     padding-bottom: 5px;
     padding-top: 5px;
 }
-.form-group .checkbox-inline,.form-group  .radio-inline{
-	padding-left : 0px;
-}
+
 /* start : message in header showing */
 .message-toggle {
   float: left;
