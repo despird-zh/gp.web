@@ -11,21 +11,7 @@
 		<h4 class="modal-title">New Post</h4>
 	  </div>
 	  <div class="modal-body">
-		<!--div class="nav-tabs-custom">
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#post-base-info" data-toggle="tab">Post Info</a></li>							 
-				<li ><a href="#post-ext-info" data-toggle="tab">Extra Info</a></li>		
-				<li class="pull-right" style="margin-top: 10px; margin-right: 15px;"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></li>
-			</ul>
-			<div class="tab-content">
-				<div class="tab-pane active" id="post-base-info">
-				</div>
-				<div class="tab-pane" id="post-ext-info">
-				</div>
-			</div>
-		</div-->
 		<div class=" box-form form-horizontal">
-
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="doc-name">Subject</label>
 				<div class="col-sm-10">
