@@ -10,7 +10,7 @@
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title">New Post</h4>
 	  </div>
-	  <div class="modal-body">
+	  <div class="modal-body" style="overflow:hidden;">
 		<div class=" box-form form-horizontal">
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="doc-name">Subject</label>
@@ -97,7 +97,7 @@
 				<label class="col-sm-2 control-label">Files <span class="label label-primary">5</span></label>
 				<div class="col-sm-10">
 					<div>
-						<select gpid="post-attendee" class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 70%;">
+						<select gpid="files-selector" class="form-control select2" data-placeholder="Select a File" style="width: 80%;">
 							<option>Zhangsan</option>
 							<option>Li si</option>
 							<option>Wang wu</option>
@@ -125,9 +125,8 @@
 		</div>
 	  </div>
 	  <div class="modal-footer">
-		<button type="button" gpid="upload-clear-btn" class="btn btn-default pull-left" >Clear</button>
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		<button gpid="btn_exec" type="button" class="btn btn-primary">start</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		<button gpid="post-save-btn" type="button" class="btn btn-primary">Save</button>
 	  </div>
 	</div>
   </div>
@@ -154,6 +153,9 @@ $(function (){
 		$post_classification : $('select[gpid="post-classification"]', $modal),
 		$post_file_list : $('#file-list', $modal),
 		$post_file_more : $('button[gpid="show-more-btn"]', $modal),
+		$post_file_sel : $('select[gpid="files-selector"]', $modal),
+		$save_btn : $('button[gpid="post-save-btn"]', $modal),
+		
 		/** summernote editor toolbar */
 		_snote_bar : [
 			//['style', ['style']],
@@ -184,21 +186,52 @@ $(function (){
 			});
 
 			_self.$post_priority.select2({
-				minimumResultsForSearch: -1
+				minimumResultsForSearch: -1,
+				dropdownParent: $modal
 			});
 
 			_self.$post_classification.select2({
-				minimumResultsForSearch: -1
+				minimumResultsForSearch: -1,
+				dropdownParent: $modal
 			});
 
 			_self.$post_attendee.select2({
-				minimumResultsForSearch: -1
+				minimumResultsForSearch: -1,
+				dropdownParent: $modal
 			});
 
+			_self.$post_file_sel.select2({
+				dropdownParent: $modal
+			});
 			_self.$post_file_more.on('click', function(){
 				_self.$post_file_list.toggleClass('hidden');
 			});
 		}
+	};
+	
+	NewPostModal.savePost = function(){
+		var _self = this;
+		
+		$.ajax({
+			url: "../workspace/meta-sum.do",
+            dataType : "json",
+            type: 'POST',
+			data : {
+				"owner" : "",
+				"content" : _self.$post_content.val(),
+				"title" : _self.$post_subject.val(),
+				"scope" : "",
+				"commentOn" : _self.$post_comment.prop('checked'),
+				"type" : "DISCUSSION",
+				"priority" : _self.$post_priority.val(),
+				"classification" : _self.$post_classification.val(),
+				"attachments" : []
+				
+			},
+			success : function(response){
+				
+			}
+		});
 	};
 
 	NewPostModal.initial();
