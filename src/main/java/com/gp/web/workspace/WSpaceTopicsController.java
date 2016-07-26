@@ -20,4 +20,26 @@ public class WSpaceTopicsController extends BaseController{
 		mav.addObject("user_id", principal.getUserId().getId());
 		return mav;
 	}
+
+	@RequestMapping("post-save")
+	public ModelAndView doPostSave(){
+
+		ModelAndView mav = getJsonModelView();
+		String wgid = super.readRequestParam("wgroup_id");
+
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
+	}
+
+	@RequestMapping("post-search")
+	public ModelAndView doPostSearch(){
+
+		ModelAndView mav = getJsonModelView();
+		String wgid = super.readRequestParam("wgroup_id");
+
+
+
+		mav.addObject("wgroup_id",  wgid);
+		return mav;
+	}
 }

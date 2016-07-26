@@ -44,14 +44,7 @@
 			<div class="form-group" gpid="private-marker">
 				<label class="col-sm-2 control-label">Attendee</label>
 				<div class="col-sm-10">
-					<select gpid="post-attendee" class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 95%;">
-						<option>Zhangsan</option>
-						<option>Li si</option>
-						<option>Wang wu</option>
-						<option>Zhou liu</option>
-						<option>Dong qi</option>
-						<option>Ma yun</option>
-						<option>Cliton</option>
+					<select gpid="post-attendee" class="form-control select2" multiple="multiple" style="width: 95%;">
 					</select>
 				</div>
 			</div>
@@ -98,13 +91,6 @@
 				<div class="col-sm-10">
 					<div>
 						<select gpid="files-selector" class="form-control select2" data-placeholder="Select a File" style="width: 80%;">
-							<option>Zhangsan</option>
-							<option>Li si</option>
-							<option>Wang wu</option>
-							<option>Zhou liu</option>
-							<option>Dong qi</option>
-							<option>Ma yun</option>
-							<option>Cliton</option>
 						</select>
 						<button type="button" class="btn btn-sm btn-primary">
 							<i class="fa fa-envelope-o"></i>
@@ -196,11 +182,63 @@ $(function (){
 			});
 
 			_self.$post_attendee.select2({
-				minimumResultsForSearch: -1,
+				ajax: {
+					url: "../common/workgroup-member-list.do",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+					  return {
+					  	"wgroup_id" : 2,
+						"user_name": params.term
+					  };
+					},
+					processResults: function (data, params) {
+				  		var _result = new Array();
+					   	for(var i = 0; i < data.data.length; i++){
+						   _result[i].id= data.data[i].account;
+						   _result[i].text = data.data[i].name;
+					   	}
+					  	return {
+							results: _result
+					  	};
+					},
+					cache: true
+			  	},
+			  	minimumInputLength: 0,
+			  	placeholder: { id: "", text : "Select Work group member"},
 				dropdownParent: $modal
 			});
-
+				
 			_self.$post_file_sel.select2({
+				ajax: {
+					url: "../common/workgroup-files.do",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+					  return {
+					  	"wgroup_id" : 2,
+						"file_name": params.term,
+						"pageSize" : 10
+					  };
+					},
+					processResults: function (data, params) {
+						params.page = params.page || 1;
+				  		var _result = new Array();
+					   	for(var i = 0; i < data.data.length; i++){
+						   _result[i].id= data.data[i].account;
+						   _result[i].text = data.data[i].name;
+					   	}
+					  	return {
+							results: _result,
+							pagination: {
+								more: (params.page * 10) < data.total_count
+							}
+					  	};
+					},
+					cache: true
+			  	},
+			  	minimumInputLength: 0,
+			  	placeholder: { id: "", text : "Select Work group file"},
 				dropdownParent: $modal
 			});
 			_self.$post_file_more.on('click', function(){
@@ -213,7 +251,7 @@ $(function (){
 		var _self = this;
 		
 		$.ajax({
-			url: "../workspace/meta-sum.do",
+			url: "../workspace/post-save.do",
             dataType : "json",
             type: 'POST',
 			data : {
@@ -226,13 +264,13 @@ $(function (){
 				"priority" : _self.$post_priority.val(),
 				"classification" : _self.$post_classification.val(),
 				"attachments" : []
-				
 			},
 			success : function(response){
 				
 			}
 		});
 	};
+
 
 	NewPostModal.initial();
 });

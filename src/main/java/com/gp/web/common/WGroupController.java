@@ -87,12 +87,14 @@ public class WGroupController extends BaseController{
      **/
     @RequestMapping("workgroup-list")
     public ModelAndView doGetWorkgroupList(HttpServletRequest request){
+
         String wgroupname = request.getParameter("wgroup_name");
         PageQuery pq = new PageQuery(8,1);
         super.readRequestData(request, pq);// read pageNumber
         ModelAndView mav = super.getJsonModelView();
         Principal principal = super.getPrincipal();
         AccessPoint accesspoint = super.getAccessPoint(request);
+
         boolean hasMore = false;
         List<KVPair<String, String>> enlist = new ArrayList<KVPair<String, String>>();
         try{
@@ -114,6 +116,14 @@ public class WGroupController extends BaseController{
 
         mav.addObject("items", enlist);
         mav.addObject("more", hasMore);
+
+        return mav;
+    }
+
+    @RequestMapping("workgroup-files")
+    public ModelAndView doGetWorkgroupFiles(HttpServletRequest request){
+
+        ModelAndView mav = getJsonModelView();
 
         return mav;
     }

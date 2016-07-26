@@ -31,16 +31,28 @@
 
 15. popover over header z-index issue
 
-16. meta personal information presentation.
+16. [done]meta personal information presentation.
 
-17. 2016-7-5 move jquery link in jsp to the include.jsp
 
-18. result.setMessage(getMessage("mesg.find.user.meta"));
+17. [done]2016-7-5 move jquery link in jsp to the include.jsp
 
-19. identifier gp_instances - > gp_sources
+
+18. [done]result.setMessage(getMessage("mesg.find.user.meta"));
+
+
+19. [done]identifier gp_instances - > gp_sources
+
 
 20. intant message and other resource delete post reading
 
-21. field name change : audit table change verb into operation
+21. [done]field name change : audit table change verb into operation
+
 
 https://jsoup.org/cookbook/input/parse-body-fragment
+
+22. how support follower function
+
+23. workgroup post clarification.
+    present in post page :
+    a - member create in group post page. they belongs to work group
+    b - member create in his personal page. but user want to broadcast them to public
