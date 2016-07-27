@@ -56,3 +56,10 @@ https://jsoup.org/cookbook/input/parse-body-fragment
     present in post page :
     a - member create in group post page. they belongs to work group
     b - member create in his personal page. but user want to broadcast them to public
+
+23 change post.title to post.subject
+
+===========Mysql scripts =============
+mysql> grant select on mysql.proc to 'gpadmin'@'%';
+mysql> flush privileges;
+

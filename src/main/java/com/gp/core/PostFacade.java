@@ -41,7 +41,7 @@ public class PostFacade {
      **/
     public static List<CombineInfo<PostInfo, PostExt>>  findPersonalPosts(AccessPoint accesspoint,
                                                                           Principal principal,
-                                                                          String state, String type, String scope){
+                                                                          String state, String type, String scope)throws CoreException{
 
         List<CombineInfo<PostInfo, PostExt>> result = new ArrayList<CombineInfo<PostInfo, PostExt>>();
 
@@ -67,7 +67,7 @@ public class PostFacade {
     public static List<CombineInfo<PostInfo, PostExt>> findWorkgroupPosts(AccessPoint accesspoint,
                                                     Principal principal,
                                                     InfoId<Long> wid,
-                                                    String state, String type, String scope){
+                                                    String state, String type, String scope)throws CoreException{
 
         List<CombineInfo<PostInfo, PostExt>> result = new ArrayList<CombineInfo<PostInfo, PostExt>>();
 
@@ -93,7 +93,7 @@ public class PostFacade {
      **/
     public static List<CombineInfo<PostInfo, PostExt>> findSquarePosts(AccessPoint accesspoint,
                                                     Principal principal,
-                                                    String state, String type, String scope){
+                                                    String state, String type, String scope)throws CoreException{
 
         List<CombineInfo<PostInfo, PostExt>> result = new ArrayList<CombineInfo<PostInfo, PostExt>>();
 
@@ -117,21 +117,18 @@ public class PostFacade {
     /**
      * create a new post
      */
-    */
     public static boolean newPost(AccessPoint accesspoint,
                                   Principal principal,
                                   PostInfo postinfo, String ... attendees) throws CoreException{
         boolean result = false;
 
-        if(!InfoId.isValid(postinfo.getInfoId())){
-
-            InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
-            postinfo.setInfoId(pid);
-        }
-
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_POST)){
+            if(!InfoId.isValid(postinfo.getInfoId())){
 
+                InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
+                postinfo.setInfoId(pid);
+            }
             svcctx.setTraceInfo(postinfo);
             result = postservice.newPost(svcctx, postinfo, attendees);
 

@@ -29,6 +29,26 @@ public class Post {
 
     private Boolean commentOn;
 
+    private String classification;
+
+    private String priority;
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getClassification() {
+        return classification;
+    }
+
+    public void setClassification(String classification) {
+        this.classification = classification;
+    }
+
     public long getPostId() {
         return postId;
     }

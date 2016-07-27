@@ -1,6 +1,8 @@
 package com.gp.web.workspace;
 
 import com.gp.common.Principal;
+import com.gp.dao.info.PostInfo;
+import com.gp.web.model.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +28,12 @@ public class WSpaceTopicsController extends BaseController{
 
 		ModelAndView mav = getJsonModelView();
 		String wgid = super.readRequestParam("wgroup_id");
+		Post post = new Post();
+		super.readRequestData(post);
 
+		PostInfo pinfo = new PostInfo();
+		pinfo.setSubject(post.getSubject());
+		pinfo.setState("DRAFT");
 		mav.addObject("wgroup_id",  wgid);
 		return mav;
 	}

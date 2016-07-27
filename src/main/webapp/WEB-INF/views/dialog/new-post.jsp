@@ -244,21 +244,27 @@ $(function (){
 			_self.$post_file_more.on('click', function(){
 				_self.$post_file_list.toggleClass('hidden');
 			});
+
+			_self.$save_btn.on('click', $.proxy(_self.savePost, _self));
 		}
 	};
 	
 	NewPostModal.savePost = function(){
-		var _self = this;
-		
+		var _self = this, _scope = "";
+
+		if(_self.$post_pri_rdo.prop("checked")){
+			_scope = "PRIVATE";
+		}else{
+			_scope = _self.$post_group.prop("checked")? "WGROUP" : "SQUARE";
+		}
 		$.ajax({
 			url: "../workspace/post-save.do",
             dataType : "json",
             type: 'POST',
 			data : {
-				"owner" : "",
-				"content" : _self.$post_content.val(),
-				"title" : _self.$post_subject.val(),
-				"scope" : "",
+				"content" : _self.$post_content.html(),
+				"subject" : _self.$post_subject.val(),
+				"scope" : _scope,
 				"commentOn" : _self.$post_comment.prop('checked'),
 				"type" : "DISCUSSION",
 				"priority" : _self.$post_priority.val(),
@@ -266,7 +272,8 @@ $(function (){
 				"attachments" : []
 			},
 			success : function(response){
-				
+
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
