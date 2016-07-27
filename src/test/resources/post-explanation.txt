@@ -31,7 +31,6 @@ new post in personal
 == 2 - personal presents posts
     A - personal created public & private posts
     B - personal joined posts.
-    C -
 
 =====================================================================
 select pts.*,
