@@ -127,7 +127,7 @@ $(function (){
 	var $modal = $('#new-post-modal');
 	var NewPostModal = {
 
-		$post_subject : $('#post-public', $modal),
+		$post_subject : $('#post-subject', $modal),
 		$post_pub_rdo : $('input[gpid="post-public"]', $modal),
 		$post_pri_rdo : $('input[gpid="post-private"]', $modal),
 		$post_content : $('div[gpid="post-content"]',$modal),
@@ -183,20 +183,21 @@ $(function (){
 
 			_self.$post_attendee.select2({
 				ajax: {
-					url: "../common/workgroup-member-list.do",
+					url: "../common/user-list.do",
 					dataType: 'json',
 					delay: 250,
 					data: function (params) {
 					  return {
-					  	"wgroup_id" : 2,
 						"user_name": params.term
 					  };
 					},
 					processResults: function (data, params) {
 				  		var _result = new Array();
 					   	for(var i = 0; i < data.data.length; i++){
-						   _result[i].id= data.data[i].account;
-						   _result[i].text = data.data[i].name;
+							var item = {};
+							item.id= data.data[i].account;
+						    item.text = data.data[i].name;
+							_result.push(item);
 					   	}
 					  	return {
 							results: _result
@@ -257,6 +258,8 @@ $(function (){
 		}else{
 			_scope = _self.$post_group.prop("checked")? "WGROUP" : "SQUARE";
 		}
+		var attendees = _self.$post_attendee.val();
+		
 		$.ajax({
 			url: "../workspace/post-save.do",
             dataType : "json",
@@ -269,6 +272,7 @@ $(function (){
 				"type" : "DISCUSSION",
 				"priority" : _self.$post_priority.val(),
 				"classification" : _self.$post_classification.val(),
+				"attendees" : attendees.join(','),
 				"attachments" : []
 			},
 			success : function(response){

@@ -134,7 +134,7 @@ public class PostFacade {
 
         }catch (ServiceException e)  {
 
-            ContextHelper.stampContext(e,"excp.find.square.posts");
+            ContextHelper.stampContext(e,"excp.save.post");
 
         }finally{
 
