@@ -260,8 +260,9 @@ $(function (){
 		}else{
 			_scope = _self.$post_group.prop("checked")? "WGROUP" : "SQUARE";
 		}
+
 		var attendees = _self.$post_attendee.val();
-		
+
 		$.ajax({
 			url: "../workspace/post-save.do",
             dataType : "json",
@@ -274,7 +275,7 @@ $(function (){
 				"type" : "DISCUSSION",
 				"priority" : _self.$post_priority.val(),
 				"classification" : _self.$post_classification.val(),
-				"attendees" : attendees.join(','),
+				"attendees" : attendees == null ? '' : attendees.join(','),
 				"attachments" : []
 			},
 			success : function(response){
