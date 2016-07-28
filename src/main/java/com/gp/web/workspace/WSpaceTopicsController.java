@@ -52,7 +52,7 @@ public class WSpaceTopicsController extends BaseController{
 		}
 		PostInfo pinfo = new PostInfo();
 		pinfo.setSubject(post.getSubject());
-		pinfo.setWorkgroupId(GeneralConstants.PERSON_WORKGROUP);
+		pinfo.setWorkgroupId(GeneralConstants.PERSONAL_WORKGROUP);
 		pinfo.setState(Posts.State.DRAFT.name());
 		pinfo.setContent(post.getContent());
 		pinfo.setCommentOn(post.getCommentOn());
@@ -69,6 +69,7 @@ public class WSpaceTopicsController extends BaseController{
 			
 			result.setState(ActionResult.FAIL);
 			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
 		}
 		
 		return mav.addAllObjects(result.asMap());

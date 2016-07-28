@@ -1,10 +1,7 @@
 package com.gp.core;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.IdKey;
-import com.gp.common.Operations;
-import com.gp.common.Principal;
-import com.gp.common.ServiceContext;
+import com.gp.common.*;
 import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -13,11 +10,15 @@ import com.gp.info.InfoId;
 import com.gp.svc.CommonService;
 import com.gp.svc.PostService;
 import com.gp.svc.info.PostExt;
+import com.gp.validate.ValidateMessage;
+import com.gp.validate.ValidateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by garydiao on 7/22/16.
@@ -122,6 +123,20 @@ public class PostFacade {
                                   PostInfo postinfo, String ... attendees) throws CoreException{
         boolean result = false;
 
+        // check the validation of user information
+        Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), postinfo);
+        if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
+            CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+            cexcp.addValidateMessages(vmsg);
+            throw cexcp;
+        }
+
+        if(GeneralConstants.PERSONAL_WORKGROUP == postinfo.getWorkgroupId()
+          && Posts.Scope.WGROUP.name().equals(postinfo.getScope())){
+            CoreException cexcp = new CoreException(principal.getLocale(), "excp.unsupport");
+            cexcp.addValidateMessages(vmsg);
+            throw cexcp;
+        }
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_POST)){
             if(!InfoId.isValid(postinfo.getInfoId())){
@@ -143,4 +158,6 @@ public class PostFacade {
 
         return result;
     }
+
+
 }
