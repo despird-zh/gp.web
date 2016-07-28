@@ -120,6 +120,7 @@
 <script src="${path_plugins}/summernote/summernote.js"></script>
 <script type="text/javascript">
 $(function (){
+
 	"use strict";
 	/*
 	 * Common dialog to new post
@@ -206,7 +207,7 @@ $(function (){
 					cache: true
 			  	},
 			  	minimumInputLength: 0,
-			  	placeholder: { id: "", text : "Select Work group member"},
+			  	placeholder: { id: "", text : "Select attendee"},
 				dropdownParent: $modal
 			});
 				
@@ -242,6 +243,7 @@ $(function (){
 			  	placeholder: { id: "", text : "Select Work group file"},
 				dropdownParent: $modal
 			});
+
 			_self.$post_file_more.on('click', function(){
 				_self.$post_file_list.toggleClass('hidden');
 			});
