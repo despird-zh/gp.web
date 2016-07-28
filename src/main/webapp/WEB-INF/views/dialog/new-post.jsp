@@ -25,9 +25,7 @@
 					<div gpid="post-content" class="" placeholder="Content" 
 						style="min-height:50px;max-height:200px;background:#ecf0f5;
 						height:auto;overflow:auto; margin-bottom:5px;
-						padding:5px;">
-						what are you doing
-					</div>
+						padding:5px;"></div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -268,7 +266,7 @@ $(function (){
             dataType : "json",
             type: 'POST',
 			data : {
-				"content" : _self.$post_content.html(),
+				"content" : _self.$post_content.summernote('code'),
 				"subject" : _self.$post_subject.val(),
 				"scope" : _scope,
 				"commentOn" : _self.$post_comment.prop('checked'),
