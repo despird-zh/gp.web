@@ -17,8 +17,8 @@ import com.gp.audit.AccessPoint;
 import com.gp.exception.WebException;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
 import com.gp.web.shiro.AuthenToken;
+import com.gp.web.util.CustomWebUtils;
 
 @Controller("auth-ctlr")
 @RequestMapping("/main")

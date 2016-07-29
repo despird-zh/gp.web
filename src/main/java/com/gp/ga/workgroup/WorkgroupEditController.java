@@ -33,9 +33,9 @@ import com.gp.svc.info.WorkgroupExt;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
-import com.gp.web.ServletUtils;
 import com.gp.web.model.Workgroup;
+import com.gp.web.util.CustomWebUtils;
+import com.gp.web.util.ServletUtils;
 
 @Controller("ga-wg-edit-ctlr")
 @RequestMapping("/ga")

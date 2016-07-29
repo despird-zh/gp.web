@@ -22,7 +22,7 @@ import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
 import com.gp.web.BaseController;
-import com.gp.web.ServletUtils;
+import com.gp.web.util.ServletUtils;
 
 public class ImageFilter implements Filter{
 

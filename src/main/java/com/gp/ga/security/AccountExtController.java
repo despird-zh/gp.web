@@ -20,8 +20,8 @@ import com.gp.info.InfoId;
 import com.gp.dao.info.UserInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
 import com.gp.web.model.AccountExt;
+import com.gp.web.util.CustomWebUtils;
 
 @Controller("ga-account-ext-ctlr")
 @RequestMapping("/ga")

@@ -22,8 +22,8 @@ import com.gp.info.InfoId;
 import com.gp.dao.info.StorageInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
 import com.gp.web.model.Storage;
+import com.gp.web.util.CustomWebUtils;
 
 @Controller("ga-storage-new-ctlr")
 @RequestMapping("/ga")

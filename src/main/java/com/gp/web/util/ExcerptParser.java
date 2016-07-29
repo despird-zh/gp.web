@@ -1,4 +1,4 @@
-package com.gp.util;
+package com.gp.web.util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;

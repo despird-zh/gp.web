@@ -14,7 +14,7 @@ import com.gp.exception.CoreException;
 import com.gp.dao.info.CabFolderInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
+import com.gp.web.util.CustomWebUtils;
 
 /**
  * This controller wrap the operation on folder 

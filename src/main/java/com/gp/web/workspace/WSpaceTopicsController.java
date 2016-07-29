@@ -9,8 +9,8 @@ import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
 import com.gp.svc.info.PostExt;
-import com.gp.util.ExcerptParser;
 import com.gp.web.model.Post;
+import com.gp.web.util.ExcerptParser;
 
 import java.util.ArrayList;
 import java.util.Date;

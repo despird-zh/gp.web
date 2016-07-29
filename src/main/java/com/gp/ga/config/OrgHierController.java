@@ -25,9 +25,9 @@ import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
 import com.gp.web.model.Account;
 import com.gp.web.model.OrgNode;
+import com.gp.web.util.CustomWebUtils;
 
 @Controller("ga-orghier-ctlr")
 @RequestMapping("/ga")

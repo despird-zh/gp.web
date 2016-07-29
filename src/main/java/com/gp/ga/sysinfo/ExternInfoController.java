@@ -20,8 +20,8 @@ import com.gp.dao.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
 import com.gp.web.model.Source;
+import com.gp.web.util.CustomWebUtils;
 
 @Controller("ga-extern-ctlr")
 @RequestMapping("/ga")

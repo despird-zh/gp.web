@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
-import com.gp.web.CustomWebUtils;
+import com.gp.web.util.CustomWebUtils;
 
 @Controller("test-data-ctlr")
 @RequestMapping("/test")

@@ -2,7 +2,7 @@
  * Licensed to the Ultrabroad Company 
  * 
  */
-package com.gp.web;
+package com.gp.web.util;
 
 import java.io.IOException;
 import java.io.InputStream;

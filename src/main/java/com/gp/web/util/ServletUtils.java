@@ -1,4 +1,4 @@
-package com.gp.web;
+package com.gp.web.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
