@@ -7,13 +7,20 @@ import com.gp.common.Principal;
 import com.gp.core.PostFacade;
 import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
+import com.gp.info.CombineInfo;
+import com.gp.svc.info.PostExt;
+import com.gp.util.ExcerptParser;
 import com.gp.web.model.Post;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +31,8 @@ import com.gp.web.BaseController;
 @Controller("ws-topic-ctrl")
 @RequestMapping("/workspace")
 public class WSpaceTopicsController extends BaseController{
+
+	static Logger LOGGER = LoggerFactory.getLogger(WSpaceTopicsController.class);
 
 	@RequestMapping("topics")
 	public ModelAndView doInitial(){
@@ -60,8 +69,12 @@ public class WSpaceTopicsController extends BaseController{
 		pinfo.setPostDate(new Date());
 		pinfo.setPostType(Posts.Type.DISCUSSION.name());
 		pinfo.setScope(Posts.Scope.PRIVATE.name());
+		pinfo.setClassification(post.getClassification());
+		pinfo.setPriority(1);
 		pinfo.setOwm(1l);
 		try{
+			LOGGER.debug(post.getContent());
+			LOGGER.debug(ExcerptParser.getExcerptText(post.getContent()));
 			PostFacade.newPost(accesspoint, principal, pinfo, attendees);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.save.post"));
@@ -76,12 +89,51 @@ public class WSpaceTopicsController extends BaseController{
 	}
 
 	@RequestMapping("post-search")
-	public ModelAndView doPostSearch(){
+	public ModelAndView doPostSearch(HttpServletRequest request){
 
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
-		String wgid = super.readRequestParam("wgroup_id");
+		String state = super.readRequestParam("state");
+		String type = super.readRequestParam("type");
+		String scope = super.readRequestParam("scope");
+		try{
+			List<CombineInfo<PostInfo, PostExt>> postlist = PostFacade.findPersonalPosts(
+					accesspoint,
+					principal,
+					state,
+					type,
+					scope
+			);
 
-		mav.addObject("wgroup_id",  wgid);
-		return mav;
+			List<Post> plist = new ArrayList<>();
+			for(CombineInfo<PostInfo, PostExt> cinfo : postlist){
+				Post post = new Post();
+				post.setState(cinfo.getPrimary().getState());
+				post.setOwner(cinfo.getPrimary().getOwner());
+				post.setClassification(cinfo.getPrimary().getClassification());
+				post.setOwnerName(cinfo.getExtended().getOwnerName());
+				post.setCommentOn(cinfo.getPrimary().isCommentOn());
+				post.setContent(cinfo.getPrimary().getContent());
+				post.setExcerpt(cinfo.getPrimary().getExcerpt());
+				post.setPostId(cinfo.getPrimary().getInfoId().getId());
+				post.setSubject(cinfo.getPrimary().getSubject());
+				post.setPostTime(cinfo.getPrimary().getPostDate().toString());
+				post.setPriority(String.valueOf(cinfo.getPrimary().getPriority()));
+
+				plist.add(post);
+			}
+			result.setData(plist);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.find.personal.post"));
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
 	}
 }
