@@ -108,7 +108,7 @@ public class AvatarServlet extends HttpServlet {
         	ImageUtils.write(srcimg, savePath + File.separator + cacheFileName , extension);
         	
         }
-        
+        // if not new operation, just crop the image to expected size.
         if( !"new".equals(operFlag)){
         	// new operation 
 	        ActionResult rmsg = new ActionResult();
@@ -123,6 +123,7 @@ public class AvatarServlet extends HttpServlet {
         	RequestDispatcher dispatcher = request.getRequestDispatcher("./ga/image-new.do"); 
         	request.setAttribute("file_name", cacheFileName);
         	request.setAttribute("image_name", srcFileName);
+        	request.setAttribute("category", request.getParameter("category"));
         	dispatcher.forward(request, response); 
         }
     }

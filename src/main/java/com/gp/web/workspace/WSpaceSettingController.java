@@ -104,8 +104,7 @@ public class WSpaceSettingController  extends BaseController{
 				}
 			}
 			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(uinfo.getAvatarId()));
-			String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
-					imginfo.getTouchTime(), imginfo.getInfoId().getId(), imginfo.getExtension());
+			String imagePath = "../" + ImagePath + "/" + imginfo.getLink();
 			ui.setImagePath(imagePath);
 			
 			ui.setLanguage(uinfo.getLanguage());

@@ -76,8 +76,7 @@ public class WSpaceMetaController extends BaseController{
 			
 			meta.setSignature(cmbinfo.getPrimary().getSignature());
 			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(cmbinfo.getPrimary().getAvatarId()));
-			String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
-					imginfo.getTouchTime(), imginfo.getInfoId().getId(), imginfo.getExtension());
+			String imagePath = "../" + ImagePath + "/" + imginfo.getLink();
 			
 			meta.setImagePath(imagePath);
 			List<CombineInfo<OrgHierInfo, Boolean>> belongs = PersonalFacade.findUserOrgHierNodes(accesspoint, principal, principal.getAccount());

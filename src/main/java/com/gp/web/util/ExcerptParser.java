@@ -11,6 +11,10 @@ import org.jsoup.select.NodeVisitor;
 
 public class ExcerptParser {
 
+	public static void getExcerptImage(){
+		
+		//Jsoup.clean(bodyHtml, whitelist);
+	}
     /**
      * Format an Element to plain-text
      *

@@ -1,7 +1,7 @@
 ;
 var PageContext =(function ($, window, undefined){
 	"use strict";
-	
+	var $ListTab = $('#tab_1');
 	var ImageList = {
 	
 		$format_select : $('#tab_1 select[gpid="image-format"]'),
@@ -24,7 +24,8 @@ var PageContext =(function ($, window, undefined){
 			var _self = this;
 			
 			_self.$format_select.select2({
-				minimumResultsForSearch: -1, //hide the search box			
+				dropdownParent: $ListTab,
+				minimumResultsForSearch: -1 //hide the search box			
 			});			
 			// fix the select2 in tab panel width auto shrink.
 			_self.$format_select.next().css("min-width","100px");
@@ -101,6 +102,19 @@ var PageContext =(function ($, window, undefined){
 					 '</div>';
 				 }
 				},
+				{"targets":4,
+				 'searchable': false,
+				 'orderable': false,
+				 'render': function (data, type, full, meta){
+					 if('WGROUP_AVATAR' === data){
+						 return 'Workgroup';
+					 }else if('USER_AVATAR' === data){
+						 return 'User';
+					 }else{
+						 return data;
+					 }
+				 }
+				},
 				{"targets":7,
 				 'searchable': false,
 				 'orderable': false,
@@ -117,7 +131,7 @@ var PageContext =(function ($, window, undefined){
 				{ data : 'imageUrl', width : 50},
 				{ data : 'imageName', width : 100},
 				{ data : 'format', width : 80},
-				{ data : 'touchDate' , width : 140},
+				{ data : 'category' , width : 140},
 				{ data : 'modifier'},
 				{ data : 'modifyDate' },
 				{ data : 'imageId', width : 50}
@@ -214,6 +228,7 @@ var PageContext =(function ($, window, undefined){
 	
 	ImageList.initial();
 	
+	var $NewTab = $('#tab_2');
 	var ImageNew = {
 
 	    $avatarView: $('.avatar-view'),
@@ -223,6 +238,7 @@ var PageContext =(function ($, window, undefined){
 	    $avatarForm: $('#tab_2 .avatar-form'),
 	    $avatarUpload: $('#tab_2 .avatar-upload'),
 	    $avatarSrc: $('#tab_2 .avatar-src'),
+		$avatarCate: $('#tab_2 select[gpid="image-category"]'),
 	    $avatarData: $('#tab_2 .avatar-data'),
 	    $avatarInput: $('#tab_2 .avatar-input'),
 	    $avatarSave: $('#tab_2 .avatar-save'),
@@ -256,10 +272,14 @@ var PageContext =(function ($, window, undefined){
 				
 			});
 	        _self.$avatarInput.on('change', $.proxy(_self.change, _self));
-
+			_self.$avatarCate.select2({
+				dropdownParent: $NewTab,
+				minimumResultsForSearch: -1, //hide the search box	
+				width : 170,
+			});
 	        _self.$avatarForm.on('submit', $.proxy(_self.submit, _self));
 	        _self.$avatarBtns.on('click', $.proxy(_self.rotate, _self));
-			
+			// initial input element
 			_self.$avatarInput.FileInput();
 	    }
 	};

@@ -91,7 +91,7 @@ public class WGroupMetaController extends BaseController{
 			Long avatarId = cmbinfo.getPrimary().getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
-				wsum.setImagePath("../" + ImagePath + "/" + avatar.getFileName());
+				wsum.setImagePath("../" + ImagePath + "/" + avatar.getLink());
 			}
 			wsum.setState(cmbinfo.getPrimary().getState());
 			Date since = cmbinfo.getPrimary().getCreateDate();
@@ -187,7 +187,7 @@ public class WGroupMetaController extends BaseController{
 			Long avatarId = info.getPrimary().getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
-				wgroup.setImagePath("../" + ImagePath + "/" + avatar.getFileName());
+				wgroup.setImagePath("../" + ImagePath + "/" + avatar.getLink());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPrimary().getPublishCabinet();

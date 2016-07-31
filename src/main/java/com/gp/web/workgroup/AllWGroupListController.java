@@ -65,8 +65,7 @@ public class AllWGroupListController extends BaseController{
 				wgroup.setAdmin(winfo.getPrimary().getAdmin());
 				wgroup.setAdminName(winfo.getExtended().getAdminName());
 				wgroup.setDescription(winfo.getPrimary().getDescription());
-				String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
-						winfo.getExtended().getImageTouch(), winfo.getPrimary().getAvatarId(), winfo.getExtended().getImageExt());
+				String imagePath = "../" + ImagePath + "/" + winfo.getExtended().getImageLink();
 				
 				wgroup.setImagePath(imagePath);
 				wgroup.setState(winfo.getPrimary().getState());
@@ -124,8 +123,7 @@ public class AllWGroupListController extends BaseController{
 				wgroup.setAdmin(winfo.getPrimary().getAdmin());
 				wgroup.setAdminName(winfo.getExtended().getAdminName());
 				wgroup.setDescription(winfo.getPrimary().getDescription());
-				String imagePath = "../" + ImagePath + "/" + Images.getImgFileName(
-						winfo.getExtended().getImageTouch(), winfo.getPrimary().getAvatarId(), winfo.getExtended().getImageExt());
+				String imagePath = "../" + ImagePath + "/" + winfo.getExtended().getImageLink();
 				
 				wgroup.setImagePath(imagePath);
 				wgroup.setState(winfo.getPrimary().getState());

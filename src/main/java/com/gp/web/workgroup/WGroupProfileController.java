@@ -120,7 +120,7 @@ public class WGroupProfileController extends BaseController{
 			Long avatarId = info.getPrimary().getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
-				wgroup.setImagePath("../" + imagePath + "/" + avatar.getFileName());
+				wgroup.setImagePath("../" + imagePath + "/" + avatar.getLink());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPrimary().getPublishCabinet();

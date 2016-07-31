@@ -60,11 +60,12 @@ public class ImagesListController  extends BaseController{
 				img.setImageId(info.getInfoId().getId());
 				img.setFormat(info.getFormat());
 				img.setImageName(info.getImageName());
-				img.setTouchDate(TOUCH_DATE_FORMAT.format(info.getTouchTime()));
+				img.setCategory(info.getCategory());
+				img.setPersistType(info.getPersist());
 				img.setModifier(info.getModifier());
 				img.setModifyDate(MODIFY_DATE_FORMAT.format(info.getModifyDate()));
 				
-				String imgfilename = info.getFileName();
+				String imgfilename = info.getLink();
 				
 				img.setImageUrl("../" + image_cache + '/' + imgfilename);
 				
@@ -92,6 +93,7 @@ public class ImagesListController  extends BaseController{
 		String imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
     	String cachedFileName = (String)request.getAttribute("file_name");
     	String srcFileName = (String)request.getAttribute("image_name");
+    	String category = (String)request.getAttribute("category");
 		String relativeUri = "/" + imagePath + '/' + cachedFileName;
 		String realPath = request.getServletContext().getRealPath(relativeUri);
 		LOGGER.debug(relativeUri);
@@ -100,7 +102,7 @@ public class ImagesListController  extends BaseController{
 		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try {
-			ImageFacade.saveImage(accesspoint, principal, realPath, srcFileName);
+			ImageFacade.saveImage(accesspoint, principal,category, realPath, srcFileName);
 				    	
 	        rmsg.setMessage("OK");
 	        rmsg.setState("200");
@@ -130,6 +132,7 @@ public class ImagesListController  extends BaseController{
     	String imgId = super.readRequestParam("image_id");// the id of original 
     	String imgName = super.readRequestParam("image_name");// the name of image
     	String imgSrc = super.readRequestParam("image_src"); // the file name of new image
+    	String category = super.readRequestParam("category");
     	
     	imgSrc = StringUtils.isBlank(imgSrc)? null : FilenameUtils.getName(imgSrc);
     	if(Images.isQualifiedName(imgSrc)){
@@ -142,7 +145,7 @@ public class ImagesListController  extends BaseController{
 		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try {
-			ImageFacade.updateImage(accesspoint, principal,Long.valueOf(imgId), imgName, realPath);
+			ImageFacade.updateImage(accesspoint, principal,Long.valueOf(imgId),category, imgName, realPath);
 	
 			rmsg.setMessage("Success in update the image");
 			rmsg.setState(ActionResult.SUCCESS);

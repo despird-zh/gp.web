@@ -58,7 +58,7 @@ public class ImageFacade {
 	}
 	
 	public static Boolean saveImage(AccessPoint accesspoint,
-			Principal principal, String imagePath , String srcFileName)throws CoreException{
+			Principal principal,String category, String imagePath , String imageName)throws CoreException{
 		
 		Boolean gresult = false;
 		
@@ -70,11 +70,14 @@ public class ImageFacade {
 			Date touchdate = Images.parseTouchDate(filename);
 			
 			ImageInfo image = new ImageInfo();
-			image.setImageFile(new File(imagePath));
-			image.setExtension(FilenameUtils.getExtension(filename));
-			image.setTouchTime(touchdate);
-			image.setImageName(srcFileName);
+			image.setDataFile(new File(imagePath));
 			image.setFormat(FilenameUtils.getExtension(filename));
+			image.setModifyDate(touchdate);
+			image.setImageName(imageName);
+			image.setCategory(category);
+			image.setPersist(Images.Persist.DATABASE.name());
+			image.setLink(filename);
+			
 			image.setInfoId(IdKey.IMAGE.getInfoId(imgid));
 			
 			gresult = imageservice.newImage(svcctx, image);
@@ -101,6 +104,7 @@ public class ImageFacade {
 				Operations.FIND_IMAGE)){
 
 			svcctx.setOperationObject(imageId);
+			// this will ignore the image data reading
 			gresult = imageservice.getImage(svcctx, imageId, "");
 			
 		} catch (ServiceException e)  {
@@ -113,6 +117,9 @@ public class ImageFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Find image information without retrieve the image binary data. 
+	 **/
 	public static ImageInfo findImage(AccessPoint accesspoint,
 			Principal principal, String parentPath, String fileName)throws CoreException{
 		
@@ -142,7 +149,7 @@ public class ImageFacade {
 	 * @param imagePath the image file to save
 	 **/
 	public static Boolean updateImage(AccessPoint accesspoint,
-			Principal principal,Long imageId, String imageName, String imagePath)throws CoreException{
+			Principal principal,Long imageId,String category, String imageName, String imagePath)throws CoreException{
 		
 		Boolean gresult = false;
 		
@@ -154,11 +161,13 @@ public class ImageFacade {
 			
 			if(StringUtils.isNotBlank(imagePath)){
 				String filename = FilenameUtils.getName(imagePath);
-				Date touchdate = Images.parseTouchDate(filename);							
-				image.setImageFile(new File(imagePath));
-				image.setExtension(FilenameUtils.getExtension(filename));// get extension
-				image.setTouchTime(touchdate);	// get touch date
+									
+				image.setDataFile(new File(imagePath));
+				image.setLink(filename);// get extension
+				image.setPersist(Images.Persist.DATABASE.name());
+				image.setCategory(category);
 				image.setFormat(FilenameUtils.getExtension(filename)); // get format
+				image.setModifyDate(Images.parseTouchDate(filename));
 			}
 			image.setInfoId(IdKey.IMAGE.getInfoId(imageId));
 			svcctx.setOperationObject(image.getInfoId());// set audit data

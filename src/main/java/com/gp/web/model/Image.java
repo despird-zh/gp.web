@@ -6,7 +6,9 @@ public class Image {
 	
 	private String format;
 	
-	private String touchDate;
+	private String category;
+	
+	private String persistType;
 	
 	private String imageName;
 	
@@ -30,14 +32,6 @@ public class Image {
 
 	public void setFormat(String format) {
 		this.format = format;
-	}
-
-	public String getTouchDate() {
-		return touchDate;
-	}
-
-	public void setTouchDate(String touchDate) {
-		this.touchDate = touchDate;
 	}
 
 	public String getModifier() {
@@ -70,6 +64,22 @@ public class Image {
 
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
+	}
+
+	public String getPersistType() {
+		return persistType;
+	}
+
+	public void setPersistType(String persistType) {
+		this.persistType = persistType;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}	
 	
 }

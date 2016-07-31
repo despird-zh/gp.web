@@ -76,54 +76,53 @@
 								<span class="description">7:30 PM today</span>
 							</div><!-- /.user-block -->
 							<div class="clearfix">
-							<div class="inline-docs pull-right" >
+								<div class="inline-docs pull-right" >
+										<ul class="doc-items show-scrollbar">
+										  <li><!-- start message -->
+											<a href="#">
+											  <span><i class="fa fa-file-o margin-r-5"></i>
+												关于UI设计文件.docx						
+											  </span>                          
+											</a>
+											<small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
+										  </li><!-- end message -->
+										  <li>
+											<a class="ellipsis ellipsis-180"href="#">
+											  <span><i class="fa fa-file-o margin-r-5"></i>
+												总体设计文件.mov                          
+											  </span>                         
+											</a>
+											 <small class="pull-right"><i class="fa fa-clock-o"></i> 2 hours</small>
+										  </li>
+										  <li>
+											<a href="#">
+											  <span><i class="fa fa-file-o margin-r-5"></i>
+												开发人员安排.xls
+											  </span>                          
+											</a>
+											<small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
+										  </li>
+										  <li>
+											<a href="#">
+											  <span><i class="fa fa-file-o margin-r-5"></i>
+												任务更细文件.doc                            
+											  </span>                          
+											</a>
+											<small class="pull-right"><i class="fa fa-clock-o "></i> Yesterday</small>
+										  </li>
+										  <li>
+											<a href="#">                            
+											  <span>
+												<i class="fa fa-clock-o margin-r-5"></i>
+												工作制度及奖惩规定.doc                            
+											  </span>                          
+											</a>
+											<small class="pull-right"><i class="fa fa-clock-o"></i> 2 days</small>
+										  </li>
+										</ul>
+								</div>
+								评论区有人问为什么这么说……是这样的，iOS中回到主屏后App就被冻结，除音乐播放之类的进程之外不允许常驻后台，那么怎么在手机关屏后推送消息呢？是开发者在服务器上把消息先推送给苹果的服务器，然后苹果把该用户的微信、QQ、Facebook、淘宝等各种消息统一推送给用户，这样就做到了不影响消息推送的情况下、同时减少后台个数，熄屏几乎不耗。
 								
-									<ul class="doc-items show-scrollbar">
-									  <li><!-- start message -->
-										<a href="#">
-										  <span><i class="fa fa-file-o margin-r-5"></i>
-											关于UI设计文件.docx						
-										  </span>                          
-										</a>
-										<small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
-									  </li><!-- end message -->
-									  <li>
-										<a class="ellipsis ellipsis-180"href="#">
-										  <span><i class="fa fa-file-o margin-r-5"></i>
-											总体设计文件.mov                          
-										  </span>                         
-										</a>
-										 <small class="pull-right"><i class="fa fa-clock-o"></i> 2 hours</small>
-									  </li>
-									  <li>
-										<a href="#">
-										  <span><i class="fa fa-file-o margin-r-5"></i>
-											开发人员安排.xls
-										  </span>                          
-										</a>
-										<small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
-									  </li>
-									  <li>
-										<a href="#">
-										  <span><i class="fa fa-file-o margin-r-5"></i>
-											任务更细文件.doc                            
-										  </span>                          
-										</a>
-										<small class="pull-right"><i class="fa fa-clock-o "></i> Yesterday</small>
-									  </li>
-									  <li>
-										<a href="#">                            
-										  <span>
-											<i class="fa fa-clock-o margin-r-5"></i>
-											工作制度及奖惩规定.doc                            
-										  </span>                          
-										</a>
-										<small class="pull-right"><i class="fa fa-clock-o"></i> 2 days</small>
-									  </li>
-									</ul>
-							</div>
-							评论区有人问为什么这么说……是这样的，iOS中回到主屏后App就被冻结，除音乐播放之类的进程之外不允许常驻后台，那么怎么在手机关屏后推送消息呢？是开发者在服务器上把消息先推送给苹果的服务器，然后苹果把该用户的微信、QQ、Facebook、淘宝等各种消息统一推送给用户，这样就做到了不影响消息推送的情况下、同时减少后台个数，熄屏几乎不耗。
-							
 							</div>
 							<ul class="list-inline">
 								<li><a href="#" class="link-black text-sm"><i class="fa fa-plug margin-r-5"></i> Join</a></li>
@@ -360,9 +359,9 @@
 								<span class="description">Shared publicly - 7:30 PM today</span>
 							</div><!-- /.user-block -->
 							<div class="clearfix">
-							<img class="inline-img pull-left" src="${path_image}/user1-128x128.jpg"></img>
-							默认ticket仅在工作组内可见，public后全局可见，一旦可见用户都可以添加评论。仅成员用户收到消息提醒。<br>
-							因此Join的功能可以不要
+								<img class="inline-img pull-left" src="${path_image}/user1-128x128.jpg"></img>
+								默认ticket仅在工作组内可见，public后全局可见，一旦可见用户都可以添加评论。仅成员用户收到消息提醒。<br>
+								因此Join的功能可以不要
 							</div>
 							<ul class="list-inline">
 								<li><a href="#" class="link-black text-sm"><i class="fa fa-plug margin-r-5"></i> Join</a></li>

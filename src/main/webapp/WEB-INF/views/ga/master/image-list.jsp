@@ -92,7 +92,7 @@
 														<th>Image</th>
 														<th>Name</th>
 														<th>Format</th>
-														<th>Touch Date</th>
+														<th>Category</th>
 														<th>Modifier</th>
 														<th>Last Modify</th>
 														<th>Act</th>
@@ -163,13 +163,23 @@
 									<div class="col-md-12">
 										<form class="avatar-form" action="../avatar" enctype="multipart/form-data" method="post">
 										<div class="avatar-body">
-											<!-- Upload image and data -->
-											<div class="avatar-upload">
-											  <input type="hidden" class="avatar-src" name="avatar_src">
-											  <input type="hidden" class="avatar-data" name="avatar_data">
-											  <input type="hidden" name="oper_flag" value="new">
-											  <input type="file" class="avatar-input" title="Select file to upload" id="avatarInput" name="avatar_file">
+											<div class="row">
+											  <div class="col-md-2 p-xxs">
+												<select gpid="image-category" class="form-control select2" name="category">								
+													<option value="WGROUP_AVATAR">WorkGroup Avatar</option>
+													<option value="USER_AVATAR">User Avatar</option>
+												</select>
+											  </div>
+											  
+												  <!-- Upload image and data -->
+												<div class="avatar-upload col-md-10 p-xxs">
+													<input type="hidden" class="avatar-src" name="avatar_src">
+													<input type="hidden" class="avatar-data" name="avatar_data">
+													<input type="hidden" name="oper_flag" value="new">
+													<input type="file" class="avatar-input btn-sm" title="Select File" id="avatarInput" name="avatar_file">
+												</div>
 											</div>
+											
 											<!-- Crop and preview -->
 											<div class="row">
 											  <div class="col-md-9 p-xxs">
