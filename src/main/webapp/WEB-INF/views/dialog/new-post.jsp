@@ -11,11 +11,12 @@
 		<h4 class="modal-title">New Post</h4>
 	  </div>
 	  <div class="modal-body" style="overflow:hidden;">
+	    <form id="post-form" >
 		<div class=" box-form form-horizontal">
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="doc-name">Subject</label>
 				<div class="col-sm-10">
-					<input type="text" placeholder="Write subject" id="post-subject" class="form-control">
+					<input type="text" placeholder="Write subject" name="subject" id="post-subject" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
@@ -107,6 +108,7 @@
 				</div>
 			</div>
 		</div>
+		</form>
 	  </div>
 	  <div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -125,7 +127,7 @@ $(function (){
 	 */	
 	var $modal = $('#new-post-modal');
 	var NewPostModal = {
-
+		$post_form : $('#post-form', $modal),
 		$post_subject : $('#post-subject', $modal),
 		$post_pub_rdo : $('input[gpid="post-public"]', $modal),
 		$post_pri_rdo : $('input[gpid="post-private"]', $modal),
