@@ -23,6 +23,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.gp</groupId>
+			<artifactId>gp-search</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gp</groupId>
 			<artifactId>gp-svc</artifactId>
 			<version>0.1</version>
 		</dependency>
