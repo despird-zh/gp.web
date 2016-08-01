@@ -73,8 +73,11 @@ public class WSpaceTopicsController extends BaseController{
 		pinfo.setPriority(1);
 		pinfo.setOwm(1l);
 		try{
-			LOGGER.debug(post.getContent());
-			LOGGER.debug(ExcerptParser.getExcerptText(post.getContent()));
+			pinfo.setExcerpt(ExcerptParser.getExcerptCode(post.getContent()));
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Post Content : {}", pinfo.getContent());
+				LOGGER.debug("Excerpt Content : {}", pinfo.getExcerpt());
+			}
 			PostFacade.newPost(accesspoint, principal, pinfo, attendees);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.save.post"));

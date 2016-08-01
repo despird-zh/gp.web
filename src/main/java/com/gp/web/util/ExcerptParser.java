@@ -1,36 +1,52 @@
 package com.gp.web.util;
 
+
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExcerptParser {
 
-	public static void getExcerptImage(){
-		
-		//Jsoup.clean(bodyHtml, whitelist);
-	}
+    static Logger LOGGER = LoggerFactory.getLogger(ExcerptParser.class);
+
     /**
      * Format an Element to plain-text
      *
      * @param htmlcode the root element to format
      * @return formatted text
      */
-    public static String getExcerptText(String htmlcode) {
+	public static String getExcerptCode(String htmlcode){
 
+        StringBuffer sbuf = new StringBuffer();
+
+        // parse the html code.
         Document doc = Jsoup.parseBodyFragment(htmlcode);
         Element body = doc.body();
+        // try to find the first image of post
+        Elements imgs = doc.getElementsByTag("img");
+        if(imgs.size() >0 ){
+
+            Element img0 = imgs.get(0);
+            img0.addClass("excerpt-img");
+            sbuf.append(img0.outerHtml());
+        }
         FormattingVisitor formatter = new FormattingVisitor();
         NodeTraversor traversor = new NodeTraversor(formatter);
         traversor.traverse(body); // walk the DOM, and call .head() and .tail() for each node
+        String excerptStr = formatter.toString();
+        sbuf.append(excerptStr);
 
-        return formatter.toString();
-    }
+        return sbuf.toString();
+	}
 
     // the formatting rules, implemented in a breadth-first DOM traverse
     private static class FormattingVisitor implements NodeVisitor {
@@ -94,4 +110,5 @@ public class ExcerptParser {
             return accum.toString();
         }
     }
+
 }
