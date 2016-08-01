@@ -10,6 +10,7 @@ import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
 import com.gp.svc.info.PostExt;
 import com.gp.web.model.Post;
+import com.gp.web.util.CustomWebUtils;
 import com.gp.web.util.ExcerptParser;
 
 import java.util.ArrayList;
@@ -51,7 +52,8 @@ public class WSpaceTopicsController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
-		String wgid = super.readRequestParam("wgroup_id");
+
+		CustomWebUtils.dumpRequestAttributes(request);
 		Post post = new Post();
 		super.readRequestData(post);
 		String attendeestr = request.getParameter("attendees");
