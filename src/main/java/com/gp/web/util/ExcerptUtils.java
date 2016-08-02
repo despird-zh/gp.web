@@ -7,16 +7,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExcerptParser {
+public class ExcerptUtils {
 
-    static Logger LOGGER = LoggerFactory.getLogger(ExcerptParser.class);
+    static Logger LOGGER = LoggerFactory.getLogger(ExcerptUtils.class);
 
     /**
      * Format an Element to plain-text

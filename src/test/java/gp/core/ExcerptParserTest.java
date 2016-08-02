@@ -1,6 +1,6 @@
 package gp.core;
 
-import com.gp.web.util.ExcerptParser;
+import com.gp.web.util.ExcerptUtils;
 
 /**
  * Created by garydiao on 8/1/16.
@@ -19,6 +19,6 @@ public class ExcerptParserTest {
                 "wWACH+H09wdGltaXplZCBieSBVbGVhZCBTbWFydFNhdmVyIQAAOw==\"  \n" +
                 "alt=\"Base64 encoded image\" width=\"150\" height=\"150\"/> ";
 
-        ExcerptParser.getExcerptCode(hcode);
+        ExcerptUtils.getExcerptCode(hcode);
     }
 }
