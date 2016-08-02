@@ -57,7 +57,8 @@ public class PostParser implements NodeVisitor{
             Element img0 = new Element(Tag.valueOf("img"), "");
             img0.addClass("excerpt-img");
             img0.attr("src", images.get(0));
-            excerpt.append(img0.outerHtml());
+            // prepend the html code to excerpt
+            excerpt.insert(0,img0.outerHtml());
         }
 
     }

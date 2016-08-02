@@ -10,6 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ class UploadHelper {
 	/**
 	 * Save the upload file 
 	 **/
-	static void storeFile(String storepath, PartMeta filepart,HttpServletRequest request)throws CoreException{
+	static void storeFile(String storepath, PartMeta filepart)throws CoreException{
 		
 		InputStream inputStream = null;
 
@@ -65,10 +66,10 @@ class UploadHelper {
 			TransferCacheInfo tsfinfo = getCachedInfo(filepart.getFileId());
 			tsfinfo.setCabinetId(filepart.getCabinetId());
 			// create file and binary 
-			createCabFile(tsfinfo, filepart, request);
+			createCabFile(tsfinfo, filepart);
 			tsfinfo.getRanges().add(filepart.getContentRange());
 			// save binary
-			saveBinary(tsfinfo.getBinaryId(), inputStream, request);
+			saveBinary(tsfinfo.getBinaryId(), filepart);
 			LOGGER.debug("single file upload complete");
 
 		} finally {
@@ -79,7 +80,7 @@ class UploadHelper {
 	/**
 	 * Save upload file chunk 
 	 **/
-	static void storeFileChunk(String storepath, PartMeta filepart, HttpServletRequest request)throws CoreException{
+	static void storeFileChunk(String storepath, PartMeta filepart)throws CoreException{
 		
 		InputStream inputStream = null;
 		RandomAccessFile file = null;
@@ -103,12 +104,12 @@ class UploadHelper {
 			// when receive first chunk then create file in cabinet
 			if(filepart.getContentRange().getStartPos() == 0){
 				
-				createCabFile(tsfinfo, filepart, request);				
+				createCabFile(tsfinfo, filepart);
 			}
 			
 			tsfinfo.getRanges().add(filepart.getContentRange());
 			
-			saveBinaryChunk(tsfinfo.getBinaryId(), filepart.getContentRange(), inputStream, request);
+			saveBinaryChunk(tsfinfo.getBinaryId(), filepart);
 			
 		} finally {
 			IOUtils.closeQuietly(inputStream);
@@ -142,11 +143,10 @@ class UploadHelper {
 	 * 
 	 * @return InfoId<Long> the id of cabinet file
 	 **/
-	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart,
-			HttpServletRequest request) throws CoreException{
+	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart) throws CoreException{
 		
 		Principal principal = BaseController.getPrincipal();
-		AccessPoint accesspoint = BaseController.getAccessPoint(request);
+		AccessPoint accesspoint = filepart.getAccessPoint();
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
 		InfoId<Long> cabid = IdKey.CABINET.getInfoId(cabinetId);
@@ -192,27 +192,28 @@ class UploadHelper {
 	 * @param inputStream the input stream of upload file
 	 * @param request the http request to extract access point and principal. 
 	 **/
-	public static void saveBinary(InfoId<Long> binaryId, InputStream inputStream, HttpServletRequest request)throws CoreException{
+	public static void saveBinary(InfoId<Long> binaryId, PartMeta filemeta)throws CoreException{
 		
 		Principal principal = BaseController.getPrincipal();
-		AccessPoint accesspoint = BaseController.getAccessPoint(request);
-		StorageFacade.storeBinary(accesspoint, principal, binaryId, inputStream);		
+		AccessPoint accesspoint = filemeta.getAccessPoint();
+		StorageFacade.storeBinary(accesspoint, principal, binaryId, filemeta.getContent());
 	}
 	
 	/**
 	 * Save file binary into storage
 	 * 
 	 * @param binaryId the id of file binary
-	 * @param contentRange the content range of upload file
-	 * @param inputStream the input stream of upload file
-	 * @param request the http request to extract access point and principal. 
+	 * @param filemeta the content range of upload file
 	 **/
-	public static void saveBinaryChunk(InfoId<Long> binaryId, ContentRange contentRange,  InputStream inputStream,	HttpServletRequest request)throws CoreException{
+	public static void saveBinaryChunk(InfoId<Long> binaryId, PartMeta filemeta)throws CoreException{
 		
 		Principal principal = BaseController.getPrincipal();
-		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 
-		StorageFacade.storeBinaryChunk(accesspoint, principal, binaryId, contentRange, inputStream);
+		StorageFacade.storeBinaryChunk(filemeta.getAccessPoint(),
+				principal,
+				binaryId,
+				filemeta.getContentRange(),
+				filemeta.getContent());
 	}
 	
 	/**

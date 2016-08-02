@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.gp.audit.AccessPoint;
+import com.gp.web.BaseController;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -41,12 +43,12 @@ public class TransferServlet extends HttpServlet {
             throws ServletException, IOException{
     	
         // parse the request
-    	PartMeta fmeta = processRequest(request);            
+    	PartMeta partmeta = processRequest(request);
     	try {
-	    	if(fmeta.isChunkPart()){
-	    		UploadHelper.storeFileChunk(upload_cache, fmeta, request);
+	    	if(partmeta.isChunkPart()){
+	    		UploadHelper.storeFileChunk(upload_cache, partmeta);
 	    	}else{
-	    		UploadHelper.storeFile(upload_cache, fmeta, request);
+	    		UploadHelper.storeFile(upload_cache, partmeta);
 	    	}
 	        // prepare write back json string
 	        response.setContentType("application/json");
@@ -54,7 +56,7 @@ public class TransferServlet extends HttpServlet {
 	        // Convert FilePart into JSON format
 	        ObjectMapper mapper = new ObjectMapper();
 	        // Send result to client
-	        mapper.writeValue(response.getOutputStream(), fmeta);
+	        mapper.writeValue(response.getOutputStream(), partmeta);
     	} catch (CoreException e) {
 			
 			e.printStackTrace();
@@ -115,9 +117,14 @@ public class TransferServlet extends HttpServlet {
         fmeta.setName(filename);
         String ext = FilenameUtils.getExtension(filename);
         fmeta.setExtension(StringUtils.isBlank(ext)? UNKNOWN_EXT : ext);
+        // parse the input stream
         fmeta.setContent(part.getInputStream());
         fmeta.setContentType(part.getContentType());
-        
+
+        // parse the access point from request
+        AccessPoint accesspoint = BaseController.getAccessPoint(request);
+        fmeta.setAccessPoint(accesspoint);
+
         String contentRange = request.getHeader("Content-Range");
         
         if(StringUtils.isNotBlank(contentRange)){

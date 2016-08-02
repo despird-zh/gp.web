@@ -2,8 +2,12 @@ package com.gp.web.servlet;
 
 import java.io.InputStream;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gp.audit.AccessPoint;
 import com.gp.storage.ContentRange;
- 
+
+/**
+ * This class wrap the setting of part meta
+ **/
 @JsonIgnoreProperties({"content"})
 public class PartMeta {
  
@@ -19,6 +23,15 @@ public class PartMeta {
     
     private InputStream content;
 
+	private AccessPoint accessPoint;
+
+	public AccessPoint getAccessPoint() {
+		return accessPoint;
+	}
+
+	public void setAccessPoint(AccessPoint accessPoint) {
+		this.accessPoint = accessPoint;
+	}
 
 	public InputStream getContent() {
 		return content;
