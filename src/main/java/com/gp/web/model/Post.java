@@ -27,7 +27,7 @@ public class Post {
 
     private String workgroupName;
 
-    private Boolean commentOn;
+    private boolean commentOn;
 
     private String classification;
 
@@ -137,11 +137,11 @@ public class Post {
         this.workgroupName = workgroupName;
     }
 
-    public Boolean getCommentOn() {
+    public boolean getCommentOn() {
         return commentOn;
     }
 
-    public void setCommentOn(Boolean commentOn) {
+    public void setCommentOn(boolean commentOn) {
         this.commentOn = commentOn;
     }
 }

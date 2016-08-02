@@ -4,7 +4,7 @@
 
 </style>
 <div class="modal fade" id="new-post-modal" tabindex="-1" data-backdrop="false" aria-labelledby="new-post-modal-label"><!-- new post modal -->
-  <div class="modal-dialog" style="width:650px;">
+  <div class="modal-dialog" style="width:700px;">
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -106,6 +106,17 @@
 					</ul>
 				</div>
 			</div>
+			<form id="post-form">
+				<input name="content" type="hidden">
+				<input name="subject" type="hidden">
+				<input name="scope" type="hidden">
+				<input name="commentOn" type="hidden">
+				<input name="type" type="hidden">
+				<input name="priority" type="hidden">
+				<input name="classification" type="hidden">
+				<input name="attendees" type="hidden">
+				<input name="attachments" type="hidden">
+			</form>
 		</div>
 	  </div>
 	  <div class="modal-footer">
@@ -261,7 +272,7 @@ $(function (){
 
 		var attendees = _self.$post_attendee.val();
 
-		$.ajax({
+		/*$.ajax({
 			url: "../workspace/post-save.do",
             dataType : "json",
             type: 'POST',
@@ -280,9 +291,31 @@ $(function (){
 
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
+		});*/
+		$('#post-form input[name="content"]').val(_self.$post_content.summernote('code'));
+		$('#post-form input[name="subject"]').val(_self.$post_subject.val());
+		$('#post-form input[name="scope"]').val(_scope);
+		$('#post-form input[name="commentOn"]').val(_self.$post_comment.prop('checked'));
+		$('#post-form input[name="type"]').val('DISCUSSION');
+		$('#post-form input[name="priority"]').val(_self.$post_priority.val());
+		$('#post-form input[name="classification"]').val(_self.$post_classification.val());
+		$('#post-form input[name="attendees"]').val(attendees == null ? '' : attendees.join(','));
+		$('#post-form input[name="attachments"]').val('');
+		
+		var postFromData = new FormData($('#post-form')[0]);
+		$.ajax({
+			url: "../workspace/post-save.do",
+            dataType : "json",
+            type: 'POST',
+			processData: false,
+			contentType: 'multipart/form-data',
+			data : postFromData,
+			success : function(response){
+
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
 		});
 	};
-
 
 	NewPostModal.initial();
 });

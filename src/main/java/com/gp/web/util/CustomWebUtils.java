@@ -27,8 +27,8 @@ import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
 
 /**
- * @author Gary Diao mailto:diaogc@ultrabraod.com.cn 2012-07-01
- * @version V0.1
+ * @author Gary Diao 
+ * @version V0.1 2012-07-01
  * */
 public abstract class CustomWebUtils extends WebUtils{
 	

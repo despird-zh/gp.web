@@ -53,25 +53,32 @@ public class WSpaceTopicsController extends BaseController{
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
 
-		CustomWebUtils.dumpRequestAttributes(request);
+		CustomWebUtils.dumpRequestBody(request);
 		Post post = new Post();
-		super.readRequestData(post);
+		//super.readRequestData(post);
 		String attendeestr = request.getParameter("attendees");
 		String[] attendees = null;
 		if(StringUtils.isNotBlank(attendeestr)){
 			attendees = StringUtils.split(attendeestr,GeneralConstants.KVPAIRS_SEPARATOR);
 		}
 		PostInfo pinfo = new PostInfo();
+		pinfo.setOwner(principal.getAccount());
+		/*
 		pinfo.setSubject(post.getSubject());
-		pinfo.setWorkgroupId(GeneralConstants.PERSONAL_WORKGROUP);
-		pinfo.setState(Posts.State.DRAFT.name());
 		pinfo.setContent(post.getContent());
 		pinfo.setCommentOn(post.getCommentOn());
-		pinfo.setOwner(principal.getAccount());
-		pinfo.setPostDate(new Date());
+		pinfo.setClassification(post.getClassification());
+		*/
+		pinfo.setSubject(request.getParameter("subject"));
+		pinfo.setContent(request.getParameter("content"));
+		pinfo.setCommentOn(Boolean.valueOf(request.getParameter("commentOn")));
+		pinfo.setClassification(request.getParameter("classification"));
+		
+		pinfo.setWorkgroupId(GeneralConstants.PERSONAL_WORKGROUP);
+		pinfo.setState(Posts.State.DRAFT.name());
 		pinfo.setPostType(Posts.Type.DISCUSSION.name());
 		pinfo.setScope(Posts.Scope.PRIVATE.name());
-		pinfo.setClassification(post.getClassification());
+		pinfo.setPostDate(new Date());
 		pinfo.setPriority(1);
 		pinfo.setOwm(1l);
 		try{
