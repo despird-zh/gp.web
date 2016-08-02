@@ -49,6 +49,7 @@ public class ExcerptUtils {
 
     // the formatting rules, implemented in a breadth-first DOM traverse
     private static class FormattingVisitor implements NodeVisitor {
+
         private static final int maxWidth = 80;
         private int width = 0;
         private StringBuilder accum = new StringBuilder(); // holds the accumulated text

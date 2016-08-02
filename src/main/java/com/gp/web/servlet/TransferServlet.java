@@ -28,7 +28,7 @@ public class TransferServlet extends HttpServlet {
 	static Logger LOGGER = LoggerFactory.getLogger(TransferServlet.class);
     private static final long serialVersionUID = 1L;
 
-    static String upload_cache = GeneralConfig.getString(SystemOptions.UPLOAD_CACHE_PATH);
+    static String upload_cache = GeneralConfig.getString(SystemOptions.FILE_CACHE_PATH);
     // unknown file extension
     public static final String UNKNOWN_EXT = "ukw";
     // the form element dom name

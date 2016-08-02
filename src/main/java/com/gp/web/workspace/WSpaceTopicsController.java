@@ -11,7 +11,7 @@ import com.gp.info.CombineInfo;
 import com.gp.svc.info.PostExt;
 import com.gp.web.model.Post;
 import com.gp.web.util.CustomWebUtils;
-import com.gp.web.util.ExcerptParser;
+import com.gp.web.util.ExcerptUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +75,7 @@ public class WSpaceTopicsController extends BaseController{
 		pinfo.setPriority(1);
 		pinfo.setOwm(1l);
 		try{
-			pinfo.setExcerpt(ExcerptParser.getExcerptCode(post.getContent()));
+			pinfo.setExcerpt(ExcerptUtils.getExcerptCode(post.getContent()));
 			if(LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Post Content : {}", pinfo.getContent());
 				LOGGER.debug("Excerpt Content : {}", pinfo.getExcerpt());
