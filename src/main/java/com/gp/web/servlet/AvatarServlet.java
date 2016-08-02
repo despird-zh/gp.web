@@ -55,6 +55,7 @@ public class AvatarServlet extends HttpServlet {
 	public static String UPLOAD_ERR_EXTENSION = "File upload stopped by extension";
 	
 	public static String CACHE_PATH = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+	public static String FILE_CACHE_PATH = GeneralConfig.getString(SystemOptions.FILE_CACHE_PATH);
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
@@ -65,7 +66,7 @@ public class AvatarServlet extends HttpServlet {
         String operFlag = request.getParameter("oper_flag");
         
         // get the save path
-        String savePath = request.getServletContext().getRealPath("/" + CACHE_PATH);
+        String savePath = FILE_CACHE_PATH + File.separator + CACHE_PATH;
         
         String paramdata = request.getParameter(AVATAR_DATA);
         

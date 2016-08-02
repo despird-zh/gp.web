@@ -21,6 +21,7 @@ import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
+import com.gp.util.ConfigSettingUtils;
 import com.gp.web.BaseController;
 import com.gp.web.util.ServletUtils;
 
@@ -28,7 +29,8 @@ public class ImageFilter implements Filter{
 
 	Logger LOGGER = LoggerFactory.getLogger(ImageFilter.class);
 	
-	String imagePath;
+	private String imagePath;
+	private String cachePath;
 	
 	@Override
 	public void destroy() {
@@ -49,7 +51,7 @@ public class ImageFilter implements Filter{
 			LOGGER.debug("image name qualified : {}", fileName);
 			
 			// imgfile : c:/xx/xx/wapp/img_cache/39-20160411-150649.png
-			File imgfile = ServletUtils.getRealFile(_request, relativeUri);
+			File imgfile = new File( cachePath + File.separator + relativeUri);
 			
 			if(!imgfile.exists()){
 				
@@ -75,6 +77,7 @@ public class ImageFilter implements Filter{
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		
+		cachePath = GeneralConfig.getString(SystemOptions.FILE_CACHE_PATH);
 		imagePath = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	}
 
