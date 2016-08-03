@@ -8,6 +8,8 @@ import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
+import com.gp.pagination.PageQuery;
+import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
 import com.gp.svc.ImageService;
 import com.gp.svc.PostService;
@@ -55,16 +57,19 @@ public class PostFacade {
     /**
      * Find the personal post
      **/
-    public static List<CombineInfo<PostInfo, PostExt>>  findPersonalPosts(AccessPoint accesspoint,
-                                                                          Principal principal,
-                                                                          String state, String type, String scope)throws CoreException{
+    public static PageWrapper<CombineInfo<PostInfo, PostExt>> findPersonalPosts(AccessPoint accesspoint,
+                                                                                Principal principal,
+                                                                                String state,
+                                                                                String type,
+                                                                                String scope,
+                                                                                PageQuery pageQuery)throws CoreException{
 
-        List<CombineInfo<PostInfo, PostExt>> result = new ArrayList<CombineInfo<PostInfo, PostExt>>();
+        PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){
 
-            result = postservice.getPersonalPosts(svcctx, principal.getAccount(), state, type, scope);
+            result = postservice.getPersonalPosts(svcctx, principal.getAccount(), state, type, scope, pageQuery);
 
         } catch (ServiceException e)  {
 

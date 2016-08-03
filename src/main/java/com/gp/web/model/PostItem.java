@@ -3,7 +3,7 @@ package com.gp.web.model;
 /**
  * Created by garydiao on 2015-12-12
  */
-public class Post {
+public class PostItem {
 
     private long postId;
 

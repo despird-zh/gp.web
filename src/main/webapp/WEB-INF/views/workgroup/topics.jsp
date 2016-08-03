@@ -78,7 +78,7 @@
 										<div class="bottom-thumb"><a style="cursor:pointer;"><i class="fa fa-thumbs-o-down"></i></a></div>			
 									</div>
 								</div>
-								<!-- Post -->
+								<!-- PostItem -->
 								<div class="post" >
 									<div class="user-block">                        
 										<span class="username">
@@ -368,7 +368,7 @@
 										<div class="bottom-thumb"><a style="cursor:pointer;"><i class="fa fa-thumbs-o-down"></i></a></div>			
 									</div>
 								</div>
-								<!-- Post -->
+								<!-- PostItem -->
 								<div class="post" >
 									<div class="user-block">                        
 										<span class="username">

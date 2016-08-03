@@ -10,7 +10,7 @@
 		</li>
 		<li><span class="v-separator"></span></li>
 		<li>
-			<a <c:if test="${param.page=='topics'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看全部个人话题" href="topics.do?user_id=${user_id}" aria-expanded="true">
+			<a <c:if test="${param.page=='posts'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看全部个人话题" href="posts.do?user_id=${user_id}" aria-expanded="true">
 			<i class="fa fa-lg fa-map-signs"></i>
 			</a>
 		</li>
