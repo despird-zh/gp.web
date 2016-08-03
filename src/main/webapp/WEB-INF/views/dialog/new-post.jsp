@@ -292,6 +292,7 @@ $(function (){
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});*/
+
 		$('#post-form input[name="content"]').val(_self.$post_content.summernote('code'));
 		$('#post-form input[name="subject"]').val(_self.$post_subject.val());
 		$('#post-form input[name="scope"]').val(_scope);
