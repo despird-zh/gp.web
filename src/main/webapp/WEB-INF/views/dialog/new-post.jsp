@@ -308,8 +308,11 @@ $(function (){
 			url: "../workspace/post-save.do",
             dataType : "json",
             type: 'POST',
+			//processData: false,
+			//contentType: 'multipart/form-data',
+			cache: false,
+			contentType: false,
 			processData: false,
-			contentType: 'multipart/form-data',
 			data : postFromData,
 			success : function(response){
 
