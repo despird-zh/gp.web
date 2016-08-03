@@ -312,13 +312,11 @@ $(function (){
 		var _self = this;
 		_self.callback = _callback;
 		_self.cabinetId = _cabinetId;
-		_self.$modal.modal('show');
+		$modal.modal('show');
 	};
 
 	NewPostModal.initial();
 
-	GPContext.showNewPost = function(callback, cabinetId){
-		NewPostModal.newPostShow(callback, cabinetId);
-	};
+	GPContext.showNewPost = $.proxy(NewPostModal.newPostShow, NewPostModal);
 });
 </script>

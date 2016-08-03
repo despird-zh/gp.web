@@ -1,9 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../common/taglibs.jsp" %>
-<div class="box-body">
+<div class="box-body repo-list">
 	<ul class="infinite-container list-group list-group-unbordered">
 <c:forEach var="postitem" items="${entries}">
-	<li class="list-group-item" style="border-top: none;">
+	<li class="list-group-item infinite-item" style="border-top: none;">
 		<div  class="ticket">
 			<div class="pull-left avatar-info">
 				<a >
@@ -291,6 +291,6 @@
 </c:forEach>
 	</ul><!-- end list -->
 <c:if test="${hasMore}">
-	<a class="infinite-more-link hidden" href="topics-next.do?pageNumber=${nextPage}&cabinet_id=${cabinetId}&folder_id=${folderId}">More</a>
+	<a class="infinite-more-link hidden" href="posts-next.do?pageNumber=${nextPage}&cabinet_id=${cabinetId}&folder_id=${folderId}">More</a>
 </c:if>
 </div><!-- /.box-body -->

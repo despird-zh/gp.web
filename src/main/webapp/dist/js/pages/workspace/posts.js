@@ -17,13 +17,15 @@ var PageContext = (function ($, window, undefined){
 			_self.$new_post_btn.on('click', function(){
 				GPContext.showNewPost();
 			});
-
+			// load the content
 			_self.loadContent();
 		}
 	};
-
+	
+	/*
+	 * Load the content of post list
+	 */
 	Topics.loadContent = function(){
-
 		var _self = this;
 		$.ajax({
 			url: "../workspace/posts-next.do",

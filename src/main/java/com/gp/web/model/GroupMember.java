@@ -10,6 +10,8 @@ public class GroupMember {
 	
 	private String type;
 
+	private String avatar;
+	
 	public String getAccount() {
 		return account;
 	}
@@ -40,6 +42,14 @@ public class GroupMember {
 
 	public void setUname(String uname) {
 		this.uname = uname;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 	
 

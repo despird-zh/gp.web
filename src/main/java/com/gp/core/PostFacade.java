@@ -4,6 +4,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.*;
 import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.PostInfo;
+import com.gp.dao.info.TagInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.CombineInfo;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -82,6 +84,12 @@ public class PostFacade {
         return result;
     }
 
+    public static Map<InfoId<Long>, Set<TagInfo>> findPostOwner(AccessPoint accesspoint,
+            Principal principal,List<InfoId<Long>> postids){
+    	
+    	return null;
+    }
+    
     /**
      * find the work group posts
      **/
