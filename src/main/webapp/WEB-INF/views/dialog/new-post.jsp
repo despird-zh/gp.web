@@ -272,27 +272,6 @@ $(function (){
 
 		var attendees = _self.$post_attendee.val();
 
-		/*$.ajax({
-			url: "../workspace/post-save.do",
-            dataType : "json",
-            type: 'POST',
-			data : {
-				"content" : _self.$post_content.summernote('code'),
-				"subject" : _self.$post_subject.val(),
-				"scope" : _scope,
-				"commentOn" : _self.$post_comment.prop('checked'),
-				"type" : "DISCUSSION",
-				"priority" : _self.$post_priority.val(),
-				"classification" : _self.$post_classification.val(),
-				"attendees" : attendees == null ? '' : attendees.join(','),
-				"attachments" : []
-			},
-			success : function(response){
-
-				GPContext.AppendResult(response, (response.state == "success") ? false : true);
-			}
-		});*/
-
 		$('#post-form input[name="content"]').val(_self.$post_content.summernote('code'));
 		$('#post-form input[name="subject"]').val(_self.$post_subject.val());
 		$('#post-form input[name="scope"]').val(_scope);
@@ -320,10 +299,26 @@ $(function (){
 			success : function(response){
 
 				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				$modal.modal('hide');
 			}
 		});
 	};
 
+	/*
+	 * show select user dialog
+	 */
+	NewPostModal.newPostShow = function(_callback, _cabinetId){
+
+		var _self = this;
+		_self.callback = _callback;
+		_self.cabinetId = _cabinetId;
+		_self.$modal.modal('show');
+	};
+
 	NewPostModal.initial();
+
+	GPContext.showNewPost = function(callback, cabinetId){
+		NewPostModal.newPostShow(callback, cabinetId);
+	};
 });
 </script>

@@ -63,7 +63,7 @@ public class WSpaceTopicsController extends BaseController{
 		}
 		PostInfo pinfo = new PostInfo();
 		pinfo.setOwner(principal.getAccount());
-
+		pinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 		pinfo.setSubject(request.getParameter("subject"));
 		// extract the content and excerpt
 		PostParser postparser = new PostParser(request.getParameter("content"));
@@ -86,7 +86,7 @@ public class WSpaceTopicsController extends BaseController{
 		pinfo.setOwm(1l);
 		try{
 
-			PostFacade.newPost(accesspoint, principal, pinfo, attendees);
+			PostFacade.newPost(accesspoint, principal, pinfo,postparser.getPostImages(), attendees);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.save.post"));
 		}catch(CoreException ce){

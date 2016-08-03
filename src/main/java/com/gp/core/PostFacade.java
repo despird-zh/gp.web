@@ -2,21 +2,28 @@ package com.gp.core;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.*;
+import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.svc.CommonService;
+import com.gp.svc.ImageService;
 import com.gp.svc.PostService;
 import com.gp.svc.info.PostExt;
+import com.gp.util.ConfigSettingUtils;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.elasticsearch.common.recycler.Recycler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,15 +33,23 @@ import java.util.Set;
 @Component
 public class PostFacade {
 
+    static String CachePath = ConfigSettingUtils.getSystemOption(SystemOptions.FILE_CACHE_PATH);
+    static String ImagePath = ConfigSettingUtils.getSystemOption(SystemOptions.IMAGE_CACHE_PATH);
+
     private static PostService postservice;
 
     private static CommonService idservice;
 
+    private static ImageService imageservice;
+
     @Autowired
-    public PostFacade(PostService postservice, CommonService idservice){
+    public PostFacade(PostService postservice,
+                      CommonService idservice,
+                      ImageService imageservice){
 
         PostFacade.postservice = postservice;
         PostFacade.idservice = idservice;
+        PostFacade.imageservice = imageservice;
     }
 
     /**
@@ -120,7 +135,9 @@ public class PostFacade {
      */
     public static boolean newPost(AccessPoint accesspoint,
                                   Principal principal,
-                                  PostInfo postinfo, String ... attendees) throws CoreException{
+                                  PostInfo postinfo,
+                                  List<String> images,
+                                  String ... attendees) throws CoreException{
         boolean result = false;
 
         // check the validation of user information
@@ -144,9 +161,31 @@ public class PostFacade {
                 InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
                 postinfo.setInfoId(pid);
             }
+
             svcctx.setTraceInfo(postinfo);
             result = postservice.newPost(svcctx, postinfo, attendees);
+            // if exist images in post, here persist them into database.
+            if(CollectionUtils.isNotEmpty(images)) {
+                for (String imagename : images){
 
+                    String imagePath = CachePath + File.separator + ImagePath + File.separator + imagename;
+                    Long imgid = Images.parseImageId(imagename);
+                    Date touchdate = Images.parseTouchDate(imagename);
+
+                    ImageInfo image = new ImageInfo();
+
+                    image.setInfoId(IdKey.IMAGE.getInfoId(imgid));
+                    image.setDataFile(new File(imagePath));
+                    image.setFormat(FilenameUtils.getExtension(imagename));
+                    image.setModifyDate(touchdate);
+                    image.setImageName(imagename);
+                    image.setCategory(Images.Category.POST_IMAGE.name());
+                    image.setPersist(Images.Persist.DATABASE.name());
+                    image.setLink(imagename);
+
+                    imageservice.newImage(svcctx, image);
+                }
+            }
         }catch (ServiceException e)  {
 
             ContextHelper.stampContext(e,"excp.save.post");

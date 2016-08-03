@@ -13,8 +13,8 @@ var PageContext = (function ($, window, undefined){
 		initial : function(){
 			var _self = this;
 			_self.$new_post_btn.on('click', function(){
-				
-				$('#new-post-modal').modal('show');
+
+				GPContext.showNewPost();
 			});
 		}
 	};

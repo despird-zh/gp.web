@@ -59,7 +59,15 @@ public class ServletUtils {
 
 		return new File(request.getSession().getServletContext().getRealPath(path));
 	}
-	
+
+	/**
+	 * Returns the path specified by <tt>path</tt> as returned by
+	 * <tt>ServletContext.getRealPath()</tt>.
+	 */
+	public static String getRealPath(HttpServletRequest request, String path){
+		return request.getSession().getServletContext().getRealPath(path);
+	}
+
 	/**
 	 * Write the image back directly. 
 	 * @param response the http response

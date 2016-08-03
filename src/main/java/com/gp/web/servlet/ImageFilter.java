@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,10 +53,9 @@ public class ImageFilter implements Filter{
 			
 			// imgfile : c:/xx/xx/wapp/img_cache/39-20160411-150649.png
 			File imgfile = new File( cachePath + File.separator + relativeUri);
-			
+			LOGGER.debug("request image location : {}", imgfile.getAbsolutePath());
 			if(!imgfile.exists()){
-				
-				LOGGER.debug("image not exist : {}", imgfile.getAbsolutePath());
+
 				if(!imgfile.getParentFile().exists())
 					imgfile.getParentFile().mkdirs();
 				
@@ -65,10 +65,15 @@ public class ImageFilter implements Filter{
 				ServletUtils.writeImage(response, imgfile);
 				
 			}else{
-				
-				LOGGER.debug("image exist : {}", imgfile.getAbsolutePath());
-				// image exist let it continue
-				chain.doFilter(request, response);
+				String webrootpath = ServletUtils.getRealPath(_request, "/");
+				if(StringUtils.startsWith(imgfile.getAbsolutePath(), webrootpath)){
+					// image exist let server to handle it
+					chain.doFilter(request, response);
+				}
+				else{
+					// image exist out of server, write it manually.
+					ServletUtils.writeImage(response, imgfile);
+				}
 			}
 		}
 		
