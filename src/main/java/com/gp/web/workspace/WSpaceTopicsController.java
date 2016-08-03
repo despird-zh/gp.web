@@ -9,6 +9,7 @@ import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
 import com.gp.svc.info.PostExt;
+import com.gp.web.common.PostParser;
 import com.gp.web.model.Post;
 import com.gp.web.util.CustomWebUtils;
 import com.gp.web.util.ExcerptUtils;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.ActionResult;
@@ -53,8 +55,6 @@ public class WSpaceTopicsController extends BaseController{
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
 
-		CustomWebUtils.dumpRequestBody(request);
-		Post post = new Post();
 		//super.readRequestData(post);
 		String attendeestr = request.getParameter("attendees");
 		String[] attendees = null;
@@ -63,14 +63,17 @@ public class WSpaceTopicsController extends BaseController{
 		}
 		PostInfo pinfo = new PostInfo();
 		pinfo.setOwner(principal.getAccount());
-		/*
-		pinfo.setSubject(post.getSubject());
-		pinfo.setContent(post.getContent());
-		pinfo.setCommentOn(post.getCommentOn());
-		pinfo.setClassification(post.getClassification());
-		*/
+
 		pinfo.setSubject(request.getParameter("subject"));
-		pinfo.setContent(request.getParameter("content"));
+		// extract the content and excerpt
+		PostParser postparser = new PostParser(request.getParameter("content"));
+		pinfo.setContent(postparser.getPostContent());
+		pinfo.setExcerpt(postparser.getPostExcerpt());
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Post Content : {}", pinfo.getContent());
+			LOGGER.debug("Excerpt Content : {}", pinfo.getExcerpt());
+			LOGGER.debug("Post Images : {}", postparser.getPostImages().toString());
+		}
 		pinfo.setCommentOn(Boolean.valueOf(request.getParameter("commentOn")));
 		pinfo.setClassification(request.getParameter("classification"));
 		
@@ -82,11 +85,7 @@ public class WSpaceTopicsController extends BaseController{
 		pinfo.setPriority(1);
 		pinfo.setOwm(1l);
 		try{
-			pinfo.setExcerpt(ExcerptUtils.getExcerptCode(post.getContent()));
-			if(LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Post Content : {}", pinfo.getContent());
-				LOGGER.debug("Excerpt Content : {}", pinfo.getExcerpt());
-			}
+
 			PostFacade.newPost(accesspoint, principal, pinfo, attendees);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.save.post"));

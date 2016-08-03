@@ -6,6 +6,7 @@ import com.gp.common.Images;
 import com.gp.common.SystemOptions;
 import com.gp.core.CommonFacade;
 import com.gp.info.InfoId;
+import com.gp.util.ConfigSettingUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
@@ -33,7 +34,8 @@ public class PostParser implements NodeVisitor{
 
     List<String> images = new ArrayList<>();
 
-    static String ImagePath = "/jdev/" + GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+    static String CachePath = ConfigSettingUtils.getSystemOption(SystemOptions.FILE_CACHE_PATH);
+    static String ImagePath = ConfigSettingUtils.getSystemOption(SystemOptions.IMAGE_CACHE_PATH);
 
     private static final int maxWidth = 80;
     private int width = 0;
@@ -85,6 +87,7 @@ public class PostParser implements NodeVisitor{
      * Traverse the head of node
      */
     public void head(Node node, int depth) {
+
         String name = node.nodeName();
         if (node instanceof TextNode) {
             append(((TextNode) node).text()); // TextNodes carry all user-readable text in the DOM.
@@ -113,7 +116,7 @@ public class PostParser implements NodeVisitor{
                 try(
                     ByteArrayInputStream is = new ByteArrayInputStream(decodedString);
                     FileOutputStream os = new FileOutputStream(
-                        new File(ImagePath + File.separator + file_name)
+                        new File(CachePath + File.separator + ImagePath + File.separator + file_name)
                     )
                 ){
 

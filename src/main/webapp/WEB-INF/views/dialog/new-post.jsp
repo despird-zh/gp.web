@@ -302,14 +302,17 @@ $(function (){
 		$('#post-form input[name="classification"]').val(_self.$post_classification.val());
 		$('#post-form input[name="attendees"]').val(attendees == null ? '' : attendees.join(','));
 		$('#post-form input[name="attachments"]').val('');
-		
+		/*
+		 * 1- Here if not use FormData to wrap&submit, the data will be form-url-encoded, coz content might
+		 * include image, it collides with firebug tool :request size limit has been reached by Firebug.
+		 * 2- contentType : false is OK, reversely 'multipart/form-data' will cause the boundary information
+		 * lost in header.
+		 */
 		var postFromData = new FormData($('#post-form')[0]);
 		$.ajax({
 			url: "../workspace/post-save.do",
             dataType : "json",
             type: 'POST',
-			//processData: false,
-			//contentType: 'multipart/form-data',
 			cache: false,
 			contentType: false,
 			processData: false,
