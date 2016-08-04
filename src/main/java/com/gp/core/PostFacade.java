@@ -3,6 +3,7 @@ package com.gp.core;
 import com.gp.audit.AccessPoint;
 import com.gp.common.*;
 import com.gp.dao.info.ImageInfo;
+import com.gp.dao.info.PostCommentInfo;
 import com.gp.dao.info.PostInfo;
 import com.gp.dao.info.TagInfo;
 import com.gp.exception.CoreException;
@@ -15,6 +16,7 @@ import com.gp.svc.CommonService;
 import com.gp.svc.ImageService;
 import com.gp.svc.PostService;
 import com.gp.svc.info.PostExt;
+import com.gp.svc.info.UserLite;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
@@ -167,6 +169,7 @@ public class PostFacade {
             cexcp.addValidateMessages(vmsg);
             throw cexcp;
         }
+
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_POST)){
             if(!InfoId.isValid(postinfo.getInfoId())){
@@ -211,5 +214,88 @@ public class PostFacade {
         return result;
     }
 
+    /**
+     * Find the post comments according to the post id
+     **/
+    public static List<PostCommentInfo> findPostComments(AccessPoint accesspoint,
+                                                         Principal principal,
+                                                         InfoId<Long> postid,
+                                                         String owner,
+                                                         String state) throws CoreException{
 
+        List<PostCommentInfo> result = new ArrayList<>();
+
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.FIND_COMMENTS)){
+
+            result = postservice.getPostComments(svcctx, postid, owner, state);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.find.comments");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return result;
+    }
+
+    /**
+     * Add comment to post
+     **/
+    public static boolean addPostComment(AccessPoint accesspoint,
+                                         Principal principal, PostCommentInfo comment) throws CoreException{
+
+        // check the validation of user information
+        Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), comment);
+        if(CollectionUtils.isNotEmpty(vmsg)){ // fail pass validation
+            CoreException cexcp = new CoreException(principal.getLocale(), "excp.validate");
+            cexcp.addValidateMessages(vmsg);
+            throw cexcp;
+        }
+
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.NEW_COMMENT)){
+
+            return postservice.newComment(svcctx, comment);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.add.comment");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return false;
+    }
+
+    /**
+     * Find the post attendee list
+     **/
+    public static List<UserLite> findPostAttendees(AccessPoint accesspoint,
+                                                   Principal principal,
+                                                   InfoId<Long> postid) throws CoreException{
+
+        List<UserLite> result = null;
+
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.NEW_COMMENT)){
+
+            result = postservice.getPostAttendees(svcctx, postid);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.add.comment");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return result;
+    }
 }

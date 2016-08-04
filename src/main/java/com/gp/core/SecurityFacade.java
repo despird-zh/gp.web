@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.gp.svc.info.UserLite;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -349,7 +350,10 @@ public class SecurityFacade {
 		}
 		return result;
 	}
-	
+
+	/**
+	 * authenticate the password
+	 **/
 	public static Boolean authenticate(AccessPoint accesspoint,
 			Principal principal,
 			String password)throws CoreException{
@@ -376,7 +380,10 @@ public class SecurityFacade {
 		}
 		return pass;
 	}
-	
+
+	/**
+	 * change the state of account
+	 **/
 	public static void changeAccountState(AccessPoint accesspoint,
 			Principal principal,
 			UserState state)throws CoreException{
@@ -398,7 +405,11 @@ public class SecurityFacade {
 			ContextHelper.handleContext();
 		}
 	}
-	
+
+	/**
+	 * remove the account from system
+	 *
+	 **/
 	public static boolean removeAccount(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> userId, String account)throws CoreException{
@@ -422,7 +433,10 @@ public class SecurityFacade {
 		}
 		return gresult;
 	}
-	
+
+	/**
+	 * change the account password
+	 **/
 	public static Boolean changePassword(AccessPoint accesspoint,
 			Principal principal,
 			String account, 
@@ -445,5 +459,34 @@ public class SecurityFacade {
 			ContextHelper.handleContext();
 		}
 		return gresult;
+	}
+
+	/**
+	 * Find the user lite information list
+	 *
+	 * @param userids target users id
+	 * @param accounts target user accounts
+	 *
+	 **/
+	public static List<UserLite> findAccountLites(AccessPoint accesspoint,
+												  Principal principal,
+												  List<Long> userids,
+												  List<String> accounts)throws CoreException{
+
+		List<UserLite> result = null;
+
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_ACCOUNTS)){
+
+			result = securityservice.getAccounts(svcctx, userids, accounts);
+
+		} catch (Exception e) {
+
+			ContextHelper.stampContext(e,"excp.find.account");
+		}finally{
+
+			ContextHelper.handleContext();
+		}
+		return result;
 	}
 }
