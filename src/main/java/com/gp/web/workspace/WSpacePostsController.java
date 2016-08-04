@@ -5,18 +5,21 @@ import com.gp.common.GeneralConstants;
 import com.gp.common.Posts;
 import com.gp.common.Principal;
 import com.gp.core.PostFacade;
+import com.gp.core.SecurityFacade;
+import com.gp.dao.info.PostCommentInfo;
 import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.info.PostExt;
+import com.gp.svc.info.UserLite;
+import com.gp.util.DateTimeUtils;
 import com.gp.web.common.PostParser;
+import com.gp.web.model.Comment;
 import com.gp.web.model.PostItem;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -129,8 +132,9 @@ public class WSpacePostsController extends BaseController{
 			return mav;
 		}
 		List<PostItem> items = new ArrayList<>();
-
+		Set<String> accounts = new HashSet<String>();
 		for(CombineInfo<PostInfo, PostExt> cinfo : entries){
+
 			PostItem post = new PostItem();
 			post.setState(cinfo.getPrimary().getState());
 			post.setOwner(cinfo.getPrimary().getOwner());
@@ -144,7 +148,52 @@ public class WSpacePostsController extends BaseController{
 			post.setPostTime(cinfo.getPrimary().getPostDate().toString());
 			post.setPriority(String.valueOf(cinfo.getPrimary().getPriority()));
 
+			accounts.add(cinfo.getPrimary().getOwner());
+
+			// find the comments and attach them to post.
+			List<PostCommentInfo> cinfos = PostFacade.findPostComments(accesspoint,principal,
+					cinfo.getPrimary().getInfoId(), null, null);
+
+			List<Comment> comments = new ArrayList<>();
+			// prepare to fetch the author avatar etc
+			for(PostCommentInfo cmtinfo: cinfos){
+
+				accounts.add(cmtinfo.getAuthor());
+
+				Comment cmt = new Comment();
+				cmt.setState(cmtinfo.getState());
+				cmt.setAuthor(cmtinfo.getAuthor());
+				cmt.setCommentDate(DateTimeUtils.toDateTime(cmtinfo.getCommentDate()));
+				cmt.setContent(cmtinfo.getContent());
+				cmt.setPostId(cmtinfo.getPostId());
+
+				comments.add(cmt);
+			}
+			post.setComments(comments);
+			// set the attendees
+			List<UserLite> attendees = PostFacade.findPostAttendees(accesspoint, principal,
+					cinfo.getPrimary().getInfoId());
+			post.setAttendees(attendees);
+
+			// add post to item list
 			items.add(post);
+		}
+		List<String> userlist = new ArrayList<>();
+		userlist.addAll(accounts);
+		List<UserLite> allusers = SecurityFacade.findAccountLites(accesspoint, principal,
+				null, userlist);
+		Map<String, UserLite> allmap = new HashMap<>();
+		for(UserLite ulite : allusers){
+			allmap.put(ulite.getAccount(), ulite);
+		}
+
+		for(PostItem item : items){
+			// set owner avatar link
+			item.setOwnerAvatar(allmap.get(item.getOwner()).getAvatarLink());
+			for(Comment comment: item.getComments()){
+
+				comment.setAuthorAvatar(allmap.get(comment.getAuthor()).getAvatarLink());
+			}
 		}
 
 		mav.addObject("entries", items);

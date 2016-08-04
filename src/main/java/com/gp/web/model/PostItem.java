@@ -1,5 +1,12 @@
 package com.gp.web.model;
 
+import com.gp.dao.info.PostInfo;
+import com.gp.info.CombineInfo;
+import com.gp.svc.info.PostExt;
+import com.gp.svc.info.UserLite;
+
+import java.util.List;
+
 /**
  * Created by garydiao on 2015-12-12
  */
@@ -10,6 +17,8 @@ public class PostItem {
     private long workgroupId;
 
     private String owner;
+
+    private String ownerAvatar;
 
     private String subject;
 
@@ -32,6 +41,10 @@ public class PostItem {
     private String classification;
 
     private String priority;
+
+    private List<UserLite> attendees;
+
+    private List<Comment> comments;
 
     public String getPriority() {
         return priority;
@@ -144,4 +157,29 @@ public class PostItem {
     public void setCommentOn(boolean commentOn) {
         this.commentOn = commentOn;
     }
+
+    public List<UserLite> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(List<UserLite> attendees) {
+        this.attendees = attendees;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public String getOwnerAvatar() {
+        return ownerAvatar;
+    }
+
+    public void setOwnerAvatar(String ownerAvatar) {
+        this.ownerAvatar = ownerAvatar;
+    }
+
 }
