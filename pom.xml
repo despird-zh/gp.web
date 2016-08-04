@@ -19,6 +19,7 @@
 		<httpclient.version>4.5.1</httpclient.version>
 		<disruptor.version>3.3.2</disruptor.version>
 		<jsoup.version>1.9.2</jsoup.version>
+		<upload.version>1.3.2</upload.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -163,6 +164,11 @@
 		    <groupId>org.jsoup</groupId>
 		    <artifactId>jsoup</artifactId>
 		    <version>${jsoup.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${upload.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
