@@ -4,6 +4,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.Posts;
 import com.gp.common.Principal;
+import com.gp.common.SystemOptions;
 import com.gp.core.PostFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.PostCommentInfo;
@@ -14,6 +15,7 @@ import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.info.PostExt;
 import com.gp.svc.info.UserLite;
+import com.gp.util.ConfigSettingUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.common.PostParser;
 import com.gp.web.model.Comment;
@@ -40,6 +42,7 @@ public class WSpacePostsController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(WSpacePostsController.class);
 
+	static String ImagePath = ConfigSettingUtils.getSystemOption(SystemOptions.IMAGE_CACHE_PATH);
 	@RequestMapping("posts")
 	public ModelAndView doInitial(){
 
@@ -189,10 +192,10 @@ public class WSpacePostsController extends BaseController{
 
 		for(PostItem item : items){
 			// set owner avatar link
-			item.setOwnerAvatar(allmap.get(item.getOwner()).getAvatarLink());
+			item.setOwnerAvatar("../"+ImagePath + "/" + allmap.get(item.getOwner()).getAvatarLink());
 			for(Comment comment: item.getComments()){
 
-				comment.setAuthorAvatar(allmap.get(comment.getAuthor()).getAvatarLink());
+				comment.setAuthorAvatar("../"+ImagePath + "/" + allmap.get(comment.getAuthor()).getAvatarLink());
 			}
 		}
 

@@ -7,7 +7,7 @@
 		<div  class="ticket">
 			<div class="pull-left avatar-info">
 				<a >
-					<img class="img-bordered-sm" src="${path_image}/user1-128x128.jpg" alt="user image">
+					<img class="img-bordered-sm" src="${postitem.ownerAvatar}" alt="user image">
 				</a>
 				<div class="thumbs-info" >
 					<div><a style="cursor:pointer;"><i class="fa fa-thumbs-o-up"></i></a></div>
@@ -19,10 +19,10 @@
 			<div class="post" >
 				<div class="user-block">
 								<span class="username">
-								  <a href="#" class="margin-r-5">杜新民</a>
+								  <a href="#" class="margin-r-5">${postitem.ownerName}</a>
 								  <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
 								</span>
-					<span  class="label label-warning text-center margin-r-5">电气工作组</span>
+					<span  class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span  class="label label-warning text-center margin-r-5">企业发布</span>
 					<span class="description">7:30 PM today</span>
 				</div><!-- /.user-block -->
@@ -72,8 +72,7 @@
 							</li>
 						</ul>
 					</div>
-					评论区有人问为什么这么说……是这样的，iOS中回到主屏后App就被冻结，除音乐播放之类的进程之外不允许常驻后台，那么怎么在手机关屏后推送消息呢？是开发者在服务器上把消息先推送给苹果的服务器，然后苹果把该用户的微信、QQ、Facebook、淘宝等各种消息统一推送给用户，这样就做到了不影响消息推送的情况下、同时减少后台个数，熄屏几乎不耗。
-
+					${postitem.content}
 				</div>
 				<ul class="list-inline">
 					<li><a href="#" class="link-black text-sm"><i class="fa fa-plug margin-r-5"></i> Join</a></li>
@@ -85,203 +84,30 @@
 				</ul>
 				<div obid="users_list_container" style="display:none;">
 					<div obid="users_list" style="" class="row clearfix user-list">
+					<c:forEach var="useritem" items="${postitem.attendees}">
 						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
+							<img alt="message user image" src="${useritem.avatarLink}" ><!-- /.direct-chat-img -->
+							<a class="ellipsis ellipsis-50">${useritem.userName}</a>
 							<a class="remove-user"><i class="fa fa-times"></i></a>
 						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="col-md-1 user-avatar">
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" ><!-- /.direct-chat-img -->
-							<a class="ellipsis ellipsis-50">userassss</a>
-							<a class="remove-user"><i class="fa fa-times"></i></a>
-						</div>
+					</c:forEach>
 					</div>
 				</div>
 				<div obid="comment_list_container" style="display:none">
 					<div obid="comment_list" class="direct-chat-messages" style="margin-top:5px;margin-bottom:0px;">
 						<!-- Message. Default to the left -->
+						<c:forEach var="commentitem" items="${postitem.comments}">
 						<div class="direct-chat-msg">
 							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-left">Alexander Pierce</span>
+								<span class="direct-chat-name pull-left">${commentitem.author}</span>
 								<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
 							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
+							<img alt="message user image" src="${commentitem.authorAvatar}" class="direct-chat-img"><!-- /.direct-chat-img -->
 							<div class="direct-chat-text">
-								Is this template really for free? That's unbelievable!
+								${commentitem.content}
 							</div><!-- /.direct-chat-text -->
 						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-left">Alexander Pierce</span>
-								<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								Is this template really for free? That's unbelievable!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-left">Alexander Pierce</span>
-								<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								Is this template really for free? That's unbelievable!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg right">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-right">Sarah Bullock</span>
-								<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								You better believe it!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg right">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-right">Sarah Bullock</span>
-								<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								You better believe it!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg right">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-right">Sarah Bullock</span>
-								<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								You better believe it!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-left">Alexander Pierce</span>
-								<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								Is this template really for free? That's unbelievable!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<div class="direct-chat-msg">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-left">Alexander Pierce</span>
-								<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user1-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								Is this template really for free? That's unbelievable!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-						<!-- Message to the right -->
-						<div class="direct-chat-msg right">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-right">Sarah Bullock</span>
-								<span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-							</div><!-- /.direct-chat-info -->
-							<img alt="message user image" src="${path_image}/user3-128x128.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-							<div class="direct-chat-text">
-								You better believe it!
-							</div><!-- /.direct-chat-text -->
-						</div><!-- /.direct-chat-msg -->
-
+						</c:forEach>
 					</div>
 					<input class="form-control input-sm" type="text" placeholder="Type a comment" style="margin-top:5px;">
 				</div>
