@@ -41,10 +41,10 @@ public class PostParser implements NodeVisitor{
     private int width = 0;
     private StringBuilder content = new StringBuilder(); // holds the accumulated text
     private StringBuilder excerpt = new StringBuilder();
-
+    private Element excerptImg = null;
     /**
      * Constructor with postContent.
-     * @param postContent the content of post
+     * @param htmlcode the content of post
      **/
     public PostParser(String htmlcode){
 
@@ -55,12 +55,10 @@ public class PostParser implements NodeVisitor{
         NodeTraversor traversor = new NodeTraversor(this);
         traversor.traverse(body); // walk the DOM, and call .head() and .tail() for each node
         content.append(body.html());
-        if(images.size() > 0 ) {
-            Element img0 = new Element(Tag.valueOf("img"), "");
-            img0.addClass("excerpt-img");
-            img0.attr("src", "../" + ImagePath + "/" + images.get(0));
+        if(excerptImg != null ) {
+            excerptImg.addClass("excerpt-img");
             // prepend the html code to excerpt
-            excerpt.insert(0,img0.outerHtml());
+            excerpt.insert(0, excerptImg.outerHtml());
         }
 
     }
@@ -99,6 +97,9 @@ public class PostParser implements NodeVisitor{
             append("\n");
         }else if (name.equals("img")){
 
+            if(null == excerptImg) {
+                excerptImg = node;
+            }
             String src = node.attr("src");
             // as for embedded image will extract it
             if(src.startsWith("data:image/")){

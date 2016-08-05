@@ -22,7 +22,6 @@ import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.elasticsearch.common.recycler.Recycler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
