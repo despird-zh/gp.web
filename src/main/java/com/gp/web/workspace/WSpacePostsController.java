@@ -176,6 +176,10 @@ public class WSpacePostsController extends BaseController{
 			// set the attendees
 			List<UserLite> attendees = PostFacade.findPostAttendees(accesspoint, principal,
 					cinfo.getPrimary().getInfoId());
+			for(UserLite ulite : attendees){
+				// decorate the link of image
+				ulite.setAvatarLink("../"+ImagePath + "/" + ulite.getAvatarLink());
+			}
 			post.setAttendees(attendees);
 
 			// add post to item list
@@ -187,6 +191,7 @@ public class WSpacePostsController extends BaseController{
 				null, userlist);
 		Map<String, UserLite> allmap = new HashMap<>();
 		for(UserLite ulite : allusers){
+			
 			allmap.put(ulite.getAccount(), ulite);
 		}
 

@@ -5,7 +5,7 @@
 <c:forEach var="postitem" items="${entries}">
 	<li class="list-group-item infinite-item" style="border-top: none;">
 		<div  class="ticket">
-			<div class="pull-left avatar-info">
+			<div class="pull-left avatar-info p-t-xxs">
 				<a >
 					<img class="img-bordered-sm" src="${postitem.ownerAvatar}" alt="user image">
 				</a>
@@ -18,61 +18,18 @@
 			<!-- PostItem -->
 			<div class="post" >
 				<div class="user-block">
-								<span class="username">
-								  <a href="#" class="margin-r-5">${postitem.ownerName}</a>
-								  <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-								</span>
+					<span class="username">
+					  <a href="#" class="margin-r-5">${postitem.ownerName}</a>
+					  <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+					</span>
 					<span  class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span  class="label label-warning text-center margin-r-5">企业发布</span>
 					<span class="description">7:30 PM today</span>
 				</div><!-- /.user-block -->
-				<div class="clearfix">
-					<div class="inline-docs pull-right" >
-						<ul class="doc-items show-scrollbar">
-							<li><!-- start message -->
-								<a href="#">
-											  <span><i class="fa fa-file-o margin-r-5"></i>
-												关于UI设计文件.docx
-											  </span>
-								</a>
-								<small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
-							</li><!-- end message -->
-							<li>
-								<a class="ellipsis ellipsis-180"href="#">
-											  <span><i class="fa fa-file-o margin-r-5"></i>
-												总体设计文件.mov
-											  </span>
-								</a>
-								<small class="pull-right"><i class="fa fa-clock-o"></i> 2 hours</small>
-							</li>
-							<li>
-								<a href="#">
-											  <span><i class="fa fa-file-o margin-r-5"></i>
-												开发人员安排.xls
-											  </span>
-								</a>
-								<small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
-							</li>
-							<li>
-								<a href="#">
-											  <span><i class="fa fa-file-o margin-r-5"></i>
-												任务更细文件.doc
-											  </span>
-								</a>
-								<small class="pull-right"><i class="fa fa-clock-o "></i> Yesterday</small>
-							</li>
-							<li>
-								<a href="#">
-											  <span>
-												<i class="fa fa-clock-o margin-r-5"></i>
-												工作制度及奖惩规定.doc
-											  </span>
-								</a>
-								<small class="pull-right"><i class="fa fa-clock-o"></i> 2 days</small>
-							</li>
-						</ul>
+				<div ><!--remove class="clearfix"-->
+					<div class="m-b-xs"><span>${postitem.subject}</span></div>
+					<div>${postitem.content}
 					</div>
-					${postitem.content}
 				</div>
 				<ul class="list-inline">
 					<li><a href="#" class="link-black text-sm"><i class="fa fa-plug margin-r-5"></i> Join</a></li>
