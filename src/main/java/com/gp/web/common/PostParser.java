@@ -98,7 +98,7 @@ public class PostParser implements NodeVisitor{
         }else if (name.equals("img")){
 
             if(null == excerptImg) {
-                excerptImg = node;
+                excerptImg = (Element) node;
             }
             String src = node.attr("src");
             // as for embedded image will extract it
