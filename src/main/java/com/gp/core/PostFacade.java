@@ -254,10 +254,16 @@ public class PostFacade {
             cexcp.addValidateMessages(vmsg);
             throw cexcp;
         }
-
+        
+        
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_COMMENT)){
-
+        	
+        	if(!InfoId.isValid(comment.getInfoId())){
+        		InfoId<Long> cid = idservice.generateId(IdKey.POST_COMMENT, Long.class);
+        		comment.setInfoId(cid);
+        	}
+        	
             return postservice.newComment(svcctx, comment);
 
         } catch (ServiceException e)  {

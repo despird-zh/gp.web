@@ -48,7 +48,40 @@ var PageContext = (function ($, window, undefined){
 			}
 		});
 	};
-
+	
+	Topics.doShowComments = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		var $comments = $('div[gpid="comment_list_container"]', $post);
+		$comments.toggleClass('hidden');
+	};
+	
+	Topics.doSaveComment = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		var $comment = $(el).parent().siblings('[gpid="comment-txt"]');
+		$.ajax({
+			url: "../workspace/save-comment.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id'),
+				"comment" : $comment.val()
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
+	Topics.doDeleteComment = function(el){
+		
+	};
+	
 	Topics.initial();
 	
+	return {
+		"ShowComments" : $.proxy(Topics.doShowComments, Topics),
+		"SaveComment" : $.proxy(Topics.doSaveComment, Topics),
+		"DeleteComment" : $.proxy(Topics.doDeleteComment, Topics),
+	};
 })(jQuery, window);

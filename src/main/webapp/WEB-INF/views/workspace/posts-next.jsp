@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<!-- PostItem -->
-			<div class="post" >
+			<div class="post" data-post-id="${postitem.postId}">
 				<div class="user-block">
 					<span class="username">
 					  <a href="#" class="margin-r-5">${postitem.ownerName}</a>
@@ -37,9 +37,9 @@
 					<li><a href="#" class="link-black text-sm"><i class="fa fa-paper-plane-o margin-r-5"></i> Public</a></li>
 					<li><a href="#" class="link-black text-sm" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o margin-r-5"></i> Send</a></li>
 					<li class="pull-right"><a obid="users_show_btn" href="javascript:;" class="link-black text-sm"><i class="fa fa-users margin-r-5"></i> Users (13)</a></li>
-					<li class="pull-right"><a obid="comments_show_btn" href="javascript:;" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
+					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:;" onclick="PageContext.ShowComments(this);" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
 				</ul>
-				<div obid="users_list_container" style="display:none;">
+				<div gpid="users_list_container" class="hidden">
 					<div obid="users_list" style="" class="row clearfix user-list">
 					<c:forEach var="useritem" items="${postitem.attendees}">
 						<div class="col-md-1 user-avatar">
@@ -50,13 +50,16 @@
 					</c:forEach>
 					</div>
 				</div>
-				<div obid="comment_list_container" style="display:none">
-					<div obid="comment_list" class="direct-chat-messages" style="margin-top:5px;margin-bottom:0px;">
+				<div gpid="comment_list_container" class="hidden">
+					<c:if test="${not empty postitem.comments}">
+					<div gpid="comment_list" class="direct-chat-messages m-t-xs m-b-xs">
 						<!-- Message. Default to the left -->
 						<c:forEach var="commentitem" items="${postitem.comments}">
 						<div class="direct-chat-msg">
 							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-name pull-left">${commentitem.author}</span>
+								<span class="direct-chat-name pull-left m-r">${commentitem.author}</span>
+								<a class="link-black text-sm m-r-5" href="#"><i class="fa fa-fw fa-check "></i>Accept</a>
+								<a class="link-black text-sm m-r-5" href="#"><i class="fa fa-fw fa-hand-rock-o"></i>Ignore</a>
 								<span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
 							</div><!-- /.direct-chat-info -->
 							<img alt="message user image" src="${commentitem.authorAvatar}" class="direct-chat-img"><!-- /.direct-chat-img -->
@@ -66,7 +69,13 @@
 						</div><!-- /.direct-chat-msg -->
 						</c:forEach>
 					</div>
-					<input class="form-control input-sm" type="text" placeholder="Type a comment" style="margin-top:5px;">
+					</c:if>
+					<div class="input-group m-t-xs">
+						<input gpid="comment-txt" type="text" class="form-control" placeholder="Type comments ...">
+						<span class="input-group-btn">
+							<button class="btn btn-primary btn-flat btn-sm" type="button" onclick="PageContext.SaveComment(this)">Send</button>
+						</span>
+                    </div>
 				</div>
 			</div><!-- /.post -->
 		</div>

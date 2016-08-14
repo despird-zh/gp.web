@@ -26,6 +26,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -212,5 +213,43 @@ public class WSpacePostsController extends BaseController{
 		mav.addObject("scope", scope);
 
 		return mav;
+	}
+	
+	@RequestMapping("save-comment")
+	public ModelAndView savePostComment(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		String comment = request.getParameter("comment");
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			PostCommentInfo postcomment = new PostCommentInfo();
+			
+			postcomment.setAuthor(principal.getAccount());
+			postcomment.setOwner(principal.getAccount());
+			postcomment.setCommentDate(DateTimeUtils.now());
+			postcomment.setContent(comment);
+			postcomment.setPostId(postid);
+			postcomment.setWorkgroupId(GeneralConstants.PERSONAL_WORKGROUP);
+			postcomment.setSourceId(GeneralConstants.LOCAL_SOURCE);
+			postcomment.setParentId(GeneralConstants.ROOT_PLACEHOLDER);
+			postcomment.setState(Posts.State.REVIEW.name());
+			
+			PostFacade.addPostComment(accesspoint, principal, postcomment);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.save.comment"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
 	}
 }
