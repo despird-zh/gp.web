@@ -303,4 +303,56 @@ public class PostFacade {
 
         return result;
     }
+
+    /**
+     * like post
+     **/
+    public static boolean likePost(AccessPoint accesspoint,
+                                   Principal principal,
+                                   InfoId<Long> postid, String voter) throws CoreException{
+
+        boolean result = false;
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.LIKE_POST)){
+
+            result = postservice.addPostLike(svcctx, postid, voter);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.like.post");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return result;
+
+    }
+
+    /**
+     * dislike post
+     **/
+    public static boolean dislikePost(AccessPoint accesspoint,
+                                   Principal principal,
+                                   InfoId<Long> postid, String voter) throws CoreException{
+
+        boolean result = false;
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.LIKE_POST)){
+
+            result = postservice.addPostDislike(svcctx, postid, voter);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.like.post");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return result;
+
+    }
 }
