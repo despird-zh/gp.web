@@ -59,6 +59,11 @@ public class PostFacade {
 
     /**
      * Find the personal post
+     *
+     * @param state the state of search condition
+     * @param type the type of search condition
+     * @param scope the scope of search condition
+     * @param pageQuery the page query condition
      **/
     public static PageWrapper<CombineInfo<PostInfo, PostExt>> findPersonalPosts(AccessPoint accesspoint,
                                                                                 Principal principal,
@@ -85,14 +90,13 @@ public class PostFacade {
         return result;
     }
 
-    public static Map<InfoId<Long>, Set<TagInfo>> findPostOwner(AccessPoint accesspoint,
-            Principal principal,List<InfoId<Long>> postids){
-    	
-    	return null;
-    }
     
     /**
      * find the work group posts
+     *
+     * @param state the state of search condition
+     * @param type the type of search condition
+     * @param scope the scope of search condition
      **/
     public static List<CombineInfo<PostInfo, PostExt>> findWorkgroupPosts(AccessPoint accesspoint,
                                                     Principal principal,
@@ -120,6 +124,10 @@ public class PostFacade {
 
     /**
      * Find the square post
+     *
+     * @param state the state of search condition
+     * @param type the type of search condition
+     * @param scope the scope of search condition
      **/
     public static List<CombineInfo<PostInfo, PostExt>> findSquarePosts(AccessPoint accesspoint,
                                                     Principal principal,
@@ -146,6 +154,10 @@ public class PostFacade {
 
     /**
      * create a new post
+     *
+     * @param postinfo the post information bean
+     * @param images the images in post content
+     * @param attendees the attendees who join post
      */
     public static boolean newPost(AccessPoint accesspoint,
                                   Principal principal,
@@ -215,6 +227,10 @@ public class PostFacade {
 
     /**
      * Find the post comments according to the post id
+     *
+     * @param postid the id of post
+     * @param owner the owner of post
+     * @param state the state of post
      **/
     public static List<PostCommentInfo> findPostComments(AccessPoint accesspoint,
                                                          Principal principal,
