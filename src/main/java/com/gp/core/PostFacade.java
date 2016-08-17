@@ -339,7 +339,7 @@ public class PostFacade {
 
         boolean result = false;
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-                Operations.LIKE_POST)){
+                Operations.DISLIKE_POST)){
 
             result = postservice.addPostDislike(svcctx, postid, voter);
 
