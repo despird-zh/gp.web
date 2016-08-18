@@ -57,9 +57,10 @@ https://jsoup.org/cookbook/input/parse-body-fragment
     a - member create in group post page. they belongs to work group
     b - member create in his personal page. but user want to broadcast them to public
 
-23 change post.title to post.subject
+23 [done]change post.title to post.subject
 
-24 move db from home to office
+24 publish post need workgroup admin approvement.
+
 ===========Mysql scripts =============
 mysql> grant select on mysql.proc to 'gpadmin'@'%';
 mysql> flush privileges;
