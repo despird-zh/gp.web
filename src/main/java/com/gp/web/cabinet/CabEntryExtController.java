@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.gp.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.math.NumberUtils;
@@ -128,7 +129,7 @@ public class CabEntryExtController extends BaseController{
 		}
 		Map<String, String> ops  = null;
 		try {
-			ops = Cabinets.JSON_MAPPER.readValue(tagOps, new TypeReference<Map<String, String>>(){});
+			ops = CommonUtils.JSON_MAPPER.readValue(tagOps, new TypeReference<Map<String, String>>(){});
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -183,7 +184,7 @@ public class CabEntryExtController extends BaseController{
 		}catch(CoreException ce){
 			//
 		}
-		propmap = Cabinets.toPropertyMap(propstr);
+		propmap = CommonUtils.toMap(propstr);
 		mav.addObject("propmap", propmap);
 		
 		return mav;
