@@ -61,6 +61,7 @@ https://jsoup.org/cookbook/input/parse-body-fragment
 
 24 publish post need workgroup admin approvement.
 
+b3log
 ===========Mysql scripts =============
 mysql> grant select on mysql.proc to 'gpadmin'@'%';
 mysql> flush privileges;
