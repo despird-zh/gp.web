@@ -15,6 +15,7 @@ import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
 import com.gp.svc.ImageService;
 import com.gp.svc.PostService;
+import com.gp.svc.QuickFlowService;
 import com.gp.svc.info.PostExt;
 import com.gp.svc.info.UserLite;
 import com.gp.util.ConfigSettingUtils;
@@ -47,14 +48,18 @@ public class PostFacade {
 
     private static ImageService imageservice;
 
+    private static QuickFlowService quickflowservice;
+    
     @Autowired
     public PostFacade(PostService postservice,
                       CommonService idservice,
-                      ImageService imageservice){
+                      ImageService imageservice,
+                      QuickFlowService quickflowservice){
 
         PostFacade.postservice = postservice;
         PostFacade.idservice = idservice;
         PostFacade.imageservice = imageservice;
+        PostFacade.quickflowservice = quickflowservice;
     }
 
     /**
@@ -369,6 +374,17 @@ public class PostFacade {
         }
 
         return result;
+    }
+    
+    public static void sendWorkgroupPostPublic(AccessPoint accesspoint,
+            				Principal principal,
+            				String descr, InfoId<Long> postId){
+    	
+    }
+    
+    public static void sendPersonalPostPublic(AccessPoint accesspoint,
+			Principal principal,
+			String descr, InfoId<Long> postId){
 
     }
 }
