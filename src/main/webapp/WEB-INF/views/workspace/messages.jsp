@@ -55,7 +55,9 @@
 							<li class="list-group-item clearfix " >
 								<div class="box-comment">
 									<!-- User image -->
-									<img alt="User Image" src="${path_image}/user3-128x128.jpg" class="img-circle img-sm">
+									<div>
+										<img alt="User Image" src="${path_image}/user3-128x128.jpg" class="img-circle img-sm">
+									</div>
 									<div class="comment-text">
 									  <span class="username">
 										Maria Gonzales

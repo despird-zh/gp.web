@@ -57,28 +57,22 @@
 							<li class="list-group-item clearfix" >
 								<div class="box-comment" style="padding:4px 6px;">
 									<!-- User image -->
-									<div class="pull-left avatar-info p-t-xxs">
-										<img alt="User Image" src="${path_image}/user3-128x128.jpg" class="img-sm">
-									</div>
+									<img alt="User Image" src="${path_image}/user3-128x128.jpg" class="img-circle img-sm">
 									<div class="comment-text">
-										<div class="username">
-											<span class="badge text-center margin-r-5"  style="font-size:60%;">系统通知</span>		
-											<span class="text-muted">新建话题</span>
-											<span>测试时间讨论问题一二三</span>
-											<span class="text-muted pull-right">
-												<a href="javascript:void(0);" class="margin-r-5"><i class="fa fa-circle"></i></a>
-											</span>
-											<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
-										</div><!-- /.username -->									  
-										<div>
-											<blockquote style="padding:0px 5px; margin-top:5px;margin-bottom:5px;font-size:14px;">
-												<p style="margin:0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-												<small>Someone famous in <cite title="Source Title">Source Title</cite> @ 3days</small>
-											</blockquote>
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-										</div>
+									  <span class="username">
+										Maria Gonzales
+										<span class="badge text-center margin-r-5"  style="font-size:60%;">系统通知</span>										
+										<span class="text-muted pull-right">
+											<a class="margin-r-5"><i class="fa fa-info-circle"></i></a>
+										</span>
+										<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
+									  </span><!-- /.username -->									  
+									  
 									</div><!-- /.comment-text -->
-									
+									<div class="comment-text margin" style="font-size:12px;">
+									<span>用户<span class="label label-danger">孙惊喜</span>被加入到工作组<span class="label label-danger">临时工作组</span>中。
+									  </span>
+									</div>
 								</div>
 							</li>
 							<li class="list-group-item clearfix" >
