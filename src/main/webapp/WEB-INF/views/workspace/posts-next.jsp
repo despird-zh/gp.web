@@ -3,11 +3,11 @@
 <div class="box-body repo-list">
 	<ul class="infinite-container list-group list-group-unbordered">
 <c:forEach var="postitem" items="${entries}">
-	<li class="list-group-item infinite-item" style="border-top: none;">
-		<div  class="ticket">
+	<li class="list-group-item infinite-item">
+		<div  class="ticket clearfix m-t-xs">
 			<div class="pull-left avatar-info p-t-xxs">
 				<a >
-					<img class="img-bordered-sm" src="${postitem.ownerAvatar}" alt="user image">
+					<img class="img-sm" src="${postitem.ownerAvatar}" alt="user image">
 				</a>
 				<div class="thumbs-info" >
 					<div><a style="cursor:pointer;"><i class="fa fa-thumbs-o-up"></i></a></div>
@@ -17,19 +17,16 @@
 			</div>
 			<!-- PostItem -->
 			<div class="post" data-post-id="${postitem.postId}">
-				<div class="user-block">
-					<span class="username">
-					  <a href="#" class="margin-r-5">${postitem.ownerName}</a>
-					  <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-					</span>
-					<span  class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
-					<span  class="label label-warning text-center margin-r-5">企业发布</span>
-					<span class="description">7:30 PM today</span>
+				<div class="post-head">
+					<a href="#" class="margin-r-5">${postitem.ownerName}</a>
+					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
+					<span class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
+					<span>${postitem.subject}</span>
+					<a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
 				</div><!-- /.user-block -->
-				<div ><!--remove class="clearfix"-->
-					<div class="m-b-xs"><span>${postitem.subject}</span></div>
-					<div>${postitem.content}
-					</div>
+				<div class="post-content">
+					${postitem.content}
 				</div>
 				<ul class="list-inline">
 					<li><a href="#" class="link-black text-sm"><i class="fa fa-plug margin-r-5"></i> Join</a></li>

@@ -549,6 +549,7 @@ margin-right: 2px;
 
 .ticket .post{
 margin-left: 46px;
+margin-bottom : 5px;
 }
 .ticket .post .direct-chat-messages{
 	padding-top :0;
@@ -572,6 +573,12 @@ margin-top:5px;
 
 .ticket .avatar-info .thumbs-info .bottom-thumb{
 margin-top:5px;
+}
+.post-head {
+padding-bottom:3px;
+}
+.post-content p{
+margin-bottom:0;
 }
 
 .ticket .post .user-block {

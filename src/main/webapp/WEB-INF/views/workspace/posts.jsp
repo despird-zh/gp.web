@@ -50,7 +50,7 @@
 						<li><a href="notifications.do" class="filter-nav m-l-xs">设计小组 <span class="badge badge-warning">24</span></a></li>
 					</ul>
 				</div>
-				<div id="post-container" class="box-body">
+				<div id="post-container" class="box-body repo-list">
 
 				</div><!-- /.box-body -->
 			  </div><!-- /.box -->
