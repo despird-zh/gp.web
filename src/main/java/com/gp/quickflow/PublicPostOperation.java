@@ -1,4 +1,4 @@
-package com.gp.core.quickflow;
+package com.gp.quickflow;
 
 import java.util.Map;
 
