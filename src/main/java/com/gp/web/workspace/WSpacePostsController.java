@@ -252,4 +252,30 @@ public class WSpacePostsController extends BaseController{
 		
 		return mav.addAllObjects(result.asMap());
 	}
+	
+	@RequestMapping("public-post")
+	public ModelAndView savePostPublic(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+//		try{
+//			
+//			
+//			result.setState(ActionResult.SUCCESS);
+//			result.setMessage(getMessage("mesg.save.comment"));
+//			
+//		}catch(CoreException ce){
+//			
+//			result.setState(ActionResult.FAIL);
+//			result.setMessage(ce.getMessage());
+//			result.setDetailmsgs(ce.getValidateMessages());
+//		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
 }

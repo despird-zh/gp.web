@@ -385,6 +385,6 @@ public class PostFacade {
     public static void sendPersonalPostPublic(AccessPoint accesspoint,
 			Principal principal,
 			String descr, InfoId<Long> postId){
-
+    	
     }
 }

@@ -577,6 +577,10 @@ margin-top:5px;
 .post-head {
 padding-bottom:3px;
 }
+.post-head .text-muted {
+    font-size: 12px;
+    font-weight: 400;
+}
 .post-content p{
 margin-bottom:0;
 }

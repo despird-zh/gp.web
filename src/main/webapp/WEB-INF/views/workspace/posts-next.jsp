@@ -29,12 +29,12 @@
 					${postitem.content}
 				</div>
 				<ul class="list-inline">
-					<li><a href="#" class="link-black text-sm"><i class="fa fa-plug margin-r-5"></i> Join</a></li>
-					<li><a href="#" class="link-black text-sm"><i class="fa fa-star-o margin-r-5"></i> Like</a></li>
-					<li><a href="#" class="link-black text-sm"><i class="fa fa-paper-plane-o margin-r-5"></i> Public</a></li>
-					<li><a href="#" class="link-black text-sm" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o margin-r-5"></i> Send</a></li>
-					<li class="pull-right"><a obid="users_show_btn" href="javascript:;" class="link-black text-sm"><i class="fa fa-users margin-r-5"></i> Users (13)</a></li>
-					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:;" onclick="PageContext.ShowComments(this);" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-plug"></i> Join</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-star-o"></i> Like</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-paper-plane-o"></i> Public</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
+					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-users"></i>Users(13)</a></li>
+					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm margin-r-5"><i class="fa fa-comments-o"></i>Comments(5)</a></li>
 				</ul>
 				<div gpid="users_list_container" class="hidden">
 					<div obid="users_list" style="" class="row clearfix user-list">

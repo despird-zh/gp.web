@@ -77,11 +77,30 @@ var PageContext = (function ($, window, undefined){
 		
 	};
 	
+	Topics.doPublicPost = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		var $comment = $(el).parent().siblings('[gpid="comment-txt"]');
+		$.ajax({
+			url: "../workspace/save-comment.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id'),
+				"comment" : $comment.val()
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
 	Topics.initial();
 	
 	return {
 		"ShowComments" : $.proxy(Topics.doShowComments, Topics),
 		"SaveComment" : $.proxy(Topics.doSaveComment, Topics),
 		"DeleteComment" : $.proxy(Topics.doDeleteComment, Topics),
+		"PublicPost" : $.proxy(Topics.doPublicPost, Topics)
 	};
 })(jQuery, window);
