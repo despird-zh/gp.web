@@ -378,7 +378,21 @@ public class PostFacade {
     
     public static void sendWorkgroupPostPublic(AccessPoint accesspoint,
             				Principal principal,
-            				String descr, InfoId<Long> postId){
+            				String descr, InfoId<Long> postId)throws CoreException{
+    	
+    	 try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                 Operations.PUBLIC_POST)){
+
+             postservice.addPostDislike(svcctx, null, null);
+
+         } catch (ServiceException e)  {
+
+             ContextHelper.stampContext(e,"excp.like.post");
+
+         }finally{
+
+             ContextHelper.handleContext();
+         }
     	
     }
     
