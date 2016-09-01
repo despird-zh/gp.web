@@ -12,8 +12,8 @@ public class PublicPostProcess extends BaseFlowProcess {
 
 	Logger LOGGER = LoggerFactory.getLogger(PublicPostProcess.class);
 	
-	public PublicPostProcess(String operation) {
-		super(operation, true, true);
+	public PublicPostProcess(String processName) {
+		super(processName);
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
@@ -25,6 +25,12 @@ public class PublicPostProcess extends BaseFlowProcess {
 	@Override
 	public void pass(InfoId<Long> procId, InfoId<?> resourceId, Map<String, Object> procData) {
 		LOGGER.debug("pass");
+	}
+
+	@Override
+	public boolean isProcSupport(String resourceType) {
+		
+		return true;
 	}
 
 
