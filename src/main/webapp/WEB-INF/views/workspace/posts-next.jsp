@@ -4,15 +4,17 @@
 	<ul class="infinite-container list-group list-group-unbordered">
 <c:forEach var="postitem" items="${entries}">
 	<li class="list-group-item infinite-item">
-		<div  class="ticket clearfix m-t-xs">
-			<div class="pull-left avatar-info p-t-xxs">
-				<a >
-					<img class="img-sm" src="${postitem.ownerAvatar}" alt="user image">
+		<div class="ticket clearfix m-t-xs">
+			<div class="pull-left avatar-info p-t-xxs" data-post-id="${postitem.postId}">
+				<a>
+					<img src="${postitem.ownerAvatar}" alt="user image">
 				</a>
 				<div class="thumbs-info" >
-					<div><a style="cursor:pointer;"><i class="fa fa-thumbs-o-up"></i></a></div>
-					<div><span  class="label label-success text-center">1235</span></div>
-					<div class="bottom-thumb"><a style="cursor:pointer;"><i class="fa fa-thumbs-o-down"></i></a></div>
+					<div><span class="label label-success text-center">1235</span></div>
+					<div class="bottom-thumb">
+						<a style="cursor:pointer;margin-right:5px;" href="javascript:void(0);" onclick="PageContext.LikePost(this);" class="link-black"><i class="fa fa-thumbs-o-up"></i></a>
+						<a style="cursor:pointer;" href="javascript:void(0);" onclick="PageContext.DislikePost(this);" class="link-black"><i class="fa fa-thumbs-o-down"></i></a>
+					</div>
 				</div>
 			</div>
 			<!-- PostItem -->
@@ -22,7 +24,7 @@
 					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
 					<span class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span>${postitem.subject}</span>
-					<a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+					<a href="#" class="pull-right btn-box-tool" ><i class="fa fa-times"></i></a>
 					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
 				</div><!-- /.user-block -->
 				<div class="post-content">
@@ -31,7 +33,7 @@
 				<ul class="list-inline">
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-plug"></i> Join</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-star-o"></i> Like</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-paper-plane-o"></i> Public</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.PublicPost(this);"><i class="fa fa-paper-plane-o"></i> Public</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
 					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-users"></i>Users(13)</a></li>
 					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm margin-r-5"><i class="fa fa-comments-o"></i>Comments(5)</a></li>

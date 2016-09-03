@@ -396,9 +396,25 @@ public class PostFacade {
     	
     }
     
+    /**
+     * personal public just make visible to square 
+     **/
     public static void sendPersonalPostPublic(AccessPoint accesspoint,
 			Principal principal,
-			String descr, InfoId<Long> postId){
+			InfoId<Long> postId)throws CoreException{
     	
+    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.PUBLIC_POST)){
+
+            postservice.publicPost(svcctx, postId);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.public.post");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
     }
 }

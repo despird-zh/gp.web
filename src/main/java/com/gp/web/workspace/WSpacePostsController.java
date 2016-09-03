@@ -2,6 +2,7 @@ package com.gp.web.workspace;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
+import com.gp.common.IdKey;
 import com.gp.common.Posts;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
@@ -11,6 +12,7 @@ import com.gp.dao.info.PostCommentInfo;
 import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
+import com.gp.info.InfoId;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.info.PostExt;
@@ -263,18 +265,122 @@ public class WSpacePostsController extends BaseController{
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
-//		try{
-//			
-//			
-//			result.setState(ActionResult.SUCCESS);
-//			result.setMessage(getMessage("mesg.save.comment"));
-//			
-//		}catch(CoreException ce){
-//			
-//			result.setState(ActionResult.FAIL);
-//			result.setMessage(ce.getMessage());
-//			result.setDetailmsgs(ce.getValidateMessages());
-//		}
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.sendPersonalPostPublic(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.public.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping("like-post")
+	public ModelAndView likePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.public.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping("dislike-post")
+	public ModelAndView dislikePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.public.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping("unfavorite-post")
+	public ModelAndView favoritePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.sendPersonalPostPublic(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.public.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping("favorite-post")
+	public ModelAndView unfavoritePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.sendPersonalPostPublic(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.public.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
 		
 		return mav.addAllObjects(result.asMap());
 	}

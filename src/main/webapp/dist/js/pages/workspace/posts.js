@@ -79,14 +79,76 @@ var PageContext = (function ($, window, undefined){
 	
 	Topics.doPublicPost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
-		var $comment = $(el).parent().siblings('[gpid="comment-txt"]');
 		$.ajax({
-			url: "../workspace/save-comment.do",
+			url: "../workspace/public-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
-				"post-id" : $post.attr('data-post-id'),
-				"comment" : $comment.val()
+				"post-id" : $post.attr('data-post-id')
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
+	Topics.doLikePost = function(el){
+		var $post = $(el).parentsUntil('.ticket','.avatar-info');
+		$.ajax({
+			url: "../workspace/like-post.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id')
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
+	Topics.doDislikePost = function(el){
+		var $post = $(el).parentsUntil('.ticket','.avatar-info');
+		$.ajax({
+			url: "../workspace/dislike-post.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id')
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
+	Topics.doFavoritePost = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		$.ajax({
+			url: "../workspace/favorite-post.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id')
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
+	Topics.doUnfavoritePost = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		$.ajax({
+			url: "../workspace/unfavorite-post.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id')
 			},
 			success: function(response)
 			{
@@ -101,6 +163,10 @@ var PageContext = (function ($, window, undefined){
 		"ShowComments" : $.proxy(Topics.doShowComments, Topics),
 		"SaveComment" : $.proxy(Topics.doSaveComment, Topics),
 		"DeleteComment" : $.proxy(Topics.doDeleteComment, Topics),
-		"PublicPost" : $.proxy(Topics.doPublicPost, Topics)
+		"PublicPost" : $.proxy(Topics.doPublicPost, Topics),
+		"LikePost" : $.proxy(Topics.doLikePost, Topics),
+		"DislikePost" : $.proxy(Topics.doDislikePost, Topics),
+		"FavoritePost" : $.proxy(Topics.doFavoritePost, Topics),
+		"UnfavoritePost" : $.proxy(Topics.doUnfavoritePost, Topics),
 	};
 })(jQuery, window);
