@@ -51,8 +51,20 @@ var PageContext = (function ($, window, undefined){
 	
 	Topics.doShowComments = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
+		var $users = $('div[gpid="users_list_container"]', $post);
 		var $comments = $('div[gpid="comment_list_container"]', $post);
 		$comments.toggleClass('hidden');
+		if(!$users.hasClass('hidden'))
+			$users.addClass('hidden');
+	};
+	
+	Topics.doShowUsers = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		var $users = $('div[gpid="users_list_container"]', $post);
+		var $comments = $('div[gpid="comment_list_container"]', $post);
+		$users.toggleClass('hidden');
+		if(!$comments.hasClass('hidden'))
+			$comments.addClass('hidden');
 	};
 	
 	Topics.doSaveComment = function(el){
@@ -161,6 +173,7 @@ var PageContext = (function ($, window, undefined){
 	
 	return {
 		"ShowComments" : $.proxy(Topics.doShowComments, Topics),
+		"ShowUsers" : $.proxy(Topics.doShowUsers, Topics),
 		"SaveComment" : $.proxy(Topics.doSaveComment, Topics),
 		"DeleteComment" : $.proxy(Topics.doDeleteComment, Topics),
 		"PublicPost" : $.proxy(Topics.doPublicPost, Topics),

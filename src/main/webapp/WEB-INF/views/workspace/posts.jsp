@@ -164,11 +164,13 @@
     <!-- inifite -->
     <script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
     <script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<!-- uniform -->
+	<script src="${path_plugins}/uniform/jquery.uniform.min.js"></script>
     <!-- AdminLTE App -->
 	<script src="${path_script}/app.ctx.js" type="text/javascript"></script>
 	<!-- GPress Err Message -->
 	<script src="${path_script}/message.js" type="text/javascript"></script>
-	<%@include file="../dialog/new-post.jsp" %>
+	<%@include file="../dialog/new-personal-post.jsp" %>
 	
 	<script src="${path_script}/pages/workspace/posts.js"></script>
     <!-- AdminLTE for demo purposes -->

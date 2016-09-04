@@ -24,7 +24,7 @@
 					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
 					<span class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span>${postitem.subject}</span>
-					<a href="#" class="pull-right btn-box-tool" ><i class="fa fa-times"></i></a>
+					<a href="#" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-times"></i></a>
 					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
 				</div><!-- /.user-block -->
 				<div class="post-content">
@@ -35,11 +35,11 @@
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-star-o"></i> Like</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.PublicPost(this);"><i class="fa fa-paper-plane-o"></i> Public</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
-					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-users"></i>Users(13)</a></li>
+					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" onclick="PageContext.ShowUsers(this);" class="link-black text-sm margin-r-5"><i class="fa fa-users"></i>Users(13)</a></li>
 					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm margin-r-5"><i class="fa fa-comments-o"></i>Comments(5)</a></li>
 				</ul>
-				<div gpid="users_list_container" class="hidden">
-					<div obid="users_list" style="" class="row clearfix user-list">
+				<div gpid="users_list_container" class="hidden container-fluid">
+					<div obid="users_list" style="" class="row clearfix">
 					<c:forEach var="useritem" items="${postitem.attendees}">
 						<div class="col-md-1 user-avatar">
 							<img alt="message user image" src="${useritem.avatarLink}" ><!-- /.direct-chat-img -->
