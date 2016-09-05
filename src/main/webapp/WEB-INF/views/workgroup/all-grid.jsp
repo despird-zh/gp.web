@@ -64,7 +64,7 @@
 					<c:forEach var="wgroup" items="${wgroups}">
 						<div class="col-md-2 image infinite-item">
 							<div class="image-inner">
-								<a href="../workgroup/topics.do?wgroup_id=${wgroup.workgroupId}" >
+								<a href="../workgroup/posts.do?wgroup_id=${wgroup.workgroupId}" >
 									<img src="${wgroup.imagePath}" alt="" />
 								</a>
 								<p class="image-caption">

@@ -6,14 +6,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("wg-topic-ctrl")
+@Controller("wg-posts-ctrl")
 @RequestMapping("/workgroup")
-public class WGroupTopicsController extends BaseController{
+public class WGroupPostsController extends BaseController{
 
-	@RequestMapping("topics")
+	@RequestMapping("posts")
 	public ModelAndView doInitial(){
 		
-		ModelAndView mav = getJspModelView("workgroup/topics");
+		ModelAndView mav = getJspModelView("workgroup/posts");
 		String wgid = super.readRequestParam("wgroup_id");
 		mav.addObject("wgroup_id",  wgid);
 		return mav;
