@@ -1614,3 +1614,9 @@ Avartar cropper css
     border-color: #eee ;
     margin-top: 6px;
 }
+
+.excerpt-img{
+	float: left;
+	margin-right : 5px;
+	width : 100px;
+}

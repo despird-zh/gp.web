@@ -28,7 +28,7 @@
 					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
 				</div><!-- /.user-block -->
 				<div class="post-content">
-					${postitem.content}
+					${postitem.excerpt}
 				</div>
 				<ul class="list-inline">
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-plug"></i> Join</a></li>

@@ -55,12 +55,15 @@ public class PostParser implements NodeVisitor{
         NodeTraversor traversor = new NodeTraversor(this);
         traversor.traverse(body); // walk the DOM, and call .head() and .tail() for each node
         content.append(body.html());
+        // wrap the excerpt with p tag.
+        excerpt.insert(0, "<p>").append("</p>");
         if(excerptImg != null ) {
             excerptImg.addClass("excerpt-img");
+            excerptImg.removeAttr("style");
             // prepend the html code to excerpt
             excerpt.insert(0, excerptImg.outerHtml());
         }
-
+       
     }
 
     /**
