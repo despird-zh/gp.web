@@ -169,6 +169,24 @@ var PageContext = (function ($, window, undefined){
 		});
 	};
 	
+	Topics.doSwitchPostContent = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		var $post_content = $('div.post-content', $post);
+		var $content_holder = $('textarea[gpid="content-holder"]', $post);
+		var holderType = $content_holder.attr('data-type'); // to be : content or excerpt .
+		if(holderType == 'content'){
+			var excerpt = $post_content.html();
+			$post_content.html($content_holder.val());
+			$content_holder.val(excerpt);// save excerpt to content dom
+			$content_holder.attr('data-type','excerpt');
+		}else{
+			var whole = $post_content.html();
+			$post_content.html($content_holder.val());
+			$content_holder.val(whole);// save excerpt to content dom
+			$content_holder.attr('data-type','content');
+		}
+	};
+	
 	Topics.initial();
 	
 	return {
@@ -181,5 +199,6 @@ var PageContext = (function ($, window, undefined){
 		"DislikePost" : $.proxy(Topics.doDislikePost, Topics),
 		"FavoritePost" : $.proxy(Topics.doFavoritePost, Topics),
 		"UnfavoritePost" : $.proxy(Topics.doUnfavoritePost, Topics),
+		"SwitchPostContent" : $.proxy(Topics.doSwitchPostContent, Topics)
 	};
 })(jQuery, window);

@@ -417,4 +417,56 @@ public class PostFacade {
             ContextHelper.handleContext();
         }
     }
+    
+    /**
+     * like post
+     **/
+    public static boolean favoritePost(AccessPoint accesspoint,
+                                   Principal principal,
+                                   InfoId<Long> postid) throws CoreException{
+
+        boolean result = false;
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.LIKE_POST)){
+
+            result = postservice.addPostLike(svcctx, postid, "");
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.like.post");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return result;
+
+    }
+    
+    /**
+     * like post
+     **/
+    public static boolean unfavoritePost(AccessPoint accesspoint,
+                                   Principal principal,
+                                   InfoId<Long> postid) throws CoreException{
+
+        boolean result = false;
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.LIKE_POST)){
+
+            result = postservice.addPostLike(svcctx, postid, "");
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.like.post");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+        return result;
+
+    }
 }

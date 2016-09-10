@@ -55,6 +55,10 @@ public class PostParser implements NodeVisitor{
         NodeTraversor traversor = new NodeTraversor(this);
         traversor.traverse(body); // walk the DOM, and call .head() and .tail() for each node
         content.append(body.html());
+        // cut off the extra text
+        if(excerpt.length() > 160){
+        	excerpt.delete(160, excerpt.length());
+        }
         // wrap the excerpt with p tag.
         excerpt.insert(0, "<p>").append("</p>");
         if(excerptImg != null ) {
@@ -63,7 +67,6 @@ public class PostParser implements NodeVisitor{
             // prepend the html code to excerpt
             excerpt.insert(0, excerptImg.outerHtml());
         }
-       
     }
 
     /**
@@ -124,7 +127,7 @@ public class PostParser implements NodeVisitor{
                     )
                 ){
 
-                    byte[] buffer = new byte[40960];
+                    byte[] buffer = new byte[4096];
                     int length;
 
                     // copy the file content in bytes
