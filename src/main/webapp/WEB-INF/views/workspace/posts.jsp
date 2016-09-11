@@ -169,7 +169,7 @@
 	<script src="${path_script}/app.ctx.js" type="text/javascript"></script>
 	<!-- GPress Err Message -->
 	<script src="${path_script}/message.js" type="text/javascript"></script>
-	<%@include file="../dialog/new-workgroup-post.jsp" %>
+	<%@include file="../dialog/new-personal-post.jsp" %>
 	
 	<script src="${path_script}/pages/workspace/posts.js"></script>
     <!-- AdminLTE for demo purposes -->

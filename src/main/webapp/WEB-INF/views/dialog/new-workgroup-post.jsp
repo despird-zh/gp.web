@@ -29,39 +29,28 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Type</label>
+				<label class="col-sm-2 control-label">Scope</label>
 				<div class="col-sm-10">
 					<label class="radio-inline">
-						<input type="radio" gpid="post-private" name="post-type" checked="checked" value="private">Private
+						<input type="radio" gpid="post-private" name="post-scope" checked="checked" value="workgroup">Workgroup
 					</label>
 					<label class="radio-inline">
-						<input type="radio" gpid="post-public" name="post-type" value="public">Public
+						<input type="radio" gpid="post-square" name="post-scope" value="square">Square
 					</label>
 				</div>
 			</div>
 			<div class="form-group" gpid="private-marker">
 				<label class="col-sm-2 control-label">Attendee</label>
 				<div class="col-sm-10">
-					<select gpid="post-attendee" class="form-control select2" multiple="multiple" style="width: 95%;">
+					<select gpid="post-attendee" class="form-control select2" multiple="multiple" style="width: 100%;">
 					</select>
 				</div>
 			</div>
-			<div class="form-group hidden" gpid="public-marker">
-				<label class="col-sm-2 control-label" >Scope</label>
-				<div class="col-sm-4">
-					<form>
-					<label class="radio-inline">
-						<input type="radio" name="post-scope" id="post-square" value="square"> Square
-					</label>
-					<label class="radio-inline">
-						<input type="radio" name="post-scope" id="post-group" value="group"> Group
-					</label>
-					</form>
-				</div>
+			<div class="form-group" gpid="square-marker">
 				<label class="col-sm-2 control-label" >Comment</label>
 				<div class="col-sm-4">
 					<label class="checkbox-inline">
-						<input type="checkbox" gpid="post-comment" value="accept">Accept Comments
+						<input type="checkbox" gpid="post-comment" value="accept">Accept Public Comments
 					</label>
 				</div>
 			</div>
@@ -90,7 +79,7 @@
 					<div>
 						<select gpid="files-selector" class="form-control select2" data-placeholder="Select a File" style="width: 80%;">
 						</select>
-						<button type="button" class="btn btn-sm btn-primary">
+						<button type="button" class="btn btn-sm btn-default">
 							<i class="fa fa-envelope-o"></i>
 						</button>
 						<button type="button" gpid="show-more-btn" class="btn btn-sm btn-default">
@@ -138,12 +127,10 @@ $(function (){
 	var NewPostModal = {
 
 		$post_subject : $('#post-subject', $modal),
-		$post_pub_rdo : $('input[gpid="post-public"]', $modal),
+		$post_pub_rdo : $('input[gpid="post-square"]', $modal),
 		$post_pri_rdo : $('input[gpid="post-private"]', $modal),
 		$post_content : $('div[gpid="post-content"]',$modal),
 		$post_attendee : $('select[gpid="post-attendee"]', $modal),
-		$post_square : $('#post-square', $modal),
-		$post_group : $('#post-group', $modal),
 		$post_comment : $('input[gpid="post-comment"]', $modal),
 		$post_priority : $('select[gpid="post-priority"]', $modal),
 		$post_classification : $('select[gpid="post-classification"]', $modal),
@@ -165,20 +152,27 @@ $(function (){
 		],
 		initial : function(){
 			var _self = this;
+			
 			_self.$post_content.summernote({
 				"height" : 200,
 				"focus" : true,
 				"toolbar" : _self._snote_bar
 			});
-
+			// apply uniform style
+			$('input[type=radio], input[type=checkbox]', $modal).uniform();
+			
 			_self.$post_pub_rdo.on('click', function(){
-				$('div[gpid="public-marker"]').removeClass('hidden');
-				$('div[gpid="private-marker"]').addClass('hidden');
+				_self.$post_comment.prop('disabled', false);
+				$.uniform.update(_self.$post_comment);
+				_self.$post_attendee.val(null).trigger("change"); 
+				_self.$post_attendee.prop('disabled', true);
+				
 			});
-
+			
 			_self.$post_pri_rdo.on('click', function(){
-				$('div[gpid="public-marker"]').addClass('hidden');
-				$('div[gpid="private-marker"]').removeClass('hidden');
+				_self.$post_comment.prop('disabled', true);
+				$.uniform.update(_self.$post_comment);
+				_self.$post_attendee.prop('disabled', false);
 			});
 
 			_self.$post_priority.select2({
@@ -265,9 +259,9 @@ $(function (){
 		var _self = this, _scope = "";
 
 		if(_self.$post_pri_rdo.prop("checked")){
-			_scope = "PRIVATE";
+			_scope = "WORKGROUP";
 		}else{
-			_scope = _self.$post_group.prop("checked")? "WGROUP" : "SQUARE";
+			_scope = "SQUARE";
 		}
 
 		var attendees = _self.$post_attendee.val();
@@ -289,7 +283,7 @@ $(function (){
 		 */
 		var postFromData = new FormData($('#post-form')[0]);
 		$.ajax({
-			url: "../workspace/post-save.do",
+			url: "../workgroup/post-save.do",
             dataType : "json",
             type: 'POST',
 			cache: false,

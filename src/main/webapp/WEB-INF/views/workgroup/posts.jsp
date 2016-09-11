@@ -9,7 +9,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
-	
+	<link rel="stylesheet" href="${path_plugins}/summernote/summernote.css">
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
@@ -112,7 +112,7 @@
 	<script src="${path_script}/app.ctx.js" type="text/javascript"></script>
 	<!-- GPress Err Message -->
 	<script src="${path_script}/message.js" type="text/javascript"></script>
-	<%@include file="../dialog/new-personal-post.jsp" %>
+	<%@include file="../dialog/new-workgroup-post.jsp" %>
 	<!-- GPress Page scripts -->
 	<script src="${path_script}/pages/workgroup/posts.js"></script>
     <!-- AdminLTE for demo purposes -->

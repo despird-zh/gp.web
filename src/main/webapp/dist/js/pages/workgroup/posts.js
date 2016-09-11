@@ -44,4 +44,10 @@
 		});
 	};
 	
+	Topics.initial();
+	
+	return {
+
+	};
+	
 })(jQuery, window);
