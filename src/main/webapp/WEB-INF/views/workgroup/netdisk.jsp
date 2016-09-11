@@ -23,20 +23,14 @@
           <section class="content-header">
 			<div class="row ">
 				<div class="col-sm-12">	
-					<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
-					  Netdisk (Public Repository)
-					  <small>Browse and manage the workgroup documents</small>
+					<h1 class="text-muted" style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+					  网盘内容
+					  <small>查看工作组的网盘内容</small>
 					</h1>
-					<ul class="nav nav-tabs navibar-page pull-right" style="position: absolute; right: 15px; top: 0px; margin-bottom: 0px; border-bottom-width: 1px; margin-top: 6px;">
-						<li><a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/messages.do"><i class="fa fa-lg fa-home"></i></a></li>
-						<li><span class="v-separator"></span></li>	
-						<li><a data-toggle="tooltip" title="查看工作组发布文档" href="publish.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-database"></i></a></li>    
-						<li><a data-toggle="tooltip" title="查看工作组网盘内容" href="netdisk.do?wgroup_id=${wgroup_id}" aria-expanded="true" class="bg-aqua-active"><i class="fa fa-fw fa-suitcase"></i></a></li>
-						<li><a data-toggle="tooltip" title="查看工作组分享" href="share.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-link"></i></a></li>	
-						<li><a data-toggle="tooltip" title="查看工作组任务内容" href="tasks.do?wgroup_id=${wgroup_id}" aria-expanded="true"><i class="fa fa-fw fa-flag"></i></a></li>							
-						<li><a data-toggle="tooltip" title="查看工作组话题" href="topics.do?wgroup_id=${wgroup_id}" aria-expanded="false"><i class="fa fa-fw fa-commenting"></i></a></li>
-						<li><a data-toggle="tooltip" title="查看工作组信息" href="profile.do?wgroup_id=${wgroup_id}" aria-expanded="false" ><i class="fa fa-fw fa-info-circle"></i></a></li>
-					</ul>
+					<jsp:include page="../common/page-navs.jsp" flush="true">
+						<jsp:param name="page" value="netdisk"/>
+						<jsp:param name="module" value="workgroup"/>
+					</jsp:include>
 					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
 			 </div>

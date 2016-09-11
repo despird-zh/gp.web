@@ -46,6 +46,7 @@ public class WSpacePostsController extends BaseController{
 	static Logger LOGGER = LoggerFactory.getLogger(WSpacePostsController.class);
 
 	static String ImagePath = ConfigSettingUtils.getSystemOption(SystemOptions.IMAGE_CACHE_PATH);
+	
 	@RequestMapping("posts")
 	public ModelAndView doInitial(){
 
