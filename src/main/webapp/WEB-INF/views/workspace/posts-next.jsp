@@ -24,7 +24,7 @@
 					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
 					<span class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span>${postitem.subject}</span>
-					<a href="#" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-times"></i></a>
+					<a href="javascript:void(0);" onclick="PageContext.RemovePost(this);" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-times"></i></a>
 					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
 				</div><!-- /.user-block -->
 				<div class="post-content">
@@ -33,8 +33,8 @@
 				<textarea gpid="content-holder" data-type="content" class="hidden">${postitem.content}</textarea>
 				<ul class="list-inline">
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-plug"></i> Join</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-star-o"></i> Like</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.PublicPost(this);"><i class="fa fa-paper-plane-o"></i> Public</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.FavoritePost(this);" data-toggle="tooltip" title="Add or remove the post as favorite"><i class="fa fa-star-o"></i> Like</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.PublicPost(this);" data-toggle="tooltip" title="Make this post public visible"><i class="fa fa-paper-plane-o"></i> Public</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.SwitchPostContent(this);" data-toggle="tooltip" title="Show full content of post"><i class="fa fa-newspaper-o"></i> Full</a></li>
 					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" onclick="PageContext.ShowUsers(this);" class="link-black text-sm margin-r-5"><i class="fa fa-users"></i>Users(13)</a></li>

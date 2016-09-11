@@ -281,6 +281,32 @@ public class WSpacePostsController extends BaseController{
 		return mav.addAllObjects(result.asMap());
 	}
 	
+	@RequestMapping("remove-post")
+	public ModelAndView removePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.removePost(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.delete.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
+	
 	@RequestMapping("like-post")
 	public ModelAndView likePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
@@ -295,7 +321,7 @@ public class WSpacePostsController extends BaseController{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
 			PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.public.post"));
+			result.setMessage(getMessage("mesg.like.post"));
 			
 		}catch(CoreException ce){
 			
@@ -321,33 +347,7 @@ public class WSpacePostsController extends BaseController{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
 			PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.public.post"));
-			
-		}catch(CoreException ce){
-			
-			result.setState(ActionResult.FAIL);
-			result.setMessage(ce.getMessage());
-			result.setDetailmsgs(ce.getValidateMessages());
-		}
-		
-		return mav.addAllObjects(result.asMap());
-	}
-	
-	@RequestMapping("unfavorite-post")
-	public ModelAndView favoritePost(HttpServletRequest request){
-		ModelAndView mav = super.getJsonModelView();
-
-		Principal principal = super.getPrincipal();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		ActionResult result = new ActionResult();
-		
-		long postid = NumberUtils.toLong(request.getParameter("post-id"));
-		
-		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.sendPersonalPostPublic(accesspoint, principal, pid);
-			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.public.post"));
+			result.setMessage(getMessage("mesg.dislike.post"));
 			
 		}catch(CoreException ce){
 			
@@ -360,6 +360,32 @@ public class WSpacePostsController extends BaseController{
 	}
 	
 	@RequestMapping("favorite-post")
+	public ModelAndView favoritePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.favoritePost(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.favorite.post"));
+			
+		}catch(CoreException ce){
+			
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+		
+		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping("unfavorite-post")
 	public ModelAndView unfavoritePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
@@ -371,9 +397,9 @@ public class WSpacePostsController extends BaseController{
 		
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.sendPersonalPostPublic(accesspoint, principal, pid);
+			PostFacade.removeFavoritePost(accesspoint, principal, pid);
 			result.setState(ActionResult.SUCCESS);
-			result.setMessage(getMessage("mesg.public.post"));
+			result.setMessage(getMessage("mesg.unfavorite.post"));
 			
 		}catch(CoreException ce){
 			

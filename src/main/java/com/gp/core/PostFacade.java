@@ -2,6 +2,7 @@ package com.gp.core;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.*;
+import com.gp.dao.info.FavoriteInfo;
 import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.PostCommentInfo;
 import com.gp.dao.info.PostInfo;
@@ -13,6 +14,7 @@ import com.gp.info.InfoId;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
+import com.gp.svc.FavoriteService;
 import com.gp.svc.ImageService;
 import com.gp.svc.PostService;
 import com.gp.svc.QuickFlowService;
@@ -50,16 +52,20 @@ public class PostFacade {
 
     private static QuickFlowService quickflowservice;
     
+    private static FavoriteService favoriteService;
+    
     @Autowired
     public PostFacade(PostService postservice,
                       CommonService idservice,
                       ImageService imageservice,
-                      QuickFlowService quickflowservice){
+                      QuickFlowService quickflowservice,
+                      FavoriteService favoriteService){
 
         PostFacade.postservice = postservice;
         PostFacade.idservice = idservice;
         PostFacade.imageservice = imageservice;
         PostFacade.quickflowservice = quickflowservice;
+        PostFacade.favoriteService = favoriteService;
     }
 
     /**
@@ -230,6 +236,33 @@ public class PostFacade {
         return result;
     }
 
+    /**
+     * Find the post comments according to the post id
+     *
+     * @param postid the id of post
+     * @param owner the owner of post
+     * @param state the state of post
+     **/
+    public static void removePost(AccessPoint accesspoint,
+                                 Principal principal,
+                                 InfoId<Long> postid) throws CoreException{
+
+        try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+                Operations.FIND_COMMENTS)){
+
+            postservice.removePost(svcctx, postid);
+
+        } catch (ServiceException e)  {
+
+            ContextHelper.stampContext(e,"excp.delete.post");
+
+        }finally{
+
+            ContextHelper.handleContext();
+        }
+
+    }
+    
     /**
      * Find the post comments according to the post id
      *
@@ -427,13 +460,20 @@ public class PostFacade {
 
         boolean result = false;
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-                Operations.LIKE_POST)){
+                Operations.FAVORITE_POST)){
 
-            result = postservice.addPostLike(svcctx, postid, "");
+        	InfoId<Long> fid = idservice.generateId(IdKey.FAVORITE, Long.class);
+        	FavoriteInfo finfo = new FavoriteInfo();
+        	finfo.setInfoId(fid);
+        	finfo.setResourceId(postid.getId());
+        	finfo.setResourceType(postid.getIdKey());
+        	finfo.setFavoriter(principal.getAccount());
+        	
+            result = favoriteService.addFavorite(svcctx, finfo);
 
         } catch (ServiceException e)  {
 
-            ContextHelper.stampContext(e,"excp.like.post");
+            ContextHelper.stampContext(e,"excp.favorite.post");
 
         }finally{
 
@@ -447,19 +487,19 @@ public class PostFacade {
     /**
      * like post
      **/
-    public static boolean unfavoritePost(AccessPoint accesspoint,
+    public static boolean removeFavoritePost(AccessPoint accesspoint,
                                    Principal principal,
                                    InfoId<Long> postid) throws CoreException{
 
         boolean result = false;
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-                Operations.LIKE_POST)){
+                Operations.UNFAVORITE_POST)){
 
-            result = postservice.addPostLike(svcctx, postid, "");
+            result = favoriteService.removeFavorite(svcctx, principal.getAccount(), postid);
 
         } catch (ServiceException e)  {
 
-            ContextHelper.stampContext(e,"excp.like.post");
+            ContextHelper.stampContext(e,"excp.unfavorite.post");
 
         }finally{
 

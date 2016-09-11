@@ -169,6 +169,22 @@ var PageContext = (function ($, window, undefined){
 		});
 	};
 	
+	Topics.doRemovePost = function(el){
+		var $post = $(el).parentsUntil('.ticket','.post');
+		$.ajax({
+			url: "../workspace/remove-post.do",
+			dataType : "json",
+			type: 'POST',
+			data: {
+				"post-id" : $post.attr('data-post-id')
+			},
+			success: function(response)
+			{
+				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+			}
+		});
+	};
+	
 	Topics.doSwitchPostContent = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
 		var $post_content = $('div.post-content', $post);
@@ -185,6 +201,7 @@ var PageContext = (function ($, window, undefined){
 			$content_holder.val(whole);// save excerpt to content dom
 			$content_holder.attr('data-type','content');
 		}
+		$(el).tooltip('hide');
 	};
 	
 	Topics.initial();
@@ -195,6 +212,7 @@ var PageContext = (function ($, window, undefined){
 		"SaveComment" : $.proxy(Topics.doSaveComment, Topics),
 		"DeleteComment" : $.proxy(Topics.doDeleteComment, Topics),
 		"PublicPost" : $.proxy(Topics.doPublicPost, Topics),
+		"RemovePost" : $.proxy(Topics.doRemovePost, Topics),
 		"LikePost" : $.proxy(Topics.doLikePost, Topics),
 		"DislikePost" : $.proxy(Topics.doDislikePost, Topics),
 		"FavoritePost" : $.proxy(Topics.doFavoritePost, Topics),
