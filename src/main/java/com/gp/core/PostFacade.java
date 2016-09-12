@@ -410,7 +410,12 @@ public class PostFacade {
 
         return result;
     }
-    
+
+    /**
+     * Send the workgroup post to square so it be visible to public
+     * @param descr the description of reason
+     * @param postId the id of post
+     **/
     public static void sendWorkgroupPostPublic(AccessPoint accesspoint,
             				Principal principal,
             				String descr, InfoId<Long> postId)throws CoreException{

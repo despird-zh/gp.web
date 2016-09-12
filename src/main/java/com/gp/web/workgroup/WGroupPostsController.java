@@ -121,13 +121,13 @@ public class WGroupPostsController extends BaseController{
 
 		String state = super.readRequestParam("state");
 		String type = super.readRequestParam("type");
-		String scope = super.readRequestParam("scope");
+		String mode = super.readRequestParam("mode");
 		String wgid = super.readRequestParam("wgroup_id");
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		super.readRequestData(pquery);
 
 		PageWrapper<CombineInfo<PostInfo, PostExt>> presult = PostFacade.findWorkgroupPosts(
-				accesspoint, principal,wgroupId, "", state, type, pquery
+				accesspoint, principal,wgroupId, mode, state, type, pquery
 		);
 
 		List<CombineInfo<PostInfo, PostExt>> entries = presult.getRows();
@@ -137,7 +137,7 @@ public class WGroupPostsController extends BaseController{
 			mav.addObject("nextPage", 1);
 			mav.addObject("state", state);
 			mav.addObject("type", type);
-			mav.addObject("scope", scope);
+			mav.addObject("mode", mode);
 			return mav;
 		}
 		List<PostItem> items = new ArrayList<>();
@@ -215,8 +215,202 @@ public class WGroupPostsController extends BaseController{
 		mav.addObject("nextPage", pquery.getPageNumber() + 1);
 		mav.addObject("state", state);
 		mav.addObject("type", type);
-		mav.addObject("scope", scope);
+		mav.addObject("mode", mode);
 
 		return mav;
+	}
+
+	@RequestMapping("save-comment")
+	public ModelAndView savePostComment(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		String comment = request.getParameter("comment");
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		String wgid = super.readRequestParam("wgroup_id");
+
+		try{
+			PostCommentInfo postcomment = new PostCommentInfo();
+
+			postcomment.setAuthor(principal.getAccount());
+			postcomment.setOwner(principal.getAccount());
+			postcomment.setCommentDate(DateTimeUtils.now());
+			postcomment.setContent(comment);
+			postcomment.setPostId(postid);
+			postcomment.setWorkgroupId(NumberUtils.toLong(wgid));
+			postcomment.setSourceId(GeneralConstants.LOCAL_SOURCE);
+			postcomment.setParentId(GeneralConstants.ROOT_PLACEHOLDER);
+			postcomment.setState(Posts.State.REVIEW.name());
+
+			PostFacade.addPostComment(accesspoint, principal, postcomment);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.save.comment"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
+	}
+
+	@RequestMapping("public-post")
+	public ModelAndView savePostPublic(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.sendWorkgroupPostPublic(accesspoint, principal, "", pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.public.post"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
+	}
+
+	@RequestMapping("remove-post")
+	public ModelAndView removePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.removePost(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.delete.post"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
+	}
+
+	@RequestMapping("like-post")
+	public ModelAndView likePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.like.post"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
+	}
+
+	@RequestMapping("dislike-post")
+	public ModelAndView dislikePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.dislike.post"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
+	}
+
+	@RequestMapping("favorite-post")
+	public ModelAndView favoritePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.favoritePost(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.favorite.post"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
+	}
+
+	@RequestMapping("unfavorite-post")
+	public ModelAndView unfavoritePost(HttpServletRequest request){
+		ModelAndView mav = super.getJsonModelView();
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+
+		long postid = NumberUtils.toLong(request.getParameter("post-id"));
+
+		try{
+			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			PostFacade.removeFavoritePost(accesspoint, principal, pid);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.unfavorite.post"));
+
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
 	}
 }
