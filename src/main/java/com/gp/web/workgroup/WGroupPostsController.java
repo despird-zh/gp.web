@@ -90,7 +90,7 @@ public class WGroupPostsController extends BaseController{
 		pinfo.setWorkgroupId(NumberUtils.toLong(wgroupid));
 		pinfo.setState(Posts.State.DRAFT.name());
 		pinfo.setPostType(Posts.Type.DISCUSSION.name());
-		pinfo.setScope(Posts.Scope.PRIVATE.name());
+		pinfo.setScope(Posts.Scope.WGROUP.name());
 		pinfo.setPostDate(new Date());
 		pinfo.setPriority(1);
 		pinfo.setOwm(1l);
@@ -127,7 +127,7 @@ public class WGroupPostsController extends BaseController{
 		super.readRequestData(pquery);
 
 		PageWrapper<CombineInfo<PostInfo, PostExt>> presult = PostFacade.findWorkgroupPosts(
-				accesspoint, principal,wgroupId, state, type, scope, pquery
+				accesspoint, principal,wgroupId, "", state, type, pquery
 		);
 
 		List<CombineInfo<PostInfo, PostExt>> entries = presult.getRows();

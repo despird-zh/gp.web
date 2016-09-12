@@ -108,18 +108,20 @@ public class PostFacade {
      * @param state the state of search condition
      * @param type the type of search condition
      * @param scope the scope of search condition
+     * @param mode the data query mode : ALL/MEMBER/SQUARE
      **/
     public static PageWrapper<CombineInfo<PostInfo, PostExt>> findWorkgroupPosts(AccessPoint accesspoint,
                                                     Principal principal,
                                                     InfoId<Long> wid,
-                                                    String state, String type, String scope, PageQuery pageQuery)throws CoreException{
+                                                    String mode,
+                                                    String state, String type, PageQuery pageQuery)throws CoreException{
 
         PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){
 
-            result = postservice.getWorkgroupPosts(svcctx, wid, state, type, scope, pageQuery);
+            result = postservice.getWorkgroupPosts(svcctx, wid, mode, state, type, pageQuery);
 
         } catch (ServiceException e)  {
 
