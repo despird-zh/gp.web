@@ -1,16 +1,14 @@
 package com.gp.web.workgroup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.gp.common.IdKey;
+import com.gp.common.*;
 import com.gp.info.InfoId;
+import com.gp.web.ActionResult;
+import com.gp.web.common.PostParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
-import com.gp.common.SystemOptions;
 import com.gp.core.PostFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.PostCommentInfo;
@@ -61,13 +57,56 @@ public class WGroupPostsController extends BaseController{
 	}
 
 	@RequestMapping("post-save")
-	public ModelAndView doPostSave(){
+	public ModelAndView doPostSave(HttpServletRequest request){
 
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
-		String wgid = super.readRequestParam("wgroup_id");
 
-		mav.addObject("wgroup_id",  wgid);
-		return mav;
+		String wgroupid = request.getParameter("wgroup_id");
+		//super.readRequestData(post);
+		String attendeestr = request.getParameter("attendees");
+		String[] attendees = null;
+		if(StringUtils.isNotBlank(attendeestr)){
+			attendees = StringUtils.split(attendeestr, GeneralConstants.KVPAIRS_SEPARATOR);
+		}
+		PostInfo pinfo = new PostInfo();
+		pinfo.setOwner(principal.getAccount());
+		pinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
+		pinfo.setSubject(request.getParameter("subject"));
+		// extract the content and excerpt
+		PostParser postparser = new PostParser(request.getParameter("content"));
+		pinfo.setContent(postparser.getPostContent());
+		pinfo.setExcerpt(postparser.getPostExcerpt());
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("PostItem Content : {}", pinfo.getContent());
+			LOGGER.debug("Excerpt Content : {}", pinfo.getExcerpt());
+			LOGGER.debug("PostItem Images : {}", postparser.getPostImages().toString());
+		}
+		pinfo.setCommentOn(Boolean.valueOf(request.getParameter("commentOn")));
+		pinfo.setClassification(request.getParameter("classification"));
+
+		pinfo.setWorkgroupId(NumberUtils.toLong(wgroupid));
+		pinfo.setState(Posts.State.DRAFT.name());
+		pinfo.setPostType(Posts.Type.DISCUSSION.name());
+		pinfo.setScope(Posts.Scope.PRIVATE.name());
+		pinfo.setPostDate(new Date());
+		pinfo.setPriority(1);
+		pinfo.setOwm(1l);
+		try{
+
+			PostFacade.newPost(accesspoint, principal, pinfo,postparser.getPostImages(), attendees);
+			result.setState(ActionResult.SUCCESS);
+			result.setMessage(getMessage("mesg.save.post"));
+		}catch(CoreException ce){
+
+			result.setState(ActionResult.FAIL);
+			result.setMessage(ce.getMessage());
+			result.setDetailmsgs(ce.getValidateMessages());
+		}
+
+		return mav.addAllObjects(result.asMap());
 	}
 	
 	@RequestMapping("posts-next")
