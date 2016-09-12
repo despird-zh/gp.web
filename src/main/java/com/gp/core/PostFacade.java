@@ -109,17 +109,17 @@ public class PostFacade {
      * @param type the type of search condition
      * @param scope the scope of search condition
      **/
-    public static List<CombineInfo<PostInfo, PostExt>> findWorkgroupPosts(AccessPoint accesspoint,
+    public static PageWrapper<CombineInfo<PostInfo, PostExt>> findWorkgroupPosts(AccessPoint accesspoint,
                                                     Principal principal,
                                                     InfoId<Long> wid,
-                                                    String state, String type, String scope)throws CoreException{
+                                                    String state, String type, String scope, PageQuery pageQuery)throws CoreException{
 
-        List<CombineInfo<PostInfo, PostExt>> result = new ArrayList<CombineInfo<PostInfo, PostExt>>();
+        PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){
 
-            result = postservice.getWorkgroupPosts(svcctx, wid, state, type, scope);
+            result = postservice.getWorkgroupPosts(svcctx, wid, state, type, scope, pageQuery);
 
         } catch (ServiceException e)  {
 
@@ -140,16 +140,16 @@ public class PostFacade {
      * @param type the type of search condition
      * @param scope the scope of search condition
      **/
-    public static List<CombineInfo<PostInfo, PostExt>> findSquarePosts(AccessPoint accesspoint,
+    public static PageWrapper<CombineInfo<PostInfo, PostExt>> findSquarePosts(AccessPoint accesspoint,
                                                     Principal principal,
-                                                    String state, String type, String scope)throws CoreException{
+                                                    String state, String type, String scope, PageQuery pageQuery)throws CoreException{
 
-        List<CombineInfo<PostInfo, PostExt>> result = new ArrayList<CombineInfo<PostInfo, PostExt>>();
+        PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){
 
-            result = postservice.getSquarePosts(svcctx, state, type, scope);
+            result = postservice.getSquarePosts(svcctx, state, type, scope, pageQuery);
 
         } catch (ServiceException e)  {
 

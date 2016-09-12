@@ -9,6 +9,9 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.gp.common.IdKey;
+import com.gp.info.InfoId;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +83,12 @@ public class WGroupPostsController extends BaseController{
 		String state = super.readRequestParam("state");
 		String type = super.readRequestParam("type");
 		String scope = super.readRequestParam("scope");
+		String wgid = super.readRequestParam("wgroup_id");
+		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		super.readRequestData(pquery);
 
-		PageWrapper<CombineInfo<PostInfo, PostExt>> presult = PostFacade.findPersonalPosts(
-				accesspoint, principal, state, type, scope, pquery
+		PageWrapper<CombineInfo<PostInfo, PostExt>> presult = PostFacade.findWorkgroupPosts(
+				accesspoint, principal,wgroupId, state, type, scope, pquery
 		);
 
 		List<CombineInfo<PostInfo, PostExt>> entries = presult.getRows();
