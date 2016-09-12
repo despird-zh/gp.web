@@ -22,7 +22,7 @@
 			<section class="content-header">
 				<div class="row ">
 					<div class="col-sm-12">	
-						<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+						<h1 class="page-title">
 						  分享资源
 						  <small>查看相关分享资源</small>
 						</h1>
@@ -30,7 +30,6 @@
 							<jsp:param name="page" value="tasks"/>
 							<jsp:param name="module" value="workspace"/>
 						</jsp:include>
-						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 					</div>
 				</div>
 			</section>

@@ -24,7 +24,7 @@
 			<section class="content-header">
 				<div class="row ">
 					<div class="col-sm-12">	
-						<h1 style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+						<h1 class="page-title">
 						  个人设置
 						  <small>查看个人的设置信息</small>
 						</h1>
@@ -40,7 +40,7 @@
 								</a>
 							</li>    
 						</ul>
-						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
+						<hr class="m-t-sm m-b-xs">
 					</div>
 				</div>
 			</section>

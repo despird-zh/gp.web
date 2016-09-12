@@ -24,7 +24,7 @@
           <section class="content-header">
 			<div class="row ">
 				<div class="col-sm-12">	
-						<h1 class="text-muted" style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+						<h1 class="page-title">
 						  任务信息
 						  <small>查看工作组的全部任务</small>
 						</h1>
@@ -32,7 +32,6 @@
 							<jsp:param name="page" value="tasks"/>
 							<jsp:param name="module" value="workgroup"/>
 						</jsp:include>
-						<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
 			 </div>
           </section>

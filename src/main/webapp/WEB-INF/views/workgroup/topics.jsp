@@ -25,7 +25,7 @@
           <section class="content-header">
 			<div class="row ">
 				<div class="col-sm-12">	
-					<h1 class="text-muted" style="font-size: 18px; margin-top: 10px; margin-bottom: 0px; margin-left: 10px;">
+					<h1 class="page-title">
 					  工作组的全部话题
 					  <small>查看工作组的全部话题</small>
 					</h1>

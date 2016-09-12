@@ -9,16 +9,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
-	<style type="text/css">
-	.dashboard-title{
-	  font-size: 18px; 
-	  margin-top: 10px; 
-	  margin-bottom: 0px; 
-	  margin-left: 10px;
-	  line-height:20px;
-	}
 
-	</style>
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
@@ -32,14 +23,13 @@
           <section class="content-header">
 			<div class="row ">
 				<div class="col-sm-12">	
-					<h1 class="dashboard-title">
+					<h1 class="page-title">
 					  Groupress
 					  <small>Documents Cooperation Work System.</small>
 					</h1>
 					<jsp:include page="../common/page-navs.jsp" flush="true">
 						<jsp:param name="module" value="dashboard"/>
 					</jsp:include>
-					<hr style="margin-top: 9px;" class="m-t-none m-b-xs">
 				</div>
 			 </div>
           </section>

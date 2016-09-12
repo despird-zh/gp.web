@@ -1612,7 +1612,15 @@ Avartar cropper css
     margin-bottom: 0px;
     border-bottom-width: 1px;
     border-color: #eee ;
-    margin-top: 6px;
+    margin-top: 7px;
+}
+
+.page-title{
+    font-size: 18px; 
+    margin-top: 10px; 
+    margin-bottom: 0px; 
+    margin-left: 10px;
+    line-height: 20px;
 }
 
 .excerpt-img{

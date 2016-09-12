@@ -91,3 +91,4 @@
 		</li>
 	</c:if>
 </ul>
+<hr class="m-t-sm m-b-xs">
