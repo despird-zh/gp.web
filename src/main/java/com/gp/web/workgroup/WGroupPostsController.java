@@ -270,7 +270,7 @@ public class WGroupPostsController extends BaseController{
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.sendWorkgroupPostPublic(accesspoint, principal, "", pid);
+			PostFacade.sendPostPublic(accesspoint, principal, "", pid);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.public.post"));
 

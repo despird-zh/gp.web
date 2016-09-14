@@ -416,46 +416,31 @@ public class PostFacade {
      * @param descr the description of reason
      * @param postId the id of post
      **/
-    public static void sendWorkgroupPostPublic(AccessPoint accesspoint,
+    public static void sendPostPublic(AccessPoint accesspoint,
             				Principal principal,
             				String descr, InfoId<Long> postId)throws CoreException{
     	
     	 try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                  Operations.PUBLIC_POST)){
 
-             postservice.addPostDislike(svcctx, null, null);
+             Long wgroupId = idservice.query(postId, FlatColumns.WORKGROUP_ID, Long.class);
 
+             if(wgroupId == GeneralConstants.PERSONAL_WORKGROUP){
+                 // change the post scope direct
+                 postservice.publicPost(svcctx, postId);
+             }else {
+                 // launch a quick flow
+                 quickflowservice.launchPostPublic(svcctx, descr, IdKey.WORKGROUP.getInfoId(wgroupId), postId);
+             }
          } catch (ServiceException e)  {
 
-             ContextHelper.stampContext(e,"excp.like.post");
+             ContextHelper.stampContext(e,"excp.public.post");
 
          }finally{
 
              ContextHelper.handleContext();
          }
     	
-    }
-    
-    /**
-     * personal public just make visible to square 
-     **/
-    public static void sendPersonalPostPublic(AccessPoint accesspoint,
-			Principal principal,
-			InfoId<Long> postId)throws CoreException{
-    	
-    	try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-                Operations.PUBLIC_POST)){
-
-            postservice.publicPost(svcctx, postId);
-
-        } catch (ServiceException e)  {
-
-            ContextHelper.stampContext(e,"excp.public.post");
-
-        }finally{
-
-            ContextHelper.handleContext();
-        }
     }
     
     /**

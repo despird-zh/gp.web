@@ -268,7 +268,7 @@ public class WSpacePostsController extends BaseController{
 		
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.sendPersonalPostPublic(accesspoint, principal, pid);
+			PostFacade.sendPostPublic(accesspoint, principal,"", pid);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.public.post"));
 			
