@@ -2,6 +2,7 @@ package com.gp.quickflow;
 
 import java.util.Map;
 
+import com.gp.common.IdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -30,7 +31,7 @@ public class PublicPostProcess extends BaseFlowProcess {
 	@Override
 	public boolean isProcSupport(String resourceType) {
 		
-		return true;
+		return IdKey.POST.getTable().equalsIgnoreCase(resourceType);
 	}
 
 
