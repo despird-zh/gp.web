@@ -3,8 +3,10 @@ package com.gp.quickflow;
 import java.util.Map;
 
 import com.gp.common.IdKey;
+import com.gp.svc.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.gp.info.InfoId;
@@ -12,9 +14,13 @@ import com.gp.info.InfoId;
 public class PublicPostProcess extends BaseFlowProcess {
 
 	Logger LOGGER = LoggerFactory.getLogger(PublicPostProcess.class);
-	
-	public PublicPostProcess(String processName) {
-		super(processName);
+
+	@Autowired
+	PostService postService;
+
+	public PublicPostProcess() {
+
+		super.setProcessName("public-post-square");
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
@@ -29,7 +35,7 @@ public class PublicPostProcess extends BaseFlowProcess {
 	}
 
 	@Override
-	public boolean isProcSupport(String resourceType) {
+	public boolean supportCheck(String resourceType) {
 		
 		return IdKey.POST.getTable().equalsIgnoreCase(resourceType);
 	}
