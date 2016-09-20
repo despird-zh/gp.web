@@ -4,7 +4,7 @@
 <ul class="nav nav-tabs navibar-page pull-right page-nav" >
 	<c:if test="${param.module=='workspace'}">
 		<li>
-			<a data-toggle="tooltip" title="查看全部工作组空间" href="../workgroup/all-grid.do" aria-expanded="true">
+			<a data-toggle="tooltip" title="查看全部工作组空间" href="../square/all-grid.do" aria-expanded="true">
 				<i class="fa fa-lg fa-home"></i>
 			</a>
 		</li>
@@ -82,8 +82,8 @@
 	<!-- the dashboard pages entrance -->
 	<c:if test="${param.module=='dashboard'}">
 		<li>
-			<a data-toggle="tooltip" title="展现全部工作组并查询" href="../workgroup/all-grid.do" aria-expanded="false" >
-				<i class="fa fa-lg fa-ungroup"></i>
+			<a data-toggle="tooltip" title="展现全部工作组并查询" href="../square/all-grid.do" aria-expanded="false" >
+				<i class="fa fa-lg fa-object-ungroup"></i>
 			</a>
 		</li>
 		<li>
@@ -100,30 +100,24 @@
 	<!-- the dashboard pages entrance -->
 	<c:if test="${param.module=='square'}">
 		<li>
-			<a <c:if test="${param.page=='dashboard'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="Dashboard" href="../square/topics.do">
+			<a data-toggle="tooltip" title="查看个人相关的工作空间" href="../square/topic.do">
 				<i class="fa fa-lg fa-home"></i>
 			</a>
 		</li>
 		<li><span class="v-separator"></span></li>
 		<li>
-			<a <c:if test="${param.page=='personal-grid'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看个人相关的工作空间" href="../square/topics.do">
-				<i class="fa fa-lg fa-home"></i>
+			<a <c:if test="${param.page=='all-grid'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查询全部协作组" href="../square/all-grid.do">
+				<i class="fa fa-lg fa-object-ungroup"></i>
 			</a>
-		</li>
+		</li>	
 		<li>
 			<a <c:if test="${param.page=='all-post'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看全部公共话题" href="../square/all-topic.do">
-				<i class="fa fa-map-signs"></i>
+				<i class="fa fa-lg fa-map-signs"></i>
 			</a>
-		</li>
-		<li ><span class="v-separator"></span></li>
+		</li>					
 		<li>
-			<a <c:if test="${param.page=='all-grid'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="按栅格方式查询全部协作组" href="../square/all-grid.do" class="bg-aqua-active">
-				<i class="fa fa-th"></i>
-			</a>
-		</li>						
-		<li>
-			<a <c:if test="${param.page=='all-list'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="按列表方式查询全部协作组" href="../square/all-list.do">
-				<i class="fa fa-th-list"></i>
+			<a <c:if test="${param.page=='all-list'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查询全部开放分享" href="../square/all-share.do">
+				<i class="fa fa-lg fa-folder-open-o"></i>
 			</a>
 		</li>
 	</c:if>
