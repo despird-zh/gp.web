@@ -2,7 +2,7 @@
 var PageContext = (function ($, window, undefined){
 
 	"use strict";
-	var WorkgroupsGrid = {
+	var SquareGrids = {
 		
 		$filter_wgroup_name : $('input[gpid="list-search-wgroup-name"]'),
 		$filter_search_btn : $('a[gpid="list-search-btn"]'),
@@ -10,7 +10,7 @@ var PageContext = (function ($, window, undefined){
 		
 		$filter_switch_btn : $('section.content a[gpid="filter-switch-btn"]'),		
 		$filter_panel : $('section.content div[gpid="wgroup-filter"]'),
-		$gallery : $('#gallery'),
+		$gallery_container : $('#gallery-container'),
 		
 		_waypoint : undefined,
 		
@@ -19,8 +19,8 @@ var PageContext = (function ($, window, undefined){
 			// bind switch filter panel button
 			_self.$filter_switch_btn.on('click', function(){
 				var _$self = $(this);
-				WorkgroupsGrid.$filter_panel.toggleClass('hidden');
-				if(WorkgroupsGrid.$filter_panel.hasClass('hidden')){
+				SquareGrids.$filter_panel.toggleClass('hidden');
+				if(SquareGrids.$filter_panel.hasClass('hidden')){
 					
 					_$self.find('i').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
 				}else{
@@ -32,18 +32,16 @@ var PageContext = (function ($, window, undefined){
 			// bind clear button
 			_self.$filter_clear_btn.on('click', $.proxy(_self.clear, _self));
 			// initial the waypoint
-			_self._waypoint = new Waypoint.Infinite({
-					element: _self.$gallery
-				});
+			_self.loadContent();
 		}
 	};
 	
-	WorkgroupsGrid.search = function(){
+	SquareGrids.loadContent = function(){
 		
 		var _self = this;
 		_self.clear();
 		$.ajax({
-			url: "../workgroup/all-grid-next.do",
+			url: "../square/all-grid-next.do",
 			dataType : "html",
 			data: { 
 					wgroup_name : _self.$filter_wgroup_name.val(),
@@ -52,23 +50,29 @@ var PageContext = (function ($, window, undefined){
 			method : 'POST',
 			success: function(response)
 			{	
-				_self.$gallery.html(response);
+				_self.$gallery_container.html($(response).html());
+				_self.$infinite_list = $('div.infinite-container');
+
 				_self._waypoint = new Waypoint.Infinite({
-					element: _self.$gallery
+					element: _self.$infinite_list,
+					onAfterPageLoad : function($items){
+
+					}
 				});
+				
 			}
 		});
 	};
 	
-	WorkgroupsGrid.clear = function(){
+	SquareGrids.clear = function(){
 		var _self = this;
 		if(_self._waypoint != undefined){
 			_self._waypoint.destroy();
 		}
-		_self.$gallery.empty();
+		_self.$gallery_container.empty();
 	};
 	
-	WorkgroupsGrid.initial();
+	SquareGrids.initial();
 		
 	return {
 		

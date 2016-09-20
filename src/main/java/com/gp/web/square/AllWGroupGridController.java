@@ -43,51 +43,6 @@ public class AllWGroupGridController extends BaseController{
 
 		ModelAndView mav = getJspModelView("square/all-grid");
 		
-		PageQuery pquery = new PageQuery(12,1);
-		this.readRequestData(request, pquery);
-		
-		Principal principal = super.getPrincipal();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		
-		
-		List<Workgroup> wgroups = new ArrayList<Workgroup>();
-		Boolean hasMore = false;
-		Integer nextPage = -1;
-		try{
-			PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
-					"", null, pquery);
-			for(CombineInfo<WorkgroupInfo,WorkgroupLite> winfo : gresult.getRows()){
-				
-				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(winfo.getPrimary().getInfoId().getId());
-				wgroup.setWorkgroupName(winfo.getPrimary().getWorkgroupName());
-				wgroup.setAdmin(winfo.getPrimary().getAdmin());
-				wgroup.setAdminName(winfo.getExtended().getAdminName());
-				wgroup.setDescription(winfo.getPrimary().getDescription());
-				
-				String imagePath = "../" + ImagePath + "/" + winfo.getExtended().getImageLink();
-				
-				wgroup.setImagePath(imagePath);
-				wgroup.setState(winfo.getPrimary().getState());
-				wgroup.setDescription(winfo.getPrimary().getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(winfo.getPrimary().getCreateDate()));
-				wgroups.add(wgroup);
-			}
-			
-			//PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pquery.getPageSize() > gresult.getRows().size() ? false : true;
-			nextPage = pquery.getPageNumber() + 1;
-		}catch(CoreException ce){
-			//
-		}
-		
-		mav.addObject("wgroups", wgroups);
-		mav.addObject("hasMore", hasMore);
-		mav.addObject("nextPage", nextPage);
-		mav.addObject("wgroup_name", "");
-		
-		mav.addObject("tags", "");
-		
 		return mav;
 	}
 	
@@ -97,7 +52,7 @@ public class AllWGroupGridController extends BaseController{
 		
 		String pidxstr = this.readRequestParam("pageNumber");
 		int pidx = Integer.valueOf(pidxstr);
-		PageQuery pquery = new PageQuery(12,1);
+		PageQuery pquery = new PageQuery(6,1);
 		pquery.setPageNumber(pidx);
 		ModelAndView mav = getJspModelView("square/all-grid-next");
 		String wgroup_name = super.readRequestParam("wgroup_name");
