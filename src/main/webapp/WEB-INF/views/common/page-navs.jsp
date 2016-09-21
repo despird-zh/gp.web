@@ -100,7 +100,7 @@
 	<!-- the dashboard pages entrance -->
 	<c:if test="${param.module=='square'}">
 		<li>
-			<a data-toggle="tooltip" title="查看个人相关的工作空间" href="../square/topic.do">
+			<a data-toggle="tooltip" title="查看个人相关的工作空间" href="../workspace/notifications.do">
 				<i class="fa fa-lg fa-home"></i>
 			</a>
 		</li>

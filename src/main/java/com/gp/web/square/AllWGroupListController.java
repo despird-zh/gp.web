@@ -33,6 +33,7 @@ import com.gp.web.model.Workgroup;
 
 @Controller("wg-all-list-ctrl")
 @RequestMapping("/square")
+@Deprecated
 public class AllWGroupListController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(AllWGroupListController.class);
@@ -91,7 +92,7 @@ public class AllWGroupListController extends BaseController{
 	}
 	
 	
-	@RequestMapping("all-list-next")
+	@RequestMapping("all-dmeo-next")
 	public ModelAndView doGridNextLoad(HttpServletRequest request) throws UnsupportedEncodingException{
 		
 		String pidxstr = this.readRequestParam("pageNumber");

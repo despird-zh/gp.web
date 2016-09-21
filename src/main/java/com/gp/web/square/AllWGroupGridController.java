@@ -46,8 +46,7 @@ public class AllWGroupGridController extends BaseController{
 		
 		return mav;
 	}
-	
-	
+
 	@RequestMapping("all-grid-next")
 	public ModelAndView doGridNextLoad(HttpServletRequest request) throws UnsupportedEncodingException{
 		
@@ -109,7 +108,7 @@ public class AllWGroupGridController extends BaseController{
 
 		String pidxstr = this.readRequestParam("pageNumber");
 		int pidx = Integer.valueOf(pidxstr);
-		PageQuery pquery = new PageQuery(12,1);
+		PageQuery pquery = new PageQuery(6,1);
 		pquery.setPageNumber(pidx);
 		ModelAndView mav = getJspModelView("square/all-list-next");
 		String wgroup_name = super.readRequestParam("wgroup_name");
@@ -143,9 +142,8 @@ public class AllWGroupGridController extends BaseController{
 				wgroups.add(wgroup);
 			}
 
-			PaginationInfo pginfo = gresult.getPagination();
-			hasMore = pginfo.getNext();
-			nextPage = pginfo.getNextPage();
+			hasMore = pquery.getPageSize() > gresult.getRows().size() ? false : true;
+			nextPage = pquery.getPageNumber() + 1;
 		}catch(CoreException ce){
 			//
 		}
