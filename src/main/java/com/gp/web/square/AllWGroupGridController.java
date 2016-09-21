@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.gp.pagination.PaginationInfo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +103,63 @@ public class AllWGroupGridController extends BaseController{
 
 		return mav;
 	}
-	
+
+	@RequestMapping("all-list-next")
+	public ModelAndView doListNextLoad(HttpServletRequest request) throws UnsupportedEncodingException{
+
+		String pidxstr = this.readRequestParam("pageNumber");
+		int pidx = Integer.valueOf(pidxstr);
+		PageQuery pquery = new PageQuery(12,1);
+		pquery.setPageNumber(pidx);
+		ModelAndView mav = getJspModelView("square/all-list-next");
+		String wgroup_name = super.readRequestParam("wgroup_name");
+		wgroup_name = StringUtils.isBlank(wgroup_name)?"":UriUtils.decode(wgroup_name, "UTF-8");
+
+		String[] tags = request.getParameterValues("tags");
+		List<String> taglist = (null == tags) ? null : Arrays.asList(tags);
+
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+
+		List<Workgroup> wgroups = new ArrayList<Workgroup>();
+		Boolean hasMore = false;
+		Integer nextPage = -1;
+		try{
+			PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroup_name, taglist, pquery);
+			for(CombineInfo<WorkgroupInfo,WorkgroupLite> winfo : gresult.getRows()){
+
+				Workgroup wgroup = new Workgroup();
+				wgroup.setWorkgroupId(winfo.getPrimary().getInfoId().getId());
+				wgroup.setWorkgroupName(winfo.getPrimary().getWorkgroupName());
+				wgroup.setAdmin(winfo.getPrimary().getAdmin());
+				wgroup.setAdminName(winfo.getExtended().getAdminName());
+				wgroup.setDescription(winfo.getPrimary().getDescription());
+				String imagePath = "../" + ImagePath + "/" + winfo.getExtended().getImageLink();
+
+				wgroup.setImagePath(imagePath);
+				wgroup.setState(winfo.getPrimary().getState());
+				wgroup.setDescription(winfo.getPrimary().getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(winfo.getPrimary().getCreateDate()));
+				wgroups.add(wgroup);
+			}
+
+			PaginationInfo pginfo = gresult.getPagination();
+			hasMore = pginfo.getNext();
+			nextPage = pginfo.getNextPage();
+		}catch(CoreException ce){
+			//
+		}
+
+		mav.addObject("wgroups", wgroups);
+		mav.addObject("hasMore", hasMore);
+		mav.addObject("nextPage", nextPage);
+		mav.addObject("wgroup_name", UriUtils.encode(UriUtils.encode(wgroup_name, "UTF-8"), "UTF-8"));
+
+		mav.addObject("tags", weaveParameters("tags", tags));
+
+		return mav;
+	}
+
 	@RequestMapping("all-hier")
 	public ModelAndView doHierInitial(){
 		
