@@ -166,20 +166,20 @@ public class CommonController extends BaseController{
 		ActionResult ars = new ActionResult();
 		Integer instanceId = null;
 		try{
-			List<CombineInfo<UserInfo, UserExt>> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
+			List<UserExt> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
 		
-			for(CombineInfo<UserInfo, UserExt> info: cresult){
+			for(UserExt info: cresult){
 				
 				Account ui = new Account();
-				ui.setSourceId(info.getPrimary().getSourceId());
-				ui.setUserId(info.getPrimary().getInfoId().getId());
-				ui.setAccount(info.getPrimary().getAccount());
-				ui.setEmail(info.getPrimary().getEmail());
-				ui.setMobile(info.getPrimary().getMobile());
-				ui.setType(info.getPrimary().getType());
-				ui.setName(info.getPrimary().getFullName());
-				ui.setState(info.getPrimary().getState());
-				ui.setSourceName(info.getExtended().getSourceName());
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
+				ui.setAccount(info.getAccount());
+				ui.setEmail(info.getEmail());
+				ui.setMobile(info.getMobile());
+				ui.setType(info.getType());
+				ui.setName(info.getFullName());
+				ui.setState(info.getState());
+				ui.setSourceName(info.getSourceName());
 				list.add(ui);
 			}			
 
@@ -279,20 +279,20 @@ public class CommonController extends BaseController{
 		
 		ModelAndView mav = super.getJsonModelView();
 		try{
-			PageWrapper<CombineInfo<UserInfo, UserExt>> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
-			List<CombineInfo<UserInfo, UserExt>> ulist = gresult.getRows();
-			for(CombineInfo<UserInfo, UserExt> info: ulist){
+			PageWrapper<UserExt> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
+			List<UserExt> ulist = gresult.getRows();
+			for(UserExt info: ulist){
 				
 				Account ui = new Account();
-				ui.setSourceId(info.getPrimary().getSourceId());
-				ui.setUserId(info.getPrimary().getInfoId().getId());
-				ui.setAccount(info.getPrimary().getAccount());
-				ui.setEmail(info.getPrimary().getEmail());
-				ui.setMobile(info.getPrimary().getMobile());
-				ui.setType(info.getPrimary().getType());
-				ui.setName(info.getPrimary().getFullName());
-				ui.setState(info.getPrimary().getState());
-				ui.setSourceName(info.getExtended().getSourceName());
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
+				ui.setAccount(info.getAccount());
+				ui.setEmail(info.getEmail());
+				ui.setMobile(info.getMobile());
+				ui.setType(info.getType());
+				ui.setName(info.getFullName());
+				ui.setState(info.getState());
+				ui.setSourceName(info.getSourceName());
 				list.add(ui);
 			}			
 

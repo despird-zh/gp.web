@@ -317,12 +317,12 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static List<CombineInfo<UserInfo, UserExt>> findWrokgroupAvailUsers(AccessPoint accesspoint,
+	public static List<UserExt> findWrokgroupAvailUsers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> wkey,
 			String uname)throws CoreException{
 		
-		List<CombineInfo<UserInfo, UserExt>> result = null;	
+		List<UserExt> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
@@ -341,12 +341,12 @@ public class WorkgroupFacade {
 		return result;
 	}
 	
-	public static PageWrapper<CombineInfo<UserInfo, UserExt>> findWrokgroupAvailUsers(AccessPoint accesspoint,
+	public static PageWrapper<UserExt> findWrokgroupAvailUsers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> wkey,
 			String uname, PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<CombineInfo<UserInfo, UserExt>> result = null;	
+		PageWrapper<UserExt> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){

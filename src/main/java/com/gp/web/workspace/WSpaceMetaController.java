@@ -67,15 +67,15 @@ public class WSpaceMetaController extends BaseController{
 			}
 			
 			// find user information and extension data
-			CombineInfo<UserInfo, UserExt> cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
-			meta.setName(cmbinfo.getPrimary().getFullName());
-			meta.setSourceId(cmbinfo.getPrimary().getSourceId());
-			meta.setSourceName(cmbinfo.getExtended().getSourceName());
-			meta.setSourceShort(cmbinfo.getExtended().getShortName());
-			meta.setSinceDate(DATE_FORMAT.format(cmbinfo.getPrimary().getCreateDate()));
+			UserExt cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
+			meta.setName(cmbinfo.getFullName());
+			meta.setSourceId(cmbinfo.getSourceId());
+			meta.setSourceName(cmbinfo.getSourceName());
+			meta.setSourceShort(cmbinfo.getSourceShortName());
+			meta.setSinceDate(DATE_FORMAT.format(cmbinfo.getCreateDate()));
 			
-			meta.setSignature(cmbinfo.getPrimary().getSignature());
-			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(cmbinfo.getPrimary().getAvatarId()));
+			meta.setSignature(cmbinfo.getSignature());
+			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(cmbinfo.getAvatarId()));
 			String imagePath = "../" + ImagePath + "/" + imginfo.getLink();
 			
 			meta.setImagePath(imagePath);

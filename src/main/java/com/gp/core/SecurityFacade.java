@@ -96,12 +96,12 @@ public class SecurityFacade {
 	 * @param ap the AccessPoint 
 	 * @param account the account  
 	 **/
-	public static CombineInfo<UserInfo, UserExt> findAccount(AccessPoint accesspoint, 
+	public static UserExt findAccount(AccessPoint accesspoint, 
 			Principal principal,
 			InfoId<Long> userId,
 			String account, String type) throws CoreException{
 		
-		CombineInfo<UserInfo, UserExt> uinfo = null;
+		UserExt uinfo = null;
 		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginOperation(Operations.FIND_ACCOUNT.name(),  null, 
@@ -279,14 +279,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static List<CombineInfo<UserInfo, UserExt>> findAccounts(AccessPoint accesspoint,
+	public static List<UserExt> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] types,
 			String[] states)throws CoreException{
 		
-		List<CombineInfo<UserInfo, UserExt>> result = null;
+		List<UserExt> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
@@ -320,14 +320,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static PageWrapper<CombineInfo<UserInfo, UserExt>> findAccounts(AccessPoint accesspoint,
+	public static PageWrapper<UserExt> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] type, 
 			PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<CombineInfo<UserInfo, UserExt>> result = null;
+		PageWrapper<UserExt> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
