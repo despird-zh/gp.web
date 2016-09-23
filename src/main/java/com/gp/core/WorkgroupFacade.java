@@ -566,11 +566,11 @@ public class WorkgroupFacade {
 	/**
 	 * Find the local workgroup in paging mode
 	 **/
-	public static PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> findLocalWorkgroups(AccessPoint accesspoint,
+	public static PageWrapper<WorkgroupLite> findLocalWorkgroups(AccessPoint accesspoint,
 			Principal principal,
 			String wgroupname,List<String> tags, PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<CombineInfo<WorkgroupInfo,WorkgroupLite>> gresult = null;
+		PageWrapper<WorkgroupLite> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 

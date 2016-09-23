@@ -99,12 +99,12 @@ public class WGroupController extends BaseController{
         List<KVPair<String, String>> enlist = new ArrayList<KVPair<String, String>>();
         try{
 
-            PageWrapper<CombineInfo<WorkgroupInfo, WorkgroupLite>> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroupname, null, pq);
+            PageWrapper<WorkgroupLite> gresult = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, wgroupname, null, pq);
 
-            for(CombineInfo<WorkgroupInfo, WorkgroupLite> cinfo : gresult.getRows()){
-                Long id = cinfo.getPrimary().getInfoId().getId();
+            for(WorkgroupLite cinfo : gresult.getRows()){
+                Long id = cinfo.getInfoId().getId();
                 KVPair<String, String> kv = new KVPair<String, String>(String.valueOf(id),
-                        cinfo.getPrimary().getWorkgroupName());
+                        cinfo.getWorkgroupName());
                 enlist.add(kv);
             }
 
