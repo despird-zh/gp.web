@@ -39,7 +39,7 @@ import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.info.UserExt;
+import com.gp.svc.info.UserExtInfo;
 import com.gp.svc.info.WorkgroupLite;
 import com.gp.util.CommonUtils;
 
@@ -166,9 +166,9 @@ public class CommonController extends BaseController{
 		ActionResult ars = new ActionResult();
 		Integer instanceId = null;
 		try{
-			List<UserExt> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
+			List<UserExtInfo> cresult = SecurityFacade.findAccounts(getAccessPoint(request), principal, uname, instanceId, new String[0],new String[0]);
 		
-			for(UserExt info: cresult){
+			for(UserExtInfo info: cresult){
 				
 				Account ui = new Account();
 				ui.setSourceId(info.getSourceId());
@@ -279,9 +279,9 @@ public class CommonController extends BaseController{
 		
 		ModelAndView mav = super.getJsonModelView();
 		try{
-			PageWrapper<UserExt> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
-			List<UserExt> ulist = gresult.getRows();
-			for(UserExt info: ulist){
+			PageWrapper<UserExtInfo> gresult = WorkgroupFacade.findWrokgroupAvailUsers(accesspoint, principal, wkey, account, pq);
+			List<UserExtInfo> ulist = gresult.getRows();
+			for(UserExtInfo info: ulist){
 				
 				Account ui = new Account();
 				ui.setSourceId(info.getSourceId());

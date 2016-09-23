@@ -28,7 +28,7 @@ import com.gp.dao.info.ImageInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.UserSumInfo;
-import com.gp.svc.info.UserExt;
+import com.gp.svc.info.UserExtInfo;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.TreeNode;
@@ -67,7 +67,7 @@ public class WSpaceMetaController extends BaseController{
 			}
 			
 			// find user information and extension data
-			UserExt cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
+			UserExtInfo cmbinfo = SecurityFacade.findAccount(accesspoint, principal, null, principal.getAccount(), null);
 			meta.setName(cmbinfo.getFullName());
 			meta.setSourceId(cmbinfo.getSourceId());
 			meta.setSourceName(cmbinfo.getSourceName());

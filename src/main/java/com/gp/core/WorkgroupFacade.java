@@ -35,7 +35,7 @@ import com.gp.svc.OperLogService;
 import com.gp.svc.CommonService;
 import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
-import com.gp.svc.info.UserExt;
+import com.gp.svc.info.UserExtInfo;
 import com.gp.svc.info.WorkgroupExt;
 import com.gp.svc.info.WorkgroupLite;
 
@@ -317,12 +317,12 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static List<UserExt> findWrokgroupAvailUsers(AccessPoint accesspoint,
+	public static List<UserExtInfo> findWrokgroupAvailUsers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> wkey,
 			String uname)throws CoreException{
 		
-		List<UserExt> result = null;	
+		List<UserExtInfo> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
@@ -341,12 +341,12 @@ public class WorkgroupFacade {
 		return result;
 	}
 	
-	public static PageWrapper<UserExt> findWrokgroupAvailUsers(AccessPoint accesspoint,
+	public static PageWrapper<UserExtInfo> findWrokgroupAvailUsers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> wkey,
 			String uname, PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<UserExt> result = null;	
+		PageWrapper<UserExtInfo> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){

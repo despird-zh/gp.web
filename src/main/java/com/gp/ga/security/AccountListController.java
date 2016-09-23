@@ -32,7 +32,7 @@ import com.gp.dao.info.CabinetInfo;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.dao.info.UserInfo;
-import com.gp.svc.info.UserExt;
+import com.gp.svc.info.UserExtInfo;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 
@@ -106,13 +106,13 @@ public class AccountListController extends BaseController{
 		}
 		
 		try{
-			List<UserExt> ulist = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
+			List<UserExtInfo> ulist = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
 				uname, // name
 				instanceId,  // entity
 				types,  // type
 				states); // state
 
-			for(UserExt info: ulist){
+			for(UserExtInfo info: ulist){
 				
 				Account ui = new Account();
 				ui.setSourceId(info.getSourceId());
@@ -224,7 +224,7 @@ public class AccountListController extends BaseController{
 		ActionResult result = new ActionResult();
 		
 		try{
-			UserExt info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
+			UserExtInfo info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
 			Account ui = new Account();
 			ui.setUserId(info.getInfoId().getId());
 			ui.setSourceId(info.getSourceId());

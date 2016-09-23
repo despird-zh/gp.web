@@ -37,7 +37,7 @@ import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
 import com.gp.svc.SourceService;
 import com.gp.svc.SecurityService;
-import com.gp.svc.info.UserExt;
+import com.gp.svc.info.UserExtInfo;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.util.HashUtils;
 import com.gp.validate.ValidateMessage;
@@ -96,12 +96,12 @@ public class SecurityFacade {
 	 * @param ap the AccessPoint 
 	 * @param account the account  
 	 **/
-	public static UserExt findAccount(AccessPoint accesspoint, 
+	public static UserExtInfo findAccount(AccessPoint accesspoint, 
 			Principal principal,
 			InfoId<Long> userId,
 			String account, String type) throws CoreException{
 		
-		UserExt uinfo = null;
+		UserExtInfo uinfo = null;
 		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginOperation(Operations.FIND_ACCOUNT.name(),  null, 
@@ -279,14 +279,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static List<UserExt> findAccounts(AccessPoint accesspoint,
+	public static List<UserExtInfo> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] types,
 			String[] states)throws CoreException{
 		
-		List<UserExt> result = null;
+		List<UserExtInfo> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
@@ -320,14 +320,14 @@ public class SecurityFacade {
 	 * @param instance the instance filter, i.e. user original source
 	 * @param type the type filter
 	 **/
-	public static PageWrapper<UserExt> findAccounts(AccessPoint accesspoint,
+	public static PageWrapper<UserExtInfo> findAccounts(AccessPoint accesspoint,
 			Principal principal,
 			String accountname, 
 			Integer instanceId, 
 			String[] type, 
 			PageQuery pagequery)throws CoreException{
 		
-		PageWrapper<UserExt> result = null;
+		PageWrapper<UserExtInfo> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){
 			
