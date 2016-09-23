@@ -36,7 +36,7 @@ import com.gp.dao.info.StorageInfo;
 import com.gp.dao.info.TagInfo;
 import com.gp.dao.info.WorkgroupInfo;
 import com.gp.dao.info.WorkgroupSumInfo;
-import com.gp.svc.info.WorkgroupExt;
+import com.gp.svc.info.WorkgroupExtInfo;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -79,7 +79,7 @@ public class WGroupMetaController extends BaseController{
 				return mav;
 			}
 			InfoId<Long> wid = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(widstr));
-			WorkgroupExt cmbinfo = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wid);
+			WorkgroupExtInfo cmbinfo = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wid);
 			wsum.setWorkgroupId(cmbinfo.getInfoId().getId());
 			wsum.setWorkgroupName(cmbinfo.getWorkgroupName());
 			wsum.setAdmin(cmbinfo.getAdmin());
@@ -154,7 +154,7 @@ public class WGroupMetaController extends BaseController{
 		Workgroup wgroup = new Workgroup();
 		
 		try{
-			WorkgroupExt info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
+			WorkgroupExtInfo info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
 			
 			wgroup.setWorkgroupId(info.getInfoId().getId());
 			wgroup.setWorkgroupName(info.getWorkgroupName());

@@ -17,7 +17,7 @@ import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.CombineInfo;
 import com.gp.dao.info.WorkgroupInfo;
-import com.gp.svc.info.WorkgroupExt;
+import com.gp.svc.info.WorkgroupExtInfo;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -49,9 +49,9 @@ public class WorkgroupListController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
 		try{
-			List<WorkgroupExt> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
+			List<WorkgroupExtInfo> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
 					wgroupname);
-			for(WorkgroupExt info: ulist){
+			for(WorkgroupExtInfo info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
 				wgroup.setWorkgroupId(info.getInfoId().getId());
@@ -91,9 +91,9 @@ public class WorkgroupListController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
 		try{
-			List<WorkgroupExt> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
+			List<WorkgroupExtInfo> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
 					wgroupname);
-			for(WorkgroupExt info: ulist){
+			for(WorkgroupExtInfo info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
 				wgroup.setWorkgroupId(info.getInfoId().getId());

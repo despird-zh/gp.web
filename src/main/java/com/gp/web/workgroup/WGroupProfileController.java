@@ -38,7 +38,7 @@ import com.gp.dao.info.StorageInfo;
 import com.gp.dao.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.info.WorkgroupExt;
+import com.gp.svc.info.WorkgroupExtInfo;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
@@ -86,7 +86,7 @@ public class WGroupProfileController extends BaseController{
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
 		
 		try{
-			WorkgroupExt info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
+			WorkgroupExtInfo info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
 			Workgroup wgroup = new Workgroup();
 			
 			wgroup.setWorkgroupId(info.getInfoId().getId());
