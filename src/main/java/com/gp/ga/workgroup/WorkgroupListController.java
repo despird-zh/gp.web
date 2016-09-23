@@ -49,19 +49,19 @@ public class WorkgroupListController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
 		try{
-			List<CombineInfo<WorkgroupInfo, WorkgroupExt>> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
+			List<WorkgroupExt> ulist = WorkgroupFacade.findLocalWorkgroups(accesspoint, principal, 
 					wgroupname);
-			for(CombineInfo<WorkgroupInfo, WorkgroupExt> info: ulist){
+			for(WorkgroupExt info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
-				wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
-				wgroup.setAdmin(info.getPrimary().getAdmin());
-				wgroup.setDescription(info.getPrimary().getDescription());
-				wgroup.setSourceName(info.getExtended().getSourceName());
-				wgroup.setState(info.getPrimary().getState());
-				wgroup.setDescription(info.getPrimary().getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
+				wgroup.setWorkgroupId(info.getInfoId().getId());
+				wgroup.setWorkgroupName(info.getWorkgroupName());
+				wgroup.setAdmin(info.getAdmin());
+				wgroup.setDescription(info.getDescription());
+				wgroup.setSourceName(info.getSourceName());
+				wgroup.setState(info.getState());
+				wgroup.setDescription(info.getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
 				
 				list.add(wgroup);
 			}
@@ -91,21 +91,21 @@ public class WorkgroupListController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		List<Workgroup> list = new ArrayList<Workgroup>();
 		try{
-			List<CombineInfo<WorkgroupInfo, WorkgroupExt>> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
+			List<WorkgroupExt> ulist = WorkgroupFacade.findMirrorWorkgroups(accesspoint, principal, 
 					wgroupname);
-			for(CombineInfo<WorkgroupInfo, WorkgroupExt> info: ulist){
+			for(WorkgroupExt info: ulist){
 				
 				Workgroup wgroup = new Workgroup();
-				wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
-				wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
-				wgroup.setAdmin(info.getPrimary().getAdmin());
-				wgroup.setDescription(info.getPrimary().getDescription());
-				wgroup.setSourceName(info.getExtended().getSourceName());
-				wgroup.setState(info.getPrimary().getState());
-				wgroup.setDescription(info.getPrimary().getDescription());
-				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
-				wgroup.setEntityCode(info.getExtended().getEntityCode());
-				wgroup.setNodeCode(info.getExtended().getNodeCode());
+				wgroup.setWorkgroupId(info.getInfoId().getId());
+				wgroup.setWorkgroupName(info.getWorkgroupName());
+				wgroup.setAdmin(info.getAdmin());
+				wgroup.setDescription(info.getDescription());
+				wgroup.setSourceName(info.getSourceName());
+				wgroup.setState(info.getState());
+				wgroup.setDescription(info.getDescription());
+				wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
+				wgroup.setEntityCode(info.getEntityCode());
+				wgroup.setNodeCode(info.getNodeCode());
 				list.add(wgroup);
 			}
 

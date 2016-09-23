@@ -19,7 +19,7 @@ import com.gp.svc.ImageService;
 import com.gp.svc.PostService;
 import com.gp.svc.QuickFlowService;
 import com.gp.svc.info.PostExt;
-import com.gp.svc.info.UserLite;
+import com.gp.svc.info.UserLiteInfo;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
@@ -337,11 +337,11 @@ public class PostFacade {
     /**
      * Find the post attendee list
      **/
-    public static List<UserLite> findPostAttendees(AccessPoint accesspoint,
+    public static List<UserLiteInfo> findPostAttendees(AccessPoint accesspoint,
                                                    Principal principal,
                                                    InfoId<Long> postid) throws CoreException{
 
-        List<UserLite> result = null;
+        List<UserLiteInfo> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_COMMENT)){

@@ -177,18 +177,18 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static CombineInfo<WorkgroupInfo,WorkgroupExt> findWorkgroupExt(AccessPoint accesspoint,
+	public static WorkgroupExt findWorkgroupExt(AccessPoint accesspoint,
 			Principal principal,
 			InfoId<Long> wkey)throws CoreException{
 		
-		CombineInfo<WorkgroupInfo,WorkgroupExt> gresult = null;
+		WorkgroupExt gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUP)){
 			
 			// amend the operation information
 			svcctx.setOperationObject(wkey);
 			
-			gresult = workgroupservice.getWorkgroupEx(svcctx, wkey);
+			gresult = workgroupservice.getWorkgroupExt(svcctx, wkey);
 						
 			
 		}catch(ServiceException e){
@@ -542,11 +542,11 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static List<CombineInfo<WorkgroupInfo,WorkgroupExt>> findLocalWorkgroups(AccessPoint accesspoint,
+	public static List<WorkgroupExt> findLocalWorkgroups(AccessPoint accesspoint,
 			Principal principal,
 			String wgroupname)throws CoreException{
 		
-		List<CombineInfo<WorkgroupInfo,WorkgroupExt>> gresult = null;
+		List<WorkgroupExt> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 
@@ -586,11 +586,11 @@ public class WorkgroupFacade {
 		return gresult;
 	}
 	
-	public static List<CombineInfo<WorkgroupInfo,WorkgroupExt>> findMirrorWorkgroups(AccessPoint accesspoint,
+	public static List<WorkgroupExt> findMirrorWorkgroups(AccessPoint accesspoint,
 			Principal principal,
 			String wgroupname)throws CoreException{
 		
-		List<CombineInfo<WorkgroupInfo,WorkgroupExt>> gresult = null;
+		List<WorkgroupExt> gresult = null;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_WORKGROUPS)){
 

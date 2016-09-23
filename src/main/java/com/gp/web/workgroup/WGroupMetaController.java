@@ -79,22 +79,22 @@ public class WGroupMetaController extends BaseController{
 				return mav;
 			}
 			InfoId<Long> wid = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(widstr));
-			CombineInfo<WorkgroupInfo,WorkgroupExt> cmbinfo = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wid);
-			wsum.setWorkgroupId(cmbinfo.getPrimary().getInfoId().getId());
-			wsum.setWorkgroupName(cmbinfo.getPrimary().getWorkgroupName());
-			wsum.setAdmin(cmbinfo.getPrimary().getAdmin());
-			wsum.setAdminName(cmbinfo.getExtended().getAdminName());
-			wsum.setManager(cmbinfo.getPrimary().getManager());
-			wsum.setManagerName(cmbinfo.getExtended().getManagerName());
-			wsum.setDescription(cmbinfo.getPrimary().getDescription());
+			WorkgroupExt cmbinfo = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wid);
+			wsum.setWorkgroupId(cmbinfo.getInfoId().getId());
+			wsum.setWorkgroupName(cmbinfo.getWorkgroupName());
+			wsum.setAdmin(cmbinfo.getAdmin());
+			wsum.setAdminName(cmbinfo.getAdminName());
+			wsum.setManager(cmbinfo.getManager());
+			wsum.setManagerName(cmbinfo.getManagerName());
+			wsum.setDescription(cmbinfo.getDescription());
 			// find image path
-			Long avatarId = cmbinfo.getPrimary().getAvatarId();
+			Long avatarId = cmbinfo.getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
 				wsum.setImagePath("../" + ImagePath + "/" + avatar.getLink());
 			}
-			wsum.setState(cmbinfo.getPrimary().getState());
-			Date since = cmbinfo.getPrimary().getCreateDate();
+			wsum.setState(cmbinfo.getState());
+			Date since = cmbinfo.getCreateDate();
 			if(null != since){
 				wsum.setSinceDate(DATE_FORMAT.format(since));
 			}
@@ -154,46 +154,46 @@ public class WGroupMetaController extends BaseController{
 		Workgroup wgroup = new Workgroup();
 		
 		try{
-			CombineInfo<WorkgroupInfo,WorkgroupExt> info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
+			WorkgroupExt info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
 			
-			wgroup.setWorkgroupId(info.getPrimary().getInfoId().getId());
-			wgroup.setWorkgroupName(info.getPrimary().getWorkgroupName());
-			wgroup.setAdmin(info.getPrimary().getAdmin());
-			wgroup.setDescription(info.getPrimary().getDescription());
-			wgroup.setSourceName(info.getExtended().getSourceName());
-			wgroup.setState(info.getPrimary().getState());
-			wgroup.setDescription(info.getPrimary().getDescription());
-			wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getPrimary().getCreateDate()));
-			wgroup.setEntityCode(info.getExtended().getEntityCode());
-			wgroup.setNodeCode(info.getExtended().getNodeCode());
+			wgroup.setWorkgroupId(info.getInfoId().getId());
+			wgroup.setWorkgroupName(info.getWorkgroupName());
+			wgroup.setAdmin(info.getAdmin());
+			wgroup.setDescription(info.getDescription());
+			wgroup.setSourceName(info.getSourceName());
+			wgroup.setState(info.getState());
+			wgroup.setDescription(info.getDescription());
+			wgroup.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
+			wgroup.setEntityCode(info.getEntityCode());
+			wgroup.setNodeCode(info.getNodeCode());
 			
-			wgroup.setPublishOn(info.getPrimary().getPublishEnable());
-			wgroup.setNetdiskOn(info.getPrimary().getNetdiskEnable());
-			wgroup.setTopicOn(info.getPrimary().getPostEnable());
-			wgroup.setTaskOn(info.getPrimary().getTaskEnable());
-			wgroup.setShareOn(info.getPrimary().getShareEnable());
-			wgroup.setLinkOn(info.getPrimary().getLinkEnable());
+			wgroup.setPublishOn(info.getPublishEnable());
+			wgroup.setNetdiskOn(info.getNetdiskEnable());
+			wgroup.setTopicOn(info.getPostEnable());
+			wgroup.setTaskOn(info.getTaskEnable());
+			wgroup.setShareOn(info.getShareEnable());
+			wgroup.setLinkOn(info.getLinkEnable());
 		
 			// storage and organization
-			wgroup.setStorageId(info.getPrimary().getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getPrimary().getStorageId()));
+			wgroup.setStorageId(info.getStorageId());
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
-			wgroup.setOrgId(info.getPrimary().getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getPrimary().getOrgId()));
+			wgroup.setOrgId(info.getOrgId());
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
-			Long avatarId = info.getPrimary().getAvatarId();
+			Long avatarId = info.getAvatarId();
 			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + ImagePath + "/" + avatar.getLink());
 			}
 			// cabinet capacity
-			Long pubcabId = info.getPrimary().getPublishCabinet();
+			Long pubcabId = info.getPublishCabinet();
 			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
-			Long pricabId = info.getPrimary().getNetdiskCabinet();
+			Long pricabId = info.getNetdiskCabinet();
 			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			

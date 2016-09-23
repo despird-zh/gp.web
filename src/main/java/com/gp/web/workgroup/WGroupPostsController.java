@@ -27,7 +27,7 @@ import com.gp.info.CombineInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.info.PostExt;
-import com.gp.svc.info.UserLite;
+import com.gp.svc.info.UserLiteInfo;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.util.DateTimeUtils;
 import com.gp.web.BaseController;
@@ -180,9 +180,9 @@ public class WGroupPostsController extends BaseController{
 			}
 			post.setComments(comments);
 			// set the attendees
-			List<UserLite> attendees = PostFacade.findPostAttendees(accesspoint, principal,
+			List<UserLiteInfo> attendees = PostFacade.findPostAttendees(accesspoint, principal,
 					cinfo.getPrimary().getInfoId());
-			for(UserLite ulite : attendees){
+			for(UserLiteInfo ulite : attendees){
 				// decorate the link of image
 				ulite.setAvatarLink("../"+ImagePath + "/" + ulite.getAvatarLink());
 			}
@@ -193,10 +193,10 @@ public class WGroupPostsController extends BaseController{
 		}
 		List<String> userlist = new ArrayList<>();
 		userlist.addAll(accounts);
-		List<UserLite> allusers = SecurityFacade.findAccountLites(accesspoint, principal,
+		List<UserLiteInfo> allusers = SecurityFacade.findAccountLites(accesspoint, principal,
 				null, userlist);
-		Map<String, UserLite> allmap = new HashMap<>();
-		for(UserLite ulite : allusers){
+		Map<String, UserLiteInfo> allmap = new HashMap<>();
+		for(UserLiteInfo ulite : allusers){
 			
 			allmap.put(ulite.getAccount(), ulite);
 		}

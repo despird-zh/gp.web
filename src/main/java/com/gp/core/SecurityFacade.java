@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.gp.svc.info.UserLite;
+import com.gp.svc.info.UserLiteInfo;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -468,12 +468,12 @@ public class SecurityFacade {
 	 * @param accounts target user accounts
 	 *
 	 **/
-	public static List<UserLite> findAccountLites(AccessPoint accesspoint,
+	public static List<UserLiteInfo> findAccountLites(AccessPoint accesspoint,
 												  Principal principal,
 												  List<Long> userids,
 												  List<String> accounts)throws CoreException{
 
-		List<UserLite> result = null;
+		List<UserLiteInfo> result = null;
 
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ACCOUNTS)){

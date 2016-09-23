@@ -3,7 +3,7 @@ package com.gp.web.model;
 import com.gp.dao.info.PostInfo;
 import com.gp.info.CombineInfo;
 import com.gp.svc.info.PostExt;
-import com.gp.svc.info.UserLite;
+import com.gp.svc.info.UserLiteInfo;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class PostItem {
 
     private String priority;
 
-    private List<UserLite> attendees;
+    private List<UserLiteInfo> attendees;
 
     private List<Comment> comments;
 
@@ -158,11 +158,11 @@ public class PostItem {
         this.commentOn = commentOn;
     }
 
-    public List<UserLite> getAttendees() {
+    public List<UserLiteInfo> getAttendees() {
         return attendees;
     }
 
-    public void setAttendees(List<UserLite> attendees) {
+    public void setAttendees(List<UserLiteInfo> attendees) {
         this.attendees = attendees;
     }
 
