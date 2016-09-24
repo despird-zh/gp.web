@@ -44,7 +44,7 @@ import com.gp.web.model.Tag;
 import com.gp.web.model.WGroupMetaSummary;
 import com.gp.web.model.Workgroup;
 
-@Controller("wg-meta-ctrl")
+@Controller
 @RequestMapping("/workgroup")
 public class WGroupMetaController extends BaseController{
 

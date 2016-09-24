@@ -48,7 +48,7 @@ import com.gp.util.CommonUtils;
  * @author despird zhang
  * @version 0.1 2015-3-6 
  **/
-@Controller("common-ctlr")
+@Controller
 @RequestMapping("/common")
 public class CommonController extends BaseController{
 

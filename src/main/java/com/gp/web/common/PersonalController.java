@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("comm-personal-ctlr")
+@Controller
 @RequestMapping("/common")
 public class PersonalController extends BaseController{
 

@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by garydiao on 7/26/16.
  */
-@Controller("comm-wgroup-ctlr")
+@Controller
 @RequestMapping("/common")
 public class WGroupController extends BaseController{
 

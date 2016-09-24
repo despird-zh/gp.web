@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("ws-notif-ctrl")
+@Controller
 @RequestMapping("/workspace")
 public class WSpaceNotificationsController extends BaseController{
 

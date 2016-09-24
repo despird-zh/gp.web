@@ -47,7 +47,7 @@ import com.gp.web.model.ActivityLog;
 import com.gp.web.model.WGroupMember;
 import com.gp.web.model.Workgroup;
 
-@Controller("wg-profile-ctrl")
+@Controller
 @RequestMapping("/workgroup")
 public class WGroupProfileController extends BaseController{
 	

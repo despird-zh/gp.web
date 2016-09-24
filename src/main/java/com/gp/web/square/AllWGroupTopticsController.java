@@ -31,7 +31,7 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.BaseController;
 import com.gp.web.model.Workgroup;
 
-@Controller("wg-all-topic-ctrl")
+@Controller
 @RequestMapping("/square")
 public class AllWGroupTopticsController extends BaseController{
 

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
 
-@Controller("ws-profile-ctrl")
+@Controller
 @RequestMapping("/workspace")
 public class WSpaceProfileController extends BaseController{
 

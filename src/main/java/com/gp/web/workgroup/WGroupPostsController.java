@@ -35,7 +35,7 @@ import com.gp.web.model.Comment;
 import com.gp.web.model.PostItem;
 import com.gp.web.workspace.WSpacePostsController;
 
-@Controller("wg-posts-ctrl")
+@Controller
 @RequestMapping("/workgroup")
 public class WGroupPostsController extends BaseController{
 

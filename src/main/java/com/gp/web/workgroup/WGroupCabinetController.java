@@ -42,7 +42,7 @@ import com.gp.web.model.Tag;
 /**
  * This controller wrap the operation on cabinet and repository 
  **/
-@Controller("wg-cabinet-ctrl")
+@Controller
 @RequestMapping("/workgroup")
 public class WGroupCabinetController extends BaseController{
 	

@@ -34,7 +34,7 @@ import com.gp.web.BaseController;
 import com.gp.web.model.TreeNode;
 import com.gp.web.model.UserMetaSummary;
 
-@Controller("ws-meta-ctrl")
+@Controller
 @RequestMapping("/workspace")
 public class WSpaceMetaController extends BaseController{
 

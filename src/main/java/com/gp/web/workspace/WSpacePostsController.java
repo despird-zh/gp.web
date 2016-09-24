@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 
-@Controller("ws-post-ctrl")
+@Controller
 @RequestMapping("/workspace")
 public class WSpacePostsController extends BaseController{
 

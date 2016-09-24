@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.web.BaseController;
 
 
-@Controller("wg-task-ctrl")
+@Controller
 @RequestMapping("/workgroup")
 public class WGroupTasksController extends BaseController{
 
