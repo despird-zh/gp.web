@@ -78,7 +78,6 @@
 				<div class="box-header with-border">
 				  <h3 class="box-title">Clipboard <small class="label label-success">5</small></h3>
 				  <div class="box-tools">    
-								  
                     <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
 					<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
@@ -86,52 +85,45 @@
                   </div>
 				</div><!-- /.box-header -->
 				<div class="box-body">
-				<ul obid="docs_list" class="doc-list">
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="doc-items">
-                      <li><!-- start message -->
+                    <ul class="list-group list-group-unbordered m-b-none">
+                      <li class="list-group-item">
                         <a href="#">
-                          <span><i class="fa fa-file-o margin-r-5"></i>
+							<i class="fa fa-file-o margin-r-5"></i>
+                          <span>
                             关于UI设计文件.docx						
-                          </span> 
-							<small ><i class="fa fa-clock-o"></i> Today</small>						  
-                        </a>
-						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-                      </li><!-- end message -->
-                      <li>
-                        <a href="#">
-                          <span><i class="fa fa-file-o margin-r-5"></i>
-                            关于UI设计文件.docx						
-                          </span> 
-							<small ><i class="fa fa-clock-o"></i> Today</small>						  
+                          </span> 					  
                         </a>
 						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
                       </li>
-                      <li>
+                      <li class="list-group-item">
                         <a href="#">
                           <span><i class="fa fa-file-o margin-r-5"></i>
                             关于UI设计文件.docx						
-                          </span> 
-							<small ><i class="fa fa-clock-o"></i> Today</small>						  
+                          </span> 				  
                         </a>
 						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
                       </li>
-                      <li>
+                      <li class="list-group-item">
                         <a href="#">
                           <span><i class="fa fa-file-o margin-r-5"></i>
                             关于UI设计文件.docx						
-                          </span> 
-							<small ><i class="fa fa-clock-o"></i> Today</small>						  
+                          </span> 					  
+                        </a>
+						<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
+                      </li>
+                      <li class="list-group-item">
+                        <a href="#">
+                          <span><i class="fa fa-file-o margin-r-5"></i>
+                            关于UI设计文件.docx						
+                          </span> 						  
                         </a>						
 						<a obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
                       </li>
-                      <li>
+                      <li class="list-group-item">
                         <a href="#">
                           <span><i class="fa fa-file-o margin-r-5"></i>
                             关于UI设计文件.docx						
-                          </span> 
-							<small ><i class="fa fa-clock-o"></i> Today</small>						  
+                          </span> 					  
                         </a>
 						<a obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
                       </li>
