@@ -76,14 +76,14 @@ public class PostFacade {
      * @param scope the scope of search condition
      * @param pageQuery the page query condition
      **/
-    public static PageWrapper<CombineInfo<PostInfo, PostExt>> findPersonalPosts(AccessPoint accesspoint,
+    public static PageWrapper<PostExt> findPersonalPosts(AccessPoint accesspoint,
                                                                                 Principal principal,
                                                                                 String state,
                                                                                 String type,
                                                                                 String scope,
                                                                                 PageQuery pageQuery)throws CoreException{
 
-        PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
+        PageWrapper<PostExt> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){
@@ -110,13 +110,13 @@ public class PostFacade {
      * @param scope the scope of search condition
      * @param mode the data query mode : ALL/MEMBER/SQUARE
      **/
-    public static PageWrapper<CombineInfo<PostInfo, PostExt>> findWorkgroupPosts(AccessPoint accesspoint,
+    public static PageWrapper<PostExt> findWorkgroupPosts(AccessPoint accesspoint,
                                                     Principal principal,
                                                     InfoId<Long> wid,
                                                     String mode,
                                                     String state, String type, PageQuery pageQuery)throws CoreException{
 
-        PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
+        PageWrapper<PostExt> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){
@@ -142,11 +142,11 @@ public class PostFacade {
      * @param type the type of search condition
      * @param scope the scope of search condition
      **/
-    public static PageWrapper<CombineInfo<PostInfo, PostExt>> findSquarePosts(AccessPoint accesspoint,
+    public static PageWrapper<PostExt> findSquarePosts(AccessPoint accesspoint,
                                                     Principal principal,
                                                     String state, String type, String scope, PageQuery pageQuery)throws CoreException{
 
-        PageWrapper<CombineInfo<PostInfo, PostExt>> result = null;
+        PageWrapper<PostExt> result = null;
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FIND_POSTS)){

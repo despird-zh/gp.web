@@ -126,11 +126,11 @@ public class WGroupPostsController extends BaseController{
 		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
 		super.readRequestData(pquery);
 
-		PageWrapper<CombineInfo<PostInfo, PostExt>> presult = PostFacade.findWorkgroupPosts(
+		PageWrapper<PostExt> presult = PostFacade.findWorkgroupPosts(
 				accesspoint, principal,wgroupId, mode, state, type, pquery
 		);
 
-		List<CombineInfo<PostInfo, PostExt>> entries = presult.getRows();
+		List<PostExt> entries = presult.getRows();
 		if(CollectionUtils.isEmpty(entries)){
 			mav.addObject("entries", entries);
 			mav.addObject("hasMore", false);
@@ -142,26 +142,26 @@ public class WGroupPostsController extends BaseController{
 		}
 		List<PostItem> items = new ArrayList<>();
 		Set<String> accounts = new HashSet<String>();
-		for(CombineInfo<PostInfo, PostExt> cinfo : entries){
+		for(PostExt cinfo : entries){
 
 			PostItem post = new PostItem();
-			post.setState(cinfo.getPrimary().getState());
-			post.setOwner(cinfo.getPrimary().getOwner());
-			post.setClassification(cinfo.getPrimary().getClassification());
-			post.setOwnerName(cinfo.getExtended().getOwnerName());
-			post.setCommentOn(cinfo.getPrimary().isCommentOn());
-			post.setContent(cinfo.getPrimary().getContent());
-			post.setExcerpt(cinfo.getPrimary().getExcerpt());
-			post.setPostId(cinfo.getPrimary().getInfoId().getId());
-			post.setSubject(cinfo.getPrimary().getSubject());
-			post.setPostTime(cinfo.getPrimary().getPostDate().toString());
-			post.setPriority(String.valueOf(cinfo.getPrimary().getPriority()));
+			post.setState(cinfo.getState());
+			post.setOwner(cinfo.getOwner());
+			post.setClassification(cinfo.getClassification());
+			post.setOwnerName(cinfo.getOwnerName());
+			post.setCommentOn(cinfo.isCommentOn());
+			post.setContent(cinfo.getContent());
+			post.setExcerpt(cinfo.getExcerpt());
+			post.setPostId(cinfo.getInfoId().getId());
+			post.setSubject(cinfo.getSubject());
+			post.setPostTime(cinfo.getPostDate().toString());
+			post.setPriority(String.valueOf(cinfo.getPriority()));
 
-			accounts.add(cinfo.getPrimary().getOwner());
+			accounts.add(cinfo.getOwner());
 
 			// find the comments and attach them to post.
 			List<PostCommentInfo> cinfos = PostFacade.findPostComments(accesspoint,principal,
-					cinfo.getPrimary().getInfoId(), null, null);
+					cinfo.getInfoId(), null, null);
 
 			List<Comment> comments = new ArrayList<>();
 			// prepare to fetch the author avatar etc
@@ -181,7 +181,7 @@ public class WGroupPostsController extends BaseController{
 			post.setComments(comments);
 			// set the attendees
 			List<UserLiteInfo> attendees = PostFacade.findPostAttendees(accesspoint, principal,
-					cinfo.getPrimary().getInfoId());
+					cinfo.getInfoId());
 			for(UserLiteInfo ulite : attendees){
 				// decorate the link of image
 				ulite.setAvatarLink("../"+ImagePath + "/" + ulite.getAvatarLink());
