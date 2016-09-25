@@ -57,7 +57,7 @@
 
 				</div>
 				<div class="row">
-					<p style="margin-bottom:0px;" class="tags xsmall">
+					<p style="margin-bottom:0px;" class="tags">
 						<a class="tag-red " href="" title="">Fashion</a>
 						<a class="tag-yellow " href="" title="">测试</a>
 						<a class="tag-blue " href="" title="">学习</a>
