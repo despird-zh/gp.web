@@ -1,4 +1,3 @@
-<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../common/taglibs.jsp" %>
 <!DOCTYPE html>
@@ -10,59 +9,57 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
-	<link rel="stylesheet" href="${path_plugins}/isotope/isotope.css" rel="stylesheet" />
+	
   </head>
   <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
   <body class="hold-transition skin-blue fixed layout-top-nav">
     <div class="wrapper">
 
       <header class="main-header">
-       <%@include file="../common/header.jsp" %>
+        <%@include file="../common/header.jsp" %>
       </header>
       <!-- Full Width Column -->
       <div class="content-wrapper">
-        <div class="container  bg-white">
-          <section class="content-header clearfix">
+        <div class="container bg-white">
+
+          <section class="content-header">
 			<div class="row ">
-				<div class="col-sm-12">		
+				<div class="col-sm-12">	
 					<h1 class="page-title">
-					  全部工作组
-					  <small>查看全部的工作组信息</small>
+					  Topics
+					  <small> Topics issued in workgroup</small>
 					</h1>
 					<jsp:include page="../common/page-navs.jsp" flush="true">
-						<jsp:param name="page" value="all-grid"/>
+						<jsp:param name="page" value="all-post"/>
 						<jsp:param name="module" value="square"/>
 					</jsp:include>
 				</div>
 			 </div>
           </section>
+
           <!-- Main content -->
           <section class="content">
-		  <div class="row">
+		<div class="row">
 			<div class="col-md-9">
-				<div class="box box-widget list-view no-radius">
-					<div class="box-header repo-header with-border border-top">
-						<a gpid="filter-switch-btn" data-toggle="tooltip" title="展开检索条件设置" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
+				<div class="box box-widget ">
+					<div class="box-header repo-header with-border" style="border-top: 1px solid #f4f4f4;">
+						<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 						<div class="folder-descr">					
-							<span class="text">Below is the available workgroups</span>
+							<span class="text">电力设计协作组</span>
 						</div>
-						<ul class="list-inline pull-right m-b-none">
-						    <li><a gpid="grid-view-btn" role="button"><i class="fa fa-th"></i></a></li>
-						    <li><a gpid="list-view-btn" role="button"><i class="fa fa-th-list"></i></a></li>
-						</ul>
 					</div><!-- /.box-header-->
-					<div gpid="wgroup-filter" class="border-bottom p-xs hidden">		
+					<div gpid="wgroup-filter" class="border-bottom p-xs hidden">
 						<div>		
 							<form class="form-inline">
-								<label class="m-r-sm">Workgroup</label><input type="text" class="form-control input-md" placeholder="storage name" gpid="list-search-wgroup-name">
+								<label class="m-r-sm">Workgroup</label><input type="text" class="form-control input-md" placeholder="storage name" gpid="list-search-sname">
 								<a class="btn btn-default btn-sm" gpid="list-search-btn"><i class="fa fa-search"></i></a>
 								<a class="btn btn-default btn-sm" gpid="list-clear-btn"><i class="fa fa-close"></i></a>
 							</form>												
 						</div>
 					</div>
-					<div id="gallery-container" ><!-- container for gallery -->
-	
-					</div>
+					<div id="post-container" class="box-body repo-list">
+						 
+					</div><!-- /.box-body -->
 				</div><!-- end box -->
 			</div>
 			<div class="col-md-3">
@@ -172,15 +169,14 @@
 				</ul>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
-			   
-			</div><!-- /.col-md-3 -->
+			  </div>
 			<div class="clearfix"></div>
 		  </div>
           </section><!-- /.content -->
         </div><!-- /.container -->
       </div><!-- /.content-wrapper -->
       <footer class="main-footer">
-         <%@include file="../common/footer.jsp" %>
+		<%@include file="../common/footer.jsp" %>
       </footer>
     </div><!-- ./wrapper -->
 
@@ -188,13 +184,13 @@
     <script src="${path_plugins}/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${path_plugins}/fastclick/fastclick.min.js"></script>
-	 <script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
-	 <script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
+	<script src="${path_plugins}/waypoints/jquery.waypoints.min.js"></script>
+	<script src="${path_plugins}/waypoints/shortcuts/infinite.min.js"></script>
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js"></script>
 	<!-- GPress Page scripts -->
-	<script src="${path_script}/pages/square/all-grid.js"></script>
+	<script src="${path_script}/pages/square/all-posts.js"></script>
   </body>
 </html>

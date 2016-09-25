@@ -111,7 +111,7 @@
 			</a>
 		</li>	
 		<li>
-			<a <c:if test="${param.page=='all-post'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看全部公共话题" href="../square/all-topic.do">
+			<a <c:if test="${param.page=='all-post'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看全部公共话题" href="../square/all-posts.do">
 				<i class="fa fa-lg fa-map-signs"></i>
 			</a>
 		</li>					
