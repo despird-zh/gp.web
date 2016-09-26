@@ -883,7 +883,7 @@ display:block;
 	-moz-box-shadow: -1px -1px 2px rgba(0,0,0,0.4);
 	-webkit-box-shadow: -1px -1px 2px rgba(0,0,0,0.4);
 	box-shadow: -1px -1px 2px rgba(0,0,0,0.4);
-	}
+}
 	
 .tags a:before {
 	content: "";
@@ -895,7 +895,7 @@ display:block;
 	border-color: transparent #777 transparent transparent;
 	border-style: solid;
 	border-width: 12px 12px 12px 0;
-	}
+}
 	
 .tags a.tag-red {background: #dd4b39;}
 .tags a.tag-red:before {border-color: transparent #dd4b39 transparent transparent}
@@ -920,50 +920,52 @@ display:block;
 	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
-.small a {
-	height: 21px;
-	line-height: 21px;
-	float: none;
-	font-size: 11px;
-	}
-	
-.small a:before {
-    right: 0;
-    top: 8px;
-    border-width: 10px 0 10px 10px;
-	}
-	
-.small a:after {
-	right: -11px;
-	top: 0;
-	border-width: 11px 0 11px 11px;
-	}
-
-.xsmall a {
+.tag-sm a {
+    -moz-border-radius-bottomright: 3px;
+    -webkit-border-bottom-right-radius: 3px;
     border-bottom-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -webkit-border-top-right-radius: 3px;
     border-top-right-radius: 3px;
-	height: 18px;
-	line-height: 16px;
+	height: 21px;
+	line-height: 20px;
 	float: none;
 	font-size: 0.8em;
-	font-weight: 300;
-	padding: 1px 6px 0 10px;
-	}
+}
 	
-.xsmall a:before {
-    left: 1;
-    top: 6px;
-    border-width: 7px 7px 7px 0;
-	}
+.tag-sm a:after {
+    top: 8px;
+}
 	
-.xsmall a:after {
-	left: -8px;
+.tag-sm a:before {
+	left: -11px;
 	top: 0;
-	border-width: 9px 8px 9px 0;
-	}
+	border-width: 11px 11px 10px 0;
+}
 
-.tag-shadow{
-	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+.tag-xs a {
+    -moz-border-radius-bottomright: 2px;
+    -webkit-border-bottom-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    -webkit-border-top-right-radius: 2px;
+    border-top-right-radius: 2px;
+	height: 18px;
+	line-height: 17px;
+	float: none;
+	font-size: 0.8em;
+	font-weight: 700;
+	padding: 0 6px;
+}
+	
+.tag-xs a:after {
+    top: 6px;
+}
+	
+.tag-xs a:before {
+	left: -9px;
+	top: 0;
+	border-width: 9px 9px 9px 0;
 }
 
 .v-center {
