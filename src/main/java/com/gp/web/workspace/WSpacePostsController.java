@@ -320,10 +320,10 @@ public class WSpacePostsController extends BaseController{
 		
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
+			int likeCount = PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.like.post"));
-			
+			result.setData(likeCount);
 		}catch(CoreException ce){
 			
 			result.setState(ActionResult.FAIL);
@@ -346,10 +346,10 @@ public class WSpacePostsController extends BaseController{
 		
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
+			int likeCount = PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.dislike.post"));
-			
+			result.setData(likeCount);
 		}catch(CoreException ce){
 			
 			result.setState(ActionResult.FAIL);

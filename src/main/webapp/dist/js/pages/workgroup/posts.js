@@ -1,4 +1,5 @@
-;(function ($, window, undefined){
+;
+var PageContext = (function ($, window, undefined){
 
 	"use strict";
 	var Topics = {
@@ -68,7 +69,7 @@
 		var $post = $(el).parentsUntil('.ticket','.post');
 		var $comment = $(el).parent().siblings('[gpid="comment-txt"]');
 		$.ajax({
-			url: "../workspace/save-comment.do",
+			url: "../workgroup/save-comment.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
@@ -89,7 +90,7 @@
 	Topics.doPublicPost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
 		$.ajax({
-			url: "../workspace/public-post.do",
+			url: "../workgroup/public-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
@@ -105,7 +106,7 @@
 	Topics.doLikePost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.avatar-info');
 		$.ajax({
-			url: "../workspace/like-post.do",
+			url: "../workgroup/like-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
@@ -121,7 +122,7 @@
 	Topics.doDislikePost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.avatar-info');
 		$.ajax({
-			url: "../workspace/dislike-post.do",
+			url: "../workgroup/dislike-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
@@ -137,7 +138,7 @@
 	Topics.doFavoritePost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
 		$.ajax({
-			url: "../workspace/favorite-post.do",
+			url: "../workgroup/favorite-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
@@ -153,7 +154,7 @@
 	Topics.doUnfavoritePost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
 		$.ajax({
-			url: "../workspace/unfavorite-post.do",
+			url: "../workgroup/unfavorite-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {
@@ -169,7 +170,7 @@
 	Topics.doRemovePost = function(el){
 		var $post = $(el).parentsUntil('.ticket','.post');
 		$.ajax({
-			url: "../workspace/remove-post.do",
+			url: "../workgroup/remove-post.do",
 			dataType : "json",
 			type: 'POST',
 			data: {

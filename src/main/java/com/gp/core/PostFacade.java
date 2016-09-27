@@ -363,11 +363,11 @@ public class PostFacade {
     /**
      * like post
      **/
-    public static boolean likePost(AccessPoint accesspoint,
+    public static int likePost(AccessPoint accesspoint,
                                    Principal principal,
                                    InfoId<Long> postid, String voter) throws CoreException{
 
-        boolean result = false;
+        int result = 0;
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.LIKE_POST)){
 
@@ -389,11 +389,11 @@ public class PostFacade {
     /**
      * dislike post
      **/
-    public static boolean dislikePost(AccessPoint accesspoint,
+    public static int dislikePost(AccessPoint accesspoint,
                                    Principal principal,
                                    InfoId<Long> postid, String voter) throws CoreException{
 
-        boolean result = false;
+        int result = 0;
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.DISLIKE_POST)){
 

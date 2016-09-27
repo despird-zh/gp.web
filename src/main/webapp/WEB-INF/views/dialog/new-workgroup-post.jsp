@@ -96,6 +96,7 @@
 				</div>
 			</div>
 			<form id="post-form">
+				<input name="wgroup_id" type="hidden">
 				<input name="content" type="hidden">
 				<input name="subject" type="hidden">
 				<input name="scope" type="hidden">
@@ -126,6 +127,7 @@ $(function (){
 	var $modal = $('#new-post-modal');
 	var NewPostModal = {
 
+		$wgroup_id : $('#meta-wgroup-id'), // this work group id is from meta-sum-info.jsp
 		$post_subject : $('#post-subject', $modal),
 		$post_pub_rdo : $('input[gpid="post-square"]', $modal),
 		$post_pri_rdo : $('input[gpid="post-private"]', $modal),
@@ -266,6 +268,7 @@ $(function (){
 
 		var attendees = _self.$post_attendee.val();
 
+		$('#post-form input[name="wgroup_id"]').val(_self.$wgroup_id.val());
 		$('#post-form input[name="content"]').val(_self.$post_content.summernote('code'));
 		$('#post-form input[name="subject"]').val(_self.$post_subject.val());
 		$('#post-form input[name="scope"]').val(_scope);

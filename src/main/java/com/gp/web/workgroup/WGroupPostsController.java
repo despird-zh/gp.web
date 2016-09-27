@@ -322,10 +322,10 @@ public class WGroupPostsController extends BaseController{
 
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
+			int voteCount = PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.like.post"));
-
+			result.setData(voteCount);
 		}catch(CoreException ce){
 
 			result.setState(ActionResult.FAIL);
@@ -348,10 +348,10 @@ public class WGroupPostsController extends BaseController{
 
 		try{
 			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
-			PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
+			int voteCount = PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.dislike.post"));
-
+			result.setData(voteCount);
 		}catch(CoreException ce){
 
 			result.setState(ActionResult.FAIL);
