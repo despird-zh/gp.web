@@ -226,4 +226,5 @@
 		</plugins>
 		<finalName>gp.web</finalName>
 	</build>
+	<packaging>war</packaging>
 </project>
