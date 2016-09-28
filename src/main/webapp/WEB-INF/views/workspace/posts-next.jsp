@@ -32,13 +32,14 @@
 				</div>
 				<textarea gpid="content-holder" data-type="content" class="hidden">${postitem.content}</textarea>
 				<ul class="list-inline">
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5"><i class="fa fa-plug"></i> Join</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.FavoritePost(this);" data-toggle="tooltip" title="Add or remove the post as favorite"><i class="fa fa-star-o"></i> Like</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.PublicPost(this);" data-toggle="tooltip" title="Make this post public visible"><i class="fa fa-paper-plane-o"></i> Public</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm margin-r-5" onclick="PageContext.SwitchPostContent(this);" data-toggle="tooltip" title="Show full content of post"><i class="fa fa-newspaper-o"></i> Full</a></li>
-					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" onclick="PageContext.ShowUsers(this);" class="link-black text-sm margin-r-5"><i class="fa fa-users"></i>Users(13)</a></li>
-					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm margin-r-5"><i class="fa fa-comments-o"></i>Comments(5)</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm "><i class="fa fa-plug"></i> Join</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.FavoritePost(this);" data-toggle="tooltip" title="Add or remove the post as favorite"><i class="fa fa-star-o"></i> Like</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.PublicPost(this);" data-toggle="tooltip" title="Make this post public visible"><i class="fa fa-bullhorn"></i> Publish</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.PublicPost(this);" data-toggle="tooltip" title="Make this post public visible"><i class="fa fa-paper-plane-o"></i> Public</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm " data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.SwitchPostContent(this);" data-toggle="tooltip" title="Show full content of post"><i class="fa fa-newspaper-o"></i> Full</a></li>
+					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" onclick="PageContext.ShowUsers(this);" class="link-black text-sm "><i class="fa fa-users"></i>Users(13)</a></li>
+					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm "><i class="fa fa-comments-o"></i>Comments(5)</a></li>
 				</ul>
 				<div gpid="users_list_container" class="hidden container-fluid">
 					<div obid="users_list" style="" class="row clearfix">

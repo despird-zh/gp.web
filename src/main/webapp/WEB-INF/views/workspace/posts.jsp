@@ -43,10 +43,21 @@
 				<div class="box-header repo-header with-border">
 					<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 					<ul class="nav nav-pills m-l-xxs">
-						<li><a href="tasks.do" class="filter-nav m-l-xs">全部 <span class="badge">100</span></a></li>
-						<li class="active"><a href="messages.do" class="filter-nav m-l-xs">草稿 <span class="badge badge-primary">50</span></a></li>
-						<li><a href="notifications.do" class="filter-nav m-l-xs">电气小组 <span class="badge badge-warning">24</span></a></li>
-						<li><a href="notifications.do" class="filter-nav m-l-xs">设计小组 <span class="badge badge-warning">24</span></a></li>
+						<li>
+              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">全部 <span class="badge">20</span></a>
+            </li>
+						<li class="active">
+              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">草稿 <span class="badge badge-primary">50</span></a>
+            </li>
+						<li>
+              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">发布 <span class="badge badge-warning">24</span></a>
+            </li>
+            <li>
+              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">工作组 <span class="badge badge-warning">24</span></a>
+            </li>
+						<li>
+              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">参与 <span class="badge badge-warning">24</span></a>
+            </li>
 					</ul>
 				</div>
 				<div id="post-container" class="box-body repo-list">
