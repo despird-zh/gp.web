@@ -42,6 +42,16 @@ public class PostItem {
 
     private String priority;
 
+    private int upvoteCount;
+
+    public int getUpvoteCount() {
+        return upvoteCount;
+    }
+
+    public void setUpvoteCount(int upvoteCount) {
+        this.upvoteCount = upvoteCount;
+    }
+
     private List<UserLiteInfo> attendees;
 
     private List<Comment> comments;

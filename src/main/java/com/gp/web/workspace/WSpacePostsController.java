@@ -154,7 +154,7 @@ public class WSpacePostsController extends BaseController{
 			post.setSubject(cinfo.getSubject());
 			post.setPostTime(cinfo.getPostDate().toString());
 			post.setPriority(String.valueOf(cinfo.getPriority()));
-
+			post.setUpvoteCount(cinfo.getUpvoteCount());
 			accounts.add(cinfo.getOwner());
 
 			// find the comments and attach them to post.

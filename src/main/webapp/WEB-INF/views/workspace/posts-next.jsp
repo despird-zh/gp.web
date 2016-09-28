@@ -10,7 +10,7 @@
 					<img src="${postitem.ownerAvatar}" alt="user image">
 				</a>
 				<div class="thumbs-info" >
-					<div><span class="label label-success text-center">1235</span></div>
+					<div><span gpid="upvoteCount" class="label label-success text-center">${postitem.upvoteCount}</span></div>
 					<div class="bottom-thumb">
 						<a style="cursor:pointer;margin-right:5px;" href="javascript:void(0);" onclick="PageContext.LikePost(this);" class="link-black"><i class="fa fa-thumbs-o-up"></i></a>
 						<a style="cursor:pointer;" href="javascript:void(0);" onclick="PageContext.DislikePost(this);" class="link-black"><i class="fa fa-thumbs-o-down"></i></a>

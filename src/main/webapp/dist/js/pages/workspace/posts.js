@@ -100,6 +100,7 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
+
 				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
@@ -116,7 +117,10 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				if(response.state == 'success'){
+					$post.find('span[gpid="upvoteCount"]').text(response.data);
+				}
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
@@ -132,7 +136,10 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				if(response.state == 'success'){
+					$post.find('span[gpid="upvoteCount"]').text(response.data);
+				}
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
