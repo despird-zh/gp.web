@@ -6,7 +6,8 @@
 	<li class="list-group-item infinite-item">
 		<div class="ticket clearfix m-t-xs">
 			<div class="pull-left avatar-info p-t-xxs" data-post-id="${postitem.postId}">
-				<a>
+				<a href="javascript:void(0);" onmouseover="PageContext.UserLiteShow(this);" 
+					onmouseout="PageContext.UserLiteHide(this);" data-account="admin">
 					<img src="${postitem.ownerAvatar}" alt="user image">
 				</a>
 				<div class="thumbs-info" >
@@ -20,11 +21,12 @@
 			<!-- PostItem -->
 			<div class="post" data-post-id="${postitem.postId}">
 				<div class="post-head">
-					<a href="#" class="margin-r-5">${postitem.ownerName}</a>
+					<label class="label label-danger margin-r-5" style="vertical-align:middle;font-size:60%;">绝密</label>
 					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
 					<span class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span>${postitem.subject}</span>
 					<a href="javascript:void(0);" onclick="PageContext.RemovePost(this);" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-times"></i></a>
+					<a href="javascript:void(0);" onclick="" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-circle"></i></a>
 					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
 				</div><!-- /.user-block -->
 				<div class="post-content">
@@ -33,13 +35,13 @@
 				<textarea gpid="content-holder" data-type="content" class="hidden">${postitem.content}</textarea>
 				<ul class="list-inline">
 					<li><a href="javascript:void(0);" class="link-black text-sm "><i class="fa fa-plug"></i> Join</a></li>
-					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.FavoritePost(this);" data-toggle="tooltip" title="Add or remove the post as favorite"><i class="fa fa-star-o"></i> Like</a></li>
+					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.FavoritePost(this);" data-toggle="tooltip" title="Add or remove the post as favorite"><i class="fa fa-star-o"></i> Favorite</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.PublicPost(this);" data-toggle="tooltip" title="Make this post public visible"><i class="fa fa-bullhorn"></i> Publish</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.PublicPost(this);" data-toggle="tooltip" title="Make this post public visible"><i class="fa fa-paper-plane-o"></i> Public</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm " data-toggle="tooltip" title="Send out post and comments as pdf"><i class="fa fa-envelope-o"></i> Send</a></li>
 					<li><a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.SwitchPostContent(this);" data-toggle="tooltip" title="Show full content of post"><i class="fa fa-newspaper-o"></i> Full</a></li>
-					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" onclick="PageContext.ShowUsers(this);" class="link-black text-sm "><i class="fa fa-users"></i>Users(13)</a></li>
-					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm "><i class="fa fa-comments-o"></i>Comments(5)</a></li>
+					<li class="pull-right"><a obid="users_show_btn" href="javascript:void(0);" onclick="PageContext.ShowUsers(this);" class="link-black text-sm "><i class="fa fa-users"></i> Users(13)</a></li>
+					<li class="pull-right"><a obid="comments_show_btn"  href="javascript:void(0);" onclick="PageContext.ShowComments(this);" class="link-black text-sm "><i class="fa fa-comments-o"></i> Comments(5)</a></li>
 				</ul>
 				<div gpid="users_list_container" class="hidden container-fluid">
 					<div obid="users_list" style="" class="row clearfix">

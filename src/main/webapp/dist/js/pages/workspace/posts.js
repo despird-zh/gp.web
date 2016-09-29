@@ -211,9 +211,25 @@ var PageContext = (function ($, window, undefined){
 		$(el).tooltip('hide');
 	};
 	
+	Topics.doUserLiteShow = function(el){
+		var $avatar=$(el);
+	    $avatar.off('hover');
+	    var popurl = "../common/user-profile-lite.do?account="+$avatar.data('account');
+	    $.get(popurl,function(d) {
+	        $avatar.popover({content: d,html: true}).popover('show');
+	    });
+	};
+	Topics.doUserLiteHide = function(el){
+		var $avatar=$(el);
+		$avatar.popover('hide');
+		
+	};
+
 	Topics.initial();
 	
 	return {
+		"UserLiteShow" : $.proxy(Topics.doUserLiteShow, Topics),
+		"UserLiteHide" : $.proxy(Topics.doUserLiteHide, Topics),
 		"ShowComments" : $.proxy(Topics.doShowComments, Topics),
 		"ShowUsers" : $.proxy(Topics.doShowUsers, Topics),
 		"SaveComment" : $.proxy(Topics.doSaveComment, Topics),

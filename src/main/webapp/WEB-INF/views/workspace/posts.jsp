@@ -56,7 +56,7 @@
               <a href="JavaScript:void(0);" class="filter-nav m-l-xs">工作组 <span class="badge badge-warning">24</span></a>
             </li>
 						<li>
-              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">参与 <span class="badge badge-warning">24</span></a>
+              <a href="JavaScript:void(0);" class="filter-nav m-l-xs">参与 <span class="badge badge-info">24</span></a>
             </li>
 					</ul>
 				</div>
