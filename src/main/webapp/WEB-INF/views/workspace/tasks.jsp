@@ -38,7 +38,7 @@
           <section class="content">
 		  <div class="row">
 			<div class="col-md-9">
-			  <div class="box box-widget">
+			  <div class="box box-widget no-radius border-top">
 				<div class="box-header repo-header with-border">
 					<a gpid="filter-switch-btn" class="pull-left btn btn-default btn-header-circle" role="button" ><i class="fa fa-angle-double-down"></i> </a>
 					<ul class="nav nav-pills m-l-xxs">

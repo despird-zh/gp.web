@@ -60,7 +60,7 @@
             </div-->
         <div class="row">
             <div class="col-md-9">
-            <div class="box box-widget">
+            <div class="box box-widget no-radius border-top">
                 <div class="box-header repo-header with-border" style="">
                     <div class="folder-descr">
                         <span class="text">Design a nice theme Make the theme responsive 1Make the theme responsive 2Make the theme responsive</span>
