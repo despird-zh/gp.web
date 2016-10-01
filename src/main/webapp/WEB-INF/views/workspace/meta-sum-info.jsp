@@ -66,17 +66,23 @@
 </div>
 <hr class="m-b-xs m-t-xs">
 <div gpid="meta-info">
-	<ul class="list-inline">
+	<ul class="list-inline m-b-none">
 		<li>
-			<a role="button" href="javascript:void(0);" gpid="wspace-show-more" class="text-muted">更多 <i class="fa fa-angle-double-up"></i>
+			<a role="button" href="javascript:void(0);" gpid="wspace-follow" class="text-muted">
+				<i class="fa fa-eye"></i> 关注
+			</a>
+		</li>
+		<li>
+			<a role="button" href="javascript:void(0);" gpid="wspace-show-more" class="text-muted">
+				<i class="fa fa-angle-double-up"></i> 更多
 			</a>
 		</li>
 	</ul>
-	<div gpid="info-content">
+	<div gpid="info-content" class="m-t-xs">
 		<hr class="m-b-xs m-t-xs">
 		<div>
 			<i class="fa fa-book"></i>
-			<span class="m-l-xs">签名信息</span>
+			<span >签名信息</span>
 		</div>
 		<p gpid="wspace-signature" class="meta-info">
 			不走寻常路
@@ -84,7 +90,7 @@
 		<hr class="m-b-xs m-t-xs">
 		<div>
 			<i class="fa fa-map-marker"></i>
-			<span class="m-l-xs">隶属组织</span>
+			<span>隶属组织</span>
 		</div>
 		<div gpid="wspace-org-route">
 			
@@ -92,7 +98,7 @@
 		<hr class="m-b-xs m-t-xs">
 		<div>
 			<i class="fa fa-tags"></i>
-			<span class="m-l-xs">个人勋章</span>
+			<span>个人勋章</span>
 		</div>
 		<p gpid="wspace-badges" class="meta-info">
 		    <span class="badge badge-danger">UI Design</span>

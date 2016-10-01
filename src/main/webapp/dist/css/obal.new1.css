@@ -7,7 +7,12 @@
 .content {
   padding: 5px;
 }*/
-
+.text-nowrap{
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .timeline::before {
     background: #f4f4f4 none repeat scroll 0 0;
     left: 32px;
@@ -1234,6 +1239,12 @@ a.thumbnail {
 /* MARGINS & PADDINGS */
 .p-none{
 	padding : 0;
+}
+.p-l-none{
+    padding-left : 0 !important;
+}
+.p-r-none{
+    padding-right : 0!important;
 }
 .p-t-xxs{
 	padding-top : 4px;
