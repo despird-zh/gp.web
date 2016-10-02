@@ -910,8 +910,8 @@ display:block;
 .tags a.tag-blue:before {border-color: transparent #0073b7 transparent transparent}
 .tags a.tag-green {background: #00a65a;}
 .tags a.tag-green:before {border-color: transparent #00a65a transparent transparent}
-.tags a.tag-default {background: #d2d6de;}
-.tags a.tag-default:before {border-color: transparent #d2d6de transparent transparent}	
+.tags a.tag-default {background: #3c8dbc;}
+.tags a.tag-default:before {border-color: transparent #3c8dbc transparent transparent}	
 .tags a:hover {background:#444 !important}
 .tags a:hover:before {border-color:transparent #444 transparent transparent}
 
@@ -919,7 +919,7 @@ display:block;
 .tags a.tag-point-yellow:after {background-color:#f39c12}
 .tags a.tag-point-blue:after {background-color:#0073b7}
 .tags a.tag-point-green:after {background-color:#00a65a}
-.tags a.tag-point-default:after {background-color:#d2d6de}
+.tags a.tag-point-default:after {background-color:#3c8dbc}
 
 .tag-shadow{
 	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -1623,7 +1623,7 @@ Avartar cropper css
     right: 15px;
     top: 0px;
     margin-bottom: 0px;
-    border-bottom-width: 1px;
+    border-bottom-width: 0px;
     border-color: #eee ;
     margin-top: 7px;
 }
@@ -1631,7 +1631,7 @@ Avartar cropper css
 .page-title{
     font-size: 18px; 
     margin-top: 10px; 
-    margin-bottom: 0px; 
+    margin-bottom: 8px; 
     margin-left: 10px;
     line-height: 20px;
 }
@@ -1639,5 +1639,11 @@ Avartar cropper css
 .excerpt-img{
 	float: left;
 	margin-right : 5px;
-	width : 100px;
+    margin-top : 5px;
+	width : 70px;
+}
+.clipboard-marker .list-group-item{
+    border-bottom: 1px solid #f4f4f4;
+    margin-bottom:0;
+    border-top: 0 none;
 }

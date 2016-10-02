@@ -296,24 +296,7 @@
 						<%@include file="meta-sum-info.jsp" %>
 					</div><!-- /.box-body -->
 				</div><!-- /.box -->
-				<div class="box box-widget border-top">
-					<div class="box-header with-border">
-						<h3 class="box-title">Clipboard</h3>
-						<div class="box-tools">    
-							<small class="label label-success">5</small>				  
-							<button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
-							<button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
-							<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
-							<button class="btn btn-box-tool" type="button"><i class="fa fa-trash-o"></i></button>
-						</div>
-					</div><!-- /.box-header -->
-					<div class="box-body p-none">
-						<!-- inner menu: contains the actual data -->
-						<ul gpid="clipboard-container" class="list-group list-group-unbordered m-b-xs m-r-sm m-l-sm">
-						  
-						</ul>
-					</div><!-- /.box-body -->
-				</div><!-- /.box -->
+				<%@include file="../dialog/clipboard.jsp" %>
 			</div>
 			<div class="hidden">
 				<input id="wgroup-id" type="hidden" value="${wgroup_id}" />

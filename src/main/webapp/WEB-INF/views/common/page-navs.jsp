@@ -5,7 +5,7 @@
 	<c:if test="${param.module=='workspace'}">
 		<li>
 			<a data-toggle="tooltip" title="查看全部工作组空间" href="../square/all-grid.do" aria-expanded="true">
-				<i class="fa fa-lg fa-home"></i>
+				<i class="fa fa-lg fa-globe"></i>
 			</a>
 		</li>
 		<li><span class="v-separator"></span></li>
@@ -122,4 +122,4 @@
 		</li>
 	</c:if>
 </ul>
-<hr class="m-t-sm m-b-xs">
+<hr class="m-t-none m-b-xs">

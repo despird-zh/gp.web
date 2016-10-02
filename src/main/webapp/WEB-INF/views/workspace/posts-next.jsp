@@ -6,7 +6,7 @@
 	<li class="list-group-item infinite-item">
 		<div class="ticket clearfix m-t-xs">
 			<div class="pull-left avatar-info p-t-xxs" data-post-id="${postitem.postId}">
-				<a href="javascript:void(0);" onmouseover="PageContext.UserLiteShow(this);" onmouseout="PageContext.UserLiteHide(this);" data-account="admin">
+				<a href="javascript:void(0);" onmouseover="PageContext.UserLiteShow(this);" onmouseout="PageContext.UserLiteHide(this);" data-account="${postitem.owner}">
 					<img src="${postitem.ownerAvatar}" alt="user image">
 				</a>
 				<div class="thumbs-info" >

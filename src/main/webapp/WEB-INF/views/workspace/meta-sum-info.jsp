@@ -41,28 +41,6 @@
 		    </li>
 		</ul>
 	</div>
-	<!--div class="pull-left lite-info p-xxs">
-		<input id="meta-wspace-account" type="hidden" value="${account}" />
-		<img gpid="wspace-avatar" class="profile-user-img img-responsive" src="${path_image}/user4-128x128.jpg" alt="User profile picture">
-		<div >
-			<p class="text-muted text-center"><a gpid="wspace-username">Gary </a></p>
-			<p class="text-muted text-center">Reg.<span gpid="wspace-since">2015-6-7</span></p>
-		</div>
-	</div>							
-	<ul class="stats-info list-group list-group-unbordered pull-right" >
-		<li class="list-group-item p-xxs">
-		  <span>任务</span> <a gpid="wspace-task-sum">1,322</a>
-		</li>
-		<li class="list-group-item p-xxs">
-		  <span>共享</span> <a gpid="wspace-share-sum">543</a>
-		</li>
-		<li class="list-group-item p-xxs">
-		  <span>文件</span> <a gpid="wspace-file-sum">13,287</a>
-		</li>
-		<li class="list-group-item p-xxs">
-		  <span>讨论</span> <a gpid="wspace-post-sum">13,287</a>
-		</li>
-	</ul-->
 </div>
 <hr class="m-b-xs m-t-xs">
 <div gpid="meta-info">
@@ -74,11 +52,11 @@
 		</li>
 		<li>
 			<a role="button" href="javascript:void(0);" gpid="wspace-show-more" class="text-muted">
-				<i class="fa fa-angle-double-up"></i> 更多
+				<i class="fa fa-angle-double-down"></i> 更多
 			</a>
 		</li>
 	</ul>
-	<div gpid="info-content" class="m-t-xs">
+	<div gpid="info-content" class="m-t-xs hidden">
 		<hr class="m-b-xs m-t-xs">
 		<div>
 			<i class="fa fa-book"></i>
@@ -114,7 +92,7 @@
 	{{#.}}
 		<p class="meta-info">
 			{{#.}}
-			<a href="javascript:void(0);"> {{name}} {{#children}}<i class="fa fa-angle-right" ></i>{{/children}}</a>
+			<a href="javascript:void(0);" class=" text-muted"> {{name}} {{#children}}<i class="fa fa-angle-right" ></i>{{/children}}</a>
 			{{/.}}
 		</p>
 	{{/.}}

@@ -301,64 +301,7 @@
 	                <div class="box-body box-profile">
 						<%@include file="meta-sum-info.jsp" %>
 	                </div><!-- /.box-body -->
-	            </div><!-- /.box -->
-				<div class="box box-widget no-radius border-top">
-					<div class="box-header with-border">
-					  	<h3 class="box-title">剪贴板<small class="badge badge-success">5</small></h3>
-						<div class="box-tools">    
-											  
-		                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
-		                    <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
-							<button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
-							<button class="btn btn-box-tool" type="button"><i class="fa fa-trash-o"></i></button>
-		                </div>
-					</div><!-- /.box-header -->
-					<div class="box-body">
-                    	<!-- inner menu: contains the actual data -->
-	                    <ul class="list-group list-group-unbordered m-b-none clipboard-info">
-		                    <li class="list-group-item p-xxs"><!-- start message -->
-		                        <a href="#">
-									<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-		                            Support Team
-									</span>
-		                        </a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-		                    </li><!-- end message -->
-		                    <li class="list-group-item p-xxs">
-		                        <a href="#">
-			                        <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-			                            AdminLTE Design Team
-									</span>
-		                        </a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-		                    </li>
-		                    <li class="list-group-item p-xxs">
-		                        <a href="#">
-		                          	<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-		                            Developers
-									</span>                       
-		                        </a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-		                    </li>
-		                    <li class="list-group-item p-xxs">
-		                        <a href="#">
-		                          	<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-		                            Sales Department
-									</span>
-		                        </a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-		                    </li>
-		                    <li class="list-group-item p-xxs">
-		                        <a href="#">
-		                           <span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-		                            Reviewers
-									</span>
-		                        </a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-		                    </li>
-                    	</ul>
-					</div><!-- /.box-body -->
-				</div><!-- /.box -->
+	            <%@include file="../dialog/clipboard.jsp" %>
 			</div>
 			<div class="clearfix"></div>
 		  </div>

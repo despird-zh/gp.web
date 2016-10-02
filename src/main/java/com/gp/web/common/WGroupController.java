@@ -18,6 +18,7 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -124,6 +125,16 @@ public class WGroupController extends BaseController{
     public ModelAndView doGetWorkgroupFiles(HttpServletRequest request){
 
         ModelAndView mav = getJsonModelView();
+
+        return mav;
+    }
+
+    @RequestMapping("wgroup-profile-lite")
+    public ModelAndView doGetProfileLite(HttpServletRequest request){
+
+        ModelAndView mav = getJspModelView("dialog/wgroup-profile-lite");
+        String wgroup_id = request.getParameter("wgroup_id");
+        long gid = NumberUtils.toLong(wgroup_id);
 
         return mav;
     }

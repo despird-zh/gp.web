@@ -645,73 +645,7 @@
                     <%@include file="meta-sum-info.jsp" %>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
-            <div class="box box-widget">
-                <div class="box-header with-border">
-                <h3 class="box-title">Clipboard Information </h3>
-                <div class="box-tools">    
-
-                    <small class="label label-success">5</small>                  
-                    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" type="button"><i class="fa fa-cut"></i></button>
-                    <button class="btn btn-box-tool" type="button"><i class="fa fa-copy"></i></button>
-                    <button class="btn btn-box-tool" type="button"><i class="fa fa-trash-o"></i></button>
-                </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-					<ul obid="docs_list" class="doc-list">
-						<li>
-							<!-- inner menu: contains the actual data -->
-							<ul class="doc-items">
-							<li><!-- start message -->
-								<a href="#">
-								<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-									Support Team                            
-								</span>
-								<small><i class="fa fa-clock-o"></i> 5 mins</small>
-								</a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-							</li><!-- end message -->
-							<li>
-								<a href="#">
-								<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-									AdminLTE Design Team                           
-								</span>
-								<small><i class="fa fa-clock-o"></i> 2 hours</small>
-								</a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-									Developers                            
-								</span>
-								<small><i class="fa fa-clock-o"></i> Today</small>
-								</a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-									Sales Department                            
-								</span>
-								<small><i class="fa fa-clock-o "></i> Yesterday</small>
-								</a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-							</li>
-							<li>
-								<a href="#">
-									
-								<span class="ellipsis ellipsis-140" style="line-height:16px;"><i class="fa fa-file-o margin-r-5"></i>
-									Reviewers                            
-								</span>
-								<small><i class="fa fa-clock-o"></i> 2 days</small>
-								</a>
-								<a  obid="remove_btn" class="pull-right"><i class="fa fa-times"></i></a>
-							</li>
-							</ul>
-						</li>
-					</ul>
-                </div><!-- /.box-body -->
+            <%@include file="../dialog/clipboard.jsp" %>
             </div>
             <div class="clearfix"></div>
         </div>

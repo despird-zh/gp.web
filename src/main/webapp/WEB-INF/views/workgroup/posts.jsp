@@ -82,7 +82,7 @@
 						<%@include file="meta-sum-info.jsp" %>
 					</div><!-- /.box-body -->
 				</div><!-- /.box -->
-				
+				<%@include file="../dialog/clipboard.jsp" %>
 			 </div>
 			<div class="clearfix"></div>
 		  </div>

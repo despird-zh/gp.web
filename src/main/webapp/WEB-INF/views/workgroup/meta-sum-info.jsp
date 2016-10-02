@@ -1,34 +1,71 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../common/taglibs.jsp" %>
-
 <div gpid="meta-sum" class="clearfix">
-    <div class="pull-left lite-info">
-		<input id="meta-wgroup-id" type="hidden" value="${wgroup_id}" />
-		<img gpid="wgroup-avatar" class="profile-user-img img-responsive img-circle" src="${path_image}/user4-128x128.jpg" alt="group logo">
-		<h4 gpid="wgroup-name" class="profile-username text-center">Name</h4>
-		<div>
-			<p class="text-muted text-center" >admin by <a gpid="wgroup-manager">Gary </a></p>
-		</div>
-    </div>                          
-    <ul class="stats-info list-group list-group-unbordered pull-right" >
-        <li class="list-group-item p-xxs">
-          <span>成员</span> <a gpid="wgroup-member-sum" class="pull-right">1,322</a>
+    <input id="meta-wgroup-id" type="hidden" value="${wgroup_id}" />
+    <div class="pull-left">
+        <img alt="user image" src="${path_image}/user4-128x128.jpg" style="
+        border-radius: 4px;cursor: pointer;height: 50px;width: 50px;padding: 5;">
+    </div>     
+    <div style="margin-left:60px;">
+        <ul class="list-unstyled">
+            <li>
+                <h5 class="m-t-none m-b-xs">
+                Nicole Pearson <label style="vertical-align:middle;font-size:60%;" class="label label-warning margin-r-5">项目经理</label>
+                </h5>
+            </li>
+          <li class="text-muted" style="font-size:12px;">
+             <div style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                <strong><i class="fa fa-fw fa-home"></i></strong>康辉中国软件开发责任有限公司天涯
+            </div>
+          </li>
+          <li class="text-muted" style="font-size:12px;">
+            <div style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                <strong><i class="fa fa-fw fa-plug"></i></strong>2016-1-2 12:23
+            </div>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <hr class="m-t-xs m-b-xs">
+        <ul class="list-inline text-center m-b-none">
+            <li>
+                <h5 class="m-t-none m-b-xs"><strong> 20,7K </strong></h5>                    
+                <p class="m-b-none"><small>Documents</small></p>
+            </li>
+            <li>
+                <h5 class="m-t-none m-b-xs"><strong> 300 </strong></h5>                    
+                <p class="m-b-none"><small>Posts</small></p>
+            </li>
+            <li>
+                <h5 class="m-t-none m-b-xs"><strong> 20 </strong></h5>                    
+                <p class="m-b-none"><small>Groups</small></p>
+            </li>
+            <li>
+                <h5 class="m-t-none m-b-xs"><strong> 123,4 </strong></h5>                    
+                <p class="m-b-none"><small>Followers</small></p>
+            </li>
+        </ul>
+    </div>
+</div>
+<hr class="m-b-xs m-t-xs">
+<div gpid="meta-info">
+    <ul class="list-inline m-b-none">
+        <li>
+            <a role="button" href="javascript:void(0);" gpid="wspace-follow" class="text-muted">
+                <i class="fa fa-plug"></i> 加入
+            </a>
         </li>
-        <li class="list-group-item p-xxs">
-          <span>任务</span> <a gpid="wgroup-task-sum" class="pull-right">543</a>
+        <li>
+            <a role="button" href="javascript:void(0);" gpid="wspace-follow" class="text-muted">
+                <i class="fa fa-eye"></i> 关注
+            </a>
         </li>
-        <li class="list-group-item p-xxs">
-          <span>文件</span> <a gpid="wgroup-file-sum" class="pull-right">13,287</a>
-        </li>
-        <li class="list-group-item p-xxs">
-          <span>讨论</span> <a gpid="wgroup-post-sum" class="pull-right">13,287</a>
+        <li>
+            <a role="button" href="javascript:void(0);" gpid="wspace-show-more" class="text-muted">
+                <i class="fa fa-angle-double-down"></i> 更多
+            </a>
         </li>
     </ul>
-</div>
-<div gpid="meta-info">
-    <div>
-        <a class="text-muted" href="javascript:void(0);">More <i class="fa fa-angle-double-right"></i></a>
-    </div>
     <div>
         <hr class="m-b-xs m-t-xs">
         <div>
@@ -49,12 +86,12 @@
             <i class="fa fa-tags"></i>
             <span class="m-l-xs">标签</span>
         </div>
-        <p gpid="wgroup-tags">
-            <span class="badge badge-danger">UI Design</span>
-            <span class="label label-success">Coding</span>
-            <span class="label label-info">Javascript</span>
-            <span class="label label-warning">PHP</span>
-            <span class="label label-primary">Node.js</span>
+        <p gpid="wgroup-tags" class="tags tag-xs m-b-none">
+            <a title="" href="" class="tag-default tag-point-red">工具</a>
+            <a title="" href="" class="tag-default tag-point-yellow ">专业</a>
+            <a title="" href="" class="tag-default tag-point-green">电气</a>
+            <a title="" href="" class="tag-default tag-point-blue">评分</a>
+            <a title="" href="" class="tag-default  ">投票</a>
         </p>
     </div>
 </div>
