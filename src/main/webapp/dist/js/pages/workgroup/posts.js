@@ -210,15 +210,32 @@ var PageContext = (function ($, window, undefined){
 	        $avatar.popover({content: d,html: true}).popover('show');
 	    });
 	};
+
 	Topics.doUserLiteHide = function(el){
 		var $avatar=$(el);
 		$avatar.popover('hide');
 		
 	};
 
+	Topics.doWGroupLiteShow = function(el){
+		var $grp_name=$(el);
+	    $grp_name.off('hover');
+	    var popurl = "../common/wgroup-profile-lite.do?wgroup_id="+$grp_name.data('wgroup-id');
+	    $.get(popurl,function(d) {
+	        $grp_name.popover({content: d,html: true}).popover('show');
+	    });
+	};
+
+	Topics.doWGroupLiteHide = function(el){
+		var $grp_name=$(el);
+		$grp_name.popover('hide');
+	};
+
 	Topics.initial();
 	
 	return {
+		"WGroupLiteShow" : $.proxy(Topics.doWGroupLiteShow, Topics),
+		"WGroupLiteHide" : $.proxy(Topics.doWGroupLiteHide, Topics),
 		"UserLiteShow" : $.proxy(Topics.doUserLiteShow, Topics),
 		"UserLiteHide" : $.proxy(Topics.doUserLiteHide, Topics),
 		"ShowComments" : $.proxy(Topics.doShowComments, Topics),

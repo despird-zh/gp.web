@@ -156,6 +156,7 @@ public class WGroupPostsController extends BaseController{
 			post.setSubject(cinfo.getSubject());
 			post.setPostTime(cinfo.getPostDate().toString());
 			post.setPriority(String.valueOf(cinfo.getPriority()));
+			post.setWorkgroupId(cinfo.getWorkgroupId());
 			post.setWorkgroupName(cinfo.getWorkgroupName());
 
 			accounts.add(cinfo.getOwner());
