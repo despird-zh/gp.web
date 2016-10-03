@@ -10,7 +10,7 @@
         <ul class="list-unstyled">
             <li>
                 <h5 class="m-t-none m-b-xs">
-                Nicole Pearson <label style="vertical-align:middle;font-size:60%;" class="label label-warning margin-r-5">项目经理</label>
+                Nicole Pearson <small class="label label-warning ">项目经理</small>
                 </h5>
             </li>
           <li class="text-muted" style="font-size:12px;">

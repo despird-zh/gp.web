@@ -69,6 +69,11 @@
 			</a>
 		</li>
 		<li>
+			<a <c:if test="${param.page=='flows'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看工作组流程" href="../workgroup/flows.do?wgroup_id=${wgroup_id}">
+				<i class="fa fa-lg fa-retweet"></i>
+			</a>
+		</li>
+		<li>
 			<a <c:if test="${param.page=='posts'}"> class="bg-aqua-active"</c:if> data-toggle="tooltip" title="查看工作组话题" href="../workgroup/posts.do?wgroup_id=${wgroup_id}">
 				<i class="fa fa-lg fa-comments"></i>
 			</a>

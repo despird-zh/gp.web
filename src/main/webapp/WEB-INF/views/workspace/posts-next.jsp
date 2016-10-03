@@ -20,8 +20,8 @@
 			<!-- PostItem -->
 			<div class="post" data-post-id="${postitem.postId}">
 				<div class="post-head">
-					<label class="label label-danger margin-r-5" style="vertical-align:middle;font-size:60%;">绝密</label>
-					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
+					<small class="label label-danger margin-r-5">绝密</small>
+					<small class="label label-warning margin-r-5">企业发布</small>
 					<span class="label label-warning text-center margin-r-5">${postitem.workgroupName}</span>
 					<span>${postitem.subject}</span>
 					<a href="javascript:void(0);" onclick="PageContext.RemovePost(this);" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-times"></i></a>

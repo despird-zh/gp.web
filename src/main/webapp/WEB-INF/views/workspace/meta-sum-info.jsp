@@ -7,7 +7,7 @@
 	</div>
 	<div style="margin-left:60px;">
 		<ul class="list-unstyled">
-		  <li><h5 class="m-t-none m-b-xs">Nicole Pearson <label style="vertical-align:middle;font-size:60%;" class="label label-warning margin-r-5">项目经理</label></h5></li>
+		  <li><h5 class="m-t-none m-b-xs">Nicole Pearson <small class="label label-warning">项目经理</small></h5></li>
 		  <li class="text-muted" style="font-size:12px;">
 		  	 <div style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
 		  	 	<strong><i class="fa fa-fw fa-home"></i></strong>康辉中国软件开发责任有限公司天涯

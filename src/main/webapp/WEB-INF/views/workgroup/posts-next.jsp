@@ -21,8 +21,8 @@
 			<div class="post" data-post-id="${postitem.postId}">
 				<div class="post-head">
 					<a role="button" href="javascript:void(0);" onmouseover="PageContext.WGroupLiteShow(this);" onmouseout="PageContext.WGroupLiteHide(this);" data-wgroup-id="${postitem.workgroupId}" class="text-muted margin-r-5">${postitem.workgroupName}</a>
-					<label class="label label-danger margin-r-5" style="vertical-align:middle;font-size:60%;">绝密</label>
-					<label class="label label-warning margin-r-5" style="vertical-align:middle;font-size:60%;">企业发布</label>
+					<small class="label label-danger margin-r-5">绝密</small>
+					<small class="label label-warning margin-r-5">企业发布</small>
 					<span >${postitem.subject}</span>
 					<a href="javascript:void(0);" onclick="PageContext.RemovePost(this);" class="pull-right btn-box-tool" style="padding-top: 0px;"><i class="fa fa-times"></i></a>
 					<span class="text-muted pull-right margin-r-5"><i class="fa fa-clock-o"></i> 8:03 PM Today</span>
