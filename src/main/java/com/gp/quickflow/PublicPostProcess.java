@@ -3,6 +3,7 @@ package com.gp.quickflow;
 import java.util.Map;
 
 import com.gp.common.IdKey;
+import com.gp.exception.BaseException;
 import com.gp.svc.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,14 @@ public class PublicPostProcess extends BaseFlowProcess {
 	}
 
 	@Override
-	public void fail(InfoId<Long> procId, InfoId<?> resourceId, Map<String, Object> procData) {
-		LOGGER.debug("fail");
+	public void processComplete(InfoId<Long> procId, InfoId<?> resourceId, String customStep, Map<String, Object> procData) throws BaseException {
+		LOGGER.debug("The process flow completes");
 	}
 
 	@Override
-	public void pass(InfoId<Long> procId, InfoId<?> resourceId, Map<String, Object> procData) {
-		LOGGER.debug("pass");
+	public String customNextStep(InfoId<Long> stepId, InfoId<?> resourceId, Map<String, Object> procData) throws BaseException {
+		LOGGER.debug("enter the custom next step calculation");
+		return "PASS";
 	}
 
 	@Override
@@ -39,6 +41,5 @@ public class PublicPostProcess extends BaseFlowProcess {
 		
 		return IdKey.POST.getTable().equalsIgnoreCase(resourceType);
 	}
-
 
 }

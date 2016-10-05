@@ -184,7 +184,7 @@ public class CabEntryExtController extends BaseController{
 		}catch(CoreException ce){
 			//
 		}
-		propmap = CommonUtils.toMap(propstr);
+		propmap = CommonUtils.toMap(propstr, Object.class);
 		mav.addObject("propmap", propmap);
 		
 		return mav;
