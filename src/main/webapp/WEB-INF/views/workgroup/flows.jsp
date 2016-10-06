@@ -97,7 +97,95 @@
 											<a href="javascript:void(0);" class="link-black text-sm " onclick="PageContext.FavoritePost(this);" data-toggle="tooltip" title="Add or remove the post as favorite"><i class="fa fa-road"></i> History</a>
 										</li>
 									</ul>
-								</div><!-- /.comment-text -->
+									<div gpid="flow-tree-container" class="flow-tree m-b-sm clearfix">
+									    <ul>
+											<li>
+												<a href="#">Parent</a>
+												<ul>
+													<li>
+														<a href="#">Child</a>
+														<ul>
+															<li>
+																<a href="#">Child</a>
+															</li>
+														</ul>
+													</li>
+													<li>
+														<a href="#">Child</a>
+														<ul>
+															<li><a href="#">Child</a></li>
+															<li>
+																<a href="#">Child</a>
+																<ul>
+																	<li>
+																		<a href="#">Child</a>
+																	</li>
+																	<li>
+																		<a href="#">Child</a>
+																	</li>
+																	<li>
+																		<a href="#">Child</a>
+																	</li>
+																</ul>
+															</li>
+															<li><a href="#">Child</a></li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</div> <!--/.flow-tree -->
+									<div gpid="hist-container" class="m-b-sm clearfix">
+										<ul class="timeline">
+											<li class="time-label infinite-actlog-item">
+											  <span class="bg-gray label label-sm">
+												2016-23-23
+											  </span>
+											  <div class="timeline-item">
+												  <span class="time"><i class="fa fa-clock-o"></i> 23:55:16</span>
+												  <div class="timeline-header"><a href="#">dev3</a> 话题发布流程启动</div>
+											  </div>
+											</li>
+											<!-- timeline item -->
+											<li class="infinite-actlog-item">
+											  <i class="fa fa-envelope bg-blue"></i>
+											  <div class="timeline-item">
+												<span class="time"><i class="fa fa-clock-o"></i> 23:55:16</span>
+												<div class="timeline-header"> 
+													<small class="label label-default">系统</small> 初步审批启动
+												</div>
+												<div class="timeline-body">
+													<blockquote style="padding:0px 5px; margin-top:5px;margin-bottom:5px;font-size:13px;">
+														<p style="margin:0;">当前的问题尚需进一步说明讨论posuere erat a ante.</p>
+														<small style="font-size:90%;"> 
+															<span class="label label-success" >PASS</span> 王守祥 来自 <cite title="Source Title">安康科技开发分公司</cite> @ 3days
+														</small>
+													</blockquote>
+													<blockquote style="padding:0px 5px; margin-top:5px;margin-bottom:5px;font-size:13px;">
+														<p style="margin:0;">this request need further discussion and invite financial dept to join</p>
+														<small><span class="label label-default" >FAIL</span> 王守祥 来自 <cite title="Source Title">安康科技开发分公司</cite> @ 3days
+														</small>
+													</blockquote>
+												</div>
+											  </div>
+											</li>
+											<!-- END timeline item -->
+											<!-- timeline item -->
+											<li class="infinite-actlog-item">
+											  <i class="fa fa-envelope bg-blue"></i>
+											  <div class="timeline-item">
+												<span class="time"><i class="fa fa-clock-o"></i> 23:09:38</span>
+												<div class="timeline-header"><a href="#">Administrator</a> 评论了你的帖子 Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio</div>
+												<div class="timeline-body">
+												  Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio
+												</div>
+											  </div>
+											</li>
+											<!-- END timeline item -->
+											
+										</ul>
+									</div>
+								</div>
 								
 							</div>
 						</li>
@@ -366,6 +454,6 @@
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js"></script>
 	<!-- GPress Page scripts -->
-	<script src="${path_script}/pages/workgroup/tasks.js"></script>
+	<script src="${path_script}/pages/workgroup/flows.js"></script>
   </body>
 </html>

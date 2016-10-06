@@ -274,22 +274,16 @@
 			<div class="col-md-3">
 				<div class="box box-widget no-radius border-top">
 					<div class="box-header with-border">
-						<div class="view-toolbar clearfix" style="margin-bottom: 0px;"> <!-- toolbar -->
-							<span class="pull-left" title="Create New Doc" data-toggle="tooltip" data-placement="top">
-								<button gpid="new-file-btn" class="btn btn-warning btn-xs " >
-								<i class="fa fa-fw fa-file-o"></i>
-								</button>
-							</span>
-							<span class="pull-left" title="Create new folder" data-toggle="tooltip" data-placement="top">
-								<button gpid="new-folder-btn" class="btn btn-default btn-xs" >
-								<i class="fa fa-fw fa-folder-o"></i>
-								</button>
-							</span>
-							<span class="pull-left" title="Show clipboard content" data-toggle="tooltip" data-placement="top">
-								<button class="btn btn-default btn-xs" >
-								<i class="fa fa-fw fa-clipboard"></i>
-								</button>
-							</span>
+						<div class="view-toolbar"> <!-- toolbar -->
+							<button class="btn btn-warning btn-xs" gpid="new-post-btn" data-toggle="tooltip" data-placement="top" title="Create New Post">
+								<i class="fa fa-file-o"></i>
+							</button>
+							<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create New Folder">
+								<i class="fa fa-folder-o"></i>
+							</button>
+							<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Create About">
+								<i class="fa fa-info-circle"></i>
+							</button>
 						</div><!-- toolbar -->
 					</div>
 					<div class="box-body box-profile">

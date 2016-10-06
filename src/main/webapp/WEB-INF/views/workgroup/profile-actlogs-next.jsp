@@ -7,7 +7,7 @@
 	<c:if test="${actlog.timeLabel != ''}">
 	<!-- timeline time label -->
 	<li class="time-label infinite-actlog-item">
-	  <span class="bg-red label label-sm">
+	  <span class="bg-gray label label-sm">
 		${actlog.timeLabel}
 	  </span>
 	</li>

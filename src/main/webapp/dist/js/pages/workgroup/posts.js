@@ -114,7 +114,9 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				$(el).tooltip('hide');
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
+
 			}
 		});
 	};
@@ -130,7 +132,8 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				$(el).tooltip('hide');
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
@@ -146,7 +149,8 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				$(el).tooltip('hide');
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
@@ -162,7 +166,8 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				$(el).tooltip('hide');
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
@@ -178,7 +183,8 @@ var PageContext = (function ($, window, undefined){
 			},
 			success: function(response)
 			{
-				 GPContext.AppendResult(response, (response.state == "success") ? false : true);
+				$(el).tooltip('hide');
+				GPContext.AppendResult(response, (response.state == "success") ? false : true);
 			}
 		});
 	};
