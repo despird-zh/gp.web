@@ -100,7 +100,7 @@
 									<div gpid="flow-tree-container" class="flow-tree m-b-sm clearfix">
 									    <ul>
 											<li>
-												<a href="#">Parent</a>
+												<a href="#">流程开始</a>
 												<ul>
 													<li>
 														<a href="#">Child</a>

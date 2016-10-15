@@ -20,6 +20,7 @@
 }
 .timeline > li {
     margin-bottom: 10px;
+    min-height: 20px;
 }
 .timeline > li > .timeline-item{
     margin-right:0;
