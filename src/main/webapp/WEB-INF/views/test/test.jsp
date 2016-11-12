@@ -12,6 +12,8 @@
 		<!-- Tell the browser to be responsive to screen width -->
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
 		<%@include file="../common/include.jsp" %>
+		<script src="${path_plugins}/jQueryUI/jquery-ui.min.js" type="text/javascript"></script>
+		<script src="${path_plugins}/jsplumb/jsPlumb-2.2.3-min.js" type="text/javascript"></script>
 		<!-- Morris charts -->
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
