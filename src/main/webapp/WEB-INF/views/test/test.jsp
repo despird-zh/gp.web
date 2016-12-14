@@ -17,18 +17,42 @@
 		<!-- Morris charts -->
 		<link rel="stylesheet" href="${path_plugins}/morris/morris.css" />
 		<link rel="stylesheet" href="${path_plugins}/bootstrap-star-rating/css/star-rating.css" />
-
+		<style type="text/css">
+			  .item {
+			    position: absolute;
+		        border: 1px solid black;
+		        background-color: #ddddff;
+		        border-radius: 5px;
+		      }
+		      #container {
+		        border: 1px solid gray;
+		        width: 500px;
+		        height: 500px;
+		      }
+			  
+			.title {
+			  padding: 10px;
+			  cursor: move;
+			}
+				
+			.connect {
+			  width: 100%;
+			  height: 20px;
+			  background-color: white;
+			  cursor: pointer;
+			}
+		</style>
 	</head>
 	<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 	<body class="hold-transition skin-blue fixed layout-top-nav">
 	<div class="wrapper">
-		<header class="main-header">
-			<%@include file="../common/header.jsp" %>
-		</header>
+		<!--header class="main-header">
+			<% //@include file="../common/header.jsp" %>
+		</header-->
 		<!-- Full Width Column -->
 		<div class="content-wrapper">
 			<div class="container" style="min-height: 400px;">
-				<div class="row">
+				<!--div class="row">
 					<div class="col-sm-2">
 						<a gpid="audit-test" class="btn btn-default"> Audit Test</a>
 					</div>
@@ -95,14 +119,45 @@
 						<a class="tag-default  " href="" title="">投票</a>
 						<a class="tag-red  " href="" title="">更新</a>
 					</p>
+				</div-->
+		<style type="text/css">
+			  .flow-node {
+			    position: absolute;
+		        border: 1px solid black;
+		        background-color: #777;
+		        border-radius: 5px;
+		      }
+	
+			.node-dragger {
+			  padding: 10px;
+			  cursor: move;
+			  float :left;
+			  width:50px;
+			}
+				
+			.node-caption {
+			  width: 60px;
+			  height: 20px;
+			  margin-left:50px;
+			  background-color: white;
+			  cursor: pointer;
+			}
+		</style>
+				<div class="row">
+					<div class="col-md-12" id="container">
+						<div class="flow-node">
+							<div class="node-dragger"><i class="fa fa-edit"></i></div>
+							<div class="node-caption">王小二过年好</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- /.container -->
 		</div>
 		<!-- /.content-wrapper -->
-		<footer class="main-footer">
+		<!--footer class="main-footer">
 			<%@include file="../common/footer.jsp" %>
-		</footer>
+		</footer-->
 	</div>
 	<!-- ./wrapper -->
 
@@ -114,6 +169,50 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> 
     <!-- AdminLTE App -->
     <script src="${path_script}/app.ctx.js"></script>
+
+	  <script type="text/javascript">
+		jsPlumb.ready(function() {
+		  jsPlumb.setContainer($('#container'));
+		
+		  var i = 0;
+		  $('#container').dblclick(function(e) {
+			var newState = $('<div>').attr('id', 'state' + i).addClass('item');
+			
+			var title = $('<div>').addClass('title').text('State ' + i);
+			var connect = $('<div>').addClass('connect');
+			
+			newState.css({
+			  'top': e.pageY,
+			  'left': e.pageX
+			});
+			
+			newState.append(title);
+			newState.append(connect);
+			
+			$('#container').append(newState);
+			
+			jsPlumb.makeTarget(newState, {
+			  anchor: 'Continuous'
+			});
+			
+			jsPlumb.makeSource(connect, {
+			  parent: newState,
+			  anchor: 'Continuous'
+			});		
+			
+			jsPlumb.draggable(newState, {
+			  containment: 'parent'
+			});
+			newState.dblclick(function(e) {
+			  jsPlumb.detachAllConnections($(this));
+			  $(this).remove();
+			  e.stopPropagation();
+			});		
+			
+			i++;    
+		  });  
+		});  
+	  </script>
     <script type="text/javascript">
         $(document).ready(function() {
 			
