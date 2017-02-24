@@ -1,7 +1,7 @@
 package com.gp.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.core.LoggerContext;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -36,15 +36,15 @@ public class GPressAppInitializer implements WebApplicationInitializer {
 
         System.out.println("Initializing Application for " + servletContext.getServerInfo());
          
-        String prefix =  servletContext.getRealPath("/");     
-        String filepath = "WEB-INF"
-        		+ System.getProperty("file.separator")
-        		+ "classes"+System.getProperty("file.separator")
-        		+ "log4j2.xml";
-        
-        final LoggerContext loggerCtx = (LoggerContext) LogManager.getContext(false);
-        File file = new File(prefix + filepath);
-        loggerCtx.setConfigLocation(file.toURI());
+//        String prefix =  servletContext.getRealPath("/");     
+//        String filepath = "WEB-INF"
+//        		+ System.getProperty("file.separator")
+//        		+ "classes"+System.getProperty("file.separator")
+//        		+ "log4j2.xml";
+//        
+//        final LoggerContext loggerCtx = (LoggerContext) LogManager.getContext(false);
+//        File file = new File(prefix + filepath);
+//        loggerCtx.setConfigLocation(file.toURI());
         
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(RootConfigurer.class);
