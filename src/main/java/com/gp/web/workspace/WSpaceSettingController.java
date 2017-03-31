@@ -108,7 +108,7 @@ public class WSpaceSettingController  extends BaseController{
 			ui.setImagePath(imagePath);
 			
 			ui.setLanguage(uinfo.getLanguage());
-			ui.setTimezone(uinfo.getTimeZone());
+			ui.setTimezone(uinfo.getTimezone());
 			ui.setSignature(uinfo.getSignature());
 			result.setData(ui);
 			

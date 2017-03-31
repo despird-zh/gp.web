@@ -61,7 +61,7 @@ public class AccountAddController extends BaseController{
 		uinfo.setPassword(account.getPassword());
 		uinfo.setPhone(account.getPhone());
 		uinfo.setMobile(account.getMobile());
-		uinfo.setTimeZone(account.getTimezone());
+		uinfo.setTimezone(account.getTimezone());
 		uinfo.setType(account.getType());
 		uinfo.setStorageId(account.getStorageId());
 		uinfo.setState(GroupUsers.UserState.ACTIVE.name());

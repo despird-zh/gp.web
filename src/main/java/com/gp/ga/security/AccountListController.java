@@ -171,7 +171,7 @@ public class AccountListController extends BaseController{
 		uinfo.setPassword(account.getPassword());
 		uinfo.setPhone(account.getPhone());
 		uinfo.setMobile(account.getMobile());
-		uinfo.setTimeZone(account.getTimezone());
+		uinfo.setTimezone(account.getTimezone());
 		uinfo.setType(account.getType());
 		uinfo.setStorageId(account.getStorageId());
 		uinfo.setState(account.getState());
@@ -237,7 +237,7 @@ public class AccountListController extends BaseController{
 			ui.setState(info.getState());
 			ui.setStorageId(info.getStorageId());
 			ui.setLanguage(info.getLanguage());
-			ui.setTimezone(info.getTimeZone());
+			ui.setTimezone(info.getTimezone());
 			ui.setStorageName(info.getStorageName());
 			
 			List<CabinetInfo> cabs = CabinetFacade.findPersonalCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getAccount());

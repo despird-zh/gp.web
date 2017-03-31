@@ -36,7 +36,7 @@ public class AccountExtController extends BaseController{
 		DEFAULT.setPassword("_blank");
 		DEFAULT.setPhone("99998888");
 		DEFAULT.setLanguage("zh_CN");
-		DEFAULT.setTimeZone("GMT+08:00");
+		DEFAULT.setTimezone("GMT+08:00");
 		DEFAULT.setType(GroupUsers.UserType.EXTERNAL.name());
 		DEFAULT.setStorageId(-999);
 		DEFAULT.setState(GroupUsers.UserState.ACTIVE.name());
@@ -100,7 +100,7 @@ public class AccountExtController extends BaseController{
 		uinfo.setPassword(DEFAULT.getPassword());
 		uinfo.setPhone(DEFAULT.getPhone());
 		uinfo.setMobile(account.getMobile());
-		uinfo.setTimeZone(DEFAULT.getTimeZone());
+		uinfo.setTimezone(DEFAULT.getTimezone());
 		uinfo.setType(DEFAULT.getType());
 		uinfo.setStorageId(DEFAULT.getStorageId());
 		uinfo.setState(DEFAULT.getState());
