@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
 import com.gp.core.ImageFacade;
@@ -65,7 +65,7 @@ public class WGroupMetaController extends BaseController{
 		ActionResult result = new ActionResult();
 		String widstr = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 	
 		WGroupMetaSummary wsum = new WGroupMetaSummary();
@@ -78,7 +78,7 @@ public class WGroupMetaController extends BaseController{
 				mav.addAllObjects(result.asMap());
 				return mav;
 			}
-			InfoId<Long> wid = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(widstr));
+			InfoId<Long> wid = IdKey.GP_WORKGROUPS.getInfoId(NumberUtils.toLong(widstr));
 			WorkgroupExtInfo cmbinfo = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wid);
 			wsum.setWorkgroupId(cmbinfo.getInfoId().getId());
 			wsum.setWorkgroupName(cmbinfo.getWorkgroupName());
@@ -89,7 +89,7 @@ public class WGroupMetaController extends BaseController{
 			wsum.setDescription(cmbinfo.getDescription());
 			// find image path
 			Long avatarId = cmbinfo.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.GP_IMAGES.getInfoId(avatarId));
 			if(null != avatar){
 				wsum.setImagePath("../" + ImagePath + "/" + avatar.getLink());
 			}
@@ -138,7 +138,7 @@ public class WGroupMetaController extends BaseController{
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -150,7 +150,7 @@ public class WGroupMetaController extends BaseController{
 			mav.addAllObjects(result.asMap());
 			return mav;
 		}
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
+		InfoId<Long> wgroupId = IdKey.GP_WORKGROUPS.getInfoId(NumberUtils.toLong(wgid));
 		Workgroup wgroup = new Workgroup();
 		
 		try{
@@ -176,25 +176,25 @@ public class WGroupMetaController extends BaseController{
 		
 			// storage and organization
 			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.GP_STORAGES.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
 			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.GP_ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
 			Long avatarId = info.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.GP_IMAGES.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + ImagePath + "/" + avatar.getLink());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPublishCabinet();
-			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
+			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.GP_CABINETS.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
 			Long pricabId = info.getNetdiskCabinet();
-			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
+			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.GP_CABINETS.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
 			List<Tag> tags = new ArrayList<Tag>();

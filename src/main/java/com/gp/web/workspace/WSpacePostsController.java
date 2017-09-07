@@ -4,7 +4,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Posts;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.PostFacade;
 import com.gp.core.SecurityFacade;
@@ -50,7 +50,7 @@ public class WSpacePostsController extends BaseController{
 	@RequestMapping("posts")
 	public ModelAndView doInitial(){
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 
 		ModelAndView mav = getJspModelView("workspace/posts");
 		mav.addObject("user_id", principal.getUserId().getId());
@@ -60,7 +60,7 @@ public class WSpacePostsController extends BaseController{
 	@RequestMapping("post-save")
 	public ModelAndView doPostSave(HttpServletRequest request){
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -116,7 +116,7 @@ public class WSpacePostsController extends BaseController{
 
 		PageQuery pquery = new PageQuery(4,1);
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		String state = super.readRequestParam("state");
@@ -222,7 +222,7 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView savePostComment(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
@@ -260,14 +260,14 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView savePostPublic(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
 		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			InfoId<Long> pid = IdKey.GP_POSTS.getInfoId(postid);
 			PostFacade.sendPostPublic(accesspoint, principal,"", pid);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.public.post"));
@@ -286,14 +286,14 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView removePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
 		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			InfoId<Long> pid = IdKey.GP_POSTS.getInfoId(postid);
 			PostFacade.removePost(accesspoint, principal, pid);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.delete.post"));
@@ -312,14 +312,14 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView likePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
 		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			InfoId<Long> pid = IdKey.GP_POSTS.getInfoId(postid);
 			int likeCount = PostFacade.likePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.like.post"));
@@ -338,14 +338,14 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView dislikePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
 		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			InfoId<Long> pid = IdKey.GP_POSTS.getInfoId(postid);
 			int likeCount = PostFacade.dislikePost(accesspoint, principal, pid, principal.getAccount());
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.dislike.post"));
@@ -364,14 +364,14 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView favoritePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
 		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			InfoId<Long> pid = IdKey.GP_POSTS.getInfoId(postid);
 			PostFacade.favoritePost(accesspoint, principal, pid);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.favorite.post"));
@@ -390,14 +390,14 @@ public class WSpacePostsController extends BaseController{
 	public ModelAndView unfavoritePost(HttpServletRequest request){
 		ModelAndView mav = super.getJsonModelView();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		long postid = NumberUtils.toLong(request.getParameter("post-id"));
 		
 		try{
-			InfoId<Long> pid = IdKey.POST.getInfoId(postid);
+			InfoId<Long> pid = IdKey.GP_POSTS.getInfoId(postid);
 			PostFacade.removeFavoritePost(accesspoint, principal, pid);
 			result.setState(ActionResult.SUCCESS);
 			result.setMessage(getMessage("mesg.unfavorite.post"));

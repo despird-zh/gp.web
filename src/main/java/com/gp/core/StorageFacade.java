@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -57,7 +57,7 @@ public class StorageFacade {
 	 * This is used for dropdown list paging request 
 	 **/
     public static PageWrapper<StorageInfo> findStorages(AccessPoint accesspoint,
-    		Principal principal, String storagename, PageQuery pagequery)throws CoreException{
+    		GPrincipal principal, String storagename, PageQuery pagequery)throws CoreException{
     	
     	PageWrapper<StorageInfo> result = null;
     	
@@ -84,7 +84,7 @@ public class StorageFacade {
      * for screen search storage list
      **/
     public static List<StorageInfo> findStorages(AccessPoint accesspoint,
-    		Principal principal, String storagename, String[] types, String[] states)throws CoreException{
+    		GPrincipal principal, String storagename, String[] types, String[] states)throws CoreException{
     	
     	List<StorageInfo> result = null;
     	
@@ -116,7 +116,7 @@ public class StorageFacade {
      * @return GeneralResult<InfoId<Integer>> return the storage id
      **/
     public static InfoId<Integer> newStorage(AccessPoint accesspoint,
-    		Principal principal, StorageInfo storage)throws CoreException{
+    		GPrincipal principal, StorageInfo storage)throws CoreException{
 		
     	InfoId<Integer> result = null;
 		// check the validation of user information
@@ -131,7 +131,7 @@ public class StorageFacade {
 
 			svcctx.addOperationPredicates(storage);
 			if(!InfoId.isValid(storage.getInfoId())){
-				result = idService.generateId(IdKey.STORAGE, Integer.class);
+				result = idService.generateId(IdKey.GP_STORAGES, Integer.class);
 				storage.setInfoId(result);				
 				svcctx.setOperationObject(result);
 			}else{
@@ -156,7 +156,7 @@ public class StorageFacade {
      * Find the storage information 
      **/
     public static StorageInfo findStorage(AccessPoint accesspoint,
-    		Principal principal, InfoId<Integer> storageid)throws CoreException{
+    		GPrincipal principal, InfoId<Integer> storageid)throws CoreException{
     	
     	StorageInfo gresult = null;
     	
@@ -184,7 +184,7 @@ public class StorageFacade {
     }
     
     public static Boolean saveStorage(AccessPoint accesspoint,
-    		Principal principal, StorageInfo storage)throws CoreException{
+    		GPrincipal principal, StorageInfo storage)throws CoreException{
     	
     	Boolean gresult = false;
     	
@@ -212,7 +212,7 @@ public class StorageFacade {
     }
     
     public static Boolean removeStorage(AccessPoint accesspoint,
-    		Principal principal, InfoId<Integer> storageid)throws CoreException{
+    		GPrincipal principal, InfoId<Integer> storageid)throws CoreException{
     	
     	Boolean gresult = false;
     	
@@ -247,7 +247,7 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static Boolean fetchBinaryChunk(AccessPoint accesspoint, Principal principal,
+    public static Boolean fetchBinaryChunk(AccessPoint accesspoint, GPrincipal principal,
     		InfoId<Long> binaryId, ContentRange contentRange, OutputStream outputStream) throws CoreException{
 		
     	boolean gresult = false;    	
@@ -275,7 +275,7 @@ public class StorageFacade {
      * @param outputStream the output stream
      * 
      **/
-    public static Boolean fetchBinary(AccessPoint accesspoint, Principal principal,
+    public static Boolean fetchBinary(AccessPoint accesspoint, GPrincipal principal,
     		InfoId<Long> binaryId, OutputStream outputStream)throws CoreException{
 		
     	Boolean gresult = false;    	
@@ -304,7 +304,7 @@ public class StorageFacade {
      * @param inputStream the input stream
      * 
      **/
-    public static Boolean storeBinaryChunk(AccessPoint accesspoint, Principal principal, 
+    public static Boolean storeBinaryChunk(AccessPoint accesspoint, GPrincipal principal, 
     		InfoId<Long> binaryId, ContentRange contentRange, InputStream inputStream)throws CoreException{
     	
     	Boolean gresult = false;    	
@@ -332,7 +332,7 @@ public class StorageFacade {
      * @param inputStream the input stream
      * 
      **/
-    public static Boolean storeBinary(AccessPoint accesspoint, Principal principal, 
+    public static Boolean storeBinary(AccessPoint accesspoint, GPrincipal principal, 
     		InfoId<Long> binaryId, InputStream inputStream)throws CoreException{
     	
     	boolean gresult = false;    	
@@ -353,7 +353,7 @@ public class StorageFacade {
 	}
     
 
-    public static InfoId<Long> newBinary(AccessPoint accesspoint, Principal principal, 
+    public static InfoId<Long> newBinary(AccessPoint accesspoint, GPrincipal principal, 
     		BinaryInfo binfo)throws CoreException{
     	
     	InfoId<Long> result = null;
@@ -371,7 +371,7 @@ public class StorageFacade {
 			}
 			
 			if(!InfoId.isValid(binfo.getInfoId())){
-				result = idService.generateId(IdKey.BINARY, Long.class);
+				result = idService.generateId(IdKey.GP_BINARIES, Long.class);
 				binfo.setInfoId(result);				
 				svcctx.setOperationObject(result);
 			}else{

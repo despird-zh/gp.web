@@ -2,7 +2,7 @@ package com.gp.web.common;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.dao.info.GroupMemberInfo;
 import com.gp.dao.info.WorkgroupInfo;
@@ -44,13 +44,13 @@ public class WGroupController extends BaseController{
         String account = super.readRequestParam("user_name");
         ActionResult ars = new ActionResult();
         List<Account> list = new ArrayList<Account>();
-        Principal principal = super.getPrincipal();
+        GPrincipal principal = super.getPrincipal();
         AccessPoint accesspoint = super.getAccessPoint(request);
 
         InfoId<Long> wkey = null;
         if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 
-            wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+            wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
         }
 
         ModelAndView mav = super.getJsonModelView();
@@ -93,7 +93,7 @@ public class WGroupController extends BaseController{
         PageQuery pq = new PageQuery(8,1);
         super.readRequestData(request, pq);// read pageNumber
         ModelAndView mav = super.getJsonModelView();
-        Principal principal = super.getPrincipal();
+        GPrincipal principal = super.getPrincipal();
         AccessPoint accesspoint = super.getAccessPoint(request);
 
         boolean hasMore = false;

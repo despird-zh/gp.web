@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.CabinetFacade;
 import com.gp.exception.CoreException;
 import com.gp.dao.info.CabFileInfo;
@@ -52,8 +52,8 @@ public class DownloadHelper {
 		String requestedFile = request.getPathInfo();
 		String sourceId = requestedFile.substring(1,requestedFile.indexOf('.'));
 		String fid = requestedFile.substring(requestedFile.indexOf('.') + 1, requestedFile.lastIndexOf('.'));
-		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(Long.valueOf(fid));
-		Principal principal = BaseController.getPrincipal();
+		InfoId<Long> fileid = IdKey.GP_CAB_FILES.getInfoId(Long.valueOf(fid));
+		GPrincipal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
 		CabFileInfo cabfile = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);

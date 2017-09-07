@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.CabinetFacade;
 import com.gp.exception.CoreException;
 import com.gp.dao.info.CabFolderInfo;
@@ -43,7 +43,7 @@ public class CabFolderController extends BaseController{
 		
 		ActionResult aresult = new ActionResult();
 		ModelAndView jmav = super.getJsonModelView();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{

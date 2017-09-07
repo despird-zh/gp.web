@@ -15,7 +15,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.core.MeasureFacade;
@@ -50,7 +50,7 @@ public class WSpaceMetaController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{
@@ -75,7 +75,7 @@ public class WSpaceMetaController extends BaseController{
 			meta.setSinceDate(DATE_FORMAT.format(cmbinfo.getCreateDate()));
 			
 			meta.setSignature(cmbinfo.getSignature());
-			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(cmbinfo.getAvatarId()));
+			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.GP_IMAGES.getInfoId(cmbinfo.getAvatarId()));
 			String imagePath = "../" + ImagePath + "/" + imginfo.getLink();
 			
 			meta.setImagePath(imagePath);

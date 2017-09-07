@@ -20,7 +20,7 @@ import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Sources;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.SourceFacade;
 import com.gp.core.WorkgroupFacade;
@@ -51,9 +51,9 @@ public class WGroupCabinetController extends BaseController{
 		
 		ModelAndView mav = getJspModelView("workgroup/publish");
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
+		InfoId<Long> wkey = IdKey.GP_WORKGROUPS.getInfoId(NumberUtils.toLong(wgid));
 		WorkgroupInfo gresult = null;
 		try{
 			gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
@@ -73,10 +73,10 @@ public class WGroupCabinetController extends BaseController{
 		ModelAndView mav = getJspModelView("workgroup/netdisk");
 		String wgid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
-		InfoId<Long> wkey = IdKey.WORKGROUP.getInfoId(NumberUtils.toLong(wgid));
+		InfoId<Long> wkey = IdKey.GP_WORKGROUPS.getInfoId(NumberUtils.toLong(wgid));
 		WorkgroupInfo gresult = WorkgroupFacade.findWorkgroup(accesspoint, principal, wkey);
 		
 		mav.addObject("wgroup_id",  wgid);
@@ -95,10 +95,10 @@ public class WGroupCabinetController extends BaseController{
 		String folderId = super.readRequestParam("folder_id");
 		super.readRequestData(pquery);
 		
-		InfoId<Long> cabid = IdKey.CABINET.getInfoId(NumberUtils.toLong(cabinetId));
-		InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(NumberUtils.toLong(folderId));
+		InfoId<Long> cabid = IdKey.GP_CABINETS.getInfoId(NumberUtils.toLong(cabinetId));
+		InfoId<Long> folderid = IdKey.GP_CAB_FOLDERS.getInfoId(NumberUtils.toLong(folderId));
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		PageWrapper<CabEntryInfo> fresult = CabinetFacade.findCabinetEntries(accesspoint, principal, 

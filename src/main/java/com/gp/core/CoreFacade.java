@@ -1,7 +1,7 @@
 package com.gp.core;
 
-import com.gp.dao.info.OperLogInfo;
-import com.gp.svc.OperLogService;
+import com.gp.dao.info.OperationInfo;
+import com.gp.svc.OperationService;
 
 import java.util.Date;
 
@@ -40,11 +40,11 @@ public class CoreFacade {
 
 	private static CommonService idService;
 
-	private static OperLogService operlogservice;
+	private static OperationService operlogservice;
 
 	@Autowired
 	private CoreFacade(AuditService auditservice,
-					   OperLogService operlogservice,
+					   OperationService operlogservice,
 					   CommonService idService){
 		
 		CoreFacade.auditservice = auditservice;
@@ -67,7 +67,7 @@ public class CoreFacade {
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
 			// retrieve and set audit id
-			InfoId<Long> auditId = idService.generateId( IdKey.AUDIT, Long.class);
+			InfoId<Long> auditId = idService.generateId( IdKey.GP_AUDITS, Long.class);
 			auditinfo.setInfoId(auditId); 
 
 			auditservice.addAudit(svcctx, auditinfo);
@@ -85,7 +85,7 @@ public class CoreFacade {
 
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
-			OperLogInfo operinfo = new OperLogInfo();
+			OperationInfo operinfo = new OperationInfo();
 			InfoId<Long> operid = idService.generateId(IdKey.OPER_LOG, Long.class);
 			operinfo.setInfoId(operid);
 			operinfo.setAccount(coreload.getOperator());
@@ -97,7 +97,7 @@ public class CoreFacade {
 			operinfo.setOperationTime(new Date(System.currentTimeMillis()));
 			
 			svcctx.setTraceInfo(operinfo);
-			operlogservice.addOperLog(svcctx, operinfo);
+			operlogservice.addOperation(svcctx, operinfo);
 
 		}catch (ServiceException e) {
 			throw new CoreException("fail to handle the core event payload",e );

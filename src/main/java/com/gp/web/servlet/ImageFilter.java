@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
@@ -91,7 +91,7 @@ public class ImageFilter implements Filter{
 	 **/
 	public void loadImageToCache(HttpServletRequest request, String parent, String fileName){
 		
-		Principal principal = BaseController.getPrincipal();
+		GPrincipal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		
 		try {

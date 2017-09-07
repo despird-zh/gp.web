@@ -21,7 +21,7 @@ public class AuditTester extends TestCase{
 	
 	public void testConverter() throws IOException{
 		
-		InfoId<String > id1 = IdKey.ATTACH_REL.getInfoId("000101M");
+		InfoId<String > id1 = IdKey.GP_ATTACH_REL.getInfoId("000101M");
 		AuditEventLoad ad = new AuditEventLoad("user1","verb1",id1);
 		AccessPoint ap = new AccessPoint("browser","1.2.3.4","dapp","v0.1");
 		ad.setAccessPoint(ap);

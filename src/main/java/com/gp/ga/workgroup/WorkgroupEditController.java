@@ -14,7 +14,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
 import com.gp.core.ImageFacade;
@@ -60,7 +60,7 @@ public class WorkgroupEditController extends BaseController{
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -72,7 +72,7 @@ public class WorkgroupEditController extends BaseController{
 			mav.addAllObjects(result.asMap());
 			return mav;
 		}
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
+		InfoId<Long> wgroupId = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgid));
 		
 		try{
 			WorkgroupExtInfo info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
@@ -101,25 +101,25 @@ public class WorkgroupEditController extends BaseController{
 			
 			// sotrage and organiztion
 			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.GP_STORAGES.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
 			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.GP_ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
 			Long avatarId = info.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.GP_IMAGES.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + imagePath + "/" + avatar.getLink());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPublishCabinet();
-			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
+			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.GP_CABINETS.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
 			Long pricabId = info.getNetdiskCabinet();
-			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
+			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.GP_CABINETS.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
 			result.setState(ActionResult.SUCCESS);
@@ -147,12 +147,12 @@ public class WorkgroupEditController extends BaseController{
 		Workgroup group = new Workgroup();
 		readRequestData(request, group);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();
 		
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(group.getWorkgroupId());
+		InfoId<Long> wgroupId = IdKey.GP_WORKGROUPS.getInfoId(group.getWorkgroupId());
 		info.setInfoId(wgroupId);
 		info.setSourceId(GeneralConstants.LOCAL_SOURCE);// set local workgroup id
 		info.setWorkgroupName(group.getWorkgroupName());

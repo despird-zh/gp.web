@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.common.Sources.State;
 import com.gp.exception.CoreException;
@@ -45,7 +45,7 @@ public class SourceFacade {
 	 * Get the local instance information 
 	 **/
 	public static SourceInfo findSource(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Integer> instanceid) throws CoreException{
 
 		SourceInfo rst = null;
@@ -71,7 +71,7 @@ public class SourceFacade {
 	}
 	
 	public static Boolean changeSourceState(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Integer> instance, State state)throws CoreException{
 		
 		Boolean result = false;
@@ -93,7 +93,7 @@ public class SourceFacade {
 	}
 	
 	public static Boolean saveSource(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			SourceInfo instance)throws CoreException{
 		
 		Boolean result = false;
@@ -125,7 +125,7 @@ public class SourceFacade {
 	}
 
 	public static Boolean saveExtSource(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			SourceInfo instance)throws CoreException{
 		
 		Boolean result = false;
@@ -133,7 +133,7 @@ public class SourceFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_EXT_SOURCE)){
 			
-			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.SOURCE, Integer.class);
+			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.GP_SOURCES, Integer.class);
 			
 			svcctx.setOperationObject(instanceId);
 			svcctx.addOperationPredicates(instance);
@@ -157,7 +157,7 @@ public class SourceFacade {
 	}
 	
 	public static List<SourceInfo> findSources(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String instancename)throws CoreException{
 		
 		List<SourceInfo> result = null;
@@ -183,7 +183,7 @@ public class SourceFacade {
 	
 	
 	public static PageWrapper<SourceInfo> findSources(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String instancename, PageQuery pquery)throws CoreException{
 		
 		PageWrapper<SourceInfo> result = null;
@@ -209,7 +209,7 @@ public class SourceFacade {
 	}
 	
 	public static Map<String,SourceInfo> findSources(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			List<String> accounts)throws CoreException{
 		
 		Map<String,SourceInfo> result = null;

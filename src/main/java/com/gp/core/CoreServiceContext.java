@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
 import com.gp.audit.AuditConverter;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.disruptor.EventDispatcher;
 import com.gp.info.InfoId;
@@ -38,7 +38,7 @@ public class CoreServiceContext extends ServiceContext{
 	/**
 	 * constructor with principal 
 	 **/
-	public CoreServiceContext(Principal principal){
+	public CoreServiceContext(GPrincipal principal){
 		
 		super(principal);
 		setAuditable(true);
@@ -48,7 +48,7 @@ public class CoreServiceContext extends ServiceContext{
 	/**
 	 * constructor with principal and accesspoint 
 	 **/
-	public CoreServiceContext(Principal principal, AccessPoint accesspoint){
+	public CoreServiceContext(GPrincipal principal, AccessPoint accesspoint){
 		
 		this(principal);
 		this.coreload.setAccessPoint(accesspoint);

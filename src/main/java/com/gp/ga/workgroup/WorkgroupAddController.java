@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
 import com.gp.dao.info.GroupInfo;
@@ -57,7 +57,7 @@ public class WorkgroupAddController extends BaseController{
 		Workgroup group = new Workgroup();
 		readRequestData(request, group);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();
@@ -116,19 +116,19 @@ public class WorkgroupAddController extends BaseController{
 		String enode = super.readRequestParam("enode_id");
 		String wgroupid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		InfoId<Integer> entityId = null;
 		if(StringUtils.isNotBlank(enode) && CommonUtils.isNumeric(enode)){
 			
-			entityId = IdKey.SOURCE.getInfoId(Integer.valueOf(enode));
+			entityId = IdKey.GP_SOURCES.getInfoId(Integer.valueOf(enode));
 		}
 		
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 
 		ModelAndView mav = getJsonModelView();
@@ -171,13 +171,13 @@ public class WorkgroupAddController extends BaseController{
 		String account = super.readRequestParam("account");
 		String wgroupid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 
 		ActionResult aresult = new ActionResult();
@@ -207,13 +207,13 @@ public class WorkgroupAddController extends BaseController{
 		String wgroupid = super.readRequestParam("wgroup_id");
 		String role = super.readRequestParam("role");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 
 		ActionResult aresult = new ActionResult();
@@ -242,7 +242,7 @@ public class WorkgroupAddController extends BaseController{
 		String wgroupid = super.readRequestParam("wgroup_id");
 		String description = super.readRequestParam("description");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		GroupInfo ginfo = new GroupInfo();
@@ -280,12 +280,12 @@ public class WorkgroupAddController extends BaseController{
 		String group = super.readRequestParam("group");
 		String wgroupid = super.readRequestParam("wgroup_id");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 
 		ModelAndView mav = getJsonModelView();
@@ -323,13 +323,13 @@ public class WorkgroupAddController extends BaseController{
 		
 		String groupid = super.readRequestParam("group_id");
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> gid = null;
 		if(StringUtils.isNotBlank(groupid) && CommonUtils.isNumeric(groupid)){
 			
-			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
+			gid = IdKey.GP_GROUPS.getInfoId(Long.valueOf(groupid));
 		}
 
 		ActionResult aresult = new ActionResult();
@@ -356,13 +356,13 @@ public class WorkgroupAddController extends BaseController{
 		
 		String groupid = super.readRequestParam("group_id");
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> gid = null;
 		if(StringUtils.isNotBlank(groupid) && CommonUtils.isNumeric(groupid)){
 			
-			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
+			gid = IdKey.GP_GROUPS.getInfoId(Long.valueOf(groupid));
 		}
 		Account[] users = super.readRequestJson("users", Account[].class);
 		String[] accounts = new String[users.length];
@@ -395,13 +395,13 @@ public class WorkgroupAddController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		
 		String groupid = super.readRequestParam("group_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		InfoId<Long> gid = null;
 		if(StringUtils.isNotBlank(groupid) && CommonUtils.isNumeric(groupid)){
 			
-			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
+			gid = IdKey.GP_GROUPS.getInfoId(Long.valueOf(groupid));
 		}
 
 		ModelAndView mav = getJsonModelView();
@@ -439,13 +439,13 @@ public class WorkgroupAddController extends BaseController{
 		
 		String groupid = super.readRequestParam("group_id");
 		String account = super.readRequestParam("account");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> gid = null;
 		if(StringUtils.isNotBlank(groupid) && CommonUtils.isNumeric(groupid)){
 			
-			gid = IdKey.GROUP.getInfoId(Long.valueOf(groupid));
+			gid = IdKey.GP_GROUPS.getInfoId(Long.valueOf(groupid));
 		}
 		
 		

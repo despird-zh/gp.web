@@ -7,7 +7,7 @@ import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.SecurityFacade;
 
 public class CredMatcher implements CredentialsMatcher {
@@ -32,7 +32,7 @@ public class CredMatcher implements CredentialsMatcher {
 	private boolean authenModeDB(AuthenToken token, AuthenInfo info){
 		
 		String password = new String(token.getPassword());
-		Principal principal = (Principal)info.getPrincipals().getPrimaryPrincipal();
+		GPrincipal principal = (GPrincipal)info.getPrincipals().getPrimaryPrincipal();
 
 		boolean pass = false;
 		try {

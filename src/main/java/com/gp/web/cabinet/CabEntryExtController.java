@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.CabinetFacade;
 import com.gp.exception.CoreException;
 import com.gp.dao.info.CabFileInfo;
@@ -51,18 +51,18 @@ public class CabEntryExtController extends BaseController{
 		
 		ActionResult actrst = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		List<TagInfo> alltags = null;
 		List<TagInfo> usedtags = null;
 		InfoId<Long> fid = null;
 		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
 			
-			fid = IdKey.CAB_FOLDER.getInfoId(entryid);
+			fid = IdKey.GP_CAB_FOLDERS.getInfoId(entryid);
 
 		}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
 			
-			fid = IdKey.CAB_FILE.getInfoId(entryid);
+			fid = IdKey.GP_CAB_FILES.getInfoId(entryid);
 
 		}
 		
@@ -115,16 +115,16 @@ public class CabEntryExtController extends BaseController{
 		
 		ActionResult actrst = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		InfoId<Long> fid = null;
 		if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
 			
-			fid = IdKey.CAB_FOLDER.getInfoId(entryid);
+			fid = IdKey.GP_CAB_FOLDERS.getInfoId(entryid);
 
 		}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
 			
-			fid = IdKey.CAB_FILE.getInfoId(entryid);
+			fid = IdKey.GP_CAB_FILES.getInfoId(entryid);
 
 		}
 		Map<String, String> ops  = null;
@@ -167,17 +167,17 @@ public class CabEntryExtController extends BaseController{
 		Long entryid = NumberUtils.toLong(readRequestParam("entry_id"));
 		String entryType = readRequestParam("entry_type");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, Object> propmap = null;
 		String propstr = null;
 		try{
 			if(Cabinets.EntryType.FOLDER.name().equals(entryType)){
-				InfoId<Long> folderid = IdKey.CAB_FOLDER.getInfoId(entryid);
+				InfoId<Long> folderid = IdKey.GP_CAB_FOLDERS.getInfoId(entryid);
 				CabFolderInfo finfo =  CabinetFacade.findCabinetFolder(accesspoint, principal, folderid);
 				propstr = finfo.getProperties();
 			}else if(Cabinets.EntryType.FILE.name().equals(entryType)){
-				InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(entryid);
+				InfoId<Long> fileid = IdKey.GP_CAB_FILES.getInfoId(entryid);
 				CabFileInfo finfo = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
 				propstr = finfo.getProperties();
 			}
@@ -197,10 +197,10 @@ public class CabEntryExtController extends BaseController{
 		ModelAndView  mav = super.getJspModelView("dialog/file-versions");
 		
 		ActionResult aresult = new ActionResult();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Long fid = NumberUtils.toLong(readRequestParam("file_id"));
-		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(fid);
+		InfoId<Long> fileid = IdKey.GP_CAB_FILES.getInfoId(fid);
 		
 		List<Version> nlist = new ArrayList<Version>();
 		try{

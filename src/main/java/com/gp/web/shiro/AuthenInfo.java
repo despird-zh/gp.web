@@ -5,7 +5,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 /**
  * @author despird 2014-02-01
  * @version V0.1
@@ -16,7 +16,7 @@ public class AuthenInfo extends SimpleAuthenticationInfo {
 
 	private static final long serialVersionUID = -7397719890579595466L;
 
-	public AuthenInfo(Principal principal,String credential, String realmName){
+	public AuthenInfo(GPrincipal principal,String credential, String realmName){
 				
 		super(principal,credential,realmName);
 		

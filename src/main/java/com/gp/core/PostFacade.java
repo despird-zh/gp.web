@@ -77,7 +77,7 @@ public class PostFacade {
      * @param pageQuery the page query condition
      **/
     public static PageWrapper<PostExt> findPersonalPosts(AccessPoint accesspoint,
-                                                                                Principal principal,
+                                                                                GPrincipal principal,
                                                                                 String state,
                                                                                 String type,
                                                                                 String scope,
@@ -111,7 +111,7 @@ public class PostFacade {
      * @param mode the data query mode : ALL/MEMBER/SQUARE
      **/
     public static PageWrapper<PostExt> findWorkgroupPosts(AccessPoint accesspoint,
-                                                    Principal principal,
+                                                    GPrincipal principal,
                                                     InfoId<Long> wid,
                                                     String mode,
                                                     String state, String type, PageQuery pageQuery)throws CoreException{
@@ -143,7 +143,7 @@ public class PostFacade {
      * @param scope the scope of search condition
      **/
     public static PageWrapper<PostExt> findSquarePosts(AccessPoint accesspoint,
-                                                    Principal principal,
+                                                    GPrincipal principal,
                                                     String state, String type, String scope, PageQuery pageQuery)throws CoreException{
 
         PageWrapper<PostExt> result = null;
@@ -173,7 +173,7 @@ public class PostFacade {
      * @param attendees the attendees who join post
      */
     public static boolean newPost(AccessPoint accesspoint,
-                                  Principal principal,
+                                  GPrincipal principal,
                                   PostInfo postinfo,
                                   List<String> images,
                                   String ... attendees) throws CoreException{
@@ -198,7 +198,7 @@ public class PostFacade {
                 Operations.NEW_POST)){
             if(!InfoId.isValid(postinfo.getInfoId())){
 
-                InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
+                InfoId<Long> pid = idservice.generateId(IdKey.GP_POSTS, Long.class);
                 postinfo.setInfoId(pid);
             }
 
@@ -214,7 +214,7 @@ public class PostFacade {
 
                     ImageInfo image = new ImageInfo();
 
-                    image.setInfoId(IdKey.IMAGE.getInfoId(imgid));
+                    image.setInfoId(IdKey.GP_IMAGES.getInfoId(imgid));
                     image.setDataFile(new File(imagePath));
                     image.setFormat(FilenameUtils.getExtension(imagename));
                     image.setModifyDate(touchdate);
@@ -246,7 +246,7 @@ public class PostFacade {
      * @param state the state of post
      **/
     public static void removePost(AccessPoint accesspoint,
-                                 Principal principal,
+                                 GPrincipal principal,
                                  InfoId<Long> postid) throws CoreException{
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
@@ -273,7 +273,7 @@ public class PostFacade {
      * @param state the state of post
      **/
     public static List<PostCommentInfo> findPostComments(AccessPoint accesspoint,
-                                                         Principal principal,
+                                                         GPrincipal principal,
                                                          InfoId<Long> postid,
                                                          String owner,
                                                          String state) throws CoreException{
@@ -301,7 +301,7 @@ public class PostFacade {
      * Add comment to post
      **/
     public static boolean addPostComment(AccessPoint accesspoint,
-                                         Principal principal, PostCommentInfo comment) throws CoreException{
+                                         GPrincipal principal, PostCommentInfo comment) throws CoreException{
 
         // check the validation of user information
         Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), comment);
@@ -316,7 +316,7 @@ public class PostFacade {
                 Operations.NEW_COMMENT)){
         	
         	if(!InfoId.isValid(comment.getInfoId())){
-        		InfoId<Long> cid = idservice.generateId(IdKey.POST_COMMENT, Long.class);
+        		InfoId<Long> cid = idservice.generateId(IdKey.GP_POST_COMMENTS, Long.class);
         		comment.setInfoId(cid);
         	}
         	
@@ -338,7 +338,7 @@ public class PostFacade {
      * Find the post attendee list
      **/
     public static List<UserLiteInfo> findPostAttendees(AccessPoint accesspoint,
-                                                   Principal principal,
+                                                   GPrincipal principal,
                                                    InfoId<Long> postid) throws CoreException{
 
         List<UserLiteInfo> result = null;
@@ -364,7 +364,7 @@ public class PostFacade {
      * like post
      **/
     public static int likePost(AccessPoint accesspoint,
-                                   Principal principal,
+                                   GPrincipal principal,
                                    InfoId<Long> postid, String voter) throws CoreException{
 
         int result = 0;
@@ -390,7 +390,7 @@ public class PostFacade {
      * dislike post
      **/
     public static int dislikePost(AccessPoint accesspoint,
-                                   Principal principal,
+                                   GPrincipal principal,
                                    InfoId<Long> postid, String voter) throws CoreException{
 
         int result = 0;
@@ -417,7 +417,7 @@ public class PostFacade {
      * @param postId the id of post
      **/
     public static void sendPostPublic(AccessPoint accesspoint,
-            				Principal principal,
+            				GPrincipal principal,
             				String descr, InfoId<Long> postId)throws CoreException{
     	
     	 try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
@@ -430,7 +430,7 @@ public class PostFacade {
                  postservice.publicPost(svcctx, postId);
              }else {
                  // launch a quick flow
-                 quickflowservice.launchPostPublic(svcctx, descr, IdKey.WORKGROUP.getInfoId(wgroupId), postId);
+                 quickflowservice.launchPostPublic(svcctx, descr, IdKey.GP_WORKGROUPS.getInfoId(wgroupId), postId);
              }
          } catch (ServiceException e)  {
 
@@ -447,14 +447,14 @@ public class PostFacade {
      * like post
      **/
     public static boolean favoritePost(AccessPoint accesspoint,
-                                   Principal principal,
+                                   GPrincipal principal,
                                    InfoId<Long> postid) throws CoreException{
 
         boolean result = false;
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FAVORITE_POST)){
 
-        	InfoId<Long> fid = idservice.generateId(IdKey.FAVORITE, Long.class);
+        	InfoId<Long> fid = idservice.generateId(IdKey.GP_FAVORITES, Long.class);
         	FavoriteInfo finfo = new FavoriteInfo();
         	finfo.setInfoId(fid);
         	finfo.setResourceId(postid.getId());
@@ -480,7 +480,7 @@ public class PostFacade {
      * like post
      **/
     public static boolean removeFavoritePost(AccessPoint accesspoint,
-                                   Principal principal,
+                                   GPrincipal principal,
                                    InfoId<Long> postid) throws CoreException{
 
         boolean result = false;

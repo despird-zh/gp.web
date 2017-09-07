@@ -16,11 +16,11 @@ import com.gp.common.GeneralConstants;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.dao.info.OperLogInfo;
+import com.gp.dao.info.OperationInfo;
 import com.gp.info.CombineInfo;
 import com.gp.dao.info.GroupInfo;
 import com.gp.dao.info.GroupMemberInfo;
@@ -31,7 +31,7 @@ import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.OperLogService;
+import com.gp.svc.OperationService;
 import com.gp.svc.CommonService;
 import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
@@ -51,14 +51,14 @@ public class WorkgroupFacade {
 	
 	private static CommonService idservice;
 	
-	private static OperLogService actlogservice;
+	private static OperationService actlogservice;
 	
 	private static TagService tagservice;
 	
 	@Autowired
 	private WorkgroupFacade(WorkgroupService workgroupservice,
 			CommonService idservice,
-			OperLogService actlogservice,
+			OperationService actlogservice,
 			TagService tagservice){
 		WorkgroupFacade.workgroupservice = workgroupservice;
 		WorkgroupFacade.idservice = idservice;
@@ -67,7 +67,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static boolean newWorkgroup(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			WorkgroupInfo winfo, 
 			Long pubcapacity, 
 			Long pricapacity, 
@@ -88,7 +88,7 @@ public class WorkgroupFacade {
 			// amend the information key data
 			if(!InfoId.isValid(winfo.getInfoId())){
 				
-				InfoId<Long> wkey = idservice.generateId( IdKey.WORKGROUP, Long.class);
+				InfoId<Long> wkey = idservice.generateId( IdKey.GP_WORKGROUPS, Long.class);
 				winfo.setInfoId(wkey);				
 			}
 
@@ -111,7 +111,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean updateWorkgroup(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			WorkgroupInfo winfo, 
 			Long pubcapacity, 
 			Long pricapacity, 
@@ -156,7 +156,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static WorkgroupInfo findWorkgroup(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey)throws CoreException{
 		
 		WorkgroupInfo gresult = null;
@@ -178,7 +178,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static WorkgroupExtInfo findWorkgroupExt(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey)throws CoreException{
 		
 		WorkgroupExtInfo gresult = null;
@@ -205,7 +205,7 @@ public class WorkgroupFacade {
 	 * Find all the workgroup members 
 	 **/
 	public static List<GroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey, String uname,
 			InfoId<Integer> entityid)throws CoreException{
 		
@@ -233,7 +233,7 @@ public class WorkgroupFacade {
 	 * find all the workgroup members support paging on server-side 
 	 **/
 	public static PageWrapper<GroupMemberInfo> findWorkgroupMembers(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey, String uname, 
 			InfoId<Integer> entityid, PageQuery pagequery)throws CoreException{
 		
@@ -258,7 +258,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean removeWorkgroupMember(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey, String account)throws CoreException{
 		
 		Boolean gresult = false;
@@ -282,7 +282,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean addWorkgroupMember(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey, String account, String role)throws CoreException{
 		
 		Boolean gresult = false;
@@ -318,7 +318,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static List<UserExtInfo> findWrokgroupAvailUsers(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> wkey,
 			String uname)throws CoreException{
 		
@@ -342,7 +342,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static PageWrapper<UserExtInfo> findWrokgroupAvailUsers(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> wkey,
 			String uname, PageQuery pagequery)throws CoreException{
 		
@@ -367,7 +367,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static boolean newWorkgroupGroup(AccessPoint accesspoint,
-			Principal principal, GroupInfo ginfo)throws CoreException{
+			GPrincipal principal, GroupInfo ginfo)throws CoreException{
 		
 		boolean gresult = false;
 		if(StringUtils.isBlank(ginfo.getGroupType())){
@@ -385,7 +385,7 @@ public class WorkgroupFacade {
 
 			if(!InfoId.isValid(ginfo.getInfoId())){
 				
-				InfoId<Long> gid = idservice.generateId(IdKey.GROUP, Long.class);
+				InfoId<Long> gid = idservice.generateId(IdKey.GP_GROUPS, Long.class);
 				ginfo.setInfoId(gid);
 			}
 			
@@ -407,7 +407,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static List<GroupInfo> findWorkgroupGroups(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey, 
 			String gname) throws CoreException{
 		
@@ -430,7 +430,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean removeWorkgroupGroup(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wkey, String group)throws CoreException{
 		
 		Boolean gresult = false;
@@ -453,7 +453,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean removeWorkgroupGroup(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> groupid)throws CoreException{
 		
 		Boolean gresult = false;
@@ -477,7 +477,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean addWorkgroupGroupMembers(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> groupid, String ...accounts)throws CoreException{
 		
 		Boolean gresult = false;
@@ -498,7 +498,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static List<UserInfo> findWorkgroupGroupMembers(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> groupid)throws CoreException{
 		
 		List<UserInfo> gresult = null;
@@ -521,7 +521,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static Boolean removeWorkgroupGroupMember(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> groupid, String account)throws CoreException{
 		
 		Boolean gresult = false;
@@ -543,7 +543,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static List<WorkgroupExtInfo> findLocalWorkgroups(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String wgroupname)throws CoreException{
 		
 		List<WorkgroupExtInfo> gresult = null;
@@ -567,7 +567,7 @@ public class WorkgroupFacade {
 	 * Find the local workgroup in paging mode
 	 **/
 	public static PageWrapper<WorkgroupLite> findLocalWorkgroups(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String wgroupname,List<String> tags, PageQuery pagequery)throws CoreException{
 		
 		PageWrapper<WorkgroupLite> gresult = null;
@@ -587,7 +587,7 @@ public class WorkgroupFacade {
 	}
 	
 	public static List<WorkgroupExtInfo> findMirrorWorkgroups(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String wgroupname)throws CoreException{
 		
 		List<WorkgroupExtInfo> gresult = null;
@@ -615,18 +615,18 @@ public class WorkgroupFacade {
 	 * @param pquery the page query
 	 *  
 	 **/
-	public static PageWrapper<OperLogInfo> findWorkgroupOperLogs(AccessPoint accesspoint,
-																 Principal principal,
+	public static PageWrapper<OperationInfo> findWorkgroupOperLogs(AccessPoint accesspoint,
+																 GPrincipal principal,
 																 InfoId<Long> wid, PageQuery pquery)throws CoreException{
 		
-		PageWrapper<OperLogInfo> gresult = null;
+		PageWrapper<OperationInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_OPER_LOGS)){
 
 			// amend the operation information
 			svcctx.setOperationObject(wid);
-			gresult = actlogservice.getWorkgroupOperLogs(svcctx, wid, pquery);
+			gresult = actlogservice.getWorkgroupOperations(svcctx, wid, pquery);
 
 		}catch(ServiceException e){
 
@@ -644,7 +644,7 @@ public class WorkgroupFacade {
 	 * @param wid the work group id 
 	 **/
 	public static List<TagInfo> findWorkgroupTags(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wid )throws CoreException{
 		
 		List<TagInfo> gresult = null;

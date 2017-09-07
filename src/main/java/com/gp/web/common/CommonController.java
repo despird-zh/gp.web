@@ -20,7 +20,7 @@ import com.gp.web.model.OrgNode;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.SourceFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.SecurityFacade;
@@ -67,7 +67,7 @@ public class CommonController extends BaseController{
 		
 		boolean allsupport = StringUtils.isBlank(alloption)? false:(Boolean.valueOf(alloption));
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = getJsonModelView();		
@@ -117,7 +117,7 @@ public class CommonController extends BaseController{
 		
 		boolean allsupport = StringUtils.isBlank(alloption)? false:(Boolean.valueOf(alloption));
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		ModelAndView mav = super.getJsonModelView();
@@ -161,7 +161,7 @@ public class CommonController extends BaseController{
 	public ModelAndView doGetUserList(HttpServletRequest request){
 
 		List<Account> list = new ArrayList<Account>();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		String uname = request.getParameter("user_name");
 		ActionResult ars = new ActionResult();
 		Integer instanceId = null;
@@ -218,11 +218,11 @@ public class CommonController extends BaseController{
 			return mav;
 		}		
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{
-			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			InfoId<Long> oid = IdKey.GP_ORG_HIER.getInfoId(orgId);
 			List<OrgHierInfo> gresult = OrgHierFacade.findChildOrgHiers(accesspoint, principal, 
 					oid);
 			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
@@ -267,13 +267,13 @@ public class CommonController extends BaseController{
 		super.readRequestData(request, pq);
 		
 		List<Account> list = new ArrayList<Account>();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 		int totalcnt = -1;
 		

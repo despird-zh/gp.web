@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.Storages;
 import com.gp.common.Storages.StorageState;
 import com.gp.common.Storages.StorageType;
@@ -83,7 +83,7 @@ public class StorageListController extends BaseController{
 		}else{
 			states = new String[]{state};
 		}
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = super.getJsonModelView();
@@ -138,7 +138,7 @@ public class StorageListController extends BaseController{
 		Storage storage = new Storage();
 		super.readRequestData(request, storage);
 		// read trace information
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// prepare result
 		ActionResult aresult = new ActionResult();
@@ -146,7 +146,7 @@ public class StorageListController extends BaseController{
 		
 		StorageInfo sinfo = new StorageInfo();
 		
-		InfoId<Integer> infoid = IdKey.STORAGE.getInfoId(storage.getStorageId());
+		InfoId<Integer> infoid = IdKey.GP_STORAGES.getInfoId(storage.getStorageId());
 		sinfo.setInfoId(infoid);
 		Long cap = StringUtils.isNotBlank(storage.getCapacity()) ? Long.valueOf(storage.getCapacity()):0l;
 		sinfo.setCapacity(cap);
@@ -182,12 +182,12 @@ public class StorageListController extends BaseController{
 	public ModelAndView doRemoveStorage(HttpServletRequest request){
 		
 		String storageId = super.readRequestParam("storage_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult aresult = new ActionResult();
 		
-		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
+		InfoId<Integer> sid = IdKey.GP_STORAGES.getInfoId(Integer.valueOf(storageId));
 		if(Storages.DEFAULT_STORAGE_ID == sid.getId()){
 			
 			aresult.setState(ActionResult.ERROR);
@@ -214,12 +214,12 @@ public class StorageListController extends BaseController{
 		String storageId = super.readRequestParam("storage_id");
 		Storage storage = new Storage();
 		// read trace information
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult aresult = new ActionResult();
 		
-		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
+		InfoId<Integer> sid = IdKey.GP_STORAGES.getInfoId(Integer.valueOf(storageId));
 		try{
 			StorageInfo sinfo = StorageFacade.findStorage(accesspoint, principal, sid);
 			storage.setStorageId(sinfo.getInfoId().getId());

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.web.util.CustomWebUtils;
@@ -121,9 +121,9 @@ public abstract class BaseController extends MultiActionController implements Me
 	/**
 	 * Get the principal from shiro  
 	 **/
-	public static Principal getPrincipal() {
+	public static GPrincipal getPrincipal() {
 		
-		return (Principal) SecurityUtils.getSubject().getPrincipal();
+		return (GPrincipal) SecurityUtils.getSubject().getPrincipal();
 	}
 	
 	/**
@@ -264,7 +264,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	 **/
 	public String getMessage(String code, Object[] args){
 		
-		Principal principal = getPrincipal();
+		GPrincipal principal = getPrincipal();
 		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, args, locale);
 	}
@@ -275,7 +275,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	 * @param locale the locale 
 	 **/
 	public String getMessage(String code){
-		Principal principal = getPrincipal();
+		GPrincipal principal = getPrincipal();
 		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, new String[0], locale);
 	}

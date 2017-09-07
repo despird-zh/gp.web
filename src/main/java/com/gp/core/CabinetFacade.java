@@ -22,7 +22,7 @@ import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -82,7 +82,7 @@ public class CabinetFacade {
 	 * Find the Cabinets of an account. include public and private cabinet. 
 	 **/
 	public static List<CabinetInfo> findPersonalCabinets(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String account) throws CoreException{
 		
 		List<CabinetInfo> gresult  = null;
@@ -106,19 +106,19 @@ public class CabinetFacade {
 	
 	//
 	public static boolean addCabinetFolder(AccessPoint accesspoint,
-			Principal principal, CabFolderInfo folderinfo) throws CoreException{
+			GPrincipal principal, CabFolderInfo folderinfo) throws CoreException{
 
 		Boolean gresult  = false;
 
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_FOLDER)){
 			
-			InfoId<Long> fkey = idservice.generateId(IdKey.CAB_FOLDER, Long.class);
+			InfoId<Long> fkey = idservice.generateId(IdKey.GP_CAB_FOLDERS, Long.class);
 			folderinfo.setInfoId(fkey);
 			folderinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 			folderinfo.setCreateDate(DateTimeUtils.now());
 			folderinfo.setCreator(principal.getAccount());
-			InfoId<Long> parentkey  = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
+			InfoId<Long> parentkey  = IdKey.GP_CAB_FOLDERS.getInfoId(folderinfo.getParentId());
 			folderinfo.setState(Cabinets.FolderState.READY.name());
 			// check the validation of folder information
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), folderinfo);
@@ -128,11 +128,11 @@ public class CabinetFacade {
 				throw coreexcp;
 			}
 			Acl acl =  Cabinets.getDefaultAcl();
-			InfoId<Long> tempid = idservice.generateId(IdKey.CAB_ACL, Long.class);
+			InfoId<Long> tempid = idservice.generateId(IdKey.GP_CAB_ACL, Long.class);
 			acl.setAclId(tempid);
 			Collection<Ace> aces = acl.getAllAces();
 			for(Ace ace : aces){
-				tempid = idservice.generateId(IdKey.CAB_ACE, Long.class);
+				tempid = idservice.generateId(IdKey.GP_CAB_ACE, Long.class);
 				ace.setAceId(tempid);
 			}
 			InfoId<Long> fid = folderservice.newFolder(svcctx, parentkey, folderinfo, acl);
@@ -149,7 +149,7 @@ public class CabinetFacade {
 	}
 	
 	public static List<CabFolderInfo> findCabinetFolders(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String namecond) throws CoreException{
@@ -185,7 +185,7 @@ public class CabinetFacade {
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
 	public static List<CabFileInfo> findCabinetFiles(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String filename)throws CoreException{
@@ -221,7 +221,7 @@ public class CabinetFacade {
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
 	public static PageWrapper<CabEntryInfo> findCabinetEntries(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String filename,
@@ -246,7 +246,7 @@ public class CabinetFacade {
 	
 	
 	public static CabinetInfo findCabinet(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> cabinetId)throws CoreException{
+			GPrincipal principal, InfoId<Long> cabinetId)throws CoreException{
 		
 		CabinetInfo gresult  =  null;
 		
@@ -276,7 +276,7 @@ public class CabinetFacade {
 	 * @return The General Result that wrap the cabinet file id 
 	 **/
 	public static InfoId<Long> addCabinetFile(AccessPoint accesspoint,
-			Principal principal, CabFileInfo fileinfo)throws CoreException{
+			GPrincipal principal, CabFileInfo fileinfo)throws CoreException{
 		
 		InfoId<Long> gresult  =  null;
 		
@@ -285,22 +285,22 @@ public class CabinetFacade {
 			
 			InfoId<Long> fileid = fileinfo.getInfoId();
 			if(!InfoId.isValid(fileid)){
-				fileid = idservice.generateId(IdKey.CAB_FILE, Long.class);
+				fileid = idservice.generateId(IdKey.GP_CAB_FILES, Long.class);
 				LOGGER.debug("the file id : {}", fileid);
 				fileinfo.setInfoId(fileid);
 			}
 			if(fileinfo.getSourceId() == 0){
-				CabinetInfo cinfo = cabinetservice.getCabinet(svcctx, IdKey.CABINET.getInfoId(fileinfo.getCabinetId()));
+				CabinetInfo cinfo = cabinetservice.getCabinet(svcctx, IdKey.GP_CABINETS.getInfoId(fileinfo.getCabinetId()));
 				fileinfo.setSourceId(cinfo.getSourceId());
 			}
 			svcctx.setOperationObject(fileid);
 			svcctx.addOperationPredicates(fileinfo);
 			Acl acl =  Cabinets.getDefaultAcl();
-			InfoId<Long> tempid = idservice.generateId(IdKey.CAB_ACL, Long.class);
+			InfoId<Long> tempid = idservice.generateId(IdKey.GP_CAB_ACL, Long.class);
 			acl.setAclId(tempid);
 			Collection<Ace> aces = acl.getAllAces();
 			for(Ace ace : aces){
-				tempid = idservice.generateId(IdKey.CAB_ACE, Long.class);
+				tempid = idservice.generateId(IdKey.GP_CAB_ACE, Long.class);
 				ace.setAceId(tempid);
 			}
 			InfoId<Long> fid = fileservice.newFile(svcctx, fileinfo, acl);
@@ -320,7 +320,7 @@ public class CabinetFacade {
 	 * @param fileid the id of cabinet file 
 	 **/
 	public static CabFolderInfo findCabinetFolder(AccessPoint accesspoint,
-			Principal principal,InfoId<Long> fileid)throws CoreException{
+			GPrincipal principal,InfoId<Long> fileid)throws CoreException{
 		
 		CabFolderInfo gresult  =  null;
 		
@@ -348,7 +348,7 @@ public class CabinetFacade {
 	 * @param fileid the id of cabinet file 
 	 **/
 	public static CabFileInfo findCabinetFile(AccessPoint accesspoint,
-			Principal principal,InfoId<Long> fileid)throws CoreException{
+			GPrincipal principal,InfoId<Long> fileid)throws CoreException{
 		
 		CabFileInfo gresult  =  null;
 		
@@ -373,7 +373,7 @@ public class CabinetFacade {
 	}
 	
 	public static Map<InfoId<Long>, Integer> findCabEntriesFavSummary(AccessPoint accesspoint,
-			Principal principal, List<InfoId<Long>> entryids)throws CoreException{
+			GPrincipal principal, List<InfoId<Long>> entryids)throws CoreException{
 		
 		Map<InfoId<Long>, Integer> gresult = null;
 		
@@ -384,9 +384,9 @@ public class CabinetFacade {
 		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
 		for(InfoId<Long> id: entryids){
 			
-			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
+			if(IdKey.GP_CAB_FILES.getTable().equals(id.getIdKey())){
 				files.add(id);
-			}else if(IdKey.CAB_FOLDER.getTable().equals(id.getIdKey())){
+			}else if(IdKey.GP_CAB_FOLDERS.getTable().equals(id.getIdKey())){
 				folders.add(id);
 			}
 		}
@@ -416,7 +416,7 @@ public class CabinetFacade {
 	 * @param entrytype the cabinet entry type 
 	 **/
 	public static List<TagInfo> findCabEntryAvailTags(AccessPoint accesspoint,
-			Principal principal, String entrytype)throws CoreException{
+			GPrincipal principal, String entrytype)throws CoreException{
 		
 		List<TagInfo> gresult = null;
 
@@ -442,7 +442,7 @@ public class CabinetFacade {
 	 * @param entryid the id of cabinet entry
 	 **/
 	public static List<TagInfo> findCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid)throws CoreException{
+			GPrincipal principal, InfoId<Long> entryid)throws CoreException{
 		
 		List<TagInfo> gresult = null;
 		if(!InfoId.isValid(entryid)){
@@ -467,7 +467,7 @@ public class CabinetFacade {
 	}
 	
 	public static Map<InfoId<Long>, Set<TagInfo>> findCabEntriesTags(AccessPoint accesspoint,
-			Principal principal, List<InfoId<Long>> entryids)throws CoreException{
+			GPrincipal principal, List<InfoId<Long>> entryids)throws CoreException{
 		
 		Map<InfoId<Long>, Set<TagInfo>> gresult = null;
 		if(CollectionUtils.isEmpty(entryids)){
@@ -477,9 +477,9 @@ public class CabinetFacade {
 		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
 		for(InfoId<Long> id: entryids){
 			
-			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
+			if(IdKey.GP_CAB_FILES.getTable().equals(id.getIdKey())){
 				files.add(id);
-			}else if(IdKey.CAB_FOLDER.getTable().equals(id.getIdKey())){
+			}else if(IdKey.GP_CAB_FOLDERS.getTable().equals(id.getIdKey())){
 				folders.add(id);
 			}
 		}
@@ -509,7 +509,7 @@ public class CabinetFacade {
 	 * @param fileid the id of file
 	 **/
 	public static List<CabVersionInfo> findCabinetFileVersions(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> fileid)throws CoreException{
+			GPrincipal principal, InfoId<Long> fileid)throws CoreException{
 		
 		List<CabVersionInfo> gresult = null;
 		
@@ -531,7 +531,7 @@ public class CabinetFacade {
 	}
 	
 	public static Boolean[] moveCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
+			GPrincipal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
 		
 		Boolean[] rtv = new Boolean[0];
 		if(ArrayUtils.isEmpty(fileids)){
@@ -547,10 +547,10 @@ public class CabinetFacade {
 			int cnt = 0;
 			for(InfoId<Long> fid : fileids){
 				
-				if(IdKey.CAB_FILE.getSchema().equals(fid.getIdKey()))
+				if(IdKey.GP_CAB_FILES.getSchema().equals(fid.getIdKey()))
 					
 					rtv[cnt] = fileservice.moveFile(svcctx, fid, destid);
-				else if(IdKey.CAB_FOLDER.getSchema().equals(fid.getIdKey())){
+				else if(IdKey.GP_CAB_FOLDERS.getSchema().equals(fid.getIdKey())){
 					
 					String tgt_path = folderservice.getFolderPath(svcctx, destid);
 					String src_path = folderservice.getFolderPath(svcctx, fid);
@@ -575,7 +575,7 @@ public class CabinetFacade {
 	
 	
 	public static List<InfoId<Long>> copyCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
+			GPrincipal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
 		
 		List<InfoId<Long>> rtv = new ArrayList<InfoId<Long>>();
 		if(ArrayUtils.isEmpty(fileids)){
@@ -586,11 +586,11 @@ public class CabinetFacade {
 				Operations.COPY_FILE)){
 			
 			for(InfoId<Long> fid : fileids){
-				if(IdKey.CAB_FILE.getSchema().equals(fid.getIdKey())){
+				if(IdKey.GP_CAB_FILES.getSchema().equals(fid.getIdKey())){
 					
 					InfoId<Long> newId = fileservice.copyFile(svcctx, fid, destid);
 					rtv.add(newId);
-				}else if(IdKey.CAB_FOLDER.getSchema().equals(fid.getIdKey())){
+				}else if(IdKey.GP_CAB_FOLDERS.getSchema().equals(fid.getIdKey())){
 					
 					String tgt_path = folderservice.getFolderPath(svcctx, destid);
 					String src_path = folderservice.getFolderPath(svcctx, fid);
@@ -598,7 +598,7 @@ public class CabinetFacade {
 						InfoId<Long> newId = folderservice.copyFolder(svcctx, fid, destid);
 						rtv.add(newId);
 					}else
-						rtv.add(IdKey.CAB_FOLDER.getInfoId(-1l));
+						rtv.add(IdKey.GP_CAB_FOLDERS.getInfoId(-1l));
 				}
 			}
 		
@@ -614,7 +614,7 @@ public class CabinetFacade {
 	}
 	
 	public static Boolean attachCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
+			GPrincipal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
 		boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ATTACH_TAG)){
@@ -635,7 +635,7 @@ public class CabinetFacade {
 	}
 	
 	public static Boolean detachCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
+			GPrincipal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
 		
 		boolean gresult = false;
 		

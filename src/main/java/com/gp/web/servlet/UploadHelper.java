@@ -20,7 +20,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SpringContextUtil;
 import com.gp.core.CabinetFacade;
 import com.gp.core.StorageFacade;
@@ -145,11 +145,11 @@ class UploadHelper {
 	 **/
 	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart) throws CoreException{
 		
-		Principal principal = BaseController.getPrincipal();
+		GPrincipal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = filepart.getAccessPoint();
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
-		InfoId<Long> cabid = IdKey.CABINET.getInfoId(cabinetId);
+		InfoId<Long> cabid = IdKey.GP_CABINETS.getInfoId(cabinetId);
 		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid);
 
 		BinaryInfo binfo = new BinaryInfo();
@@ -194,7 +194,7 @@ class UploadHelper {
 	 **/
 	public static void saveBinary(InfoId<Long> binaryId, PartMeta filemeta)throws CoreException{
 		
-		Principal principal = BaseController.getPrincipal();
+		GPrincipal principal = BaseController.getPrincipal();
 		AccessPoint accesspoint = filemeta.getAccessPoint();
 		StorageFacade.storeBinary(accesspoint, principal, binaryId, filemeta.getContent());
 	}
@@ -207,7 +207,7 @@ class UploadHelper {
 	 **/
 	public static void saveBinaryChunk(InfoId<Long> binaryId, PartMeta filemeta)throws CoreException{
 		
-		Principal principal = BaseController.getPrincipal();
+		GPrincipal principal = BaseController.getPrincipal();
 
 		StorageFacade.storeBinaryChunk(filemeta.getAccessPoint(),
 				principal,

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.gp.audit.AccessPoint;
 import com.gp.common.FlatColumns;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -47,7 +47,7 @@ public class DictionaryFacade {
 	 * @param language the language expected 
 	 **/
 	public static List<DictionaryInfo> findDictEntries(AccessPoint accesspoint,
-			Principal principal, String groupkey, String language) throws CoreException{
+			GPrincipal principal, String groupkey, String language) throws CoreException{
 		
 		List<DictionaryInfo> gresult = null;
 		
@@ -68,7 +68,7 @@ public class DictionaryFacade {
 	}
 	
 	public static Boolean saveDictEntry(AccessPoint accesspoint,
-			Principal principal, DictionaryInfo dictinfo) throws CoreException{
+			GPrincipal principal, DictionaryInfo dictinfo) throws CoreException{
 		
 		if(!InfoId.isValid(dictinfo.getInfoId())){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.dict");

@@ -20,7 +20,7 @@ import com.gp.web.util.CustomWebUtils;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.GroupUsers;
 import com.gp.common.GroupUsers.UserState;
 import com.gp.common.GroupUsers.UserType;
@@ -75,7 +75,7 @@ public class AccountListController extends BaseController{
 				
 		List<Account> list = new ArrayList<Account>();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 
 		String uname = request.getParameter("uname");
 		String instanceStr = request.getParameter("instance_id");
@@ -157,12 +157,12 @@ public class AccountListController extends BaseController{
 		Account account = new Account();
 		super.readRequestData(request, account);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
 		UserInfo uinfo = new UserInfo();
-		InfoId<Long> uid = IdKey.USER.getInfoId(Long.valueOf(account.getUserId()));
+		InfoId<Long> uid = IdKey.GP_USERS.getInfoId(Long.valueOf(account.getUserId()));
 		uinfo.setInfoId(uid);
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
@@ -212,13 +212,13 @@ public class AccountListController extends BaseController{
 		String uidStr = request.getParameter("user_id");
 
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		Long userId = null;
 
 		InfoId<Long> userkey = null;
 		if(StringUtils.isNotBlank(uidStr) && CommonUtils.isNumeric(uidStr) ){
 			userId = Long.valueOf(uidStr);
-			userkey = IdKey.USER.getInfoId(userId);
+			userkey = IdKey.GP_USERS.getInfoId(userId);
 		}
 
 		ActionResult result = new ActionResult();
@@ -270,13 +270,13 @@ public class AccountListController extends BaseController{
 		String uid = request.getParameter("user_id");
 		ModelAndView mav = getJsonModelView();	
 		ActionResult result = new ActionResult();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Long userId = null;
 		InfoId<Long> userkey = null;
 		if(StringUtils.isNotBlank(uid) && CommonUtils.isNumeric(uid)){
 			userId = Long.valueOf(uid);
-			userkey = IdKey.USER.getInfoId(userId);
+			userkey = IdKey.GP_USERS.getInfoId(userId);
 		}
 		
 		if(userId == GroupUsers.ADMIN_USER.getUserId().getId()){

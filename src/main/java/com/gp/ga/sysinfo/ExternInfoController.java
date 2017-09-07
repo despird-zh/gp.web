@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.Sources;
 import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
@@ -40,7 +40,7 @@ public class ExternInfoController extends BaseController{
 		readRequestData(request, pq);
 		ActionResult result = new ActionResult();	
 		List<Source> list = new ArrayList<Source>();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 
 		try{
 			List<SourceInfo> instances = SourceFacade.findSources(getAccessPoint(request), principal, name);
@@ -88,7 +88,7 @@ public class ExternInfoController extends BaseController{
 		// read request parameters
 		super.readRequestData(request, data);
 
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		
 		SourceInfo instinfo = new SourceInfo();

@@ -15,7 +15,7 @@ import com.gp.web.BaseController;
 import com.gp.web.model.Account;
 import com.gp.web.util.CustomWebUtils;
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.GroupUsers;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
@@ -47,7 +47,7 @@ public class AccountAddController extends BaseController{
 		Account account = new Account();
 		super.readRequestData(request, account);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();		
 		ModelAndView mav = getJsonModelView();		

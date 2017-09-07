@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.GroupUsers;
 import com.gp.common.GroupUsers.UserState;
 import com.gp.core.SecurityFacade;
@@ -59,13 +59,13 @@ public class AuthorizeRealm extends AuthorizingRealm {
 			PrincipalCollection principals) {
 		Set<String>			roles			= new HashSet<String>();
 		Set<Permission>		permissions		= new HashSet<Permission>();
-		Collection<Principal>	principalsList	= principals.byType(Principal.class);
+		Collection<GPrincipal>	principalsList	= principals.byType(GPrincipal.class);
 		
 		if (principalsList.isEmpty()) {
 			throw new AuthorizationException("Empty principals list!");
 		}
 		//LOADING STUFF FOR PRINCIPAL 
-		for (Principal principal : principalsList) {
+		for (GPrincipal principal : principalsList) {
 			// Only when dctm standard mode we try to fetch the group and role information
 			//if(ServiceConstants.REALM_TYPE_DCTM.equals(userPrincipal.getRealm())){
 				// ignore group query processing
@@ -103,7 +103,7 @@ public class AuthorizeRealm extends AuthorizingRealm {
 	private AuthenInfo getDBAuthenInfo(AuthenToken authtoken){
 		
 		// here user name is the login account
-		Principal principal = null;
+		GPrincipal principal = null;
 		UserInfo uinfo = null;
 		AccessPoint ap = authtoken.getAccessPoint();
 		try {		
@@ -115,7 +115,7 @@ public class AuthorizeRealm extends AuthorizingRealm {
 			}			
 			else{ 
 				
-				principal = new Principal(uinfo.getInfoId());
+				principal = new GPrincipal(uinfo.getInfoId());
 				principal.setSourceId(uinfo.getSourceId());
 				principal.setAccount(authtoken.getUsername());
 		        principal.setEmail(uinfo.getEmail());

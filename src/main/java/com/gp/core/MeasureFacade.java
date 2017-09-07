@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -44,7 +44,7 @@ public class MeasureFacade {
 	 * @param wid the work group id  
 	 **/
 	public static WorkgroupSumInfo findWorkgroupSummary(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> wid)throws CoreException{
 		
 		WorkgroupSumInfo gresult = null;
@@ -73,7 +73,7 @@ public class MeasureFacade {
 	 * @param wid the work group id  
 	 **/
 	public static UserSumInfo findPersonalSummary(AccessPoint accesspoint, 
-			Principal principal,
+			GPrincipal principal,
 			String account) throws CoreException{
 		
 		UserSumInfo result = null;

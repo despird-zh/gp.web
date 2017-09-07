@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.OrgHierFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
@@ -68,7 +68,7 @@ public class OrgHierController extends BaseController{
 		orghier.setManager(params.getManager());
 		orghier.setOrgName(params.getText());
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try{
 			OrgHierFacade.newOrgHier(accesspoint, principal, orghier);
@@ -93,7 +93,7 @@ public class OrgHierController extends BaseController{
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		OrgNode params = new OrgNode();		
@@ -101,7 +101,7 @@ public class OrgHierController extends BaseController{
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(params.getId()) && CommonUtils.isNumeric(params.getId())){
 			Long nid = Long.valueOf(params.getId());
-			nodeId = IdKey.ORG_HIER.getInfoId( nid);
+			nodeId = IdKey.GP_ORG_HIER.getInfoId( nid);
 		}else {
 			aresult.setState(ActionResult.ERROR);
 			aresult.setMessage(getMessage("mesg.post.unqualified"));
@@ -144,7 +144,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKey.ORG_HIER.getInfoId(nid);
+			nodeId = IdKey.GP_ORG_HIER.getInfoId(nid);
 		}
 		Account[] users = super.readRequestJson("users", Account[].class);
 		String[] accounts = new String[users.length];
@@ -153,7 +153,7 @@ public class OrgHierController extends BaseController{
 			accounts[count] = a.getAccount();
 			count++;
 		}
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		try{
@@ -182,10 +182,10 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKey.ORG_HIER.getInfoId( nid);
+			nodeId = IdKey.GP_ORG_HIER.getInfoId( nid);
 		}
 		String account = super.readRequestParam("account");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		
@@ -215,10 +215,10 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKey.ORG_HIER.getInfoId( nid);
+			nodeId = IdKey.GP_ORG_HIER.getInfoId( nid);
 		}
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();

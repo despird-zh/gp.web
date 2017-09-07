@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -33,7 +33,7 @@ public class MasterFacade {
 	}
 		
 	public static Boolean saveSystemOption(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String optionKey,
 			String optionValue)throws CoreException{
 		
@@ -57,7 +57,7 @@ public class MasterFacade {
 	}
 	
 	public static List<SysOptionInfo> findSystemOptions(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String groupKey)throws CoreException{
 			
 		List<SysOptionInfo> result = null;		
@@ -84,7 +84,7 @@ public class MasterFacade {
 	}
 	
 	public static List<String> findSystemOptionGroups(AccessPoint accesspoint,
-			Principal principal)throws CoreException{
+			GPrincipal principal)throws CoreException{
 		
 		List<String> result = null;
 		

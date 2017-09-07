@@ -17,7 +17,7 @@ import org.springframework.web.util.UriUtils;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
@@ -48,7 +48,7 @@ public class AllWGroupListController extends BaseController{
 		PageQuery pquery = new PageQuery(12,1);
 		this.readRequestData(request, pquery);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		
@@ -106,7 +106,7 @@ public class AllWGroupListController extends BaseController{
 		String[] tags = request.getParameterValues("tags");
 		List<String> taglist = (null == tags) ? null : Arrays.asList(tags);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 

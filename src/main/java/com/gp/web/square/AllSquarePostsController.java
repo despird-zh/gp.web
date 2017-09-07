@@ -23,7 +23,7 @@ import org.springframework.web.util.UriUtils;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
@@ -59,7 +59,7 @@ public class AllSquarePostsController extends BaseController{
 
 		PageQuery pquery = new PageQuery(4,1);
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		String state = super.readRequestParam("state");

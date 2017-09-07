@@ -113,7 +113,7 @@ public class PostParser implements NodeVisitor{
                 int separatorPost = src.indexOf(',');
                 // prefix to be : data:image/gif;base64,R0lG....
                 String prefix = src.substring(0 , separatorPost);
-                InfoId<Long> imgid = CommonFacade.generateId(IdKey.IMAGE, Long.class);
+                InfoId<Long> imgid = CommonFacade.generateId(IdKey.GP_IMAGES, Long.class);
                 String file_ext = prefix.substring(prefix.indexOf('/') + 1, prefix.indexOf(';'));
                 // the file name : {id}-{date}.{ext}
                 String file_name = Images.getImgFileName(imgid.getId(), file_ext);

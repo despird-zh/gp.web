@@ -25,7 +25,7 @@ import com.gp.common.GeneralConfig;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
 import com.gp.core.ImageFacade;
@@ -70,7 +70,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try {
@@ -89,7 +89,7 @@ public class WSpaceSettingController  extends BaseController{
 			
 			Integer storageId = uinfo.getStorageId();
 			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, 
-					IdKey.STORAGE.getInfoId(storageId));
+					IdKey.GP_STORAGES.getInfoId(storageId));
 			ui.setStorageId(storageId);
 			ui.setStorageName(storage.getStorageName());
 			
@@ -103,7 +103,7 @@ public class WSpaceSettingController  extends BaseController{
 					ui.setPricapacity(cinfo.getCapacity());
 				}
 			}
-			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(uinfo.getAvatarId()));
+			ImageInfo imginfo = ImageFacade.findImage(accesspoint, principal, IdKey.GP_IMAGES.getInfoId(uinfo.getAvatarId()));
 			String imagePath = "../" + ImagePath + "/" + imginfo.getLink();
 			ui.setImagePath(imagePath);
 			
@@ -129,7 +129,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		try{
@@ -177,7 +177,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		String newpwd = request.getParameter("new-password");
 		String cfmpwd = request.getParameter("confirm-password");
@@ -216,7 +216,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Account setting = new Account();
 		super.readRequestData(setting);
@@ -228,7 +228,7 @@ public class WSpaceSettingController  extends BaseController{
 		}
 		UserInfo uinfo = new UserInfo();
 		try{
-			uinfo.setInfoId(IdKey.USER.getInfoId(setting.getUserId()));
+			uinfo.setInfoId(IdKey.GP_USERS.getInfoId(setting.getUserId()));
 			uinfo.setType(setting.getType());
 			uinfo.setEmail(setting.getEmail());
 			uinfo.setMobile(setting.getMobile());
@@ -261,7 +261,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String setting_json = request.getParameter("setting_json");
@@ -285,9 +285,9 @@ public class WSpaceSettingController  extends BaseController{
 		Map<InfoId<Long>,Boolean> settingmap = new HashMap<InfoId<Long>,Boolean>();
 		for(UserBelonging setting: settings){
 			if("org".equals(belong_type))
-				settingmap.put(IdKey.ORG_HIER.getInfoId(setting.getBelongId()), setting.getPostVisible());
+				settingmap.put(IdKey.GP_ORG_HIER.getInfoId(setting.getBelongId()), setting.getPostVisible());
 			else
-				settingmap.put(IdKey.WORKGROUP.getInfoId(setting.getBelongId()), setting.getPostVisible());
+				settingmap.put(IdKey.GP_WORKGROUPS.getInfoId(setting.getBelongId()), setting.getPostVisible());
 		}
 		try{
 			
@@ -308,7 +308,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String publishcap = request.getParameter("publish_cap");
@@ -337,7 +337,7 @@ public class WSpaceSettingController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String timezone = request.getParameter("timezone");

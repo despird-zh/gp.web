@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.DictionaryFacade;
 import com.gp.exception.CoreException;
 import com.gp.dao.info.DictionaryInfo;
@@ -37,7 +37,7 @@ public class DictEntriesController  extends BaseController{
 	public ModelAndView doEntriesSearch(HttpServletRequest request){
 		
 		ModelAndView mav = super.getJsonModelView();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult ars = new ActionResult();
 		List<DictEntry> list = new ArrayList<DictEntry>();
@@ -75,12 +75,12 @@ public class DictEntriesController  extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		DictEntry dentry = new DictEntry();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		super.readRequestData(dentry);// read request data.
 		
 		DictionaryInfo dinfo = new DictionaryInfo();
-		InfoId<Long> did = IdKey.DICTIONARY.getInfoId(dentry.getEntryId());
+		InfoId<Long> did = IdKey.GP_DICTIONARY.getInfoId(dentry.getEntryId());
 		dinfo.setInfoId(did);
 		dinfo.setKey(dentry.getEntryKey());
 		dinfo.setValue(dentry.getEntryValue());

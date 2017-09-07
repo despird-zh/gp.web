@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.audit.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.Storages;
 import com.gp.common.Storages.StoreSetting;
 import com.gp.core.StorageFacade;
@@ -48,7 +48,7 @@ public class StorageAddController extends BaseController{
 		Storage storage = new Storage();
 		super.readRequestData(request, storage);
 		// read trace information
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// prepare result
 		ActionResult aresult = new ActionResult();

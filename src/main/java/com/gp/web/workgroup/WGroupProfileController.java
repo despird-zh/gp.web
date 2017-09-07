@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CabinetFacade;
 import com.gp.core.ImageFacade;
@@ -27,7 +27,7 @@ import com.gp.core.OrgHierFacade;
 import com.gp.core.StorageFacade;
 import com.gp.core.WorkgroupFacade;
 import com.gp.exception.CoreException;
-import com.gp.dao.info.OperLogInfo;
+import com.gp.dao.info.OperationInfo;
 import com.gp.dao.info.CabinetInfo;
 import com.gp.info.CombineInfo;
 import com.gp.dao.info.GroupMemberInfo;
@@ -71,7 +71,7 @@ public class WGroupProfileController extends BaseController{
 	public ModelAndView doFindWorkgroup(HttpServletRequest request){
 		
 		String wgid = super.readRequestParam("wgroup_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -83,7 +83,7 @@ public class WGroupProfileController extends BaseController{
 			mav.addAllObjects(result.asMap());
 			return mav;
 		}
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgid));
+		InfoId<Long> wgroupId = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgid));
 		
 		try{
 			WorkgroupExtInfo info = WorkgroupFacade.findWorkgroupExt(accesspoint, principal, wgroupId);
@@ -109,25 +109,25 @@ public class WGroupProfileController extends BaseController{
 		
 			// storage and organization
 			wgroup.setStorageId(info.getStorageId());
-			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.STORAGE.getInfoId(info.getStorageId()));
+			StorageInfo storage = StorageFacade.findStorage(accesspoint, principal, IdKey.GP_STORAGES.getInfoId(info.getStorageId()));
 			if(null != storage)
 				wgroup.setStorageName(storage.getStorageName());
 			wgroup.setOrgId(info.getOrgId());
-			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.ORG_HIER.getInfoId(info.getOrgId()));
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, IdKey.GP_ORG_HIER.getInfoId(info.getOrgId()));
 			if(null != orghier)
 				wgroup.setOrgName(orghier.getOrgName());
 			// avatar icon
 			Long avatarId = info.getAvatarId();
-			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.IMAGE.getInfoId(avatarId));
+			ImageInfo avatar = ImageFacade.findImage(accesspoint, principal, IdKey.GP_IMAGES.getInfoId(avatarId));
 			if(null != avatar){
 				wgroup.setImagePath("../" + imagePath + "/" + avatar.getLink());
 			}
 			// cabinet capacity
 			Long pubcabId = info.getPublishCabinet();
-			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pubcabId));
+			CabinetInfo pubcab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.GP_CABINETS.getInfoId(pubcabId));
 			wgroup.setPublishCapacity((int) (pubcab.getCapacity()/ (1024 * 1024)));
 			Long pricabId = info.getNetdiskCabinet();
-			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.CABINET.getInfoId(pricabId));
+			CabinetInfo pricab = CabinetFacade.findCabinet(accesspoint, principal, IdKey.GP_CABINETS.getInfoId(pricabId));
 			wgroup.setNetdiskCapacity((int) (pricab.getCapacity()/ (1024 * 1024)));
 			
 			result.setState(ActionResult.SUCCESS);
@@ -152,14 +152,14 @@ public class WGroupProfileController extends BaseController{
 		String wgroupid = super.readRequestParam("wgroup_id");
 		mav.addObject("wgroup_id",  wgroupid);
 		// initial group members, prepare the inifinite setting		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		PageQuery pquery = new PageQuery(12,1);
 		this.readRequestData(request, pquery);
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 		List<WGroupMember> list = new ArrayList<WGroupMember>();
 		
@@ -205,21 +205,21 @@ public class WGroupProfileController extends BaseController{
 		String tailDateStr = request.getParameter("tailDate");
 		Date taildt = null;
 		// initial activity logs, prepare the infinite setting		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		PageQuery pquery = new PageQuery(5,1);
 		this.readRequestData(request, pquery);
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKey.GP_WORKGROUPS.getInfoId(Long.valueOf(wgroupid));
 		}
 		List<ActivityLog> list = new ArrayList<ActivityLog>();
 		
 		Boolean hasMore = false;
 		Integer nextPage = -1;
 		try{
-			PageWrapper<OperLogInfo> gresult = WorkgroupFacade.findWorkgroupOperLogs(accesspoint, principal, wkey, pquery);
+			PageWrapper<OperationInfo> gresult = WorkgroupFacade.findWorkgroupOperLogs(accesspoint, principal, wkey, pquery);
 			try {
 				taildt = StringUtils.isBlank(tailDateStr) ? SDF_DATE.parse("9999-12-31"):
 					SDF_DATE.parse(tailDateStr);
@@ -227,8 +227,8 @@ public class WGroupProfileController extends BaseController{
 				LOGGER.error("Fail parse the date",e);
 			}
 			
-			List<OperLogInfo> ulist = gresult.getRows();
-			for(OperLogInfo info: ulist){
+			List<OperationInfo> ulist = gresult.getRows();
+			for(OperationInfo info: ulist){
 				
 				ActivityLog log = new ActivityLog();
 				if(!DateUtils.isSameDay(taildt, info.getOperationTime())){

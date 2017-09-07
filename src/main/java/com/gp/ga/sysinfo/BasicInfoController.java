@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Sources.State;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
@@ -55,10 +55,10 @@ public class BasicInfoController extends BaseController{
 			rst.setState(ActionResult.ERROR);
 			rst.setMessage("parameter [instanceid] must be number.");
 		}else{
-			Principal principal = super.getPrincipal();
+			GPrincipal principal = super.getPrincipal();
 			AccessPoint ap = super.getAccessPoint(request);
 			
-			InfoId<Integer> id = IdKey.SOURCE.getInfoId(Integer.valueOf(instanceId));
+			InfoId<Integer> id = IdKey.GP_SOURCES.getInfoId(Integer.valueOf(instanceId));
 			
 			
 			try{
@@ -98,9 +98,9 @@ public class BasicInfoController extends BaseController{
 		String instanceIdStr = request.getParameter("source_id");
 		String stateStr = request.getParameter("source_state");
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
-		InfoId<Integer> id = IdKey.SOURCE.getInfoId(instanceId);
+		InfoId<Integer> id = IdKey.GP_SOURCES.getInfoId(instanceId);
 		
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 
 		try{
@@ -128,9 +128,9 @@ public class BasicInfoController extends BaseController{
 		// read request parameters
 		super.readRequestData(request, data);
 
-		InfoId<Integer> id = IdKey.SOURCE.getInfoId(data.getSourceId());
+		InfoId<Integer> id = IdKey.GP_SOURCES.getInfoId(data.getSourceId());
 		
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		
 		SourceInfo instinfo = new SourceInfo();
@@ -170,7 +170,7 @@ public class BasicInfoController extends BaseController{
 			CustomWebUtils.dumpRequestAttributes(request);
 		String name = request.getParameter("source_name");
 
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		List<Source> list = new ArrayList<Source>();
 		ActionResult rst = new ActionResult();
